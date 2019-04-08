@@ -3,11 +3,12 @@ package stepdefs;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import management.Bed;
+import management.Department;
+import management.Patient;
+import management.Staff;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
-import java.Department;
+import static org.junit.Assert.*;
 
 public class Departments {
     Department d = new Department(80,"ER");
@@ -21,13 +22,12 @@ public class Departments {
     //[7] Capacity
 
     @When("the department is made")
-    public void theDepartmentIsMade(int capacity, String name) {
-        d = new Department(capacity,name);
+    public void theDepartmentIsMade() {
     }
 
     @Then("the department needs to know how many patients they can host")
     public void theDepartmentNeedsToKnowHowManyPatientsTheyCanHost() {
-        assertTrue(d.capacity > 0);
+        assertTrue(d.getCapacity() > 0);
     }
 
 
@@ -52,6 +52,7 @@ public class Departments {
     @Then("I should be able to remove them from my system")
     public void iShouldBeAbleToRemoveThemFromMySystem() {
         s = new Staff();
+        d = new Department(10,"test");
         d.add(s);
         assertTrue((d.staff).contains(s));
         d.remove(s);
@@ -122,11 +123,12 @@ public class Departments {
 
     @Then("I should be able to move them between beds")
     public void iShouldBeAbleToMoveThemBetweenBeds() {
-        assertTrue(b.patient().equals(p));
+        assertEquals(b.getPatient(),p);
         Bed b2 = new Bed();
         d.move(p,b2);
-        assertTrue(b2.patient().equals(p));
-        assertFalse(b.patient().equals(p));
+        b.remove();
+        assertEquals(b2.getPatient(),p);
+        assertFalse(b.occupied());
     }
 }
 
