@@ -24,8 +24,8 @@ public class Department extends Hospital {
 	public void remove(Patient p) {
 		patients.remove(p);
 	}
-	public int available_beds() {
-		return capacity-available.size();
+	public boolean available_beds() {
+		return capacity-available.size()>0;
 	}
 	public void assign(Patient p, Bed b) {
 		b.add(p);
