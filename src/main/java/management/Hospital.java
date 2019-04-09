@@ -13,9 +13,9 @@ public class Hospital {
 		deptA.remove(p);
 		deptB.add(p);
 	}
-	/*public void add(Department d) {
+	public void add(Department d) {
 		depts.add(d);
-	}*/
+	}
 	public void assign(Staff s, Department d) {
 		d.add(s);
 	}
