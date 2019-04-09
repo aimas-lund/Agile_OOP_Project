@@ -1,5 +1,4 @@
-import hospital.objects.Department;
-import hospital.objects.Hospital;
+package management;
 
 public class UserFace {
 

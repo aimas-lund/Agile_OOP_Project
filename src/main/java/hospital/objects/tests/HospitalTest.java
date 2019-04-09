@@ -1,6 +1,9 @@
-import org.junit.Test;
+package hospital.objects.tests;
 
+import org.junit.Test;
+import org.testng.annotations.ITestAnnotation;
 import static junit.framework.TestCase.*;
+import hospital.objects.*;
 
 public class HospitalTest {
 
@@ -50,104 +53,6 @@ public class HospitalTest {
     // Department Tests
     // Comment: Do we need to assign patients to beds in the dynamic bed array in the department? We need a method for that
 
-    @Test
-    public void initDepartmentTest() {
-        Department d = new Department(10, "ER");
-        assertSame("ER", d.name);
-    }
-
-    @Test
-    public void capacityTest1() {
-        Department d = new Department(10, "ER");
-        assertEquals(10, d.available_beds());
-    }
-
-    @Test
-    public void capacityTestAddPatient() {
-        Department d = new Department(10, "ER");
-        Patient p = new Patient();
-        d.add(p);
-        assertEquals(9, d.available_beds());
-    }
-
-    @Test
-    public void capacityTestRemovePatient() {
-        Department d = new Department(10, "ER");
-        Patient p = new Patient();
-        d.add(p);
-        d.remove(p);
-        assertEquals(10, d.available_beds());
-    }
-
-    @Test
-    public void assignPatientToBedTest() {
-        Department d = new Department(10, "ER");
-        Patient p = new Patient("Paul"); // need patient constructor
-        Bed b = new Bed();
-        d.assign(p, b);
-        assertSame("Paul", b.patient());
-    }
-
-    @Test
-    public void movePatientBedOccupiedTest1() {
-        Department d = new Department(10, "ER");
-        Patient p = new Patient(); // need patient constructor
-        Bed[] beds  = new Bed[2];
-        d.assign(p, beds[0]);
-        d.move(p, beds[1]);
-        assertTrue(!beds[0].occupied() && beds[1].occupied());
-    }
-
-    @Test
-    public void movePatientBedOccupiedTest2() {
-        Department d = new Department(10, "ER");
-        Patient p = new Patient(); // need patient constructor
-        Bed[] beds  = new Bed[2];
-        d.assign(p, beds[0]);
-        d.move(p, beds[1]);
-        assertTrue( beds[1].occupied());
-    }
-
-    @Test
-    public void movePatientBedNameTest1() {
-        Department d = new Department(10, "ER");
-        Patient p = new Patient(); // need patient constructor
-        Bed[] beds  = new Bed[2];
-        d.assign(p, beds[0]);
-        d.move(p, beds[1]);
-        assertNull(beds[0].patient());
-    }
-
-    @Test
-    public void movePatientBedNameTest2() {
-        Department d = new Department(10, "ER");
-        Patient p = new Patient(); // need patient constructor
-        Bed[] beds  = new Bed[2];
-        d.assign(p, beds[0]);
-        d.move(p, beds[1]);
-        assertSame(beds[1].patient(), p);
-    }
-
-    @Test
-    public void removePatientBedTest() {
-        Department d = new Department(10, "ER");
-        Patient p = new Patient(); // need patient constructor
-        Bed b = new Bed();
-        d.assign(p, b);
-        d.remove(p, b);
-        assertNull(b.patient());
-    }
-
-    /*
-    @Test
-    public void capacityTestAddStaff() {
-        Department d = new Department(10, "ER");
-        Staff s = new Staff("Doctor Phil");
-        d.add(s);
-        assertTrue();
-    }
-    */
-
     // Hospital Tests
 
     @Test
@@ -156,7 +61,7 @@ public class HospitalTest {
         Department d1 = new Department(10, "ER");
         Patient p = new Patient(); // need patient constructor
         h.assign(p, d1);
-        assertTrue(d1.isPatientAssigned(p));
+        assertTrue(d1.contains(p));
     }
 
     @Test

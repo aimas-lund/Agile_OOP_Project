@@ -1,11 +1,21 @@
+package hospital.objects;
+
+import hospital.objects.Patient;
 
 public class Bed {
 	private boolean occupied;
 	private Patient p;
+	private int id;
 	
-	Bed() {
+	public Bed(int id) {
 		this.occupied = false;
+		this.id = id;
 	}
+
+	public Bed() {
+
+	}
+
 	public void add(Patient p) {
 		this.occupied = true;
 		this.p = p;
@@ -19,7 +29,7 @@ public class Bed {
 	public boolean occupied() {
 		return occupied;
 	}
-	public Patient patient() {
+	public Patient getPatient() {
 		return p;
 	}
 

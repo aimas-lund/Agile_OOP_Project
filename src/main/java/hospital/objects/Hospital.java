@@ -1,3 +1,7 @@
+package hospital.objects;
+
+import hospital.objects.Department;
+
 import java.util.ArrayList;
 
 public class Hospital {
