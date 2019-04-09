@@ -7,6 +7,7 @@ import cucumber.api.java.en.When;
 import management.*;
 
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -19,11 +20,18 @@ public class RegistrationStep {
     private ICTOfficer ictOfficer = new ICTOfficer();
     private Staff registeredStaff = new Staff();
     private Staff unregisteredStaff = new Staff();
+    private Doctor doctor = new Doctor();
 
     @Given("a new patient")
     public void aNewPatient() {
-        // A new registeredPatient is always a person and a management.Patient type
-        assertTrue(registeredPatient instanceof Person && registeredPatient instanceof Patient);
+        // Get old patient
+        Patient oldPatient = this.registeredPatient;
+
+        // Make new patient
+        this.registeredPatient = new Patient();
+
+        // Check that they aren't the same
+        assertNotSame(oldPatient, registeredPatient);
     }
 
     @When("the patient walks into the department")
@@ -59,7 +67,6 @@ public class RegistrationStep {
     public void anAlreadyRegisteredPatient() {
         // Register patient to department (without information)
         clerk.registerPerson(registeredPatient, department);
-        assertTrue(registeredPatient instanceof Person && registeredPatient instanceof Patient);
         assertTrue(department.getPatients().contains(registeredPatient));
     }
 
@@ -79,7 +86,7 @@ public class RegistrationStep {
     @Then("the patient should get a unique ID")
     public void thePatientShouldGetAUniqueID() {
         // Testing purposes
-        Calendar cal = Calendar.getInstance();
+        GregorianCalendar cal = new GregorianCalendar();
         cal.set(1995, Calendar.APRIL, 20);
 
         // Clerk registers 2 patients, and they get a unique ID
@@ -92,7 +99,14 @@ public class RegistrationStep {
 
     @Given("a newly hired employee")
     public void aNewlyHiredEmployee() {
-        assertTrue(ictOfficer instanceof ICTOfficer);
+        // Get old ICTOfficer
+        ICTOfficer oldIctOfficer = this.ictOfficer;
+
+        // Make new ICTOfficer
+        this.ictOfficer = new ICTOfficer();
+
+        // Check that they aren't the same
+        assertNotSame(oldIctOfficer, ictOfficer);
     }
 
     @When("walking in to the ICT officer's office")
@@ -191,5 +205,51 @@ public class RegistrationStep {
 
         // Check that they are not equal
         assertNotEquals(staff1_email.substring(0, 4), staff2_email.substring(0, 4));
+    }
+
+    @Given("a new Doctor")
+    public void aNewDoctor() {
+        // Get old doctor
+        Doctor oldDoctor = this.doctor;
+
+        // Make new doctor
+        this.doctor = new Doctor();
+
+        // Check that they aren't the same
+        assertNotSame(oldDoctor, doctor);
+    }
+
+    @When("being registered as a staff member")
+    public void beingRegisteredAsAStaffMember() {
+        // Register staff to department
+        ictOfficer.registerPerson(doctor, department);
+
+        // Check that he is registered
+        assertSame(department.getStaff().get(0), doctor);
+    }
+
+    @Then("their specialization {string} should be specified along other information")
+    public void theirSpecializationShouldBeSpecifiedAlongOtherInformation(String doctorSpeciality) {
+        // Get speciality as enum
+        Speciality speciality = null;
+
+        for (Speciality spec : Speciality.values()) {
+            if (spec.getSpecialty().equals(doctorSpeciality)) {
+                speciality = spec;
+            }
+        }
+
+        // Set date
+        GregorianCalendar cal = new GregorianCalendar();
+        cal.set(1990, Calendar.APRIL, 20);
+
+        // Set patient information
+        ictOfficer.setDoctorInformation(doctor, speciality, "Mortimer", "Montgomery", cal.getTime(), 0,
+                "myhouse", 13371337);
+
+        // Check that some information has been set
+        assertEquals(speciality, doctor.getSpeciality());
+        assertEquals("Mortimer", doctor.getName());
+        assertEquals(13371337, doctor.getPhoneNumber());
     }
 }

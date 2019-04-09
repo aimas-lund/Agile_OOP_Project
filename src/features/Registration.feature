@@ -28,3 +28,30 @@ Feature: Registration
     When he is assigned a work email
     And his initials overlap with someone else's
     Then take next letter in his name
+
+  Scenario Outline: A doctor has a specialization
+    Given a new Doctor
+    When being registered as a staff member
+    Then their specialization "<specialization>" should be specified along other information
+    Examples:
+      | specialization                     |
+      | Dermatology                        |
+      | Allergy & immunology               |
+      | Anesthesiology                     |
+      | Dermatology                        |
+      | Diagnostic radiology               |
+      | Emergency Medicine                 |
+      | Family Medicine                    |
+      | Internal Medicine                  |
+      | Medical Genetics                   |
+      | Neurology                          |
+      | Nuclear Medicine                   |
+      | Obstetrics and gynecology          |
+      | Ophthalmology                      |
+      | Pathology                          |
+      | Pediatrics                         |
+      | Physical medicine & rehabilitation |
+      | Preventive medicine                |
+      | Radiation oncology                 |
+      | Surgery                            |
+      | Urology                            |
