@@ -8,6 +8,8 @@ import management.Department;
 import management.Patient;
 import management.Staff;
 
+import java.util.ArrayList;
+
 import static org.junit.Assert.*;
 
 public class Departments {
@@ -53,10 +55,11 @@ public class Departments {
     public void iShouldBeAbleToRemoveThemFromMySystem() {
         s = new Staff();
         d = new Department(10,"test");
+        ArrayList staff = d.getStaff();
         d.add(s);
-        assertTrue((d.staff).contains(s));
+        assertTrue(staff.contains(s));
         d.remove(s);
-        assertFalse((d.staff).contains(s));
+        assertFalse(staff.contains(s));
     }
 
     // [9] Add staff
@@ -68,7 +71,8 @@ public class Departments {
     @Then("I should add them to my system, such that I can easily look them up")
     public void iShouldAddThemToMySystemSuchThatICanEasilyLookThemUp() {
         d.add(s);
-        assertTrue((d.staff).contains(s));
+        ArrayList staff = d.getStaff();
+        assertTrue(staff.contains(s));
     }
 
     // [10] Assign to bed
@@ -79,7 +83,7 @@ public class Departments {
 
     @Then("I want to assign them to a specific bed, such that all patients are accounted for")
     public void iWantToAssignThemToASpecificBedSuchThatAllPatientsAreAccountedFor() {
-        Bed bed1 = new Bed();
+        Bed bed1 = new Bed(1);
         d.assign(p,bed1);
         assertTrue(bed1.occupied());
     }
@@ -93,9 +97,10 @@ public class Departments {
     @Then("I should be able to discharge them, thus removing my responsibility")
     public void iShouldBeAbleToDischargeThemThusRemovingMyResponsibility() {
         d.add(p);
-        assertTrue((d.patients).contains(p));
+        ArrayList patients = d.getPatients();
+        assertTrue(patients.contains(p));
         d.remove(p);
-        assertFalse((d.patients).contains(p));
+        assertFalse(patients.contains(p));
     }
 
     // [11] Move patients
@@ -107,16 +112,17 @@ public class Departments {
     @Then("I should be able to remove the patient from my system")
     public void iShouldBeAbleToRemoveThePatientFromMySystem() {
         d.add(p);
-        assertTrue((d.patients).contains(p));
+        ArrayList patients = d.getPatients();
+        assertTrue(patients.contains(p));
         d.remove(p);
-        assertFalse((d.patients).contains(p));
+        assertFalse(patients.contains(p));
     }
 
     // [12] Move patient between beds
     @When("a patient needs to be relocated")
     public void aPatientNeedsToBeRelocated() {
         p = new Patient();
-        b = new Bed();
+        b = new Bed(1);
         d.assign(p,b);
 
     }
@@ -124,7 +130,7 @@ public class Departments {
     @Then("I should be able to move them between beds")
     public void iShouldBeAbleToMoveThemBetweenBeds() {
         assertEquals(b.getPatient(),p);
-        Bed b2 = new Bed();
+        Bed b2 = new Bed(1);
         d.move(p,b2);
         b.remove();
         assertEquals(b2.getPatient(),p);

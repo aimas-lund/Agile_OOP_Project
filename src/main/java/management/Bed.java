@@ -3,9 +3,11 @@ package management;
 public class Bed {
 	private boolean occupied;
 	private Patient p;
+	private int id;
 	
-	public Bed() {
+	public Bed(int id) {
 		this.occupied = false;
+		this.id = id;
 	}
 	public void add(Patient p) {
 		this.occupied = true;

@@ -8,13 +8,18 @@ public class Department extends Hospital {
 	private String name;
 	private int capacity;
 	private ArrayList<Bed> available = new ArrayList<Bed>();
-	public ArrayList<Patient> patients = new ArrayList<Patient>();
-	public ArrayList<Staff> staff = new ArrayList<Staff>();
-	//management.Bed[capacity] available;
+	private ArrayList<Patient> patients = new ArrayList<Patient>();
+	private ArrayList<Staff> staff = new ArrayList<Staff>();
+	//Bed[capacity] available;//Use this instead of array list?
+	private Bed fixedAvailable[];
 	
 	public Department(int capacity, String name) {
 		this.name = name;
 		this.capacity = capacity;
+		fixedAvailable = new Bed[capacity];
+		for (int i = 0; i < fixedAvailable.length; i++) {
+			fixedAvailable[i] = new Bed(i);
+		}
 	}
 	public void add(Staff s) {
 		staff.add(s);
@@ -45,8 +50,20 @@ public class Department extends Hospital {
 		b.remove();
 		//p.removeBed()
 	}
+	public String getName() {
+		return name;
+	}
 	public int getCapacity() {
 		return capacity;
+	}
+	public ArrayList getAvailable() {
+		return available;
+	}
+	public ArrayList getPatients() {
+		return patients;
+	}
+	public ArrayList getStaff() {
+		return staff;
 	}
 
 
