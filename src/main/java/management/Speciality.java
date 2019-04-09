@@ -31,8 +31,4 @@ public enum Speciality {
         return specialty;
     }
 
-    @Override
-    public String toString() {
-        return specialty;
-    }
 }

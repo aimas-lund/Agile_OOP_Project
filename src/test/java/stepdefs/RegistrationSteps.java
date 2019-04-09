@@ -200,7 +200,7 @@ public class RegistrationSteps {
 
     @Then("take next letter in his name")
     public void takeNextLetterInHisName() {
-        // Get initials through utility class
+        // Get initials through helper class
         String staff1_email = InformationGenerator.generateEmail(registeredStaff);
         String staff2_email = InformationGenerator.generateEmail(unregisteredStaff);
 
@@ -295,7 +295,7 @@ public class RegistrationSteps {
         try {
             ictOfficer.isPersonRegistered(registeredStaff, department);
         } catch (PersonAlreadyRegisteredException e) {
-            assertTrue(e.getMessage().contains("member is already registered in the system"));
+            assertTrue(e.getMessage().contains("is already registered in the system"));
         }
 
     }
