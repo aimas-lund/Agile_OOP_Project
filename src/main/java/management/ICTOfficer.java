@@ -2,7 +2,7 @@ package management;
 
 import java.util.Date;
 
-public class ICTOfficer extends Staff implements IRegistering {
+public class ICTOfficer extends Staff implements IRegistering, IChangeInformation {
 
 
     public <T extends Person> boolean registerPerson(T person, Department department) {
@@ -31,24 +31,49 @@ public class ICTOfficer extends Staff implements IRegistering {
         }
     }
 
+    public void setDoctorInformation(Doctor doctor, Speciality speciality, String name, String surname, Date birthdate, int gender,
+                                     String homeAddress, int phoneNumber) {
+        doctor.setSpeciality(speciality);
+
+        setPersonInformation(doctor, name, surname, birthdate, gender, homeAddress, phoneNumber);
+    }
+
     public void addUniqueIdToPerson(Person person) {
         person.setUniqueId(InformationGenerator.generateUniqueID());
     }
 
-    public void setDoctorInformation(Doctor doctor, Speciality speciality, String name, String surname, Date birthdate, int gender,
+    @SuppressWarnings("Duplicates")
+    public void setPersonInformation(Person person, String name, String surname, Date birthdate, int gender,
                                      String homeAddress, int phoneNumber) {
-        doctor.setSpeciality(speciality);
-        setPersonInformation(doctor, name, surname, birthdate, gender, homeAddress, phoneNumber);
+        setPersonName(person, name);
+        setPersonSurname(person, surname);
+        setPersonBirthdate(person, birthdate);
+        setPersonGender(person, gender);
+        setPersonHomeAddress(person, homeAddress);
+        setPersonPhoneNumber(person, phoneNumber);
     }
 
-    @SuppressWarnings("Duplicates")
-    public <T extends Person> void setPersonInformation(T person, String name, String surname, Date birthdate, int gender,
-                                                        String homeAddress, int phoneNumber) {
-        person.setName(name);
-        person.setSurname(surname);
-        person.setBirthdate(birthdate);
-        person.setGender(gender);
-        person.setHomeAddress(homeAddress);
+    public void setPersonPhoneNumber(Person person, int phoneNumber) {
         person.setPhoneNumber(phoneNumber);
+    }
+
+    public void setPersonHomeAddress(Person person, String homeAddress) {
+        person.setHomeAddress(homeAddress);
+    }
+
+    public void setPersonGender(Person person, int gender) {
+        person.setGender(gender);
+    }
+
+    public void setPersonBirthdate(Person person, Date birthdate) {
+        person.setBirthdate(birthdate);
+    }
+
+    public void setPersonSurname(Person person, String surname) {
+        person.setSurname(surname);
+    }
+
+    public void setPersonName(Person person, String name) {
+        person.setName(name);
     }
 }

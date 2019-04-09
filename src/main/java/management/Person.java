@@ -15,7 +15,7 @@ public abstract class Person {
         return name;
     }
 
-    public void setName(String name) {
+    void setName(String name) {
         this.name = name;
     }
 
@@ -23,7 +23,7 @@ public abstract class Person {
         return surname;
     }
 
-    public void setSurname(String surname) {
+    void setSurname(String surname) {
         this.surname = surname;
     }
 
@@ -31,7 +31,7 @@ public abstract class Person {
         return birthdate;
     }
 
-    public void setBirthdate(Date birthdate) {
+    void setBirthdate(Date birthdate) {
         this.birthdate = birthdate;
     }
 
@@ -39,7 +39,7 @@ public abstract class Person {
         return gender;
     }
 
-    public void setGender(int gender) {
+    void setGender(int gender) {
         this.gender = gender;
     }
 
@@ -47,7 +47,7 @@ public abstract class Person {
         return homeAddress;
     }
 
-    public void setHomeAddress(String homeAddress) {
+    void setHomeAddress(String homeAddress) {
         this.homeAddress = homeAddress;
     }
 
@@ -55,7 +55,7 @@ public abstract class Person {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(int phoneNumber) {
+    void setPhoneNumber(int phoneNumber) {
         if (String.valueOf(phoneNumber).length() == 8) {
             this.phoneNumber = phoneNumber;
         } else {
@@ -69,7 +69,7 @@ public abstract class Person {
         return uniqueId;
     }
 
-    public void setUniqueId(int uniqueID) {
+    void setUniqueId(int uniqueID) {
         this.uniqueId = uniqueID;
     }
 
