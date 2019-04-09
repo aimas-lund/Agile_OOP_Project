@@ -1,6 +1,6 @@
 package management;
 
-import exceptions.exceededCapacityException;
+import exceptions.*;
 
 import java.util.ArrayList;
 
@@ -41,7 +41,7 @@ public class Department extends Hospital {
 		}
 		return false;
 	}
-	public void assign(Patient p) throws exceededCapacityException {
+	public void assign(Patient p) throws ExceededCapacityException {
 		if (available_beds()) {
 			for (Bed bed : beds) {
 				if (bed.getPatient() == null) {
@@ -50,18 +50,28 @@ public class Department extends Hospital {
 				}
 			}
 		} else {
-			throw new exceededCapacityException("No available beds");
+			throw new ExceededCapacityException("No available beds");
 		}
 	}
 	public void assign(Patient p, int id) throws UnavailableBedException, BedNotFoundException {
-
+		if (id<0 || id>capacity) {
+			throw new BedNotFoundException("Invalid ID");
+		}
+		if (beds[id].occupied()) {
+			throw new UnavailableBedException("Error: Assigning to non-empty bed");
+		}
 		Bed bed = beds[id];
 		bed.add(p);
 	}
-	public void move(Patient p) throws exceededCapacityException {
+	// What is this used for? (Is it different than assign?
+	public void move(Patient p) throws ExceededCapacityException {
 		for (Bed bed : beds) {
-			if (bed.getPatient() == null) bed.add(p); return;
+			if (bed.getPatient() == null) {
+				bed.add(p);
+				return;
+			}
 		}
+		throw new ExceededCapacityException("No available beds");
 	}
 	public void move(Patient p, int id) throws SameBedException, UnavailableBedException, BedNotFoundException {
 		int oldID = -1;
@@ -72,15 +82,18 @@ public class Department extends Hospital {
 			}
 		}
 		if (oldID == id) {
-			throw new SameBedException();
-			return;
+			throw new SameBedException("Error: Trying to move patient to original bed");
 		}
 		assign(p,id);
 	}
 	public void removeFromBed(Patient p) throws PatientNotFoundException {
 		for (Bed bed : beds) {
-			if (bed.getPatient() == p) bed.remove();
+			if (bed.getPatient() == p) {
+				bed.remove();
+				return;
+			}
 		}
+		throw new PatientNotFoundException("Patient isn't assigned to a bed");
 	}
 	public String getName() {
 		return name;

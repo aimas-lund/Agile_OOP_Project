@@ -3,7 +3,7 @@ package stepdefs;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import exceptions.exceededCapacityException;
+import exceptions.*;
 import management.Bed;
 import management.Department;
 import management.Patient;
@@ -17,7 +17,8 @@ public class Departments {
     Department d = new Department("ER",80);
     Patient p;
     Staff s;
-    Bed b;
+    Bed b = new Bed(1);
+    Bed b2 = new Bed(2);
     @Given("a department")
     public void aDepartment() {
         assertTrue(d instanceof Department);
@@ -83,17 +84,17 @@ public class Departments {
     }
 
     @Then("I want to assign them to a specific bed, such that all patients are accounted for")
-    public void iWantToAssignThemToASpecificBedSuchThatAllPatientsAreAccountedFor() {
+    public void iWantToAssignThemToASpecificBedSuchThatAllPatientsAreAccountedFor() throws BedNotFoundException, UnavailableBedException {
         d.assign(p,1);
         assertTrue(d.getBeds()[1].occupied());
     }
     // [10] Assign any bed
     @Then("I should check for available beds and assign them to one if there is room")
-    public void iShouldCheckForAvailableBedsAndAssignThemToOneIfThereIsRoom() throws exceededCapacityException {
+    public void iShouldCheckForAvailableBedsAndAssignThemToOneIfThereIsRoom() throws ExceededCapacityException {
         assertTrue(d.available_beds());
         d.assign(p);
         for (Bed bed : d.getBeds()) {
-            if (bed.getPatient() == p) assertTrue(bed.getPatient() == p);
+            if (bed.getPatient() == p) assertSame(bed.getPatient(), p);
         }
     }
 
@@ -129,18 +130,17 @@ public class Departments {
 
     // [12] Move patient between beds
     @When("a patient needs to be relocated")
-    public void aPatientNeedsToBeRelocated() {
+    public void aPatientNeedsToBeRelocated() throws BedNotFoundException, UnavailableBedException {
         p = new Patient();
         d.assign(p,1);
-        assertTrue(d.getBeds()[1].getPatient() == p);
+        assertSame(d.getBeds()[1].getPatient(), p);
 
     }
 
     @Then("I should be able to move them between beds")
-    public void iShouldBeAbleToMoveThemBetweenBeds() {
-        assertEquals(b.getPatient(),p);
-        d.move(p,1);
-        assertEquals(d.getBeds()[1].getPatient(),p);
+    public void iShouldBeAbleToMoveThemBetweenBeds() throws BedNotFoundException, SameBedException, UnavailableBedException {
+        d.move(p,2);
+        assertEquals(d.getBeds()[2].getPatient(),p);
         assertFalse(b.occupied());
     }
 }
