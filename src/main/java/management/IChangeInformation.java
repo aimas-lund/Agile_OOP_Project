@@ -2,10 +2,10 @@ package management;
 
 import java.util.Date;
 
-interface IChangeInformation {
+public interface IChangeInformation {
     void setPersonInformation(Person person, String name, String surname, Date birthdate, int gender, String homeAddress, int phoneNumber);
 
-    void setPersonPhoneNumber(Person person, int phoneNumber);
+    boolean setPersonPhoneNumber(Person person, int phoneNumber);
 
     void setPersonHomeAddress(Person person, String homeAddress);
 

@@ -3,7 +3,7 @@ package management;
 import java.util.Date;
 
 public class ICTOfficer extends Staff implements IRegistering, IChangeInformation {
-
+    // TODO: Replace duplicate code for ICT Officer and Clerk, or find different approach
 
     public <T extends Person> boolean registerPerson(T person, Department department) {
         // Check that the person is not registered
@@ -53,8 +53,13 @@ public class ICTOfficer extends Staff implements IRegistering, IChangeInformatio
         setPersonPhoneNumber(person, phoneNumber);
     }
 
-    public void setPersonPhoneNumber(Person person, int phoneNumber) {
-        person.setPhoneNumber(phoneNumber);
+    public boolean setPersonPhoneNumber(Person person, int phoneNumber) {
+        try {
+            person.setPhoneNumber(phoneNumber);
+            return true;
+        } catch (FormatException e) {
+            return false;
+        }
     }
 
     public void setPersonHomeAddress(Person person, String homeAddress) {

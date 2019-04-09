@@ -46,8 +46,13 @@ public class Clerk extends Staff implements IRegistering, IChangeInformation {
         setPersonPhoneNumber(person, phoneNumber);
     }
 
-    public void setPersonPhoneNumber(Person person, int phoneNumber) {
-        person.setPhoneNumber(phoneNumber);
+    public boolean setPersonPhoneNumber(Person person, int phoneNumber) {
+        try {
+            person.setPhoneNumber(phoneNumber);
+            return true;
+        } catch (FormatException e) {
+            return false;
+        }
     }
 
     public void setPersonHomeAddress(Person person, String homeAddress) {

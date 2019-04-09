@@ -3,6 +3,8 @@ package management;
 import java.util.Date;
 
 public abstract class Person {
+    // TODO: Consider creating a factory design around person, or staff and patients separately
+
     private String name;
     private String surname;
     private Date birthdate;
@@ -55,13 +57,12 @@ public abstract class Person {
         return phoneNumber;
     }
 
-    void setPhoneNumber(int phoneNumber) {
+    void setPhoneNumber(int phoneNumber) throws FormatException {
         if (String.valueOf(phoneNumber).length() == 8) {
             this.phoneNumber = phoneNumber;
         } else {
             // TODO: Add exception for invalid phone number
-            // Stopped developing this, as it was not related to my scenario
-            System.out.println("Invalid phone number");
+            throw new FormatException("Wrong phone number");
         }
     }
 

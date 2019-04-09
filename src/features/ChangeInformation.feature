@@ -13,4 +13,10 @@ Feature: ChangeInformation
     When the information is wrong
     Then the clerk should be able to change this information
 
+  Scenario: An ICT officer tries to change staff information to incorrect format
+    Given an ICT officer
+    And a person with information
+    And wants to change staff information in incorrect format
+    When the ICT Officer saves the modifications
+    Then system displays an incorrect modification based on the information to change
 

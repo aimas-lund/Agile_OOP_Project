@@ -7,6 +7,7 @@ import cucumber.api.java.en.When;
 import management.Clerk;
 import management.ICTOfficer;
 import management.Patient;
+import management.Staff;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -18,7 +19,7 @@ public class ChangeInformationSteps {
     private ICTOfficer ictOfficer = new ICTOfficer();
     private Clerk clerk = new Clerk();
     private Patient patientWithInformation = new Patient();
-    private Patient patientWithoutInformation = new Patient();
+    private Staff staffWithInformation = new Staff();
 
     @Given("an ICT officer")
     public void anICTOfficer() {
@@ -32,7 +33,7 @@ public class ChangeInformationSteps {
         ictOfficer.setPersonInformation(patientWithInformation,
                 "Kaj",
                 "Andreasen",
-                new GregorianCalendar(2000, Calendar.JANUARY, 0).getTime(),
+                new GregorianCalendar(2000, Calendar.JANUARY, 1).getTime(),
                 0,
                 "VejenPåGaden",
                 42013370
@@ -80,7 +81,7 @@ public class ChangeInformationSteps {
 
         // Set new values
         clerk.setPersonBirthdate(patientWithInformation,
-                new GregorianCalendar(1990, Calendar.JANUARY, 0).getTime());
+                new GregorianCalendar(1990, Calendar.JANUARY, 1).getTime());
         clerk.setPersonHomeAddress(patientWithInformation,
                 "Vejen på gaden 10");
 
@@ -91,5 +92,34 @@ public class ChangeInformationSteps {
         Calendar cal = Calendar.getInstance();
         cal.setTime(patientWithInformation.getBirthdate());
         assertEquals(1990, cal.get(Calendar.YEAR));
+    }
+
+
+    @And("wants to change staff information in incorrect format")
+    public void wantsToChangeStaffInformationInIncorrectFormat() {
+        // No code to be made on event
+    }
+
+    @When("the ICT Officer saves the modifications")
+    public void theICTOfficerSavesTheModifications() {
+        // TODO: Add more incorrect input, discuss what incorrect should be? (suggestion: use regex for strings)
+
+        // Define wrong input
+        String wrongName = "465531";
+        int wrongPhoneNumber = 123123;
+
+        // Try to save values.. Poorly structured scenario, should change.
+        ictOfficer.setPersonName(staffWithInformation, wrongName);
+        ictOfficer.setPersonPhoneNumber(staffWithInformation, wrongPhoneNumber);
+    }
+
+
+    @Then("system displays an incorrect modification based on the information to change")
+    public void systemDisplaysAnIncorrectModificationBasedOnTheInformationToChange() {
+        // Define wrong input
+        int wrongPhoneNumber = 123123;
+
+        assertFalse(ictOfficer.setPersonPhoneNumber(staffWithInformation, wrongPhoneNumber));
+
     }
 }
