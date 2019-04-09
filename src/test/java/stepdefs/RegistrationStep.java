@@ -129,6 +129,7 @@ public class RegistrationStep {
                 "my house, middle of the street",
                 51558588);                      // call me <- remove at some point :))
 
+
         ictOfficer.registerPerson(registeredStaff, department);
 
         // Check that staff has been registered
@@ -251,5 +252,51 @@ public class RegistrationStep {
         assertEquals(speciality, doctor.getSpeciality());
         assertEquals("Mortimer", doctor.getName());
         assertEquals(13371337, doctor.getPhoneNumber());
+    }
+
+    @Given("a clerk")
+    public void aClerk() {
+        // Check that there is a clerk
+        assertNotNull(clerk);
+    }
+
+    @And("a registered staff member")
+    public void aStaffRegisteredMember() {
+        // Check that there is a staff member
+        assertNotNull(registeredStaff);
+    }
+
+    @When("they are already in the system")
+    public void theyAreAlreadyInTheSystem() {
+        // Register staff
+        ictOfficer.registerPerson(registeredStaff, department);
+
+        // Check that the staff is registered
+        assertSame(registeredStaff, department.getStaff().get(0));
+    }
+
+    @And("trying to register the staff member")
+    public void tryingToRegisterTheStaffMember() {
+        // Old staff size
+        int oldStaffSize = department.getStaff().size();
+
+        // Register and check that it fails
+        assertFalse(ictOfficer.registerPerson(registeredStaff, department));
+
+        // Check that the size hasn't changed
+        assertEquals(department.getStaff().size(), oldStaffSize);
+    }
+
+    @Then("the system displays that this member profile is already created")
+    public void theSystemDisplaysThatThisMemberProfileIsAlreadyCreated() {
+        // Check that we get an exception
+        assertThrows(PersonAlreadyRegisteredException.class, () -> ictOfficer.isPersonRegistered(registeredStaff, department));
+
+        try {
+            ictOfficer.isPersonRegistered(registeredStaff, department);
+        } catch (PersonAlreadyRegisteredException e) {
+            assertTrue(e.getMessage().contains("member is already registered in the system"));
+        }
+
     }
 }

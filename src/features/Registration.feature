@@ -32,6 +32,7 @@ Feature: Registration
   Scenario Outline: A doctor has a specialization
     Given a new Doctor
     When being registered as a staff member
+    #noinspection CucumberUndefinedStep
     Then their specialization "<specialization>" should be specified along other information
     Examples:
       | specialization                     |
@@ -55,3 +56,10 @@ Feature: Registration
       | Radiation oncology                 |
       | Surgery                            |
       | Urology                            |
+
+  Scenario: Displays message when registering a registered person
+    Given a clerk
+    And a registered staff member
+    When they are already in the system
+    And trying to register the staff member
+    Then the system displays that this member profile is already created
