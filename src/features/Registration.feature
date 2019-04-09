@@ -16,9 +16,15 @@ Feature: Registration
     When the patient walks into the department
     Then the patient should get a unique ID
 
-  Scenario:
+  Scenario: A new staff member should be registered normally and get a work email
     Given a newly hired employee
     When walking in to the ICT officer's office
     Then the ICT officer should register the staff information
     And register a uniqueID
-    And work email should be generated.
+    And work email should be generated
+
+  Scenario: A new staff member's initials overlap
+    Given a newly hired employee
+    When he is assigned a work email
+    And his initials overlap with someone else's
+    Then take next letter in his name

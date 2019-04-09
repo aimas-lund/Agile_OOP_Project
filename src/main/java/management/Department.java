@@ -1,17 +1,18 @@
 package management;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Department {
 
-    private ArrayList<Person> staff = new ArrayList<Person>(1);
-    private ArrayList<Person> patients = new ArrayList<Person>(1);
+    private List<Person> staff = new ArrayList<Person>(1);
+    private List<Person> patients = new ArrayList<Person>(1);
 
-    public ArrayList<Person> getPatients() {
+    public List<Person> getPatients() {
         return patients;
     }
 
-    public ArrayList<Person> getStaff() {
+    public List<Person> getStaff() {
         return staff;
     }
 
