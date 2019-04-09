@@ -25,5 +25,5 @@ public class Bed {
 	public Patient getPatient() {
 		return p;
 	}
-
+    public int getID() { return id;}
 }

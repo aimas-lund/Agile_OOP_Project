@@ -26,6 +26,11 @@ Feature: departments
     When receiving a patient
     Then I want to assign them to a specific bed, such that all patients are accounted for
 
+  Scenario: Assign patient to available bed
+    Given a department
+    When receiving a patient
+    Then I should check for available beds and assign them to one if there is room
+
   Scenario: Discharge patient
     Given a department
     When a patient's treatment is over
