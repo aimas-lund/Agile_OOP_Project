@@ -5,3 +5,4 @@ Feature: Registration
     Given a new patient
     When the patient walks into the department
     Then clerk should register patient information
+
