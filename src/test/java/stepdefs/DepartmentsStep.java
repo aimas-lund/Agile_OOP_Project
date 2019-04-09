@@ -74,5 +74,6 @@ public class DepartmentsStep {
 
     @Then("the hospital should be able to assign them to the right department.")
     public void theHospitalShouldBeAbleToAssignThemToTheRightDepartment() {
+
     }
 }
