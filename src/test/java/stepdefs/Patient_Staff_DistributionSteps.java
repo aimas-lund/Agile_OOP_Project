@@ -16,4 +16,20 @@ public class Patient_Staff_DistributionSteps {
     @Then("the hospital should move the patient to the appropriate new department")
     public void theHospitalShouldMoveThePatientToTheAppropriateNewDepartment() {
     }
+
+    @Given("a staff member")
+    public void aStaffMember() {
+        
+    }
+
+    @When("their area of work changes")
+    public void theirAreaOfWorkChanges() {
+
+
+    }
+
+    @Then("the hospital should be able to move them to another department.")
+    public void theHospitalShouldBeAbleToMoveThemToAnotherDepartment() {
+    }
+
 }
