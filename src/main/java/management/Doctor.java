@@ -1,6 +1,6 @@
 package management;
 
-public class Doctor extends Person {
+public class Doctor extends Staff {
     private Speciality speciality;
 
     public Doctor() {
