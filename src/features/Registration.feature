@@ -6,3 +6,4 @@ Feature: Registration
     When the patient walks into the department
     Then clerk should register patient information
 
+
