@@ -13,9 +13,13 @@ public class Bed {
 		this.occupied = true;
 		this.p = p;
 	}
-	public void remove() {
+	public boolean remove() {
+		if (this.p == null) {
+			return false;
+		}
 		this.occupied = false;
 		this.p = null;
+		return true;
 	}
 	// NEW 
 	public boolean occupied() {

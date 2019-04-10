@@ -23,6 +23,7 @@ public class Department extends Hospital {
 			beds[id] = new Bed(id);
 		}
 	}
+
 	public void add(Staff s) {
 		staff.add(s);
 	}
@@ -35,67 +36,53 @@ public class Department extends Hospital {
 	public void remove(Patient p) {
 		patients.remove(p);
 	}
-	public boolean available_beds() {
-		for (Bed bed : beds) {
-			if (bed.getPatient() == null) return true;
-		}
-		return false;
-	}
 	public void assign(Patient p) throws ExceededCapacityException {
-		if (available_beds()) {
-			for (Bed bed : beds) {
-				if (bed.getPatient() == null) {
-					bed.add(p);
-					break;
-				}
+		if (availableBeds()) {
+			if (!getPatients().contains(p)) {
+				add(p);
 			}
-		} else {
-			throw new ExceededCapacityException("No available beds");
+			Bed bed = getAvailableBed();
+			bed.add(p);
 		}
+		throw new ExceededCapacityException("No available beds");
 	}
 	public void assign(Patient p, int id) throws UnavailableBedException, BedNotFoundException {
-		if (id<0 || id>capacity) {
+		if (id > capacity) {
 			throw new BedNotFoundException("Invalid ID");
+		} if (beds[id].occupied()) {
+			throw new UnavailableBedException("Bed is occupied");
 		}
-		if (beds[id].occupied()) {
-			throw new UnavailableBedException("Error: Assigning to non-empty bed");
+		if (!getPatients().contains(p)) {
+			add(p);
 		}
 		Bed bed = beds[id];
 		bed.add(p);
 	}
-	// What is this used for? (Is it different than assign?
 	public void move(Patient p) throws ExceededCapacityException {
-		// make a bedOld.remove()
-		for (Bed bed : beds) {
-			if (bed.getPatient() == null) {
-				bed.add(p);
-				return;
-			}
+		if (patientInBed(p)) {
+			Bed b1 = getPatientBed(p);
+			assign(p);
+			b1.remove();
+		} else {
+			assign(p);
 		}
-		throw new ExceededCapacityException("No available beds");
 	}
-	public void move(Patient p, int id) throws SameBedException, UnavailableBedException, BedNotFoundException {
-		int oldID = -1;
-		for (Bed bed : beds) {
-			if (bed.getPatient() == p) {
-				oldID = bed.getID();
-				bed.remove();
-			}
+	public void move(Patient p, int id) throws UnavailableBedException, BedNotFoundException {
+		if (patientInBed(p)) {
+			Bed bed = getPatientBed(p);
+			assign(p,id);
+			bed.remove();
+		} else {
+			assign(p,id);
 		}
-		if (oldID == id) {
-			throw new SameBedException("Error: Trying to move patient to original bed");
-		}
-		assign(p,id);
 	}
-	public void removeFromBed(Patient p) throws PatientNotFoundException {
-		for (Bed bed : beds) {
-			if (bed.getPatient() == p) {
-				bed.remove();
-				return;
-			}
+	public void removeFromBed(Patient p) {
+		if (patientInBed(p)) {
+			Bed bed = getPatientBed(p);
+			bed.remove();
 		}
-		throw new PatientNotFoundException("Patient isn't assigned to a bed");
 	}
+
 	public String getName() {
 		return name;
 	}
@@ -118,8 +105,34 @@ public class Department extends Hospital {
 	public ArrayList getStaff() {
 		return staff;
 	}
+	public Bed getPatientBed(Patient p) {
+		for (Bed bed : beds) {
+			if (bed.getPatient() == p) {
+				return bed;
+			}
+		}
+		return null;
+	}
+	public Bed getAvailableBed() throws ExceededCapacityException {
+		for (Bed bed : beds) {
+			if (!bed.occupied()) return bed;
+		}
+		throw new ExceededCapacityException("No available beds");
+	}
 
-	// Patient added to 2 beds
-
+	public boolean availableBeds() {
+		for (Bed bed : beds) {
+			if (bed.getPatient() == null) return true;
+		}
+		return false;
+	}
+	public boolean patientInBed(Patient p) {
+		for (Bed bed : beds) {
+			if (bed.getPatient() == p) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 }

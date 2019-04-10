@@ -44,7 +44,7 @@ public class Departments {
 
     @Then("the department needs to know if there's an available bed")
     public void theDepartmentNeedsToKnowIfThereSAnAvailableBed() {
-        assertTrue(d.available_beds());
+        assertTrue(d.availableBeds());
     }
 
     // [9] Remove staff
@@ -91,7 +91,7 @@ public class Departments {
     // [10] Assign any bed
     @Then("I should check for available beds and assign them to one if there is room")
     public void iShouldCheckForAvailableBedsAndAssignThemToOneIfThereIsRoom() throws ExceededCapacityException {
-        assertTrue(d.available_beds());
+        assertTrue(d.availableBeds());
         d.assign(p);
         for (Bed bed : d.getBeds()) {
             if (bed.getPatient() == p) assertSame(bed.getPatient(), p);
