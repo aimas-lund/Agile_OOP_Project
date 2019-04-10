@@ -4,7 +4,7 @@ import org.junit.Test;
 import static junit.framework.TestCase.*;
 import hospital.objects.*;
 
-public class departmentTests {
+public class DepartmentTests {
 
     // Test Getters
 
