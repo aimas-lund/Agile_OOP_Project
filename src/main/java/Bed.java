@@ -15,6 +15,7 @@ public class Bed {
     }
 
     public void fill(Patient p) {
+        occupied = true;
         patient = p;
     }
 
