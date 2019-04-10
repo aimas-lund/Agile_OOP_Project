@@ -1,147 +1,189 @@
 package stepdefs;
 
+import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import exceptions.*;
-import management.Bed;
+import exceptions.BedNotFoundException;
+import exceptions.ExceededCapacityException;
+import exceptions.UnavailableBedException;
 import management.Department;
 import management.Patient;
 import management.Staff;
 
-import java.util.ArrayList;
-
 import static org.junit.Assert.*;
 
 public class Departments {
-    Department d = new Department("ER",80);
-    Patient p;
-    Staff s;
-    Bed b = new Bed(1);
-    Bed b2 = new Bed(2);
+    private Department validDept = new Department("ER",80);
+    private Department emptyDept = new Department("empty",0);
+    private Patient patient1 = new Patient();
+    private Patient patient2 = new Patient();
+    private Staff s = new Staff();
+
+    // A department is made (capacity)
     @Given("a department")
     public void aDepartment() {
-        assertTrue(d instanceof Department);
+        assertNotNull(validDept);
     }
-    //[7] Capacity
-
     @When("the department is made")
     public void theDepartmentIsMade() {
     }
-
     @Then("the department needs to know how many patients they can host")
     public void theDepartmentNeedsToKnowHowManyPatientsTheyCanHost() {
-        assertTrue(d.getCapacity() > 0);
+        assertEquals(validDept.getCapacity(),80);
     }
 
-
-    // [8] Available beds
-
-    @When("a patient needs care")
-    public void aPatientNeedsCare() {
-
-    }
-
-    @Then("the department needs to know if there's an available bed")
-    public void theDepartmentNeedsToKnowIfThereSAnAvailableBed() {
-        assertTrue(d.availableBeds());
-    }
-
-    // [9] Remove staff
-    @When("a staff no longer works here")
-    public void aStaffNoLongerWorksHere() {
-
-    }
-
-    @Then("I should be able to remove them from my system")
-    public void iShouldBeAbleToRemoveThemFromMySystem() {
-        s = new Staff();
-        d = new Department("test",10);
-        ArrayList staff = d.getStaff();
-        d.add(s);
-        assertTrue(staff.contains(s));
-        d.remove(s);
-        assertFalse(staff.contains(s));
-    }
-
-    // [9] Add staff
+    // Add staff
     @When("I employ a staff")
     public void iEmployAStaff() {
-        s = new Staff();
+        validDept.add(s);
     }
-
     @Then("I should add them to my system, such that I can easily look them up")
     public void iShouldAddThemToMySystemSuchThatICanEasilyLookThemUp() {
-        d.add(s);
-        ArrayList staff = d.getStaff();
-        assertTrue(staff.contains(s));
+        assertTrue(validDept.getStaff().contains(s));
     }
 
-    // [10] Assign to bed
+    // Add patient
     @When("receiving a patient")
     public void receivingAPatient() {
-        p = new Patient();
+    }
+    @Then("I should be able to add them to my system, such that I can easily look them up")
+    public void iShouldBeAbleToAddThemToMySystemSuchThatICanEasilyLookThemUp() {
+        validDept.add(patient1);
+        assertTrue(validDept.getPatients().contains(patient1));
     }
 
-    @Then("I want to assign them to a specific bed, such that all patients are accounted for")
-    public void iWantToAssignThemToASpecificBedSuchThatAllPatientsAreAccountedFor() throws BedNotFoundException, UnavailableBedException {
-        d.assign(p,1);
-        assertTrue(d.getBeds()[1].occupied());
+    // Remove staff
+    @When("a staff no longer works here")
+    public void aStaffNoLongerWorksHere() {
     }
-    // [10] Assign any bed
-    @Then("I should check for available beds and assign them to one if there is room")
-    public void iShouldCheckForAvailableBedsAndAssignThemToOneIfThereIsRoom() throws ExceededCapacityException {
-        assertTrue(d.availableBeds());
-        d.assign(p);
-        for (Bed bed : d.getBeds()) {
-            if (bed.getPatient() == p) assertSame(bed.getPatient(), p);
-        }
+    @Then("I should be able to remove them from my system")
+    public void iShouldBeAbleToRemoveThemFromMySystem() {
+        validDept.remove(s);
+        assertFalse(validDept.getStaff().contains(s));
     }
 
-    // [11] Discharge patients
+    // Remove patient
     @When("a patient's treatment is over")
     public void aPatientSTreatmentIsOver() {
-        p = new Patient();
+    }
+    @Then("I should be able to discharge them")
+    public void iShouldBeAbleToDischargeThem() {
+        validDept.remove(patient1);
+        assertFalse(validDept.getPatients().contains(patient1));
     }
 
-    @Then("I should be able to discharge them, thus removing my responsibility")
-    public void iShouldBeAbleToDischargeThemThusRemovingMyResponsibility() {
-        d.add(p);
-        ArrayList patients = d.getPatients();
-        assertTrue(patients.contains(p));
-        d.remove(p);
-        assertFalse(patients.contains(p));
+    // Assign patient to available bed
+    @Then("I should assign them to an available bed")
+    public void iShouldAssignThemToAnAvailableBed() throws ExceededCapacityException {
+        validDept.assign(patient1);
+        assertTrue(validDept.patientInBed(patient1));
     }
 
-    // [11] Move patients
-    @When("a patient needs to be moved to another department")
-    public void aPatientNeedsToBeMovedToAnotherDepartment() {
-        p = new Patient();
+    // Assign patient to specific bed
+    @Then("I want to assign them to a specific bed")
+    public void iWantToAssignThemToASpecificBed() throws BedNotFoundException, UnavailableBedException {
+        validDept.assign(patient1,69);
+        assertEquals(validDept.getBeds()[69].getPatient(),patient1);
     }
 
-    @Then("I should be able to remove the patient from my system")
-    public void iShouldBeAbleToRemoveThePatientFromMySystem() {
-        d.add(p);
-        ArrayList patients = d.getPatients();
-        assertTrue(patients.contains(p));
-        d.remove(p);
-        assertFalse(patients.contains(p));
-    }
-
-    // [12] Move patient between beds
+    // Move patient between beds
     @When("a patient needs to be relocated")
-    public void aPatientNeedsToBeRelocated() throws BedNotFoundException, UnavailableBedException {
-        p = new Patient();
-        d.assign(p,1);
-        assertSame(d.getBeds()[1].getPatient(), p);
+    public void aPatientNeedsToBeRelocated() {
+    }
+    @Then("I should be able to move them to another available bed")
+    public void iShouldBeAbleToMoveThemToAnotherAvailableBed() throws ExceededCapacityException {
+        validDept.move(patient2);
+        assertEquals(validDept.getPatientBed(patient2).getPatient(),patient2);
+    }
+
+    // Move patient to specific bed
+    @Then("I should be able to move them to a specific bed")
+    public void iShouldBeAbleToMoveThemToASpecificBed() throws BedNotFoundException, UnavailableBedException {
+        validDept.move(patient2,70);
+        assertEquals((validDept.getBeds())[70].getPatient(),patient2);
+    }
+
+    // Remove patient from bed
+    @When("a patient doesnt need a bed anymore")
+    public void aPatientDoesntNeedABedAnymore() {
+    }
+    @Then("I should be able to remove them from the bed")
+    public void iShouldBeAbleToRemoveThemFromTheBed() throws ExceededCapacityException {
+        validDept.assign(patient1);
+        validDept.removeFromBed(patient1);
+        assertFalse(validDept.patientInBed(patient1));
+    }
+
+    // Get name and capacity of department
+    @When("looking at the department")
+    public void lookingAtTheDepartment() {
+    }
+    @Then("you should be able to retrieve name and capacity")
+    public void youShouldBeAbleToRetrieveNameAndCapacity() {
+        assertEquals(validDept.getName(),"ER");
+        assertEquals(validDept.getCapacity(),80);
+        assertNotEquals(emptyDept.getName(),"wrong");
+    }
+
+    // Get number of available beds
+    @When("I want an overview of the department")
+    public void iWantAnOverviewOfTheDepartment() {
+    }
+    @Then("I should be able to retrieve how many available beds there's left")
+    public void iShouldBeAbleToRetrieveHowManyAvailableBedsThereSLeft() {
+        assertEquals(emptyDept.getAvailableBeds(),0);
+        validDept.removeFromBed(patient1);
+        validDept.removeFromBed(patient2);
+        assertEquals(validDept.getAvailableBeds(),80);
+    }
+
+    // Get staff list
+    @When("you need to know the departments staff")
+    public void youNeedToKnowTheDepartmentsStaff() {
+    }
+    @Then("you should be able to get the staff list")
+    public void youShouldBeAbleToGetTheStaffList() {
+        assertNotNull(validDept.getStaff());
+    }
+
+    // Get patient list
+    @When("you need to know patients under that department")
+    public void youNeedToKnowPatientsUnderThatDepartment() {
+    }
+    @Then("you should be able to get the patient list")
+    public void youShouldBeAbleToGetThePatientList() {
+        assertNotNull(validDept.getPatients());
+    }
+
+    // Check if available beds
+    @Then("I should know if there's an available bed")
+    public void iShouldKnowIfThereSAnAvailableBed() {
+        assertTrue(validDept.availableBeds());
+        assertFalse(emptyDept.availableBeds());
 
     }
 
-    @Then("I should be able to move them between beds")
-    public void iShouldBeAbleToMoveThemBetweenBeds() throws BedNotFoundException, SameBedException, UnavailableBedException {
-        d.move(p,2);
-        assertEquals(d.getBeds()[2].getPatient(),p);
-        assertFalse(b.occupied());
+    // Get an available bed
+    @And("there's available beds")
+    public void thereSAvailableBeds() {
+    }
+    @Then("I should get an available bed")
+    public void iShouldGetAnAvailableBed() throws ExceededCapacityException {
+        assertNotNull(validDept.getAvailableBed());
+    }
+
+    // Patient in bed
+    @When("looking up a patient")
+    public void lookingUpAPatient() {
+        
+    }
+    @Then("I should know if the patient is assigned to a bed")
+    public void iShouldKnowIfThePatientIsAssignedToABed() throws ExceededCapacityException {
+        validDept.assign(patient1);
+        validDept.removeFromBed(patient2);
+        assertTrue(validDept.patientInBed(patient1));
+        assertFalse(validDept.patientInBed(patient2));
     }
 
 }

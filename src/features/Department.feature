@@ -6,47 +6,82 @@ Feature: departments
     When the department is made
     Then the department needs to know how many patients they can host
 
-  Scenario: Available beds
-    Given a department
-    When a patient needs care
-    Then the department needs to know if there's an available bed
-
-  Scenario: Remove staff
-    Given a department
-    When a staff no longer works here
-    Then I should be able to remove them from my system
-
   Scenario: Add staff
     Given a department
     When I employ a staff
     Then I should add them to my system, such that I can easily look them up
 
-  Scenario: Assign patient to bed
+  Scenario: Add patient
     Given a department
     When receiving a patient
-    Then I want to assign them to a specific bed, such that all patients are accounted for
+    Then I should be able to add them to my system, such that I can easily look them up
+
+  Scenario: Remove staff
+    Given a department
+    Then I should be able to remove them from my system
+
+  Scenario: Remove patient
+    Given a department
+    When a patient's treatment is over
+    Then I should be able to discharge them
 
   Scenario: Assign patient to available bed
     Given a department
     When receiving a patient
-    Then I should check for available beds and assign them to one if there is room
+    Then I should assign them to an available bed
 
-  Scenario: Discharge patient
+  Scenario: Assign patient to specific bed
     Given a department
-    When a patient's treatment is over
-    Then I should be able to discharge them, thus removing my responsibility
-
-  Scenario: Moving patients
-    Given a department
-    When a patient needs to be moved to another department
-    Then I should be able to remove the patient from my system
+    When receiving a patient
+    Then I want to assign them to a specific bed
 
   Scenario: Move patient between beds
     Given a department
     When a patient needs to be relocated
-    Then I should be able to move them between beds
+    Then I should be able to move them to another available bed
 
-  Scenario: Patient not found
-    Given x
-    When y
-    Then z
+  Scenario: Move patient to specific bed
+    Given a department
+    When a patient needs to be relocated
+    Then I should be able to move them to a specific bed
+
+  Scenario: Remove patient from bed
+    Given a department
+    When a patient doesnt need a bed anymore
+    Then I should be able to remove them from the bed
+
+  Scenario: Get name and capacity of department
+    Given a department
+    When looking at the department
+    Then you should be able to retrieve name and capacity
+
+  Scenario: Get number of available beds
+    Given a department
+    When I want an overview of the department
+    Then I should be able to retrieve how many available beds there's left
+
+  Scenario: Get staff list
+    Given a department
+    When you need to know the departments staff
+    Then you should be able to get the staff list
+
+  Scenario: Get patient list
+    Given a department
+    When you need to know patients under that department
+    Then you should be able to get the patient list
+
+  Scenario: Check if available bed
+    Given a department
+    When receiving a patient
+    Then I should know if there's an available bed
+
+  Scenario: GEt an available beds
+    Given a department
+    When receiving a patient
+    And there's available beds
+    Then I should get an available bed
+
+  Scenario: Patient in bed
+    Given a department
+    When looking up a patient
+    Then I should know if the patient is assigned to a bed

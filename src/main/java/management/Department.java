@@ -11,10 +11,8 @@ public class Department extends Hospital {
 	private int capacity;
 	private ArrayList<Patient> patients = new ArrayList<Patient>();
 	private ArrayList<Staff> staff = new ArrayList<Staff>();
-	private Bed beds[];
+	private Bed[] beds;
 
-	// PatientNotFoundException && StaffNotFoundException
-	// Throw exception if not part of Department, otherwise just pass
 	public Department(String name,int capacity) {
 		this.name = name;
 		this.capacity = capacity;
@@ -43,8 +41,9 @@ public class Department extends Hospital {
 			}
 			Bed bed = getAvailableBed();
 			bed.add(p);
+		} else {
+			throw new ExceededCapacityException("beds " + getAvailableBeds());
 		}
-		throw new ExceededCapacityException("No available beds");
 	}
 	public void assign(Patient p, int id) throws UnavailableBedException, BedNotFoundException {
 		if (id > capacity) {
