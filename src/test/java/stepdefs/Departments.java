@@ -156,6 +156,18 @@ public class Departments {
         assertNotNull(validDept.getPatients());
     }
 
+    // Get patient's bed
+    @And("the patient is in a bed")
+    public void thePatientIsInABed() throws BedNotFoundException, UnavailableBedException {
+        validDept.assign(patient2,0);
+        assertTrue(validDept.patientInBed(patient2));
+        assertEquals(validDept.getPatientBed(patient2), validDept.getBeds()[0]);
+    }
+
+    @Then("I should be able to find which bed the patient is in")
+    public void iShouldBeAbleToFindWhichBedThePatientIsIn() {
+    }
+
     // Check if available beds
     @Then("I should know if there's an available bed")
     public void iShouldKnowIfThereSAnAvailableBed() {
@@ -185,6 +197,7 @@ public class Departments {
         assertTrue(validDept.patientInBed(patient1));
         assertFalse(validDept.patientInBed(patient2));
     }
+
 
 }
 

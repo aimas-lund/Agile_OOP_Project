@@ -70,12 +70,18 @@ Feature: departments
     When you need to know patients under that department
     Then you should be able to get the patient list
 
+  Scenario: Get patient's bed
+    Given a department
+    When looking up a patient
+    And the patient is in a bed
+    Then I should be able to find which bed the patient is in
+
   Scenario: Check if available bed
     Given a department
     When receiving a patient
     Then I should know if there's an available bed
 
-  Scenario: GEt an available beds
+  Scenario: Get an available beds
     Given a department
     When receiving a patient
     And there's available beds
