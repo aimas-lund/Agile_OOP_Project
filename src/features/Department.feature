@@ -45,3 +45,8 @@ Feature: departments
     Given a department
     When a patient needs to be relocated
     Then I should be able to move them between beds
+
+  Scenario: Patient not found
+    Given x
+    When y
+    Then z

@@ -143,5 +143,6 @@ public class Departments {
         assertEquals(d.getBeds()[2].getPatient(),p);
         assertFalse(b.occupied());
     }
+
 }
 

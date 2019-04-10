@@ -16,14 +16,13 @@ public class Hospital {
 	public void add(Department d) {
 		depts.add(d);
 	}
+	public void remove(Department d) {
+		depts.remove(d);
+	}
 	public void assign(Staff s, Department d) {
 		d.add(s);
 	}
 	public void assign(Patient p, Department d) {
 		d.add(p);
-	}
-	// NEW
-	public void remove(Department d) {
-		depts.remove(d);
 	}
 }

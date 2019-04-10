@@ -65,6 +65,7 @@ public class Department extends Hospital {
 	}
 	// What is this used for? (Is it different than assign?
 	public void move(Patient p) throws ExceededCapacityException {
+		// make a bedOld.remove()
 		for (Bed bed : beds) {
 			if (bed.getPatient() == null) {
 				bed.add(p);

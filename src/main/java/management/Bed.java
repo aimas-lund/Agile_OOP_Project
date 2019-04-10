@@ -17,7 +17,6 @@ public class Bed {
 		this.occupied = false;
 		this.p = null;
 	}
-	
 	// NEW 
 	public boolean occupied() {
 		return occupied;
@@ -25,5 +24,7 @@ public class Bed {
 	public Patient getPatient() {
 		return p;
 	}
-    public int getID() { return id;}
+    public int getID() {
+		return id;
+	}
 }
