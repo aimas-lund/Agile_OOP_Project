@@ -32,3 +32,4 @@ Feature: Patient_Staff_Distribution
     Given a new staff member
     When a new staff gets a job at the hospital
     Then the hospital should be able to assign them to the right department.
+

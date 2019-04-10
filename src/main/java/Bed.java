@@ -1,7 +1,7 @@
 public class Bed {
 
     private Boolean occupied;
-    public int id;
+    private int id;
     private Patient patient;
 
     public Bed(int i) {
@@ -25,5 +25,9 @@ public class Bed {
 
     public Patient getPatient() {
         return patient;
+    }
+
+    public int getId() {
+        return id;
     }
 }
