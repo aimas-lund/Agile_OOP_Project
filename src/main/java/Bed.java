@@ -21,4 +21,8 @@ public class Bed {
     public Boolean isoccupied() {
         return occupied;
     }
+
+    public Patient getPatient() {
+        return patient;
+    }
 }
