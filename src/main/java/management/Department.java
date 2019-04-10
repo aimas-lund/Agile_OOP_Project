@@ -1,3 +1,5 @@
+package management;
+
 public class Department {
 
     public void add(Patient p) {

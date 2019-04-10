@@ -1,3 +1,4 @@
+package management;
 
 import org.junit.jupiter.api.Test;
 
@@ -13,13 +14,21 @@ public class Hospital_Bed_Test {
     @Test
     public void newBed() {
         Bed b = new Bed (10);
-        assertSame (b.id, 10);
+        assertSame (b.getId (), 10);
     }
 
     @Test
     public void fillBed() {
         Bed b = new Bed (10);
+        assertTrue (b.fill (new Patient ()));
+    }
+
+    @Test
+    public void fillOccupiedBed() {
+        Bed b = new Bed (10);
         b.fill (new Patient ());
+        assertFalse (b.fill (new Patient ()));
+
     }
 
     @Test
@@ -75,6 +84,14 @@ public class Hospital_Bed_Test {
         Staff s = new Staff ();
         h.add (d);
         h.assign (s, d);
+    }
+
+    @Test
+    public void assignStaffDeptNonexistant() {
+        Hospital h = new Hospital ();
+        Staff s = new Staff ();
+        h.assign (s, new Department ());
+        assertTrue (h.depts.isEmpty ());
     }
 
     @Test

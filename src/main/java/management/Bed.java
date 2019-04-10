@@ -1,3 +1,5 @@
+package management;
+
 public class Bed {
 
     private Boolean occupied;
@@ -14,9 +16,14 @@ public class Bed {
         patient = null;
     }
 
-    public void fill(Patient p) {
-        occupied = true;
-        patient = p;
+    public Boolean fill(Patient p) {
+        if (occupied) {
+            return false;
+        } else {
+            occupied = true;
+            patient = p;
+            return true;
+        }
     }
 
     public Boolean isoccupied() {

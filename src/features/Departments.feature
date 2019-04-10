@@ -14,12 +14,12 @@ Feature: Patient_Staff_Distribution
     Then the bed should be assigned a patient.
 
   Scenario: An obsolete department
-    Given a department
+    Given an existing department
     When there is no use for this department anymore
     Then the hospital should be able to remove the department
 
   Scenario: A new department
-    Given a department
+    Given a nonexisting department
     When there is a need to expand to include a new department
     Then the hospital should be able to create a new department
 
