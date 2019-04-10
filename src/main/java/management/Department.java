@@ -1,6 +1,9 @@
 package management;
 
+import java.util.ArrayList;
+
 public class Department {
+
 
     public void add(Patient p) {
         // Team 1
@@ -17,4 +20,5 @@ public class Department {
     public void remove(Staff s) {
         // Team 1
     }
+
 }

@@ -22,6 +22,7 @@ public class DepartmentsStep {
     @Then("the hospital should be able to assign the patient to a specific department.")
     public void theHospitalShouldBeAbleToAssignThePatientToASpecificDepartment() {
         h.assign (p, existingDept);
+        existingDept.getPatients ().contains (p);
     }
 
     @When("there is a need to expand to include a new department")
@@ -83,7 +84,7 @@ public class DepartmentsStep {
 
     @Given("a new staff member")
     public void aNewStaffMember() {
-        // Team 1
+        Staff s = new Staff ();
     }
 
     @When("a new staff gets a job at the hospital")
