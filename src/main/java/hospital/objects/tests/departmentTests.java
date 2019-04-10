@@ -1,229 +1,165 @@
 package hospital.objects.tests;
 
 import org.junit.Test;
+
+import static junit.framework.Assert.assertNotNull;
 import static junit.framework.TestCase.*;
+import static org.junit.Assert.assertFalse;
+
 import hospital.objects.*;
+
+import java.util.ArrayList;
 
 public class DepartmentTests {
 
-    // Test Getters
+    // Initiations
+    private Department departmentWithCapacity10 = new Department(10, "ER");
+    private Department departmentWithCapacity1 = new Department(1, "ER");
+    private Department departmentWithNoCapacity = new Department(0, "ER");
+    private Patient patient1 = new Patient();
+    private Patient patient2= new Patient();
+    private Staff staff = new Staff();
 
+    // Test Getters
     @Test
     public void getNameTest() {
-        Department d = new Department(10, "ER");
-        assertSame("ER", d.getName());
+        assertSame("ER", departmentWithCapacity10.getName());
     }
 
     @Test
     public void getCapacityTest() {
-        Department d = new Department(10, "ER");
-        assertSame(10, d.getCapacity());
+        assertSame(10, departmentWithCapacity10.getCapacity());
     }
 
     @Test
-    public void getBedsTest1() {
-        Department d = new Department(10, "ER");
-        assertNotNull(d.getBeds());
+    public void getBedsTest() {
+        assertTrue(departmentWithCapacity10.getBeds() instanceof Bed[]);
     }
 
     @Test
-    public void getBedsTest2() {
-        Department d = new Department(10, "ER");
-        assertTrue(d.getBeds()[0] instanceof Bed);
-    }
-
-    @Test
-    public void getAvailableBedsTest1() {
-        Department d = new Department(10, "ER");
-        assertTrue(d.getAvailableBeds() instanceof int);
-    }
-
-    @Test
-    public void getAvailableBedsTest2() {
-        Department d = new Department(10, "ER");
-        assertSame(d.getAvailableBeds(), 10);
+    public void getAvailableBedsTest() {
+        assertSame(departmentWithCapacity10.getAvailableBeds(), 10);
     }
 
     @Test
     public void getPatientsTest() {
-        Department d = new Department(10, "ER");
-        assertNotNull(d.getPatients());
+        assertNotNull(departmentWithCapacity10.getPatients());
     }
 
     @Test
     public void getStaffTest() {
-        Department d = new Department(10, "ER");
-        assertNotNull(d.getStaff());
+        assertNotNull(departmentWithCapacity10.getStaff());
     }
 
 
     // Test functional methods
-
     @Test
     public void availableBedsTest1() {
-        Department d = new Department(10, "ER");
-        assertTrue(d.available_beds());
+        assertTrue(departmentWithCapacity10.available_beds());
     }
 
     @Test
     public void availableBedsTest2() {
-        Department d = new Department(0, "ER");
-        assertTrue(!d.available_beds());
+        assertFalse(departmentWithNoCapacity.available_beds());
     }
 
     @Test
     public void addPatientTest() {
-        Department d = new Department(10, "ER");
-        Patient p = new Patient();
-        d.add(p);
-        assertTrue(d.getPatients().contains(p));
+        departmentWithCapacity10.add(patient1);
+        assertTrue(departmentWithCapacity10.getPatients().contains(patient1));
     }
 
     @Test
     public void removePatientTest() {
-        Department d = new Department(10, "ER");
-        Patient p = new Patient();
-        d.add(p);
-        d.remove(p);
-        assertTrue(!d.getPatients().contains(p));
+        departmentWithCapacity10.add(patient1);
+        departmentWithCapacity10.remove(patient1);
+        assertFalse(departmentWithCapacity10.getPatients().contains(patient1));
     }
 
     @Test
     public void addStaffTest() {
-        Department d = new Department(10, "ER");
-        Staff s = new Staff();
-        d.add(s);
-        assertTrue(d.getPatients().contains(s));
+        departmentWithCapacity10.add(staff);
+        assertTrue(departmentWithCapacity10.getPatients().contains(staff));
     }
 
     @Test
     public void removeStaffTest() {
-        Department d = new Department(10, "ER");
-        Staff s = new Staff();
-        d.add(s);
-        d.remove(s);
-        assertTrue(!d.getPatients().contains(s));
+        departmentWithCapacity10.add(staff);
+        departmentWithCapacity10.remove(staff);
+        assertFalse(departmentWithCapacity10.getPatients().contains(staff));
     }
 
     @Test
     public void assignPatientTest1() {
-        Department d = new Department(10, "ER");
-        Patient p = new Patient();
-        d.add(p);
-        d.assign(p);
-        assertTrue(d.available_beds());
+        departmentWithCapacity10.assign(patient1);
+        assertTrue(departmentWithCapacity10.available_beds());
     }
 
     @Test
     public void assignPatientTest2() {
-        Department d = new Department(1, "ER");
-        Patient p = new Patient();
-        d.add(p);
-        d.assign(p);
-        assertTrue(!d.available_beds());
+        departmentWithCapacity1.assign(patient1);
+        assertFalse(departmentWithCapacity1.available_beds());
     }
 
     @Test
     public void assignPatientTest3() {
-        Department d = new Department(10, "ER");
-        Patient p = new Patient();
-        d.add(p);
-        d.assign(p);
-        assertTrue(d.getBeds.contains(p));
+        departmentWithCapacity10.assign(patient1);
+        assertTrue(departmentWithCapacity10.getBeds().contains(patient1));
     }
 
     @Test
     public void assignPatientTest4() { // It is expected that the patient is registered, once put in a bed
-        Department d = new Department(10, "ER");
-        Patient p = new Patient();
-        d.assign(p);
-        assertTrue(d.getPatients().contains(p));
+        departmentWithCapacity10.assign(patient1);
+        assertTrue(departmentWithCapacity10.getPatients().contains(patient1));
     }
 
     @Test
     public void removePatientTest1() {
-        Department d = new Department(1, "ER");
-        Patient p = new Patient();
-        d.add(p);
-        d.assign(p);
-        d.removeFromBed(p);
-        assertTrue(d.available_beds());
+        departmentWithCapacity1.assign(patient1);
+        departmentWithCapacity1.removeFromBed(patient1);
+        assertTrue(departmentWithCapacity1.available_beds());
     }
 
     @Test
     public void removePatientTest2() {
-        Department d = new Department(1, "ER");
-        Patient p = new Patient();
-        d.add(p);
-        d.assign(p);
-        d.remove(p);
-        assertTrue(!d.getBeds.contains(p));
+        departmentWithCapacity1.assign(patient1);
+        departmentWithCapacity1.remove(patient1);
+        assertFalse(departmentWithCapacity1.getBeds().contains(patient1));
     }
 
     @Test
     public void assignPatientToBedTest() {
-        Department d = new Department(1, "ER");
-        Patient p = new Patient(); // need patient constructor
-        d.assign(p, 0);
-        assertTrue(!d.available_beds());
+        departmentWithCapacity1.assign(patient1, 0);
+        assertFalse(departmentWithCapacity1.available_beds());
     }
 
     @Test
     public void movePatientTest1() {
-        Department d = new Department(10, "ER");
-        Patient p = new Patient(); // need patient constructor
-        d.add(p);
-        d.assign(p, 3);
-        d.move(p, 2);
-        assertEqual(d.getBeds()[3].getPatient, p);
+        departmentWithCapacity10.assign(patient1, 3);
+        departmentWithCapacity10.move(patient1, 2);
+        assertEquals(departmentWithCapacity10.getBeds()[2].getPatient(), patient1);
     }
 
     @Test
     public void movePatientTest2() {
-        Department d = new Department(10, "ER");
-        Patient p = new Patient(); // need patient constructor
-        d.add(p);
-        d.assign(p, 3);
-        d.move(p, 2);
-        assertNull(d.getBeds()[4].getPatient);
+        departmentWithCapacity10.assign(patient1, 3);
+        departmentWithCapacity10.move(patient1, 2);
+        assertNull(departmentWithCapacity10.getBeds()[3].getPatient());
     }
 
     @Test (expected = ExceededCapacityException.class)
     public void filledCapacityTest() {
-        Department d = new Department(0, "ER");
-        Patient p = new Patient(); // need patient constructor
-        d.assign(p);
-        assertTrue(!d.available_beds());
+        departmentWithNoCapacity.assign(patient1);
     }
 
     @Test (expected = UnavailableBedException.class)
     public void unavailableBedTest() {
-        Department d = new Department(10, "ER");
-        Patient p1 = new Patient(); // need patient constructor
-        Patient p2 = new Patient();
-        d.assign(p1, 4);
-        d.assign(p2, 4);
+        departmentWithCapacity10.assign(patient1, 4);
+        departmentWithCapacity10.assign(patient2, 4);
     }
 
     @Test (expected = BedNotFoundException.class)
     public void bedNotFoundTest() {
-        Department d = new Department(10, "ER");
-        Patient p1 = new Patient(); // need patient constructor
-        d.assign(p1, 10);
-    }
-
-    @Test (expected = SameBedException.class)
-    public void sameBedTest() {
-        Department d = new Department(10, "ER");
-        Patient p1 = new Patient(); // need patient constructor
-        d.assign(p1, 5);
-        d.move(p1, 5);
-    }
-
-    @Test (expected = PatientNotFoundException.class)
-    public void sameBedTest() {
-        Department d = new Department(10, "ER");
-        Patient p = new Patient(); // need patient constructor
-        d.move(p, 5);
+        departmentWithCapacity10.assign(patient1, 10);
     }
 }
