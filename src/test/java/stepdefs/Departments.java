@@ -163,7 +163,6 @@ public class Departments {
         assertTrue(validDept.patientInBed(patient2));
         assertEquals(validDept.getPatientBed(patient2), validDept.getBeds()[0]);
     }
-
     @Then("I should be able to find which bed the patient is in")
     public void iShouldBeAbleToFindWhichBedThePatientIsIn() {
     }
