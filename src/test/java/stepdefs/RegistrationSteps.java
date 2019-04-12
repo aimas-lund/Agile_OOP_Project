@@ -12,7 +12,7 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
-public class RegistrationStep {
+public class RegistrationSteps {
     private Patient registeredPatient = new Patient();
     private Patient unregisteredPatient = new Patient();
     private Department department = new Department();
@@ -150,10 +150,10 @@ public class RegistrationStep {
     @And("work email should be generated")
     public void workEmailShouldBeGenerated() {
         // Set necessary information
-        registeredStaff.setName("Billy");
-        registeredStaff.setSurname("McLovin");
-        unregisteredStaff.setName("Emil");
-        unregisteredStaff.setSurname("Ballermann");
+        ictOfficer.setPersonName(registeredStaff, "Billy");
+        ictOfficer.setPersonSurname(registeredStaff, "McLovin");
+        ictOfficer.setPersonName(unregisteredStaff, "Emil");
+        ictOfficer.setPersonSurname(unregisteredStaff, "Ballermann");
 
         // Generate emails
         String email1 = InformationGenerator.generateEmail(registeredStaff);
@@ -170,8 +170,8 @@ public class RegistrationStep {
     @When("he is assigned a work email")
     public void he_is_assigned_a_work_email() {
         // Set necessary information
-        registeredStaff.setName("Soren");
-        registeredStaff.setSurname("Bjergsen");
+        ictOfficer.setPersonName(registeredStaff, "Solomun");
+        ictOfficer.setPersonSurname(registeredStaff, "Bjergsen");
 
         // Generate email
         String email1 = InformationGenerator.generateEmail(registeredStaff);
@@ -187,8 +187,8 @@ public class RegistrationStep {
     @When("his initials overlap with someone else's")
     public void his_initials_overlap_with_someone_else_s() {
         // Set necessary information for overlap
-        unregisteredStaff.setName("Soren");
-        unregisteredStaff.setSurname("BjLamar");
+        ictOfficer.setPersonName(unregisteredStaff, "Soren");
+        ictOfficer.setPersonSurname(unregisteredStaff, "BjLamar");
 
         // Get initials directly
         String staff1_initials = unregisteredStaff.getName().substring(0, 2) + unregisteredStaff.getSurname().substring(0, 2);
@@ -200,7 +200,7 @@ public class RegistrationStep {
 
     @Then("take next letter in his name")
     public void takeNextLetterInHisName() {
-        // Get initials through utility class
+        // Get initials through helper class
         String staff1_email = InformationGenerator.generateEmail(registeredStaff);
         String staff2_email = InformationGenerator.generateEmail(unregisteredStaff);
 
@@ -295,7 +295,7 @@ public class RegistrationStep {
         try {
             ictOfficer.isPersonRegistered(registeredStaff, department);
         } catch (PersonAlreadyRegisteredException e) {
-            assertTrue(e.getMessage().contains("member is already registered in the system"));
+            assertTrue(e.getMessage().contains("is already registered in the system"));
         }
 
     }
