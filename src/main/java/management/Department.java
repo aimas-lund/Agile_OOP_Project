@@ -1,7 +1,6 @@
 package management;
 
 import exceptions.*;
-
 import java.util.ArrayList;
 
 public class Department extends Hospital {
@@ -81,7 +80,6 @@ public class Department extends Hospital {
 			bed.remove();
 		}
 	}
-
 	public String getName() {
 		return name;
 	}
