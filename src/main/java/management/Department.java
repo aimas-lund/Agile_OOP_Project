@@ -1,5 +1,6 @@
-package hospital.objects;
+package management;
 
+import exceptions.*;
 import java.util.ArrayList;
 
 public class Department extends Hospital {
@@ -7,20 +8,19 @@ public class Department extends Hospital {
 	// Setters
 	private String name;
 	private int capacity;
-	private ArrayList<Bed> available = new ArrayList<Bed>();
 	private ArrayList<Patient> patients = new ArrayList<Patient>();
 	private ArrayList<Staff> staff = new ArrayList<Staff>();
-	//Bed[capacity] available;//Use this instead of array list?
-	private Bed fixedAvailable[];
-	
-	public Department(int capacity, String name) {
+	private Bed[] beds;
+
+	public Department(String name,int capacity) {
 		this.name = name;
 		this.capacity = capacity;
-		fixedAvailable = new Bed[capacity];
-		for (int i = 0; i < fixedAvailable.length; i++) {
-			fixedAvailable[i] = new Bed(i);
+		this.beds = new Bed[capacity];
+		for (int id = 0; id < beds.length; id++) {
+			beds[id] = new Bed(id);
 		}
 	}
+
 	public void add(Staff s) {
 		staff.add(s);
 	}
@@ -33,28 +33,52 @@ public class Department extends Hospital {
 	public void remove(Patient p) {
 		patients.remove(p);
 	}
-	public boolean available_beds() {
-		return capacity-available.size()>0;
+	public void assign(Patient p) throws ExceededCapacityException {
+		if (availableBeds()) {
+			if (!getPatients().contains(p)) {
+				add(p);
+			}
+			Bed bed = getAvailableBed();
+			bed.add(p);
+		} else {
+			throw new ExceededCapacityException("beds " + getAvailableBeds());
+		}
 	}
-	public void assign(Patient p) {
-		//p.add(p);
-		// bind both patient to bed and bed to patient?
-		//p.add(b)		THIS IS WEIRD, but needed in move
+	public void assign(Patient p, int id) throws UnavailableBedException, BedNotFoundException {
+		if (id > capacity) {
+			throw new BedNotFoundException("Invalid ID");
+		} if (beds[id].occupied()) {
+			throw new UnavailableBedException("Bed is occupied");
+		}
+		if (!getPatients().contains(p)) {
+			add(p);
+		}
+		Bed bed = beds[id];
+		bed.add(p);
 	}
-
-	public void assign(Patient p, int id) {
-		//p.add(p);
-		// bind both patient to bed and bed to patient?
-		//p.add(b)		THIS IS WEIRD, but needed in move
+	public void move(Patient p) throws ExceededCapacityException {
+		if (patientInBed(p)) {
+			Bed b1 = getPatientBed(p);
+			assign(p);
+			b1.remove();
+		} else {
+			assign(p);
+		}
 	}
-
-	public void move(Patient p, int id) {
-		//p.removeBed()
-		//p.add(b)
+	public void move(Patient p, int id) throws UnavailableBedException, BedNotFoundException {
+		if (patientInBed(p)) {
+			Bed bed = getPatientBed(p);
+			assign(p,id);
+			bed.remove();
+		} else {
+			assign(p,id);
+		}
 	}
-	public void remove(Patient p, Bed b) {
-		b.remove();
-		//p.removeBed()
+	public void removeFromBed(Patient p) {
+		if (patientInBed(p)) {
+			Bed bed = getPatientBed(p);
+			bed.remove();
+		}
 	}
 	public String getName() {
 		return name;
@@ -62,7 +86,14 @@ public class Department extends Hospital {
 	public int getCapacity() {
 		return capacity;
 	}
-	public ArrayList getAvailable() {
+	public Bed[] getBeds() {
+		return beds;
+	}
+	public int getAvailableBeds() {
+		int available = 0;
+		for (Bed bed : beds) {
+			if (bed.getPatient() == null) available++;
+		}
 		return available;
 	}
 	public ArrayList getPatients() {
@@ -71,6 +102,34 @@ public class Department extends Hospital {
 	public ArrayList getStaff() {
 		return staff;
 	}
+	public Bed getPatientBed(Patient p) {
+		for (Bed bed : beds) {
+			if (bed.getPatient() == p) {
+				return bed;
+			}
+		}
+		return null;
+	}
+	public Bed getAvailableBed() throws ExceededCapacityException {
+		for (Bed bed : beds) {
+			if (!bed.occupied()) return bed;
+		}
+		throw new ExceededCapacityException("No available beds");
+	}
 
+	public boolean availableBeds() {
+		for (Bed bed : beds) {
+			if (bed.getPatient() == null) return true;
+		}
+		return false;
+	}
+	public boolean patientInBed(Patient p) {
+		for (Bed bed : beds) {
+			if (bed.getPatient() == p) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 }
