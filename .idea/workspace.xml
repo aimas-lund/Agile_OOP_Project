@@ -23,11 +23,25 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/hospital/objects/tests/DepartmentTests.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="290">
-              <caret line="55" column="5" lean-forward="true" selection-start-line="55" selection-start-column="5" selection-end-line="55" selection-end-column="5" />
+            <state relative-caret-position="255">
+              <caret line="82" column="9" lean-forward="true" selection-start-line="82" selection-start-column="9" selection-end-line="82" selection-end-column="9" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="method#patientInBedTest#0;class#DepartmentTests#0" />
+                <element signature="method#addPatientTest#0;class#DepartmentTests#0" />
+                <element signature="method#removePatientTest#0;class#DepartmentTests#0" />
+                <element signature="method#addStaffTest#0;class#DepartmentTests#0" />
+                <element signature="method#removeStaffTest#0;class#DepartmentTests#0" />
+                <element signature="method#assignPatientTest1#0;class#DepartmentTests#0" />
+                <element signature="method#assignPatientTest2#0;class#DepartmentTests#0" />
+                <element signature="method#assignPatientTest3#0;class#DepartmentTests#0" />
+                <element signature="method#assignPatientTest4#0;class#DepartmentTests#0" />
+                <element signature="method#removePatientTest1#0;class#DepartmentTests#0" />
+                <element signature="method#removePatientTest2#0;class#DepartmentTests#0" />
+                <element signature="method#assignPatientToBedTest#0;class#DepartmentTests#0" />
+                <element signature="method#movePatientTest1#0;class#DepartmentTests#0" />
+                <element signature="method#movePatientTest2#0;class#DepartmentTests#0" />
+                <element signature="method#unavailableBedTest#0;class#DepartmentTests#0" />
               </folding>
             </state>
           </provider>
@@ -123,7 +137,7 @@
     <property name="Repository.Attach.Sources" value="false" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1555057559664" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1555066215630" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../Assigment 3 - Object-oriented Checkers/Checkers-Game-Assignement-3" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -151,12 +165,12 @@
       <option name="presentableId" value="Default" />
       <updated>1554813605173</updated>
       <workItem from="1554813611867" duration="20766000" />
-      <workItem from="1555052569486" duration="847000" />
+      <workItem from="1555052569486" duration="1998000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="21613000" />
+    <option name="totallyTimeSpent" value="22764000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
@@ -275,11 +289,25 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/hospital/objects/tests/DepartmentTests.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="290">
-          <caret line="55" column="5" lean-forward="true" selection-start-line="55" selection-start-column="5" selection-end-line="55" selection-end-column="5" />
+        <state relative-caret-position="255">
+          <caret line="82" column="9" lean-forward="true" selection-start-line="82" selection-start-column="9" selection-end-line="82" selection-end-column="9" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="method#patientInBedTest#0;class#DepartmentTests#0" />
+            <element signature="method#addPatientTest#0;class#DepartmentTests#0" />
+            <element signature="method#removePatientTest#0;class#DepartmentTests#0" />
+            <element signature="method#addStaffTest#0;class#DepartmentTests#0" />
+            <element signature="method#removeStaffTest#0;class#DepartmentTests#0" />
+            <element signature="method#assignPatientTest1#0;class#DepartmentTests#0" />
+            <element signature="method#assignPatientTest2#0;class#DepartmentTests#0" />
+            <element signature="method#assignPatientTest3#0;class#DepartmentTests#0" />
+            <element signature="method#assignPatientTest4#0;class#DepartmentTests#0" />
+            <element signature="method#removePatientTest1#0;class#DepartmentTests#0" />
+            <element signature="method#removePatientTest2#0;class#DepartmentTests#0" />
+            <element signature="method#assignPatientToBedTest#0;class#DepartmentTests#0" />
+            <element signature="method#movePatientTest1#0;class#DepartmentTests#0" />
+            <element signature="method#movePatientTest2#0;class#DepartmentTests#0" />
+            <element signature="method#unavailableBedTest#0;class#DepartmentTests#0" />
           </folding>
         </state>
       </provider>
