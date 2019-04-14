@@ -7,6 +7,8 @@
     <groupId>dk.dtu</groupId>
     <artifactId>hospital-project</artifactId>
     <version>0.1</version>
+
+
     <dependencies>
         <dependency>
             <groupId>io.cucumber</groupId>
@@ -54,3 +56,4 @@
         </dependency>
     </dependencies>
 </project>
+
