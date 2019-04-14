@@ -29,9 +29,10 @@ public class InformationGenerator {
             }
 
             // TODO: split into 4 characters and concat, always start at 0 index, only increment end index
-            inits = name.substring(nameEndindex - 2, nameEndindex).toUpperCase() +
-                    surname.substring(surnameEndindex - 2, surnameEndindex).toUpperCase();
+            inits = (name.substring(0, 0) + name.charAt(nameEndindex) + surname.charAt(0) + surname.charAt(surnameEndindex));
+            inits = inits.toUpperCase();
         }
+
         initials.add(inits);
         return inits;
     }
