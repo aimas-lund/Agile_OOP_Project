@@ -3,7 +3,7 @@ package management;
 import exceptions.*;
 import java.util.ArrayList;
 
-public class Department {
+public class Department extends Hospital {
 
 	// Setters
 	private String name;
@@ -39,7 +39,7 @@ public class Department {
 				add(p);
 			}
 			Bed bed = getAvailableBed();
-			bed.add(p);
+			bed.fill(p);
 		} else {
 			throw new ExceededCapacityException("beds " + getAvailableBeds());
 		}
@@ -47,20 +47,20 @@ public class Department {
 	public void assign(Patient p, int id) throws UnavailableBedException, BedNotFoundException {
 		if (id > capacity) {
 			throw new BedNotFoundException("Invalid ID");
-		} if (beds[id].occupied()) {
+		} if (beds[id].isoccupied()) {
 			throw new UnavailableBedException("Bed is occupied");
 		}
 		if (!getPatients().contains(p)) {
 			add(p);
 		}
 		Bed bed = beds[id];
-		bed.add(p);
+		bed.fill(p);
 	}
 	public void move(Patient p) throws ExceededCapacityException {
 		if (patientInBed(p)) {
 			Bed b1 = getPatientBed(p);
 			assign(p);
-			b1.remove();
+			b1.empty();
 		} else {
 			assign(p);
 		}
@@ -69,7 +69,7 @@ public class Department {
 		if (patientInBed(p)) {
 			Bed bed = getPatientBed(p);
 			assign(p,id);
-			bed.remove();
+			bed.empty();
 		} else {
 			assign(p,id);
 		}
@@ -77,7 +77,7 @@ public class Department {
 	public void removeFromBed(Patient p) {
 		if (patientInBed(p)) {
 			Bed bed = getPatientBed(p);
-			bed.remove();
+			bed.empty();
 		}
 	}
 	public String getName() {
@@ -112,7 +112,7 @@ public class Department {
 	}
 	public Bed getAvailableBed() throws ExceededCapacityException {
 		for (Bed bed : beds) {
-			if (!bed.occupied()) return bed;
+			if (!bed.isoccupied()) return bed;
 		}
 		throw new ExceededCapacityException("No available beds");
 	}

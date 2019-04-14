@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="428387ed-8677-4ccc-a96c-d43d1b5fddd5" name="Default Changelist" comment="" />
+    <list default="true" id="428387ed-8677-4ccc-a96c-d43d1b5fddd5" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hospital-project.iml" beforeDir="false" afterPath="$PROJECT_DIR$/hospital-project.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/management/Department.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/management/Department.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/management/Person.java" beforeDir="false" />
+    </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -9,49 +14,29 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="DefaultGradleProjectSettings">
+    <option name="testRunner" value="GRADLE" />
+    <option name="delegatedBuild" value="true" />
+  </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/hospital/objects/Bed.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/management/Bed.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
-              <caret line="18" column="25" selection-start-line="18" selection-start-column="25" selection-end-line="18" selection-end-column="25" />
+            <state relative-caret-position="238">
+              <caret line="14" column="25" lean-forward="true" selection-start-line="14" selection-start-column="25" selection-end-line="14" selection-end-column="25" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/hospital/objects/tests/DepartmentTests.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/management/Department.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="82" column="9" lean-forward="true" selection-start-line="82" selection-start-column="9" selection-end-line="82" selection-end-column="9" />
+            <state relative-caret-position="1547">
+              <caret line="109" column="9" lean-forward="true" selection-start-line="109" selection-start-column="9" selection-end-line="109" selection-end-column="9" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="method#patientInBedTest#0;class#DepartmentTests#0" />
-                <element signature="method#addPatientTest#0;class#DepartmentTests#0" />
-                <element signature="method#removePatientTest#0;class#DepartmentTests#0" />
-                <element signature="method#addStaffTest#0;class#DepartmentTests#0" />
-                <element signature="method#removeStaffTest#0;class#DepartmentTests#0" />
-                <element signature="method#assignPatientTest1#0;class#DepartmentTests#0" />
-                <element signature="method#assignPatientTest2#0;class#DepartmentTests#0" />
-                <element signature="method#assignPatientTest3#0;class#DepartmentTests#0" />
-                <element signature="method#assignPatientTest4#0;class#DepartmentTests#0" />
-                <element signature="method#removePatientTest1#0;class#DepartmentTests#0" />
-                <element signature="method#removePatientTest2#0;class#DepartmentTests#0" />
-                <element signature="method#assignPatientToBedTest#0;class#DepartmentTests#0" />
-                <element signature="method#movePatientTest1#0;class#DepartmentTests#0" />
-                <element signature="method#movePatientTest2#0;class#DepartmentTests#0" />
-                <element signature="method#unavailableBedTest#0;class#DepartmentTests#0" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/hospital/objects/Department.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="561">
-              <caret line="43" selection-start-line="43" selection-end-line="43" />
             </state>
           </provider>
         </entry>
@@ -83,7 +68,15 @@
         <option value="$PROJECT_DIR$/src/main/java/hospital/objects/tests/departmentTests.java" />
         <option value="$PROJECT_DIR$/src/main/java/hospital/objects/tests/etellerandet.feature" />
         <option value="$PROJECT_DIR$/src/main/java/hospital/objects/tests/DepartmentTests.java" />
+        <option value="$PROJECT_DIR$/src/main/java/management/Department.java" />
       </list>
+    </option>
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="importingSettings">
+      <MavenImportingSettings>
+        <option name="importAutomatically" value="true" />
+      </MavenImportingSettings>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
@@ -103,26 +96,45 @@
         <subPane>
           <expand>
             <path>
-              <item name="Agile_OOP_Project" type="b2602c69:ProjectViewProjectNode" />
+              <item name="hospital-project" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Agile_OOP_Project" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="hospital-project" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Agile_OOP_Project" type="462c0819:PsiDirectoryNode" />
+              <item name=".idea" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="hospital-project" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Agile_OOP_Project" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="hospital-project" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Agile_OOP_Project" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="features" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="hospital-project" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Agile_OOP_Project" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="Agile_OOP_Project" type="b2602c69:ProjectViewProjectNode" />
+              <item name="hospital-project" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Agile_OOP_Project" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="Agile_OOP_Project" type="b2602c69:ProjectViewProjectNode" />
+              <item name="hospital-project" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Agile_OOP_Project" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="objects" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Agile_OOP_Project" type="b2602c69:ProjectViewProjectNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="objects" type="462c0819:PsiDirectoryNode" />
-              <item name="tests" type="462c0819:PsiDirectoryNode" />
+              <item name="management" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -132,9 +144,11 @@
   </component>
   <component name="PropertiesComponent">
     <property name="Downloaded.Files.Path.Enabled" value="false" />
+    <property name="Git.Branch.Popup.ShowAllRemotes" value="true" />
     <property name="Repository.Attach.Annotations" value="false" />
     <property name="Repository.Attach.JavaDocs" value="false" />
     <property name="Repository.Attach.Sources" value="false" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1555066215630" />
@@ -170,13 +184,13 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="22764000" />
+    <option name="totallyTimeSpent" value="23038000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.077912256" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.123667374" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -184,7 +198,7 @@
       <window_info id="Capture Tool" order="5" />
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32936078" />
       <window_info anchor="bottom" id="Run" order="2" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
@@ -241,73 +255,37 @@
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/test/java/hospitaltests/HospitalTest.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/hospital/objects/Patient.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="12" selection-start-column="12" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/hospital/objects/Staff.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="13" selection-start-column="13" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/hospital/objects/Hospital.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="10" column="24" lean-forward="true" selection-start-line="10" selection-start-column="24" selection-end-line="10" selection-end-column="24" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/hospital/objects/Patient.java" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/hospital/objects/Staff.java" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/hospital/objects/Hospital.java" />
     <entry file="file://$PROJECT_DIR$/src/main/java/hospital/objects/tests/HospitalTest.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/hospital/objects/Bed.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/hospital/objects/Bed.java" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/hospital/objects/tests/etellerandet.feature" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/hospital/objects/Department.java" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/hospital/objects/tests/DepartmentTests.java" />
+    <entry file="file://$PROJECT_DIR$/src/features/ChangeInformation.feature">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/features/Registration.feature">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="18" column="25" selection-start-line="18" selection-start-column="25" selection-end-line="18" selection-end-column="25" />
+        <state relative-caret-position="51">
+          <caret line="3" column="24" lean-forward="true" selection-start-line="3" selection-start-column="24" selection-end-line="3" selection-end-column="24" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/hospital/objects/tests/etellerandet.feature">
+    <entry file="file://$PROJECT_DIR$/src/main/java/management/Bed.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" column="10" selection-start-line="4" selection-start-column="10" selection-end-line="4" selection-end-column="10" />
+        <state relative-caret-position="238">
+          <caret line="14" column="25" lean-forward="true" selection-start-line="14" selection-start-column="25" selection-end-line="14" selection-end-column="25" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/hospital/objects/Department.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/management/Department.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="561">
-          <caret line="43" selection-start-line="43" selection-end-line="43" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/hospital/objects/tests/DepartmentTests.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="82" column="9" lean-forward="true" selection-start-line="82" selection-start-column="9" selection-end-line="82" selection-end-column="9" />
+        <state relative-caret-position="1547">
+          <caret line="109" column="9" lean-forward="true" selection-start-line="109" selection-start-column="9" selection-end-line="109" selection-end-column="9" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#patientInBedTest#0;class#DepartmentTests#0" />
-            <element signature="method#addPatientTest#0;class#DepartmentTests#0" />
-            <element signature="method#removePatientTest#0;class#DepartmentTests#0" />
-            <element signature="method#addStaffTest#0;class#DepartmentTests#0" />
-            <element signature="method#removeStaffTest#0;class#DepartmentTests#0" />
-            <element signature="method#assignPatientTest1#0;class#DepartmentTests#0" />
-            <element signature="method#assignPatientTest2#0;class#DepartmentTests#0" />
-            <element signature="method#assignPatientTest3#0;class#DepartmentTests#0" />
-            <element signature="method#assignPatientTest4#0;class#DepartmentTests#0" />
-            <element signature="method#removePatientTest1#0;class#DepartmentTests#0" />
-            <element signature="method#removePatientTest2#0;class#DepartmentTests#0" />
-            <element signature="method#assignPatientToBedTest#0;class#DepartmentTests#0" />
-            <element signature="method#movePatientTest1#0;class#DepartmentTests#0" />
-            <element signature="method#movePatientTest2#0;class#DepartmentTests#0" />
-            <element signature="method#unavailableBedTest#0;class#DepartmentTests#0" />
           </folding>
         </state>
       </provider>
