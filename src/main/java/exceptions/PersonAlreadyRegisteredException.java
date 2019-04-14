@@ -1,7 +1,7 @@
-package management;
+package exceptions;
 
 public class PersonAlreadyRegisteredException extends Exception {
-    PersonAlreadyRegisteredException(String message) {
+    public PersonAlreadyRegisteredException(String message) {
         super(message);
     }
 }

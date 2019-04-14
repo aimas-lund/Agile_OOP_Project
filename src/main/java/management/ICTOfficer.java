@@ -1,5 +1,8 @@
 package management;
 
+import exceptions.FormatException;
+import exceptions.PersonAlreadyRegisteredException;
+
 import java.util.Date;
 
 public class ICTOfficer extends Staff implements IRegistering, IChangeInformation {

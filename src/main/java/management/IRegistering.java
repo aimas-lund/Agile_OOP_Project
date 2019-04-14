@@ -1,5 +1,7 @@
 package management;
 
+import exceptions.PersonAlreadyRegisteredException;
+
 public interface IRegistering {
     // TODO: Instead of having an access level, why not just dedicate needed methods through interfaces?
     // TODO: Maybe this as an abstract class

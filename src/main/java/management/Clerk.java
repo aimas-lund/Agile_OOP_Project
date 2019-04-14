@@ -1,5 +1,8 @@
 package management;
 
+import exceptions.FormatException;
+import exceptions.PersonAlreadyRegisteredException;
+
 import java.util.Date;
 
 public class Clerk extends Staff implements IRegistering, IChangeInformation {
