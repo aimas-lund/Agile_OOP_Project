@@ -1,7 +1,7 @@
 package exceptions;
 
 public class BedNotFoundException extends Exception {
-    public BedNotFoundException(String e) {
-        super(e);
+    public BedNotFoundException(String message) {
+        super(message);
     }
 }
