@@ -4,7 +4,6 @@ import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import exceptions.BedNotFoundException;
 import exceptions.ExceededCapacityException;
 import exceptions.UnavailableBedException;
 import management.Department;
@@ -82,7 +81,7 @@ public class DepartmentSteps {
 
     // Assign patient to specific bed
     @Then("I want to assign them to a specific bed")
-    public void iWantToAssignThemToASpecificBed() throws BedNotFoundException, UnavailableBedException {
+    public void iWantToAssignThemToASpecificBed() throws UnavailableBedException {
         validDept.assign(patient1,69);
         assertEquals(validDept.getBeds()[69].getPatient(),patient1);
     }
@@ -99,7 +98,7 @@ public class DepartmentSteps {
 
     // Move patient to specific bed
     @Then("I should be able to move them to a specific bed")
-    public void iShouldBeAbleToMoveThemToASpecificBed() throws BedNotFoundException, UnavailableBedException {
+    public void iShouldBeAbleToMoveThemToASpecificBed() throws UnavailableBedException {
         validDept.move(patient2,70);
         assertEquals((validDept.getBeds())[70].getPatient(),patient2);
     }
@@ -158,7 +157,7 @@ public class DepartmentSteps {
 
     // Get patient's bed
     @And("the patient is in a bed")
-    public void thePatientIsInABed() throws BedNotFoundException, UnavailableBedException {
+    public void thePatientIsInABed() throws UnavailableBedException {
         validDept.assign(patient2,0);
         assertTrue(validDept.patientInBed(patient2));
         assertEquals(validDept.getPatientBed(patient2), validDept.getBeds()[0]);
