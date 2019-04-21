@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 public class DepartmentsSteps {
 
-    Hospital h = new Hospital ();
+    Hospital h = new Hospital();
     Department existingDept = new Department ();
     Department newDept = new Department ();
     Staff s = new Staff ();
