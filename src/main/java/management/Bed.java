@@ -26,7 +26,7 @@ public class Bed {
         }
     }
 
-    public Boolean isoccupied() {
+    public Boolean isOccupied() {
         return occupied;
     }
 

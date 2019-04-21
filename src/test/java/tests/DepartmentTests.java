@@ -1,4 +1,4 @@
-package management.tests;
+package tests;
 
 import exceptions.BedNotFoundException;
 import exceptions.ExceededCapacityException;
@@ -134,16 +134,16 @@ public class DepartmentTests {
         departmentWithCapacity10.move(patient1, 2);
         assertNull(departmentWithCapacity10.getBeds()[3].getPatient());
     }
-    @Test (expected = exceptions.ExceededCapacityException.class)
+    @Test
     void filledCapacityTest() throws ExceededCapacityException {
         departmentWithNoCapacity.assign(patient1);
     }
-    @Test (expected = exceptions.UnavailableBedException.class)
+    @Test
     void unavailableBedTest() throws BedNotFoundException, UnavailableBedException {
         departmentWithCapacity10.assign(patient1, 4);
         departmentWithCapacity10.assign(patient2, 4);
     }
-    @Test (expected = exceptions.BedNotFoundException.class)
+    @Test
     void bedNotFoundTest() throws BedNotFoundException, UnavailableBedException {
         departmentWithCapacity10.assign(patient1, 10);
     }

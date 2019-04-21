@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Hospital {
 
-    public ArrayList<Department> depts = new ArrayList<Department> ();
+    private ArrayList<Department> depts = new ArrayList<Department> ();
 
     public void add(Department d) {
         depts.add (d);
@@ -39,4 +39,9 @@ public class Hospital {
             d1.remove (s);
         }
     }
+
+    public ArrayList<Department> getDepts() {
+        return depts;
+    }
+
 }

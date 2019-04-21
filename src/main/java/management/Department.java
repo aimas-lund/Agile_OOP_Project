@@ -21,6 +21,9 @@ public class Department extends Hospital {
 		}
 	}
 
+	public Department() {
+	}
+
 	public void add(Staff s) {
 		staff.add(s);
 	}
@@ -47,7 +50,8 @@ public class Department extends Hospital {
 	public void assign(Patient p, int id) throws UnavailableBedException, BedNotFoundException {
 		if (id > capacity) {
 			throw new BedNotFoundException("Invalid ID");
-		} if (beds[id].isoccupied()) {
+		}
+		if (beds[id].isOccupied()) {
 			throw new UnavailableBedException("Bed is occupied");
 		}
 		if (!getPatients().contains(p)) {
@@ -112,7 +116,7 @@ public class Department extends Hospital {
 	}
 	public Bed getAvailableBed() throws ExceededCapacityException {
 		for (Bed bed : beds) {
-			if (!bed.isoccupied()) return bed;
+			if (!bed.isOccupied()) return bed;
 		}
 		throw new ExceededCapacityException("No available beds");
 	}

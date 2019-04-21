@@ -9,6 +9,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import management.*;
 
+import java.util.ArrayList;
+
 
 public class DepartmentsStep {
 
@@ -33,7 +35,8 @@ public class DepartmentsStep {
     @Then("the hospital should be able to create a new department")
     public void theHospitalShouldBeAbleToCreateANewDepartment() {
         h.add (newDept);
-        assertTrue (h.depts.contains (newDept));
+        ArrayList<Department> depts = h.getDepts();
+        assertTrue (depts.contains (newDept));
     }
 
     @When("there is no use for this department anymore")
@@ -44,13 +47,14 @@ public class DepartmentsStep {
     @Then("the hospital should be able to remove the department")
     public void theHospitalShouldBeAbleToRemoveTheDepartment() {
         h.remove (existingDept);
-        assertFalse (h.depts.contains (existingDept));
+        ArrayList<Department> depts = h.getDepts();
+        assertFalse (depts.contains (existingDept));
         
     }
 
     @Given("an empty bed")
     public void anEmptyBed() {
-        assertFalse (b.isoccupied ());
+        assertFalse (b.isOccupied());
     }
 
     @When("there is need for a bed")
@@ -73,13 +77,13 @@ public class DepartmentsStep {
     @Then("The bed should be unoccupied by the patient.")
     public void theBedShouldBeUnoccupiedByThePatient() {
         b.empty ();
-        assertFalse (b.isoccupied ());
+        assertFalse (b.isOccupied ());
     }
 
     @Then("the bed should be assigned a patient.")
     public void theBedShouldBeAssignedAPatient() {
         b.fill (p);
-        assertTrue (b.isoccupied ());
+        assertTrue (b.isOccupied ());
     }
 
     @Given("a new staff member")
@@ -100,11 +104,13 @@ public class DepartmentsStep {
     @Given("an existing department")
     public void anExistingDepartment() {
         h.add (existingDept);
-        assertTrue (h.depts.contains (existingDept));
+        ArrayList<Department> depts = h.getDepts();
+        assertTrue (depts.contains (existingDept));
     }
 
     @Given("a nonexisting department")
     public void aNonexistingDepartment() {
-        assertFalse (h.depts.contains (newDept));
+        ArrayList<Department> depts = h.getDepts();
+        assertFalse (depts.contains (newDept));
     }
 }

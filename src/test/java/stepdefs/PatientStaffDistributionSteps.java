@@ -3,15 +3,20 @@ package stepdefs;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import management.Department;
 import management.Hospital;
+import management.Patient;
+import management.Staff;
 
-public class Patient_Staff_DistributionSteps {
+import static org.junit.Assert.*;
 
-    Hospital h = new Hospital ();
-    Staff s = new Staff ();
-    Patient p = new Patient ();
-    Department d1 = new Department ();
-    Department d2 = new Department ();
+public class PatientStaffDistributionSteps {
+
+    private Hospital hospital = new Hospital ();
+    private Staff staff = new Staff ();
+    private Patient patient = new Patient ();
+    private Department department1 = new Department ();
+    private Department department2 = new Department ();
 
 
     @When("their condition changes such that they need the attention of a different department")
@@ -21,9 +26,9 @@ public class Patient_Staff_DistributionSteps {
 
     @Then("the hospital should move the patient to the appropriate new department")
     public void theHospitalShouldMoveThePatientToTheAppropriateNewDepartment() {
-        h.move (p, d1, d2);
-        assertFalse (d1.getPatients ().contains (p));
-        assertTrue (d2.getPatients ().contains (p));
+        hospital.move (patient, department1, department2);
+        assertFalse (department1.getPatients ().contains (patient));
+        assertTrue (department2.getPatients ().contains (patient));
     }
 
     @When("their area of work changes")
@@ -33,20 +38,21 @@ public class Patient_Staff_DistributionSteps {
 
     @Then("the hospital should be able to move them to another department.")
     public void theHospitalShouldBeAbleToMoveThemToAnotherDepartment() {
-        h.move (s, d1, d2);
-        assertFalse (d1.getStaff ().contains (s));
-        assertTrue (d2.getStaff ().contains (s));
+        hospital.move (staff, department1, department2);
+        assertFalse (department1.getStaff ().contains (staff));
+        assertTrue (department2.getStaff ().contains (staff));
     }
 
     @Given("a staff member in an existing department")
     public void aStaffMemberInAnExistingDepartment() {
-        h.assign (s, d1);
-        assertTrue (d1.getStaff ().contains (s));
+        hospital.add(department1);
+        hospital.assign(staff, department1);
+        assertTrue(department1.getStaff ().contains (staff));
     }
 
     @Given("a patient in an existing department")
     public void aPatientInAnExistingDepartment() {
-        h.assign (p, d1);
-        assertTrue (d1.getPatients ().contains (p));
+        hospital.assign (patient, department1);
+        assertTrue (department1.getPatients ().contains (patient));
     }
 }

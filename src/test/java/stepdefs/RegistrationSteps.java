@@ -134,7 +134,7 @@ public class RegistrationSteps {
         ictOfficer.registerPerson(registeredStaff, department);
 
         // Check that staff has been registered
-        List<Person> staff = department.getStaff();
+        List<Staff> staff = department.getStaff();
         assertEquals(registeredStaff, staff.get(0));
     }
 
@@ -293,11 +293,7 @@ public class RegistrationSteps {
         // Check that we get an exception
         assertThrows(PersonAlreadyRegisteredException.class, () -> ictOfficer.isPersonRegistered(registeredStaff, department));
 
-        try {
-            ictOfficer.isPersonRegistered(registeredStaff, department);
-        } catch (PersonAlreadyRegisteredException e) {
-            assertTrue(e.getMessage().contains("is already registered in the system"));
-        }
+        ictOfficer.isPersonRegistered(registeredStaff, department);
 
     }
 }

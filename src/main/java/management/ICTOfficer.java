@@ -10,28 +10,24 @@ public class ICTOfficer extends Staff implements IRegistering, IChangeInformatio
 
     public <T extends Person> boolean registerPerson(T person, Department department) {
         // Check that the person is not registered
-        try {
-            isPersonRegistered(person, department);
-        } catch (PersonAlreadyRegisteredException e) {
-            System.out.println(e.getMessage());
-            return false;
-        }
+        isPersonRegistered(person, department);
 
         // Add person to database
-        department.getStaff().add(person);
+        department.getStaff().add((Staff) person);
         // Give unique id
         addUniqueIdToPerson(person);
         return true;
     }
 
-    public <T extends Person> void isPersonRegistered(T person, Department department) throws PersonAlreadyRegisteredException {
+    public <T extends Person> boolean isPersonRegistered(T person, Department department) {
         // Search for same Unique ID
         for (Person staff : department.getStaff()) {
             // TODO: Optimize find functionality, now is O(n)
             if (staff.getUniqueId() == person.getUniqueId()) {
-                throw new PersonAlreadyRegisteredException("Staff member is already registered in the system");
+                return true;
             }
         }
+        return false;
     }
 
     public void setDoctorInformation(Doctor doctor, Speciality speciality, String name, String surname, Date birthdate, int gender,

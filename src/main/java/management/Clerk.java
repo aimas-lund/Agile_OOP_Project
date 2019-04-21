@@ -9,25 +9,23 @@ public class Clerk extends Staff implements IRegistering, IChangeInformation {
 
     public <T extends Person> boolean registerPerson(T person, Department department) {
         // Check that the person is not registered
-        try {
-            isPersonRegistered(person, department);
-        } catch (PersonAlreadyRegisteredException e) {
-            return false;
-        }
+        isPersonRegistered(person, department);
 
-        department.getPatients().add(person);
+        department.getPatients().add((Patient) person);
         addUniqueIdToPerson(person);
 
         return true;
     }
 
-    public <T extends Person> void isPersonRegistered(T person, Department department) throws PersonAlreadyRegisteredException {
+    public <T extends Person> boolean isPersonRegistered(T person, Department department) {
         // Search for same Unique ID
+        // TODO: Revisit for efficiency (loop is always run completely. O(n))
         for (Patient patient : department.getPatients()) {
             if (patient.getUniqueId() == person.getUniqueId()) {
-                throw new PersonAlreadyRegisteredException("Patient is already registered in the system");
+                return true;
             }
         }
+        return false;
     }
 
     public void addUniqueIdToPerson(Person person) {
@@ -35,7 +33,6 @@ public class Clerk extends Staff implements IRegistering, IChangeInformation {
     }
 
     public boolean checkPatientRegistrationStatus(Patient patient, Department department) {
-        // TODO: Can also be made with exceptions..
 
         return department.getPatients().contains(patient);
     }

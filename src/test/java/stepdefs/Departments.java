@@ -18,7 +18,7 @@ public class Departments {
     private Department emptyDept = new Department("empty",0);
     private Patient patient1 = new Patient();
     private Patient patient2 = new Patient();
-    private Staff s = new Staff();
+    private Staff staff = new Staff();
 
     // A department is made (capacity)
     @Given("a department")
@@ -36,11 +36,11 @@ public class Departments {
     // Add staff
     @When("I employ a staff")
     public void iEmployAStaff() {
-        validDept.add(s);
+        validDept.add(staff);
     }
     @Then("I should add them to my system, such that I can easily look them up")
     public void iShouldAddThemToMySystemSuchThatICanEasilyLookThemUp() {
-        assertTrue(validDept.getStaff().contains(s));
+        assertTrue(validDept.getStaff().contains(staff));
     }
 
     // Add patient
@@ -59,12 +59,12 @@ public class Departments {
     }
     @Then("I should be able to remove them from my system")
     public void iShouldBeAbleToRemoveThemFromMySystem() {
-        validDept.remove(s);
-        assertFalse(validDept.getStaff().contains(s));
+        validDept.remove(staff);
+        assertFalse(validDept.getStaff().contains(staff));
     }
 
     // Remove patient
-    @When("a patient's treatment is over")
+    @When("a patient'staff treatment is over")
     public void aPatientSTreatmentIsOver() {
     }
     @Then("I should be able to discharge them")
@@ -130,7 +130,7 @@ public class Departments {
     @When("I want an overview of the department")
     public void iWantAnOverviewOfTheDepartment() {
     }
-    @Then("I should be able to retrieve how many available beds there's left")
+    @Then("I should be able to retrieve how many available beds there'staff left")
     public void iShouldBeAbleToRetrieveHowManyAvailableBedsThereSLeft() {
         assertEquals(emptyDept.getAvailableBeds(),0);
         validDept.removeFromBed(patient1);
@@ -156,7 +156,7 @@ public class Departments {
         assertNotNull(validDept.getPatients());
     }
 
-    // Get patient's bed
+    // Get patient'staff bed
     @And("the patient is in a bed")
     public void thePatientIsInABed() throws BedNotFoundException, UnavailableBedException {
         validDept.assign(patient2,0);
@@ -168,7 +168,7 @@ public class Departments {
     }
 
     // Check if available beds
-    @Then("I should know if there's an available bed")
+    @Then("I should know if there'staff an available bed")
     public void iShouldKnowIfThereSAnAvailableBed() {
         assertTrue(validDept.availableBeds());
         assertFalse(emptyDept.availableBeds());
@@ -176,7 +176,7 @@ public class Departments {
     }
 
     // Get an available bed
-    @And("there's available beds")
+    @And("there'staff available beds")
     public void thereSAvailableBeds() {
     }
     @Then("I should get an available bed")
