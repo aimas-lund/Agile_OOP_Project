@@ -15,8 +15,8 @@ public class PatientStaffDistributionSteps {
     private Hospital hospital = new Hospital ();
     private Staff staff = new Staff ();
     private Patient patient = new Patient ();
-    private Department department1 = new Department ();
-    private Department department2 = new Department ();
+    private Department department1 = new Department ("ER", 10);
+    private Department department2 = new Department ("New", 5);
 
 
     @When("their condition changes such that they need the attention of a different department")
@@ -38,6 +38,7 @@ public class PatientStaffDistributionSteps {
 
     @Then("the hospital should be able to move them to another department.")
     public void theHospitalShouldBeAbleToMoveThemToAnotherDepartment() {
+        hospital.add(department2);
         hospital.move (staff, department1, department2);
         assertFalse (department1.getStaff ().contains (staff));
         assertTrue (department2.getStaff ().contains (staff));
@@ -52,6 +53,7 @@ public class PatientStaffDistributionSteps {
 
     @Given("a patient in an existing department")
     public void aPatientInAnExistingDepartment() {
+        hospital.add(department1);
         hospital.assign (patient, department1);
         assertTrue (department1.getPatients ().contains (patient));
     }
