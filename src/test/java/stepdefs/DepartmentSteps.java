@@ -13,7 +13,7 @@ import management.Staff;
 
 import static org.junit.Assert.*;
 
-public class Departments {
+public class DepartmentSteps {
     private Department validDept = new Department("ER",80);
     private Department emptyDept = new Department("empty",0);
     private Patient patient1 = new Patient();
@@ -64,7 +64,7 @@ public class Departments {
     }
 
     // Remove patient
-    @When("a patient'staff treatment is over")
+    @When("a patient's treatment is over")
     public void aPatientSTreatmentIsOver() {
     }
     @Then("I should be able to discharge them")
@@ -130,7 +130,7 @@ public class Departments {
     @When("I want an overview of the department")
     public void iWantAnOverviewOfTheDepartment() {
     }
-    @Then("I should be able to retrieve how many available beds there'staff left")
+    @Then("I should be able to retrieve how many available beds there's left")
     public void iShouldBeAbleToRetrieveHowManyAvailableBedsThereSLeft() {
         assertEquals(emptyDept.getAvailableBeds(),0);
         validDept.removeFromBed(patient1);
@@ -156,7 +156,7 @@ public class Departments {
         assertNotNull(validDept.getPatients());
     }
 
-    // Get patient'staff bed
+    // Get patient's bed
     @And("the patient is in a bed")
     public void thePatientIsInABed() throws BedNotFoundException, UnavailableBedException {
         validDept.assign(patient2,0);
@@ -168,7 +168,7 @@ public class Departments {
     }
 
     // Check if available beds
-    @Then("I should know if there'staff an available bed")
+    @Then("I should know if there's an available bed")
     public void iShouldKnowIfThereSAnAvailableBed() {
         assertTrue(validDept.availableBeds());
         assertFalse(emptyDept.availableBeds());
@@ -176,7 +176,7 @@ public class Departments {
     }
 
     // Get an available bed
-    @And("there'staff available beds")
+    @And("there's available beds")
     public void thereSAvailableBeds() {
     }
     @Then("I should get an available bed")
@@ -196,7 +196,5 @@ public class Departments {
         assertTrue(validDept.patientInBed(patient1));
         assertFalse(validDept.patientInBed(patient2));
     }
-
-
 }
 
