@@ -9,7 +9,9 @@ public class Clerk extends Staff implements IRegistering, IChangeInformation {
 
     public <T extends Person> boolean registerPerson(T person, Department department) {
         // Check that the person is not registered
-        isPersonRegistered(person, department);
+        if (isPersonRegistered(person, department)) {
+            return false;
+        }
 
         department.getPatients().add((Patient) person);
         addUniqueIdToPerson(person);
