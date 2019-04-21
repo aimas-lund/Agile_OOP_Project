@@ -10,7 +10,9 @@ public class ICTOfficer extends Staff implements IRegistering, IChangeInformatio
 
     public <T extends Person> boolean registerPerson(T person, Department department) {
         // Check that the person is not registered
-        isPersonRegistered(person, department);
+        if (isPersonRegistered(person, department)) {
+            return false;
+        }
 
         // Add person to database
         department.getStaff().add((Staff) person);
