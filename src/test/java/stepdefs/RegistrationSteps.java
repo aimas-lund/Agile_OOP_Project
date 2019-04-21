@@ -291,7 +291,7 @@ public class RegistrationSteps {
     @Then("the system displays that this member profile is already created")
     public void theSystemDisplaysThatThisMemberProfileIsAlreadyCreated() {
         // Check that we get an exception
-        assertThrows(PersonAlreadyRegisteredException.class, () -> ictOfficer.isPersonRegistered(registeredStaff, department));
+        assertTrue(ictOfficer.isPersonRegistered(registeredStaff, department));
 
         ictOfficer.isPersonRegistered(registeredStaff, department);
 

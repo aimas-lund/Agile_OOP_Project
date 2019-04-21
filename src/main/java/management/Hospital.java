@@ -27,14 +27,14 @@ public class Hospital {
     }
 
     public void move(Patient p, Department d1, Department d2) {
-        if (depts.contains (d1) && depts.contains (d2)) {
+        if (d1.getPatients ().contains(p) && !(d2.getPatients ().contains(p))) {
             d2.add (p);
             d1.remove (p);
         }
     }
 
     public void move(Staff s, Department d1, Department d2) {
-        if (depts.contains (d1) && depts.contains (d2)) {
+        if (d1.getStaff().contains(s) && !(d2.getStaff().contains(s))) {
             d2.add (s);
             d1.remove (s);
         }
