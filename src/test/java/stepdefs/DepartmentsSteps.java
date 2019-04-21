@@ -12,7 +12,7 @@ import management.*;
 import java.util.ArrayList;
 
 
-public class DepartmentsStep {
+public class DepartmentsSteps {
 
     Hospital h = new Hospital ();
     Department existingDept = new Department ();
