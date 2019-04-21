@@ -23,12 +23,13 @@ public class Clerk extends Staff implements IRegistering, IChangeInformation {
 
     public <T extends Person> void isPersonRegistered(T person, Department department) throws PersonAlreadyRegisteredException {
         // Search for same Unique ID
-        for (Person patient : department.getStaff()) {
+        for (Patient patient : department.getPatients()) {
             if (patient.getUniqueId() == person.getUniqueId()) {
                 throw new PersonAlreadyRegisteredException("Patient is already registered in the system");
             }
         }
     }
+
     public void addUniqueIdToPerson(Person person) {
         person.setUniqueId(InformationGenerator.generateUniqueID());
     }

@@ -96,10 +96,10 @@ public class Department extends Hospital {
 		}
 		return available;
 	}
-	public ArrayList getPatients() {
+	public ArrayList<Patient> getPatients() {
 		return patients;
 	}
-	public ArrayList getStaff() {
+	public ArrayList<Staff> getStaff() {
 		return staff;
 	}
 	public Bed getPatientBed(Patient p) {
