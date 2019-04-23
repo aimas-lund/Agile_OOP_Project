@@ -1,5 +1,4 @@
 language: java
 
 script:
-- cd src/test/java/stepdefs
 - mvn clean test
