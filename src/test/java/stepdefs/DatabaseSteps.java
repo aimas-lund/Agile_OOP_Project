@@ -15,19 +15,24 @@ public class DatabaseSteps {
 
     @Given("a hospital")
     public void aHospital() {
-        assertNotNull(hospital);
+        assertTrue(hospital instanceof Hospital);
     }
 
     @And("the hospital does not have connection to the database")
     public void theHospitalDoesNotHaveConnectionToTheDatabase() {
-
+        hospital.getDatabase().disconnectFromDB();
+        assertFalse(hospital.getDatabase().hasConnection());
     }
 
     @When("a hospital is instantiated")
     public void aHospitalIsInstantiated() {
+        assertNotNull(hospital);
     }
 
     @Then("a hospital is connected to the database")
     public void aHospitalIsConnectedToTheDatabase() {
+        Hospital hospital_new = new Hospital();
+        assertTrue(hospital_new.getDatabase().hasConnection());
+        assertFalse(hospital.getDatabase().hasConnection());
     }
 }

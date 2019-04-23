@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class Hospital {
     private Database database = new Database();
-    private ArrayList<Department> depts = new ArrayList<Department>();
+    private ArrayList<Department> departments = new ArrayList<Department>();
 
     public Hospital() {
         // Connect hospital to database
@@ -14,21 +14,21 @@ public class Hospital {
     }
 
     public void add(Department d) {
-        depts.add(d);
+        departments.add(d);
     }
 
     public void remove(Department d) {
-        depts.remove(d);
+        departments.remove(d);
     }
 
     public void assign(Patient p, Department d) {
-        if (depts.contains(d)) {
+        if (departments.contains(d)) {
             d.add(p);
         }
     }
 
     public void assign(Staff s, Department d) {
-        if (depts.contains(d)) {
+        if (departments.contains(d)) {
             d.add(s);
         }
     }
@@ -47,8 +47,11 @@ public class Hospital {
         }
     }
 
-    public ArrayList<Department> getDepts() {
-        return depts;
+    public ArrayList<Department> getDepartments() {
+        return departments;
     }
 
+    public Database getDatabase() {
+        return database;
+    }
 }

@@ -2,11 +2,10 @@ package storage;
 
 import management.Staff;
 
-import javax.xml.crypto.Data;
 import java.sql.Statement;
 
 public class StaffUpdater implements IUpdate {
-    Statement statement;
+    private Statement statement;
 
     StaffUpdater(Database database) {
         statement = database.createStatement();
@@ -14,7 +13,6 @@ public class StaffUpdater implements IUpdate {
 
     public void updateStaffEmail(Staff staff, String email) {
 //        statement.execute("")
-
-        staff.setEmail(email);
+//        staff.setEmail(email);
     }
 }

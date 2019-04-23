@@ -1,9 +1,6 @@
 package storage;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+
+import java.sql.*;
 
 public class Database {
     private Connection connection = null;
@@ -26,12 +23,26 @@ public class Database {
         }
     }
 
-    public Statement createStatement() {
+    public boolean hasConnection() {
+        try {
+            return (!connection.isClosed());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    Statement createStatement() {
+        // Connect to database if null
+        if (!(hasConnection())) {
+            connectoToDB();
+        }
         try {
             return connection.createStatement();
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return null;
     }
 
     public static void main(String[] args) {
