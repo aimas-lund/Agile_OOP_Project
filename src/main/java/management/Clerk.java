@@ -1,37 +1,40 @@
 package management;
 
+import exceptions.FormatException;
+import exceptions.PersonAlreadyRegisteredException;
+
 import java.util.Date;
 
 public class Clerk extends Staff implements IRegistering, IChangeInformation {
 
     public <T extends Person> boolean registerPerson(T person, Department department) {
         // Check that the person is not registered
-        try {
-            isPersonRegistered(person, department);
-        } catch (PersonAlreadyRegisteredException e) {
+        if (isPersonRegistered(person, department)) {
             return false;
         }
 
-        department.getPatients().add(person);
+        department.getPatients().add((Patient) person);
         addUniqueIdToPerson(person);
 
         return true;
     }
 
-    public <T extends Person> void isPersonRegistered(T person, Department department) throws PersonAlreadyRegisteredException {
+    public <T extends Person> boolean isPersonRegistered(T person, Department department) {
         // Search for same Unique ID
-        for (Person patient : department.getStaff()) {
+        // TODO: Revisit for efficiency (loop is always run completely. O(n))
+        for (Patient patient : department.getPatients()) {
             if (patient.getUniqueId() == person.getUniqueId()) {
-                throw new PersonAlreadyRegisteredException("Patient is already registered in the system");
+                return true;
             }
         }
+        return false;
     }
+
     public void addUniqueIdToPerson(Person person) {
         person.setUniqueId(InformationGenerator.generateUniqueID());
     }
 
     public boolean checkPatientRegistrationStatus(Patient patient, Department department) {
-        // TODO: Can also be made with exceptions..
 
         return department.getPatients().contains(patient);
     }

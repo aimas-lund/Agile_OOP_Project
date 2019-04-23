@@ -6,7 +6,7 @@ public interface IRegistering {
     // Returns true if succeeded
     <T extends Person> boolean registerPerson(T person, Department department);
 
-    <T extends Person> void isPersonRegistered(T person, Department department) throws PersonAlreadyRegisteredException;
+    <T extends Person> boolean isPersonRegistered(T person, Department department);
 
     void addUniqueIdToPerson(Person person);
 

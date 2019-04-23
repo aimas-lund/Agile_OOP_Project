@@ -4,6 +4,7 @@ import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import exceptions.PersonAlreadyRegisteredException;
 import management.*;
 
 import java.util.Calendar;
@@ -133,7 +134,7 @@ public class RegistrationSteps {
         ictOfficer.registerPerson(registeredStaff, department);
 
         // Check that staff has been registered
-        List<Person> staff = department.getStaff();
+        List<Staff> staff = department.getStaff();
         assertEquals(registeredStaff, staff.get(0));
     }
 
@@ -290,13 +291,9 @@ public class RegistrationSteps {
     @Then("the system displays that this member profile is already created")
     public void theSystemDisplaysThatThisMemberProfileIsAlreadyCreated() {
         // Check that we get an exception
-        assertThrows(PersonAlreadyRegisteredException.class, () -> ictOfficer.isPersonRegistered(registeredStaff, department));
+        assertTrue(ictOfficer.isPersonRegistered(registeredStaff, department));
 
-        try {
-            ictOfficer.isPersonRegistered(registeredStaff, department);
-        } catch (PersonAlreadyRegisteredException e) {
-            assertTrue(e.getMessage().contains("is already registered in the system"));
-        }
+        ictOfficer.isPersonRegistered(registeredStaff, department);
 
     }
 }
