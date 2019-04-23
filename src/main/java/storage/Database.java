@@ -5,7 +5,7 @@ import java.sql.*;
 public class Database {
     private Connection connection = null;
 
-    public void connectoToDB() {
+    public void connectToDB() {
         try {
             connection = DriverManager.getConnection("jdbc:sqlite:sample.db");
         } catch (SQLException e) {
@@ -28,14 +28,16 @@ public class Database {
             return (!connection.isClosed());
         } catch (SQLException e) {
             e.printStackTrace();
+        } catch (NullPointerException e) {
+            return false;
         }
         return false;
     }
 
-    Statement createStatement() {
+    public Statement createStatement() {
         // Connect to database if null
         if (!(hasConnection())) {
-            connectoToDB();
+            connectToDB();
         }
         try {
             return connection.createStatement();

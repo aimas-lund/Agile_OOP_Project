@@ -40,6 +40,7 @@ public class ChangeInformationSteps {
         );
 
         // Check that some values are not null
+        assertSame(0, patientWithInformation.getGender());
         assertNotNull(patientWithInformation.getName());
         assertNotNull(patientWithInformation.getSurname());
         assertNotNull(patientWithInformation.getBirthdate());

@@ -10,7 +10,7 @@ public class Hospital {
 
     public Hospital() {
         // Connect hospital to database
-        database.connectoToDB();
+        database.connectToDB();
     }
 
     public void add(Department d) {
