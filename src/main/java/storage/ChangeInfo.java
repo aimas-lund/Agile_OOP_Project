@@ -16,7 +16,6 @@ public class ChangeInfo {
         //Use Interface IRegister with method
             // registerPerson(Person, Department)
             // addUniqueIdToPerson (person)
-
     }
     @PreAuthorize("hasRole('clerk') or hasRole('ict')")
     public void ChangePatientData(){
