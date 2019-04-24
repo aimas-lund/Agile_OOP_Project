@@ -6,16 +6,12 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class HospitalBedTest {
 
     private final Hospital hospital = new Hospital();
-    private ArrayList<Department> depts = hospital.getDepts();
+    private ArrayList<Department> depts = hospital.getDepartments();
     private final Department department = new Department("ER",10);
     private final Patient patient = new Patient();
     private final Staff staff = new Staff();
@@ -77,7 +73,7 @@ public class HospitalBedTest {
     @Test
     void assignPatientDeptNonexistant() {
         hospital.assign (patient, department);
-        depts = hospital.getDepts();
+        depts = hospital.getDepartments();
         assertTrue (depts.isEmpty ());
     }
 
@@ -90,7 +86,7 @@ public class HospitalBedTest {
     @Test
     void assignStaffDeptNonexistant() {
         hospital.assign (staff, department);
-        ArrayList<Department> depts = hospital.getDepts();
+        ArrayList<Department> depts = hospital.getDepartments();
         assertTrue (depts.isEmpty ());
     }
 
