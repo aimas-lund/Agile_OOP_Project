@@ -5,12 +5,16 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import management.*;
+import storage.Dao;
+import storage.DaoPatientImpl;
 import storage.Database;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 import static junit.framework.TestCase.*;
 
@@ -126,16 +130,25 @@ public class DatabaseSteps {
 
     @When("the user need specific information")
     public void theUserNeedSpecificInformation() {
-
+        clerk.registerPerson(new Patient(
+                "Hilda",
+                "Stol",
+                new Date(1997),
+                0,
+                "Hildagade 1",
+                45231298), department);
         }
 
-    @Then("the user should be able to search by keywords or filters in the database")
+    @Then("the user should be able to search by keywords or filters in the database.")
     public void theUserShouldSearch() {
+        Dao<Patient> dao = new DaoPatientImpl<>();
 
+        HashMap<String, String> params = new HashMap<>();
+        params.put("gender", "0");
+
+        ArrayList<Patient> list = dao.find(params);
+        System.out.println(list);
         }
-
-
-
 
 
 //

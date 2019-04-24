@@ -26,6 +26,11 @@ public class Staff extends Person {
         this.setInitials (initials);
     }
 
+    public Staff(String uniqueId, String name, String surname, Date birthdate, int gender, String homeaddress, int phonenumber, String email, String initials) {
+        this(name, surname, birthdate, gender, homeaddress, phonenumber, email, initials);
+        this.setUniqueId(uniqueId);
+    }
+
     public String getEmail() {
         return email;
     }
@@ -37,7 +42,7 @@ public class Staff extends Person {
     @Override
     public String[] getPersonInformation() {
         return new String[]{String.format("%d", this.getUniqueId()), this.getName(), this.getSurname(),
-                this.getBirthdate().toString(), String.format("%d", this.getGender()), this.getHomeAddress(),
+                dateToString(this.getBirthdate()), String.format("%d", this.getGender()), this.getHomeAddress(),
                 String.format("%d", this.getPhoneNumber()), this.getEmail(), this.getInitials()};
     }
 

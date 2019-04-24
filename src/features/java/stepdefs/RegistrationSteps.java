@@ -1,11 +1,11 @@
 package stepdefs;
 
+import cucumber.api.java.Before;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import management.*;
-import cucumber.api.java.Before;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -162,9 +162,9 @@ public class RegistrationSteps {
     @And("register a uniqueID")
     public void registerAUniqueID() {
         // Add unique IDs
-        ictOfficer.addUniqueIdToPerson(registeredStaff);
-        ictOfficer.addUniqueIdToPerson(unregisteredStaff);
-
+//        ictOfficer.addUniqueIdToPerson(registeredStaff);
+//        ictOfficer.addUniqueIdToPerson(unregisteredStaff);
+//
         // Check that they are unique
         assertNotEquals(registeredStaff.getUniqueId(), unregisteredStaff.getUniqueId());
     }
