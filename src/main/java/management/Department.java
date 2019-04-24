@@ -49,7 +49,7 @@ public class Department extends Hospital {
 			Bed bed = getAvailableBed();
 			bed.fill(p);
 		} else {
-			throw new ExceededCapacityException("beds " + getAvailableBeds());
+			throw new ExceededCapacityException("No available beds " + getAvailableBeds());
 		}
 	}
 	public void assign(Patient p, int id) throws UnavailableBedException {
