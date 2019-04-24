@@ -3,7 +3,7 @@ import org.junit.Test;
 
 import static junit.framework.TestCase.assertTrue;
 
-class PatientTest {
+public class PatientTest {
     Patient patient = new Patient();
 
     @Test

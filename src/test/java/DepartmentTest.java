@@ -161,8 +161,8 @@ public class DepartmentTest {
 
     @Test (expected = ExceededCapacityException.class)
     public void patientInBedWithoutBedID() throws ExceededCapacityException {
-        departmentWithCapacity10.move(patient1);
-        departmentWithCapacity10.move(patient1);
+        departmentWithCapacity1.assign(patient1);
+        departmentWithCapacity1.move(patient1);
 
     }
 
