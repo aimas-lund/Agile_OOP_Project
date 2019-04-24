@@ -11,9 +11,7 @@ public class Staff extends Person {
     public Staff(){
 
     }
-
-    public Staff(String uniqueId, String name, String surname, Date birthdate, int gender, String homeaddress, int phonenumber, String email, String initials) {
-        this.setUniqueId(uniqueId);
+    public Staff(String name, String surname, Date birthdate, int gender, String homeaddress, int phonenumber, String email, String initials) {
         this.setName(name);
         this.setSurname(surname);
         this.setBirthdate(birthdate);
