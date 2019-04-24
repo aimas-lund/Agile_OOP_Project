@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 
-class DepartmentTests {
+public class TestDepartment {
 
     // Initiations
     private Department departmentWithCapacity10;
@@ -158,5 +158,4 @@ class DepartmentTests {
     void bedNotFoundTest() {
         assertThrows(ArrayIndexOutOfBoundsException.class, () -> departmentWithCapacity10.assign(patient1, 10));
     }
-
 }
