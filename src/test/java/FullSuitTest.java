@@ -7,7 +7,6 @@ import org.junit.runners.Suite;
         TestDepartment.class,
         HospitalBedTest.class,
         ClerkTest.class,
-        DaoPatientImplTest.class,
         DatabaseTest.class,
         InformationGeneratorTest.class,
         PatientTest.class
