@@ -5,7 +5,7 @@ import storage.DaoPatientImpl;
 
 import java.util.Date;
 
-class DaoPatientImplTest {
+public class DaoPatientImplTest {
     private Dao<Patient> dao = new DaoPatientImpl<>();
 
     @Test

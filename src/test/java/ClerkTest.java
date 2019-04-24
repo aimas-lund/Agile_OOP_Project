@@ -5,10 +5,9 @@ import management.Person;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static junit.framework.TestCase.*;
 
-class ClerkTest {
+public class ClerkTest {
     private Clerk clerk = new Clerk();
     private Person patient;
     private Department department;

@@ -1,15 +1,13 @@
 import management.Patient;
 import org.junit.Test;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static junit.framework.TestCase.assertTrue;
 
-class PatientTest {
+public class PatientTest {
     Patient patient = new Patient();
 
     @Test
     public void isAlive() {
         assertTrue(patient.isAlive());
     }
-
-
 }
