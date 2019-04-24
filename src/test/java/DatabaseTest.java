@@ -1,4 +1,4 @@
-import org.junit.After;
+
 import org.junit.Before;
 import org.junit.Test;
 import storage.Database;
@@ -7,10 +7,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
 
-import static junit.framework.TestCase.*;
+import static junit.framework.TestCase.assertNotNull;
+import static junit.framework.TestCase.assertTrue;
+import static org.junit.Assert.assertFalse;
+
 
 public class DatabaseTest {
     private Database database;
@@ -42,35 +43,72 @@ public class DatabaseTest {
         database.connectToDB();
         assertTrue(database.hasConnection());
     }
+
+    @Test
+    public void createTable() {
+        Database database = new Database();
+        Statement statement = database.createStatement();
+
+        // Delete table if currently exists
+        try {
+            statement.executeUpdate("drop table if exists test");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
+        // create new table structure named "test"
+        ArrayList<ArrayList<String>> list = new ArrayList<>(2);
+        list.add(0, new ArrayList<String>(Arrays.asList("key", "integer")));
+        list.add(1, new ArrayList<String>(Arrays.asList("name", "string")));
+        assertTrue(database.createTable("test", list));
+
+        // insert into table
+
+        try {
+            statement.executeUpdate("insert into test values (1, 'test 1')");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        };
+
+        // query from table
+        try {
+            statement.executeQuery("SELECT * from test");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        };
+
+        // will return false if you try to create a table that already exists
+        assertFalse(database.createTable("test", list));
+    }
+
     // TODO: Fix this test
 
-    //@Test
-    //public void createTable() {
-    //    ArrayList<ArrayList<String>> list = new ArrayList<>(2);
-    //    list.add(0, new ArrayList<String>(Arrays.asList("key", "integer")));
-    //    list.add(0, new ArrayList<String>(Arrays.asList("name", "string")));
-    //    assertTrue(database.createTable("test", list));
-    //
-    //    Statement statement = database.createStatement();
-    //
-    //    assertDoesNotThrow(() -> statement.executeUpdate("insert into test values (1, '420blazin')"));
-    //    assertDoesNotThrow(() -> statement.executeQuery("SELECT * from test"));
-    //    assertFalse(database.createTable("test", list));
-    //}
+    @Test
+    public void deleteTable() {
 
-    // TODO: Fix this test
+        Statement statement = database.createStatement();
 
-    //@Test
-    //public void deleteTable() {
-    //    database.deleteTable("test");
-    //
-    //    Statement statement = database.createStatement();
-    //    assertDoesNotThrow(() -> statement.executeUpdate("create table test (id integer, name string)"));
-    //    assertDoesNotThrow(() -> statement.executeUpdate("drop table test"));
-    //
-    //}
+        // Delete table if currently exists
+        try {
+            statement.executeUpdate("drop table if exists test");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
-//    @AfterAll
-//    public void deleteMockTables() {
-//    }
+        // use deleteTable method on a non-existing table
+        database.deleteTable("test");
+
+        // create a table
+        try {
+            statement.executeUpdate("create table test (id integer, name string)");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        };
+
+        // use deleteTable method on an existing table
+        database.deleteTable("test");
+
+    }
+
 }

@@ -5,7 +5,6 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({
         HospitalBedTest.class,
         ClerkTest.class,
-        DaoPatientImplTest.class,
         DatabaseTest.class,
         InformationGeneratorTest.class,
         PatientTest.class,
