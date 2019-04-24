@@ -76,4 +76,6 @@ public abstract class Person {
         this.uniqueId = uniqueID;
     }
 
+    public abstract String[] getPersonInformation();
+
 }
