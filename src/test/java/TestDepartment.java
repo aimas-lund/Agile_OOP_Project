@@ -1,5 +1,3 @@
-package tests;
-
 import exceptions.ExceededCapacityException;
 import exceptions.UnavailableBedException;
 import management.*;
