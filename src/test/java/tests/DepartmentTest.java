@@ -1,13 +1,18 @@
+package tests;
+
 import exceptions.ExceededCapacityException;
 import exceptions.UnavailableBedException;
-import management.*;
-
+import management.Bed;
+import management.Department;
+import management.Patient;
+import management.Staff;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 
-public class TestDepartment {
+public class DepartmentTest {
 
     // Initiations
     private Department departmentWithCapacity10;
@@ -155,5 +160,23 @@ public class TestDepartment {
     @Test
     void bedNotFoundTest() {
         assertThrows(ArrayIndexOutOfBoundsException.class, () -> departmentWithCapacity10.assign(patient1, 10));
+    }
+
+    @Test
+    void patientInBedWithoutBedID() {
+        try {
+            departmentWithCapacity10.move(patient1);
+            departmentWithCapacity10.move(patient1);
+        } catch (ExceededCapacityException e) {
+            assertTrue(e instanceof ExceededCapacityException);
+        }
+
+    }
+
+    @Test
+    void getAvailableBedExceptionTest() {
+        assertDoesNotThrow(() -> departmentWithCapacity1.assign(patient1));
+        assertThrows(ExceededCapacityException.class, () -> departmentWithCapacity1.getAvailableBed());
+
     }
 }

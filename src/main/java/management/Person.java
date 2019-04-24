@@ -13,7 +13,16 @@ public abstract class Person {
     private int gender;
     private String homeAddress;
     private int phoneNumber;
-    private int uniqueId;
+    private String uniqueId;
+
+    Person() {
+
+    }
+
+    Person(String name, String surname) {
+        this.name = name;
+        this.surname = surname;
+    }
 
     public String getName() {
         return name;
@@ -60,20 +69,22 @@ public abstract class Person {
     }
 
     void setPhoneNumber(int phoneNumber) throws FormatException {
+        // Danish phone numbers for now
         if (String.valueOf(phoneNumber).length() == 8) {
             this.phoneNumber = phoneNumber;
         } else {
-            // TODO: Add exception for invalid phone number
             throw new FormatException("Wrong phone number");
         }
     }
 
-    public int getUniqueId() {
+    public String getUniqueId() {
         return uniqueId;
     }
 
-    void setUniqueId(int uniqueID) {
+    void setUniqueId(String uniqueID) {
         this.uniqueId = uniqueID;
     }
+
+    public abstract String[] getPersonInformation();
 
 }

@@ -4,18 +4,19 @@ import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import exceptions.PersonAlreadyRegisteredException;
 import management.*;
+import cucumber.api.java.Before;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
 import static org.junit.Assert.*;
 
 public class RegistrationSteps {
-    private Patient registeredPatient = new Patient();
-    private Patient unregisteredPatient = new Patient();
+    private Patient registeredPatient;
+    private Patient unregisteredPatient;
     private Department department = new Department();
     private Clerk clerk = new Clerk();
     private ICTOfficer ictOfficer = new ICTOfficer();
@@ -23,13 +24,37 @@ public class RegistrationSteps {
     private Staff unregisteredStaff = new Staff();
     private Doctor doctor = new Doctor();
 
+    @Before
+    public void setUp() {
+        registeredPatient = new Patient(
+                "Thor",
+                "Odin",
+                new Date(1337),
+                1,
+                "Asgaard 23",
+                45231232);
+        unregisteredPatient = new Patient(
+                "Dank",
+                "Meister",
+                new Date(420),
+                0,
+                "Groove street 23",
+                13371337);
+    }
+
     @Given("a new patient")
     public void aNewPatient() {
         // Get old patient
         Patient oldPatient = this.registeredPatient;
 
         // Make new patient
-        this.registeredPatient = new Patient();
+        this.registeredPatient = new Patient(
+                "Freja",
+                "Sif",
+                new Date(230),
+                0,
+                "Asgaard 16",
+                45231252);
 
         // Check that they aren't the same
         assertNotSame(oldPatient, registeredPatient);
@@ -86,10 +111,6 @@ public class RegistrationSteps {
 
     @Then("the patient should get a unique ID")
     public void thePatientShouldGetAUniqueID() {
-        // Testing purposes
-        GregorianCalendar cal = new GregorianCalendar();
-        cal.set(1995, Calendar.APRIL, 20);
-
         // Clerk registers 2 patients, and they get a unique ID
         clerk.registerPerson(registeredPatient, department);
         clerk.registerPerson(unregisteredPatient, department);  // Don't mind the name

@@ -1,8 +1,12 @@
 Feature: Database
   Handles everything related to the database, not querying.
 
-  Scenario: A hospital is connected to the database
-    Given a hospital
-    And the hospital does not have connection to the database
-    When a hospital is instantiated
-    Then a hospital is connected to the database
+  Scenario: a user adds a patient to the database
+  Given a user
+  When a new patient is admitted to the hospital
+  Then the user should add the patient to the database
+
+  Scenario: a user adds a staff to the database
+    Given a user
+    When a new staff is hired to the hospital
+    Then the user should add the staff to the database

@@ -1,6 +1,8 @@
 package management;
 
-import exceptions.*;
+import exceptions.ExceededCapacityException;
+import exceptions.UnavailableBedException;
+
 import java.util.ArrayList;
 
 public class Department extends Hospital {
@@ -12,7 +14,7 @@ public class Department extends Hospital {
 	private ArrayList<Staff> staff = new ArrayList<Staff>();
 	private Bed[] beds;
 
-	public Department(String name,int capacity) {
+	public Department(String name, int capacity) {
 		this.name = name;
 		this.capacity = capacity;
 		this.beds = new Bed[capacity];
