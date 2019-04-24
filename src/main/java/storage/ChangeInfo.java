@@ -1,5 +1,7 @@
 package storage;
 
+import org.springframework.security.access.prepost.PreAuthorize;
+
 public class ChangeInfo {
 
     @PreAuthorize("hasRole('doctor') or hasRole('ict')")
@@ -14,6 +16,7 @@ public class ChangeInfo {
         //Use Interface IRegister with method
             // registerPerson(Person, Department)
             // addUniqueIdToPerson (person)
+
     }
     @PreAuthorize("hasRole('clerk') or hasRole('ict')")
     public void ChangePatientData(){

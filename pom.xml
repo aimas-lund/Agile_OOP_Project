@@ -21,7 +21,6 @@
         </plugins>
     </build>
 
-
     <dependencies>
         <dependency>
             <groupId>org.xerial</groupId>
@@ -59,6 +58,19 @@
             <artifactId>cucumber-junit</artifactId>
             <version>4.2.6</version>
             <scope>test</scope>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-core -->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-core</artifactId>
+            <version>3.0.1.RELEASE</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.springframework/spring-aop -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-aop</artifactId>
+            <version>${org.springframework.version}</version>
         </dependency>
 
     </dependencies>

@@ -1,5 +1,7 @@
 package storage;
 
+import org.springframework.security.access.prepost.PreAuthorize;
+
 public class Query {
     @PreAuthorize("hasRole('doctor') or hasRole('ict')")
     public void getPatientsData(){
