@@ -64,6 +64,7 @@ public class DatabaseTest {
         assertTrue(database.createTable("test", list));
 
         // insert into table
+
         try {
             statement.executeUpdate("insert into test values (1, 'test 1')");
         } catch (SQLException e) {
