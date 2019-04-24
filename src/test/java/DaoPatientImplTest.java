@@ -1,7 +1,5 @@
-package tests;
-
 import management.Patient;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import storage.Dao;
 import storage.DaoPatientImpl;
 
@@ -11,7 +9,7 @@ class DaoPatientImplTest {
     private Dao<Patient> dao = new DaoPatientImpl<>();
 
     @Test
-    void update() {
+    public void update() {
         // TODO: Finish this
 
         Patient patient = new Patient(

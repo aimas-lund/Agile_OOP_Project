@@ -1,9 +1,6 @@
-package tests;
-
 import org.junit.After;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
 import storage.Database;
 
 import java.sql.SQLException;
@@ -18,36 +15,36 @@ import static org.junit.jupiter.api.Assertions.*;
 class DatabaseTest {
     private Database database;
 
-    @BeforeEach
-    void setUp() {
+    @Before
+    public void setUp() {
         database = new Database();
     }
 
     @Test
-    void disconnectFromDB() {
+    public void disconnectFromDB() {
         database.disconnectFromDB();
         assertFalse(database.hasConnection());
     }
 
     @Test
-    void hasConnection() {
+    public void hasConnection() {
         assertTrue(database.hasConnection());
     }
 
     @Test
-    void createStatement() {
+    public void createStatement() {
         Statement statement = database.createStatement();
         assertNotNull(statement);
     }
 
     @Test
-    void connectToDB() {
+    public void connectToDB() {
         database.connectToDB();
         assertTrue(database.hasConnection());
     }
 
     @Test
-    void createTable() {
+    public void createTable() {
         ArrayList<ArrayList<String>> list = new ArrayList<>(2);
         list.add(0, new ArrayList<String>(Arrays.asList("key", "integer")));
         list.add(0, new ArrayList<String>(Arrays.asList("name", "string")));
@@ -61,7 +58,7 @@ class DatabaseTest {
     }
 
     @Test
-    void deleteTable() {
+    public void deleteTable() {
         database.deleteTable("test");
 
         Statement statement = database.createStatement();
@@ -71,6 +68,6 @@ class DatabaseTest {
     }
 
 //    @AfterAll
-//    void deleteMockTables() {
+//    public void deleteMockTables() {
 //    }
 }
