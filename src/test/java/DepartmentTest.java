@@ -1,16 +1,13 @@
-package tests;
-
 import exceptions.ExceededCapacityException;
 import exceptions.UnavailableBedException;
 import management.Bed;
 import management.Department;
 import management.Patient;
 import management.Staff;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
+import static junit.framework.TestCase.*;
 
 public class DepartmentTest {
 
@@ -22,8 +19,8 @@ public class DepartmentTest {
     private Patient patient2;
     private Staff staff;
 
-    @BeforeEach
-    void setUp() {
+    @Before
+    public void setUp() {
         patient2 = new Patient();
         patient1 = new Patient();
         staff = new Staff();
@@ -34,149 +31,144 @@ public class DepartmentTest {
 
     // Test Getters
     @Test
-    void getNameTest() {
+    public void getNameTest() {
         assertSame("ER", departmentWithCapacity10.getName());
     }
     @Test
-    void getCapacityTest() {
+    public void getCapacityTest() {
         assertSame(10, departmentWithCapacity10.getCapacity());
     }
     @Test
-    void getBedsTest() {
+    public void getBedsTest() {
         assertTrue(departmentWithCapacity10.getBeds() instanceof Bed[]);
     }
     @Test
-    void getAvailableBedsTest() {
+    public void getAvailableBedsTest() {
         assertSame(departmentWithCapacity10.getAvailableBeds(), 10);
     }
     @Test
-    void getPatientsTest() {
+    public void getPatientsTest() {
         assertNotNull(departmentWithCapacity10.getPatients());
     }
     @Test
-    void getStaffTest() {
+    public void getStaffTest() {
         assertNotNull(departmentWithCapacity10.getStaff());
     }
     @Test
-    void getBedTest() throws ExceededCapacityException {
+    public void getBedTest() throws ExceededCapacityException {
         departmentWithCapacity10.assign(patient1);
         assertTrue(departmentWithCapacity10.getPatientBed(patient1) instanceof Bed);
     }
     @Test
-    void patientInBedTest() throws ExceededCapacityException {
+    public void patientInBedTest() throws ExceededCapacityException {
         departmentWithCapacity10.assign(patient1);
         assertTrue(departmentWithCapacity10.patientInBed(patient1));
     }
 
     // Test functional methods
     @Test
-    void availableBedsTest1() {
+    public void availableBedsTest1() {
         assertTrue(departmentWithCapacity10.availableBeds());
     }
     @Test
-    void availableBedsTest2() {
+    public void availableBedsTest2() {
         assertFalse(departmentWithNoCapacity.availableBeds());
     }
     @Test
-    void addPatientTest() {
+    public void addPatientTest() {
         departmentWithCapacity10.add(patient1);
         assertTrue(departmentWithCapacity10.getPatients().contains(patient1));
     }
     @Test
-    void removePatientTest() {
+    public void removePatientTest() {
         departmentWithCapacity10.add(patient1);
         departmentWithCapacity10.remove(patient1);
         assertFalse(departmentWithCapacity10.getPatients().contains(patient1));
     }
     @Test
-    void addStaffTest() {
+    public void addStaffTest() {
         departmentWithCapacity10.add(staff);
         assertTrue(departmentWithCapacity10.getStaff().contains(staff));
     }
     @Test
-    void removeStaffTest() {
+    public void removeStaffTest() {
         departmentWithCapacity10.add(staff);
         departmentWithCapacity10.remove(staff);
         assertFalse(departmentWithCapacity10.getStaff().contains(staff));
     }
     @Test
-    void assignPatientTest1() throws ExceededCapacityException {
+    public void assignPatientTest1() throws ExceededCapacityException {
         departmentWithCapacity10.assign(patient1);
         assertTrue(departmentWithCapacity10.availableBeds());
     }
     @Test
-    void assignPatientTest2() throws ExceededCapacityException {
+    public void assignPatientTest2() throws ExceededCapacityException {
         departmentWithCapacity1.assign(patient1);
         assertTrue(true);
     }
     @Test
-    void assignPatientTest3() throws ExceededCapacityException {
+    public void assignPatientTest3() throws ExceededCapacityException {
         departmentWithCapacity10.assign(patient1);
         assertTrue(departmentWithCapacity10.patientInBed(patient1));
     }
     @Test
-    void assignPatientTest4() throws ExceededCapacityException { // It is expected that the patient is registered, once put in a bed
+    public void assignPatientTest4() throws ExceededCapacityException { // It is expected that the patient is registered, once put in a bed
         departmentWithCapacity10.assign(patient1);
         assertTrue(departmentWithCapacity10.getPatients().contains(patient1));
     }
     @Test
-    void removePatientTest1() throws ExceededCapacityException {
+    public void removePatientTest1() throws ExceededCapacityException {
         departmentWithCapacity1.assign(patient1);
         departmentWithCapacity1.removeFromBed(patient1);
         assertTrue(departmentWithCapacity1.availableBeds());
     }
     @Test
-    void removePatientTest2() throws ExceededCapacityException {
+    public void removePatientTest2() throws ExceededCapacityException {
         departmentWithCapacity1.assign(patient1);
         departmentWithCapacity1.remove(patient1);
         assertFalse(departmentWithCapacity1.patientInBed(patient1));
     }
     @Test
-    void assignPatientToBedTest() throws UnavailableBedException {
+    public void assignPatientToBedTest() throws UnavailableBedException {
         departmentWithCapacity1.assign(patient1, 0);
         assertFalse(departmentWithCapacity1.availableBeds());
     }
     @Test
-    void movePatientTest1() throws UnavailableBedException {
+    public void movePatientTest1() throws UnavailableBedException {
         departmentWithCapacity10.assign(patient1, 3);
         departmentWithCapacity10.move(patient1, 2);
         assertEquals(departmentWithCapacity10.getBeds()[2].getPatient(), patient1);
     }
     @Test
-    void movePatientTest2() throws UnavailableBedException {
+    public void movePatientTest2() throws UnavailableBedException {
         departmentWithCapacity10.assign(patient1, 3);
         departmentWithCapacity10.move(patient1, 2);
         assertNull(departmentWithCapacity10.getBeds()[3].getPatient());
     }
-    @Test
-    void filledCapacityTest() {
-        assertThrows(ExceededCapacityException.class, () -> departmentWithNoCapacity.assign(patient1));
+    @Test (expected = ExceededCapacityException.class)
+    public void filledCapacityTest() throws ExceededCapacityException {
+        departmentWithNoCapacity.assign(patient1);
     }
-    @Test
-    void unavailableBedTest() throws UnavailableBedException {
+    @Test (expected = UnavailableBedException.class)
+    public void unavailableBedTest() throws UnavailableBedException {
         departmentWithCapacity10.assign(patient1, 4);
-        assertThrows(UnavailableBedException.class, () -> departmentWithCapacity10.assign(patient2, 4));
+        departmentWithCapacity10.assign(patient2, 4);
     }
-    @Test
-    void bedNotFoundTest() {
-        assertThrows(ArrayIndexOutOfBoundsException.class, () -> departmentWithCapacity10.assign(patient1, 10));
+    @Test (expected = ArrayIndexOutOfBoundsException.class)
+    public void bedNotFoundTest() throws UnavailableBedException {
+        departmentWithCapacity10.assign(patient1, 10);
     }
 
-    @Test
-    void patientInBedWithoutBedID() {
-        try {
-            departmentWithCapacity10.move(patient1);
-            departmentWithCapacity10.move(patient1);
-        } catch (ExceededCapacityException e) {
-            assertTrue(e instanceof ExceededCapacityException);
-        }
+    @Test (expected = ExceededCapacityException.class)
+    public void patientInBedWithoutBedID() throws ExceededCapacityException {
+        departmentWithCapacity1.assign(patient1);
+        departmentWithCapacity1.move(patient1);
 
     }
 
-    @Test
-    void getAvailableBedExceptionTest() {
-        assertDoesNotThrow(() -> departmentWithCapacity1.assign(patient1));
-        assertThrows(ExceededCapacityException.class, () -> departmentWithCapacity1.getAvailableBed());
-
+    @Test (expected = ExceededCapacityException.class)
+    public void getAvailableBedExceptionTest() throws ExceededCapacityException {
+        departmentWithCapacity1.assign(patient1);
+        departmentWithCapacity1.getAvailableBed();
     }
 }

@@ -1,35 +1,37 @@
-package tests;
-
 import management.Clerk;
 import management.Department;
 import management.Patient;
 import management.Person;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static junit.framework.TestCase.*;
 
-class ClerkTest {
+public class ClerkTest {
     private Clerk clerk = new Clerk();
     private Person patient;
     private Department department;
 
 
-    @BeforeEach
-    void setUp() {
+    @Before
+    public void setUp() {
         patient = new Patient();
         department = new Department();
     }
 
     @Test
-    void registerPerson() {
+    public void registerPerson() {
         assertTrue(clerk.registerPerson(patient, department));
+
+    }
+    @Test
+    public void registerPersonToMultipleDepartments() {
+        clerk.registerPerson(patient, department);
         assertFalse(clerk.registerPerson(patient, department));
     }
 
     @Test
-    void setPersonPhoneNumber() {
+    public void setPersonPhoneNumber() {
         int correct_phonenumber = 42042069;
         int incorrect_phonenumber = 420420693;
 
