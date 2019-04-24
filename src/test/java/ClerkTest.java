@@ -5,7 +5,10 @@ import management.Person;
 import org.junit.Before;
 import org.junit.Test;
 
-import static junit.framework.TestCase.*;
+import java.util.Date;
+
+import static junit.framework.TestCase.assertFalse;
+import static junit.framework.TestCase.assertTrue;
 
 public class ClerkTest {
     private Clerk clerk = new Clerk();
@@ -15,7 +18,13 @@ public class ClerkTest {
 
     @Before
     public void setUp() {
-        patient = new Patient();
+        patient = new Patient(
+                "Oline",
+                "Fischersen",
+                new Date(2019),
+                1,
+                "DTUStreet 56",
+                45231298);
         department = new Department();
     }
 
