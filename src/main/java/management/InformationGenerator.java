@@ -16,8 +16,9 @@ public class InformationGenerator {
 
     private static String generateInitials(Person person) {
         getPersonInformation(person);
-        String inits = name.substring(0, 2).toUpperCase() + surname.substring(0, 2).toUpperCase();
+        String inits;
 
+        System.out.println("I am being called by Travis...");
 
         for (char nameChar : name.substring(1).toCharArray()) {
             for (char surnameChar : surname.substring(1).toCharArray()) {
