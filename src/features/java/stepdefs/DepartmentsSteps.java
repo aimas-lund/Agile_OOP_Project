@@ -4,16 +4,17 @@ package stepdefs;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+
+import static org.junit.jupiter.api.Assertions.*;
+
 import management.*;
 
 import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 
 public class DepartmentsSteps {
 
-    Hospital h = new Hospital();
+    Hospital h = new Hospital ();
     Department existingDept = new Department ();
     Department newDept = new Department ();
     Staff s = new Staff ();
@@ -34,7 +35,7 @@ public class DepartmentsSteps {
     @Then("the hospital should be able to create a new department")
     public void theHospitalShouldBeAbleToCreateANewDepartment() {
         h.add (newDept);
-        ArrayList<Department> depts = h.getDepartments();
+        ArrayList<Department> depts = h.getDepts();
         assertTrue (depts.contains (newDept));
     }
 
@@ -46,7 +47,7 @@ public class DepartmentsSteps {
     @Then("the hospital should be able to remove the department")
     public void theHospitalShouldBeAbleToRemoveTheDepartment() {
         h.remove (existingDept);
-        ArrayList<Department> depts = h.getDepartments();
+        ArrayList<Department> depts = h.getDepts();
         assertFalse (depts.contains (existingDept));
         
     }
@@ -103,13 +104,13 @@ public class DepartmentsSteps {
     @Given("an existing department")
     public void anExistingDepartment() {
         h.add (existingDept);
-        ArrayList<Department> depts = h.getDepartments();
+        ArrayList<Department> depts = h.getDepts();
         assertTrue (depts.contains (existingDept));
     }
 
     @Given("a nonexisting department")
     public void aNonexistingDepartment() {
-        ArrayList<Department> depts = h.getDepartments();
+        ArrayList<Department> depts = h.getDepts();
         assertFalse (depts.contains (newDept));
     }
 }
