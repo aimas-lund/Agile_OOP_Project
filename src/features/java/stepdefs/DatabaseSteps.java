@@ -98,11 +98,23 @@ public class DatabaseSteps {
     @Then("the user should not be able to change the unique ID of that person")
     public void notChangeUniqueID() {
         String UniqueIdbefore = patient.getUniqueId();
-        assertEquals(UniqueIdbefore ,patient.getUniqueId());
+        assertEquals(UniqueIdbefore, patient.getUniqueId());
         //You can not change ID.
-
-
     }
+
+    @When("the user need specific information")
+    public void theUserNeedSpecificInformation() {
+
+        }
+
+    @Then("the user should be able to search by keywords or filters in the database")
+    public void theUserShouldSearch() {
+
+        }
+
+
+
+
 
 //
 //    @Given("a hospital")

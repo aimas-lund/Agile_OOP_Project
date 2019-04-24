@@ -15,3 +15,9 @@ Feature: Database
     Given a user
     When changing a person's information
     Then the user should not be able to change the unique ID of that person
+
+
+  Scenario
+    Given a user
+    When the user need specific information
+    Then the user should be able to search by keywords or filters in the database.

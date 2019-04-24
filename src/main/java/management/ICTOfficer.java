@@ -39,7 +39,7 @@ public class ICTOfficer extends Staff implements IRegistering, IChangeInformatio
         setPersonInformation(doctor, name, surname, birthdate, gender, homeAddress, phoneNumber);
     }
 
-    public void addUniqueIdToPerson(Person person) {
+    private void addUniqueIdToPerson(Person person) {
         person.setUniqueId(InformationGenerator.generateUniqueID());
     }
 
