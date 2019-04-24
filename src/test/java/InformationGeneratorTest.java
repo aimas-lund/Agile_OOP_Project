@@ -1,5 +1,3 @@
-package tests;
-
 import management.InformationGenerator;
 import management.Patient;
 import management.Person;
@@ -8,9 +6,9 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class InformationGeneratorTest {
-    Person person = new Patient("Ole", "Bajersen");
-    Person person1 = new Patient("Ole", "Ballermann");
-    Person person2 = new Patient("Ole", "Baldur");
+    private Person person = new Patient("Ole", "Bajersen");
+    private Person person1 = new Patient("Ole", "Ballermann");
+    private Person person2 = new Patient("Ole", "Baldur");
 
     @Test
     void generateEmailWithTwoOverlappingInitials() {
