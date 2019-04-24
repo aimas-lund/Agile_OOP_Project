@@ -7,8 +7,7 @@ import management.Staff;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
+import static junit.framework.TestCase.*;
 
 public class DepartmentTest {
 
@@ -160,21 +159,16 @@ public class DepartmentTest {
         departmentWithCapacity10.assign(patient1, 10);
     }
 
-    @Test
-    public void patientInBedWithoutBedID() {
-        try {
-            departmentWithCapacity10.move(patient1);
-            departmentWithCapacity10.move(patient1);
-        } catch (ExceededCapacityException e) {
-            assertTrue(e instanceof ExceededCapacityException);
-        }
+    @Test (expected = ExceededCapacityException.class)
+    public void patientInBedWithoutBedID() throws ExceededCapacityException {
+        departmentWithCapacity10.move(patient1);
+        departmentWithCapacity10.move(patient1);
 
     }
 
-    @Test
-    public void getAvailableBedExceptionTest() {
-        assertDoesNotThrow(() -> departmentWithCapacity1.assign(patient1));
-        assertThrows(ExceededCapacityException.class, () -> departmentWithCapacity1.getAvailableBed());
-
+    @Test (expected = ExceededCapacityException.class)
+    public void getAvailableBedExceptionTest() throws ExceededCapacityException {
+        departmentWithCapacity1.assign(patient1);
+        departmentWithCapacity1.getAvailableBed();
     }
 }

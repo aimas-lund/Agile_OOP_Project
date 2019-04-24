@@ -1,7 +1,7 @@
 import management.Patient;
 import org.junit.Test;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static junit.framework.TestCase.assertTrue;
 
 class PatientTest {
     Patient patient = new Patient();
