@@ -10,6 +10,4 @@ class PatientTest {
     public void isAlive() {
         assertTrue(patient.isAlive());
     }
-
-
 }

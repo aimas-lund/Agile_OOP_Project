@@ -3,7 +3,7 @@ import management.Patient;
 import management.Person;
 import org.junit.Test;
 
-class InformationGeneratorTest {
+public class InformationGeneratorTest {
     private Person person = new Patient("Ole", "Bajersen");
     private Person person1 = new Patient("Ole", "Ballermann");
     private Person person2 = new Patient("Ole", "Baldur");

@@ -12,7 +12,7 @@ import java.util.List;
 
 import static junit.framework.TestCase.*;
 
-class DatabaseTest {
+public class DatabaseTest {
     private Database database;
 
     @Before

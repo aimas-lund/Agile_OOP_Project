@@ -7,7 +7,7 @@ import org.junit.Test;
 
 import static junit.framework.TestCase.*;
 
-class ClerkTest {
+public class ClerkTest {
     private Clerk clerk = new Clerk();
     private Person patient;
     private Department department;
