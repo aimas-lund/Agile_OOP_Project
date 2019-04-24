@@ -9,11 +9,7 @@ import org.junit.Test;
 
 import static junit.framework.TestCase.*;
 
-
 public class TestDepartment {
-    static {
-        System.out.println("Something else");
-    }
     // Initiations
     private Department departmentWithCapacity10;
     private Department departmentWithCapacity1;

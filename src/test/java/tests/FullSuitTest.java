@@ -2,7 +2,6 @@ package tests;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
-import tests.HospitalBedTest;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
@@ -11,8 +10,4 @@ import tests.HospitalBedTest;
 })
 
 public class FullSuitTest {
-    static {
-        System.out.println("Something");
-    }
-
 }
