@@ -35,8 +35,9 @@ public class HospitalBedTest {
 
     @Test
     void fillOccupiedBed() {
-        bed.fill (new Patient ());
-        assertFalse (bed.fill (new Patient ()));
+        Patient p = new Patient();
+        bed.fill(p);
+        assertFalse(bed.fill(p));
 
     }
 
