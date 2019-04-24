@@ -1,16 +1,11 @@
 package management;
 
-import storage.Database;
-
 import java.util.ArrayList;
 
 public class Hospital {
-    private Database database = new Database();
     private ArrayList<Department> departments = new ArrayList<Department>();
 
     public Hospital() {
-        // Connect hospital to database
-        database.connectoToDB();
     }
 
     public void add(Department d) {
@@ -51,7 +46,4 @@ public class Hospital {
         return departments;
     }
 
-    public Database getDatabase() {
-        return database;
-    }
 }

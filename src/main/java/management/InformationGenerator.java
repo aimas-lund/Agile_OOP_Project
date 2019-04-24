@@ -18,8 +18,8 @@ public class InformationGenerator {
         getPersonInformation(person);
         String inits = name.substring(0, 2).toUpperCase() + surname.substring(0, 2).toUpperCase();
 
-        int nameEndindex = 2;
-        int surnameEndindex = 2;
+        int nameEndindex = 1;
+        int surnameEndindex = 1;
 
         while (initials.contains(inits)) {
             if (nameEndindex >= surnameEndindex) {
@@ -29,7 +29,7 @@ public class InformationGenerator {
             }
 
             // TODO: split into 4 characters and concat, always start at 0 index, only increment end index
-            inits = (name.substring(0, 0) + name.charAt(nameEndindex) + surname.charAt(0) + surname.charAt(surnameEndindex));
+            inits = (name.substring(0, 1) + name.charAt(nameEndindex) + surname.charAt(0) + surname.charAt(surnameEndindex));
             inits = inits.toUpperCase();
         }
 
