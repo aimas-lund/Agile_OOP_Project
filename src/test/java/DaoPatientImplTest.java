@@ -1,20 +1,18 @@
-package tests;
-
 import management.Patient;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import storage.Dao;
 import storage.DaoPatientImpl;
 
 import java.util.Date;
 
 class DaoPatientImplTest {
-    private Dao<Patient> dao = new DaoPatientImpl<>();
+    Dao dao = new DaoPatientImpl();
 
     @Test
-    void update() {
-        // TODO: Finish this
+    public void update() {
 
-        Patient patient = new Patient(
+
+        Patient patient = new Patient(1,
                 "Bobby",
                 "Fischer",
                 new Date(2019),
