@@ -18,8 +18,6 @@ public class InformationGenerator {
         getPersonInformation(person);
         String inits;
 
-        System.out.println("I am being called by Travis...");
-
         for (char nameChar : name.substring(1).toCharArray()) {
             for (char surnameChar : surname.substring(1).toCharArray()) {
                 inits = (name.substring(0, 1) + nameChar + surname.charAt(0) + surnameChar).toUpperCase();
