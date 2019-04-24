@@ -1,7 +1,7 @@
 import management.InformationGenerator;
 import management.Patient;
 import management.Person;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 class InformationGeneratorTest {
     private Person person = new Patient("Ole", "Bajersen");
