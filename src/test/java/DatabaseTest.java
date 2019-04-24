@@ -1,4 +1,5 @@
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import storage.Database;
@@ -21,8 +22,14 @@ public class DatabaseTest {
         database = new Database();
     }
 
+    @After
+    public void tearDown() {
+        database.disconnectFromDB();
+    }
+
     @Test
     public void disconnectFromDB() {
+        database.connectToDB();
         database.disconnectFromDB();
         assertFalse(database.hasConnection());
     }
@@ -46,7 +53,6 @@ public class DatabaseTest {
 
     @Test
     public void createTable() {
-        Database database = new Database();
         Statement statement = database.createStatement();
 
         // Delete table if currently exists
@@ -69,14 +75,14 @@ public class DatabaseTest {
             statement.executeUpdate("insert into test values (1, 'test 1')");
         } catch (SQLException e) {
             e.printStackTrace();
-        };
+        }
 
         // query from table
         try {
             statement.executeQuery("SELECT * from test");
         } catch (SQLException e) {
             e.printStackTrace();
-        };
+        }
 
         // will return false if you try to create a table that already exists
         assertFalse(database.createTable("test", list));
@@ -86,7 +92,6 @@ public class DatabaseTest {
 
     @Test
     public void deleteTable() {
-
         Statement statement = database.createStatement();
 
         // Delete table if currently exists
@@ -104,7 +109,7 @@ public class DatabaseTest {
             statement.executeUpdate("create table test (id integer, name string)");
         } catch (SQLException e) {
             e.printStackTrace();
-        };
+        }
 
         // use deleteTable method on an existing table
         database.deleteTable("test");
