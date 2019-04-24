@@ -10,3 +10,8 @@ Feature: Database
     Given a user
     When a new staff is hired to the hospital
     Then the user should add the staff to the database
+
+  Scenario: a user should not be able to change a persons ID
+    Given a user
+    When changing a person's information
+    Then the user should not be able to change the unique ID of that person
