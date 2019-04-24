@@ -28,6 +28,14 @@ public class DatabaseSteps {
         // Write code here that turns the phrase above into concrete actions
         throw new cucumber.api.PendingException();
     }
+
+    @When("a new staff is hired to the hospital")
+    public void aNewStaffIsHiredToTheHospital() {
+    }
+
+    @Then("the user should add the staff to the database")
+    public void theUserShouldAddTheStaffToTheDatabase() {
+    }
 //
 //    @Given("a hospital")
 //    public void aHospital() {
