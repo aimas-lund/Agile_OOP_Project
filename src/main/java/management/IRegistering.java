@@ -8,6 +8,4 @@ public interface IRegistering {
 
     <T extends Person> boolean isPersonRegistered(T person, Department department);
 
-    void addUniqueIdToPerson(Person person);
-
 }

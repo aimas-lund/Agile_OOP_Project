@@ -36,7 +36,8 @@ public class Clerk extends Staff implements IRegistering, IChangeInformation {
         return false;
     }
 
-    public void addUniqueIdToPerson(Person person) {
+
+    private void addUniqueIdToPerson(Person person) {
         person.setUniqueId(InformationGenerator.generateUniqueID());
     }
 

@@ -22,6 +22,7 @@ public class DatabaseSteps {
     private ICTOfficer ict;
     private Staff staff;
 
+
     @Before
     public void setUp() {
         department = new Department("Mockdepartment", 10);
@@ -99,6 +100,44 @@ public class DatabaseSteps {
             e.printStackTrace();
         }
     }
+
+
+    @When("changing a person's information")
+    public void changingAPersonsInformation() {
+        department = new Department("Mockdepartment", 10);
+        patient = new Patient(
+                "Simon",
+                "Muuu",
+                new Date(2019),
+                0,
+                "Homestreet 23",
+                45231298);
+        clerk.registerPerson(patient, department);
+        clerk.setPersonSurname(patient, "Moe");
+
+
+    }
+    @Then("the user should not be able to change the unique ID of that person")
+    public void notChangeUniqueID() {
+        String UniqueIdbefore = patient.getUniqueId();
+        assertEquals(UniqueIdbefore, patient.getUniqueId());
+        //You can not change ID.
+    }
+
+    @When("the user need specific information")
+    public void theUserNeedSpecificInformation() {
+
+        }
+
+    @Then("the user should be able to search by keywords or filters in the database")
+    public void theUserShouldSearch() {
+
+        }
+
+
+
+
+
 //
 //    @Given("a hospital")
 //    public void aHospital() {
