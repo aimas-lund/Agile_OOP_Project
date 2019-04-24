@@ -10,10 +10,11 @@ import management.Patient;
 import storage.Database;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Date;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static junit.framework.TestCase.*;
 
 public class DatabaseSteps {
 
@@ -50,10 +51,12 @@ public class DatabaseSteps {
         Database database = new Database();
         Statement statement = database.createStatement();
 
-        assertDoesNotThrow(() -> {
-            String sql = "select * from patients where uniqueId = '%s'";
-            sql = String.format(sql, patient.getUniqueId());
-            ResultSet rs = statement.executeQuery(sql);
+        String sql = "select * from patients where uniqueId = '%s'";
+        sql = String.format(sql, patient.getUniqueId());
+        ResultSet rs;
+
+        try {
+            rs = statement.executeQuery(sql);
 
             assertTrue(rs.next());
             while (rs.next()) {
@@ -61,7 +64,10 @@ public class DatabaseSteps {
                 assertEquals("Fischer", rs.getString("surname"));
             }
 
-        });
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @When("a new staff is hired to the hospital")

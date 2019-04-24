@@ -7,10 +7,11 @@ import java.sql.Statement;
 
 public class DaoPatientImpl<T extends Patient> implements Dao<T> {
     private final Database database = new Database();
-    private Statement statement = database.createStatement();
 
     @Override
     public void update(T patient) {
+        database.connectToDB();
+
         String[] information = patient.getPersonInformation();
         String sql = "UPDATE patients set uniqueid = %s, name = %s, surname = %s, birthdate = %s, " +
                 "gender = %s, homeaddress = %s, phonenumber = %s where uniqueId = %s";
@@ -22,12 +23,7 @@ public class DaoPatientImpl<T extends Patient> implements Dao<T> {
 
         sql = String.format(sql, patient.getUniqueId());
 
-        try {
-            Statement statement = database.createStatement();
-            statement.executeUpdate(sql);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        executeStatement(sql);
     }
 
     @Override
@@ -37,6 +33,8 @@ public class DaoPatientImpl<T extends Patient> implements Dao<T> {
 
     @Override
     public void save(T patient) {
+        database.connectToDB();
+
         String[] information = patient.getPersonInformation();
         String sql = "insert into patients values('%s', '%s', '%s', '%s', '%s', '%s', '%s')";
         for (String value :
@@ -45,12 +43,18 @@ public class DaoPatientImpl<T extends Patient> implements Dao<T> {
         }
 //        sql = String.format(sql, information);
 
+        executeStatement(sql);
+    }
+
+    private void executeStatement(String sql) {
         try {
             Statement statement = database.createStatement();
             statement.executeUpdate(sql);
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        database.disconnectFromDB();
     }
 
     @Override
