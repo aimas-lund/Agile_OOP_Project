@@ -1,6 +1,7 @@
 package storage;
 
 public interface Dao<T> {
+
     public void update(T obj);
     public void update(T obj, String[] params);
 
