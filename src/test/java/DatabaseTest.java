@@ -56,6 +56,7 @@ public class DatabaseTest {
             e.printStackTrace();
         }
 
+
         // create new table structure named "test"
         ArrayList<ArrayList<String>> list = new ArrayList<>(2);
         list.add(0, new ArrayList<String>(Arrays.asList("key", "integer")));
