@@ -13,7 +13,7 @@ public abstract class Person {
     private int gender;
     private String homeAddress;
     private int phoneNumber;
-    private int uniqueId;
+    private String uniqueId;
 
     Person() {
 
@@ -77,11 +77,11 @@ public abstract class Person {
         }
     }
 
-    public int getUniqueId() {
+    public String getUniqueId() {
         return uniqueId;
     }
 
-    void setUniqueId(int uniqueID) {
+    void setUniqueId(String uniqueID) {
         this.uniqueId = uniqueID;
     }
 

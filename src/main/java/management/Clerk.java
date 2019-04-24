@@ -2,6 +2,8 @@ package management;
 
 import exceptions.FormatException;
 import exceptions.PersonAlreadyRegisteredException;
+import storage.Dao;
+import storage.DaoPatientImpl;
 
 import java.util.Date;
 
@@ -13,8 +15,12 @@ public class Clerk extends Staff implements IRegistering, IChangeInformation {
             return false;
         }
 
-        department.getPatients().add((Patient) person);
         addUniqueIdToPerson(person);
+
+        Dao<Patient> dao = new DaoPatientImpl<>();
+
+        dao.save((Patient) person);
+        department.getPatients().add((Patient) person);
 
         return true;
     }
@@ -23,7 +29,7 @@ public class Clerk extends Staff implements IRegistering, IChangeInformation {
         // Search for same Unique ID
         // TODO: Revisit for efficiency (loop is always run completely. O(n))
         for (Patient patient : department.getPatients()) {
-            if (patient.getUniqueId() == person.getUniqueId()) {
+            if (patient.getUniqueId().equals(person.getUniqueId())) {
                 return true;
             }
         }

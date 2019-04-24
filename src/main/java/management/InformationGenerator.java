@@ -2,12 +2,12 @@ package management;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class InformationGenerator {
     private static String name;
     private static String surname;
-    private static int uniqueId;
-    private static List<String> initials = new ArrayList<String>(1);
+    private static List<String> initials = new ArrayList<>(1);
 
     private static void getPersonInformation(Person person) {
         name = person.getName();
@@ -39,13 +39,11 @@ public class InformationGenerator {
 
     public static String generateEmail(Person person) {
         String initials = generateInitials(person);
-
         return initials + "@agile_hospital.com";
     }
 
-    static int generateUniqueID() {
-        uniqueId++;
-        return uniqueId;
+    static String generateUniqueID() {
+        return UUID.randomUUID().toString();
     }
 
 }

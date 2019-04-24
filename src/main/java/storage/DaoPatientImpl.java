@@ -12,13 +12,15 @@ public class DaoPatientImpl<T extends Patient> implements Dao<T> {
     @Override
     public void update(T patient) {
         String[] information = patient.getPersonInformation();
-        String sql = "UPDATE test set uniqueid = %s, name = %s, surname = %s, birthdate = %s, " +
-                "gender = %s, homeaddress = %s, phonenumber = %s";
+        String sql = "UPDATE patients set uniqueid = %s, name = %s, surname = %s, birthdate = %s, " +
+                "gender = %s, homeaddress = %s, phonenumber = %s where uniqueId = %s";
 
         for (String value :
                 information) {
             sql = sql.replaceFirst("%s", value.replaceAll(" ", "_"));
         }
+
+        sql = String.format(sql, patient.getUniqueId());
 
         try {
             Statement statement = database.createStatement();

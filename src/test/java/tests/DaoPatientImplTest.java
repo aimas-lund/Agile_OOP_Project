@@ -8,13 +8,13 @@ import storage.DaoPatientImpl;
 import java.util.Date;
 
 class DaoPatientImplTest {
-    Dao dao = new DaoPatientImpl();
+    private Dao<Patient> dao = new DaoPatientImpl<>();
 
     @Test
     void update() {
+        // TODO: Finish this
 
-
-        Patient patient = new Patient(1,
+        Patient patient = new Patient(
                 "Bobby",
                 "Fischer",
                 new Date(2019),
