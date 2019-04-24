@@ -147,7 +147,8 @@ public class DatabaseSteps {
         params.put("gender", "0");
 
         ArrayList<Patient> list = dao.find(params);
-        System.out.println(list);
+
+        assertFalse(list.isEmpty());
         }
 
 

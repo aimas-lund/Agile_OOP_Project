@@ -1,7 +1,8 @@
 package management;
 
 import exceptions.FormatException;
-import exceptions.PersonAlreadyRegisteredException;
+import storage.Dao;
+import storage.DaoStaffImpl;
 
 import java.util.Date;
 
@@ -14,10 +15,18 @@ public class ICTOfficer extends Staff implements IRegistering, IChangeInformatio
             return false;
         }
 
-        // Add person to database
-        department.getStaff().add((Staff) person);
+        Dao<Staff> dao = new DaoStaffImpl<>();
+
         // Give unique id
         addUniqueIdToPerson(person);
+
+        // Give person email
+        String email = InformationGenerator.generateEmail((Staff) person);
+        ((Staff) person).setEmail(email);
+
+        // Add person to database
+        dao.save((Staff) person);
+        department.getStaff().add((Staff) person);
         return true;
     }
 

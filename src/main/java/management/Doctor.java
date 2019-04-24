@@ -1,9 +1,15 @@
 package management;
 
+import java.util.Date;
+
 public class Doctor extends Staff {
     private Speciality speciality;
 
     public Doctor() {
+    }
+
+    public Doctor(String name, String surname, Date birthdate, int gender, String homeaddress, int phonenumber) {
+        super(name, surname, birthdate, gender, homeaddress, phonenumber);
     }
 
     public Speciality getSpeciality() {

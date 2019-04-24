@@ -20,6 +20,19 @@ public abstract class Person {
 
     }
 
+    public Person(String name, String surname, Date birthdate, int gender, String homeaddress, int phonenumber) {
+        this.setName(name);
+        this.setSurname(surname);
+        this.setBirthdate(birthdate);
+        this.setGender(gender);
+        this.setHomeAddress(homeaddress);
+        try {
+            this.setPhoneNumber(phonenumber);
+        } catch (FormatException e) {
+            e.printStackTrace();
+        }
+    }
+
     Person(String name, String surname) {
         this.name = name;
         this.surname = surname;

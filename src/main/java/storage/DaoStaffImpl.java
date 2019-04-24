@@ -56,7 +56,7 @@ public class DaoStaffImpl<T extends Staff> implements Dao<T> {
         database.connectToDB();
 
         String[] information = staff.getPersonInformation();
-        String sql = "insert into patients values('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')";
+        String sql = "insert into staff values('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')";
         executeStatement(information, sql);
     }
 

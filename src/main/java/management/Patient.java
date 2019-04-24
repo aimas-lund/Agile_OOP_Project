@@ -1,7 +1,5 @@
 package management;
 
-import exceptions.FormatException;
-
 import java.util.Date;
 
 public class Patient extends Person {
@@ -20,16 +18,7 @@ public class Patient extends Person {
     }
 
     public Patient(String name, String surname, Date birthdate, int gender, String homeaddress, int phonenumber) {
-        this.setName(name);
-        this.setSurname(surname);
-        this.setBirthdate(birthdate);
-        this.setGender(gender);
-        this.setHomeAddress(homeaddress);
-        try {
-            this.setPhoneNumber(phonenumber);
-        } catch (FormatException e) {
-            e.printStackTrace();
-        }
+        super(name, surname, birthdate, gender, homeaddress, phonenumber);
     }
 
     @Override

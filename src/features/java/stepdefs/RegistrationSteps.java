@@ -149,7 +149,7 @@ public class RegistrationSteps {
                 cal.getTime(),
                 0,
                 "my house, middle of the street",
-                51558588);                      // call me <- remove at some point :))
+                51558588);
 
 
         ictOfficer.registerPerson(registeredStaff, department);
@@ -172,7 +172,7 @@ public class RegistrationSteps {
     @And("work email should be generated")
     public void workEmailShouldBeGenerated() {
         // Set necessary information
-        ictOfficer.setPersonName(registeredStaff, "Billy");
+        ictOfficer.setPersonName(registeredStaff, "Molly");
         ictOfficer.setPersonSurname(registeredStaff, "McLovin");
         ictOfficer.setPersonName(unregisteredStaff, "Emil");
         ictOfficer.setPersonSurname(unregisteredStaff, "Ballermann");
@@ -185,7 +185,7 @@ public class RegistrationSteps {
         assertNotSame(email1, email2);
 
         // Check that they consist of their initials
-        assertEquals("BIMC", email1.substring(0, 4));
+        assertEquals("MOMC", email1.substring(0, 4));
         assertEquals("EMBA", email2.substring(0, 4));
     }
 
@@ -236,7 +236,13 @@ public class RegistrationSteps {
         Doctor oldDoctor = this.doctor;
 
         // Make new doctor
-        this.doctor = new Doctor();
+        this.doctor = new Doctor(
+                "Freja",
+                "Sif",
+                new Date(230),
+                0,
+                "Asgaard 16",
+                45231252);
 
         // Check that they aren't the same
         assertNotSame(oldDoctor, doctor);
@@ -286,6 +292,8 @@ public class RegistrationSteps {
     public void aStaffRegisteredMember() {
         // Check that there is a staff member
         assertNotNull(registeredStaff);
+
+        registeredStaff = new Staff("Biver", "Thomsen", new Date(2000), 0, "mithjem 23", 43236581);
     }
 
     @When("they are already in the system")
@@ -294,7 +302,7 @@ public class RegistrationSteps {
         ictOfficer.registerPerson(registeredStaff, department);
 
         // Check that the staff is registered
-        assertSame(registeredStaff, department.getStaff().get(0));
+        assertTrue(ictOfficer.isPersonRegistered(registeredStaff, department));
     }
 
     @And("trying to register the staff member")
