@@ -9,6 +9,7 @@ import java.util.Date;
 
 public class Clerk extends Staff implements IRegistering, IChangeInformation {
 
+    //TODO This should be patient and not T.
     public <T extends Person> boolean registerPerson(T person, Department department) {
         // Check that the person is not registered
         if (isPersonRegistered(person, department)) {
