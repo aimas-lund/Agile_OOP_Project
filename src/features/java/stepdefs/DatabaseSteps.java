@@ -1,6 +1,5 @@
 package stepdefs;
 
-import cucumber.api.PendingException;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -186,10 +185,7 @@ public class DatabaseSteps {
         try {
             assertNull(clerk.find(params));
         } catch (PersonNotFoundException e) {
-            e.toString();
+            assertEquals("exceptions.PersonNotFoundException: Person was not found with given parameters", e.toString());
         }
-
-        // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
     }
 }
