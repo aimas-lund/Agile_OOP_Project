@@ -1,5 +1,6 @@
 package stepdefs;
 
+import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -35,6 +36,7 @@ public class DatabaseSteps {
         patient = new Patient();
         ict = new ICTOfficer();
     }
+
     @Given("a user")
     public void a_user() {
         assertNotNull(clerk);
@@ -73,6 +75,8 @@ public class DatabaseSteps {
 
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            database.disconnectFromDB();
         }
 
     }
@@ -103,6 +107,8 @@ public class DatabaseSteps {
 
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            database.disconnectFromDB();
         }
     }
 
@@ -131,15 +137,16 @@ public class DatabaseSteps {
 
     @When("the user need specific information")
     public void theUserNeedSpecificInformation() {
-        clerk.registerPerson(new Patient(
+        patient = new Patient(
                 "Hilda",
                 "Stol",
                 new Date(1997),
                 0,
                 "Hildagade 1",
-                45231298), department);
+                45231298);
+        clerk.registerPerson(patient, department);
 
-        ict.registerPerson(new Staff(
+        staff = new Staff(
                 "Emil",
                 "Christensen",
                 new Date(2019),
@@ -147,7 +154,8 @@ public class DatabaseSteps {
                 "Strandvejen 20",
                 30303030,
                 "echristensen@hospital.dk",
-                "EC"), department);
+                "EC");
+        ict.registerPerson(staff, department);
 
 
     }
@@ -157,12 +165,25 @@ public class DatabaseSteps {
         Dao<Staff> daoStaff = new DaoStaffImpl<>();
         Dao<Patient> daoPatient = new DaoPatientImpl<>();
 
-        assertEquals(daoStaff.find(staff),staff);
-        assertEquals(daoPatient.find(patient),patient);
+        assertEquals(daoStaff.find(staff).getUniqueId(),staff.getUniqueId());
+        assertEquals(daoPatient.find(patient).getUniqueId(),patient.getUniqueId());
+
         HashMap<String,String> HMtest = new HashMap<String,String>();
         HMtest.put("name","Emil");
+        for (Staff staff : daoStaff.find(HMtest)) {
+            if (staff.getUniqueId().equals(this.staff.getUniqueId())) {
+                assertEquals(staff.getUniqueId(), this.staff.getUniqueId());
+            }
+        }
 
-        assertEquals(daoStaff.find(HMtest),staff);
+        HMtest.remove("name");
+        HMtest.put("name", "Hilda");
+        for (Patient patient : daoPatient.find(HMtest)) {
+            if (patient.getUniqueId().equals(this.patient.getUniqueId())) {
+                assertEquals(patient.getUniqueId(), this.patient.getUniqueId());
+            }
+        }
+
     }
 
     @Given("a user that can query the database")

@@ -70,7 +70,7 @@ public class DaoStaffImpl<T extends Staff> implements Dao<T> {
     public T find(T staff) {
         database.connectToDB();
 
-        String sql = "select * from staff where uniqueid = %s";
+        String sql = "select * from staff where uniqueid = '%s'";
         sql = String.format(sql, staff.getUniqueId());
 
         Statement statement = database.createStatement();
@@ -138,7 +138,7 @@ public class DaoStaffImpl<T extends Staff> implements Dao<T> {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
+        database.disconnectFromDB();
         return staff;
     }
 
