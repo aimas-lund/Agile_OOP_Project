@@ -4,6 +4,7 @@ import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import exceptions.PersonNotFoundException;
 import management.*;
 import storage.Dao;
 import storage.DaoPatientImpl;
@@ -151,28 +152,40 @@ public class DatabaseSteps {
         assertFalse(list.isEmpty());
         }
 
+    @Given("a user that can query the database")
+    public void aUserThatCanQueryTheDatabase() {
+        patient = new Patient(
+                "NOT",
+                "DATABASE",
+                new Date(2019),
+                0,
+                "Homestreet 23",
+                45231298);
 
-//
-//    @Given("a hospital")
-//    public void aHospital() {
-//        assertTrue(hospital instanceof Hospital);
-//    }
-//
-//    @And("the hospital does not have connection to the database")
-//    public void theHospitalDoesNotHaveConnectionToTheDatabase() {
-//        hospital.getDatabase().disconnectFromDB();
-//        assertFalse(hospital.getDatabase().hasConnection());
-//    }
-//
-//    @When("a hospital is instantiated")
-//    public void aHospitalIsInstantiated() {
-//        assertNotNull(hospital);
-//    }
-//
-//    @Then("a hospital is connected to the database")
-//    public void aHospitalIsConnectedToTheDatabase() {
-//        Hospital hospital_new = new Hospital();
-//        assertTrue(hospital_new.getDatabase().hasConnection());
-//        assertFalse(hospital.getDatabase().hasConnection());
-//    }
+        assertNotNull(clerk);
+    }
+
+    @When("the person is not found")
+    public void thePersonIsNotFound() {
+        HashMap<String, String> params = new HashMap<>();
+        params.put("name", "'not'");
+
+        try {
+            assertNull(clerk.find(params));
+        } catch (PersonNotFoundException e) {
+//            e.printStackTrace();
+        }
+    }
+
+    @Then("the user should be notified")
+    public void theUserShouldBeNotified() {
+        HashMap<String, String> params = new HashMap<>();
+        params.put("name", "'not'");
+
+        try {
+            assertNull(clerk.find(params));
+        } catch (PersonNotFoundException e) {
+            assertEquals("exceptions.PersonNotFoundException: Person was not found with given parameters", e.toString());
+        }
+    }
 }
