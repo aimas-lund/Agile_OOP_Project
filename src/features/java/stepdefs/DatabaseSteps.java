@@ -4,16 +4,14 @@ import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import exceptions.PersonNotFoundException;
 import management.*;
 import storage.Dao;
-import storage.DaoPatientImpl;
 import storage.Database;
+import storage.DaoStaffImpl;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -140,17 +138,26 @@ public class DatabaseSteps {
                 45231298), department);
         }
 
-    @Then("the user should be able to search by keywords or filters in the database.")
+    @Then("the user should be able to search by keywords or filters in the database")
     public void theUserShouldSearch() {
-        Dao<Patient> dao = new DaoPatientImpl<>();
+        Dao<Staff> DaoInt = new DaoStaffImpl<>();
+        staff = new Staff("Emil", "Christensen", new Date(2019), 0, "Strandvejen 20", 30303030, "echristensen@hospital.dk", "EC");
+        ict.registerPerson(staff,department);
+        DaoInt.save(staff);
 
-        HashMap<String, String> params = new HashMap<>();
-        params.put("gender", "0");
+        assertEquals(DaoInt.find(staff),staff);
+        HashMap<String,String> HMtest = new HashMap<String,String>();
+        HMtest.put("name","Emil");
 
-        ArrayList<Patient> list = dao.find(params);
+        assertEquals(DaoInt.find(HMtest),staff);
 
-        assertFalse(list.isEmpty());
+
+
+
         }
+
+
+
 
     @Given("a user that can query the database")
     public void aUserThatCanQueryTheDatabase() {
