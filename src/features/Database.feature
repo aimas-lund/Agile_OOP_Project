@@ -17,7 +17,7 @@ Feature: Database
     Then the user should not be able to change the unique ID of that person
 
 
-  Scenario
+  Scenario: a user searches for patients by keywords
     Given a user
     When the user need specific information
     Then the user should be able to search by keywords or filters in the database.

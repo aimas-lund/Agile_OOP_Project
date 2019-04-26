@@ -2,6 +2,7 @@ package management;
 
 import exceptions.FormatException;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public abstract class Person {
@@ -17,6 +18,19 @@ public abstract class Person {
 
     Person() {
 
+    }
+
+    public Person(String name, String surname, Date birthdate, int gender, String homeaddress, int phonenumber) {
+        this.setName(name);
+        this.setSurname(surname);
+        this.setBirthdate(birthdate);
+        this.setGender(gender);
+        this.setHomeAddress(homeaddress);
+        try {
+            this.setPhoneNumber(phonenumber);
+        } catch (FormatException e) {
+            e.printStackTrace();
+        }
     }
 
     Person(String name, String surname) {
@@ -87,4 +101,8 @@ public abstract class Person {
 
     public abstract String[] getPersonInformation();
 
+    public String dateToString(Date birthdate) {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy_MM_DD");
+        return format.format(birthdate);
+    }
 }

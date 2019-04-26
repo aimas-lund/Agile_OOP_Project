@@ -16,29 +16,37 @@ public class InformationGenerator {
 
     private static String generateInitials(Person person) {
         getPersonInformation(person);
-        String inits = name.substring(0, 2).toUpperCase() + surname.substring(0, 2).toUpperCase();
+        String inits;
 
-        int nameEndindex = 1;
-        int surnameEndindex = 1;
-
-        while (initials.contains(inits)) {
-            if (nameEndindex >= surnameEndindex) {
-                surnameEndindex++;
-            } else {
-                nameEndindex++;
+        for (char nameChar : name.substring(1).toCharArray()) {
+            for (char surnameChar : surname.substring(1).toCharArray()) {
+                inits = (name.substring(0, 1) + nameChar + surname.charAt(0) + surnameChar).toUpperCase();
+                if (!initials.contains(inits)) {
+                    initials.add(inits);
+                    return inits;
+                }
             }
-
-            // TODO: split into 4 characters and concat, always start at 0 index, only increment end index
-            inits = (name.substring(0, 1) + name.charAt(nameEndindex) + surname.charAt(0) + surname.charAt(surnameEndindex));
-            inits = inits.toUpperCase();
         }
-
-        initials.add(inits);
-        return inits;
+        return null;
+////
+////        while (initials.contains(inits)) {
+////            if (nameEndindex >= surnameEndindex) {
+////                surnameEndindex++;
+////            } else {
+////                nameEndindex++;
+////            }
+////
+////            // TODO: split into 4 characters and concat, always start at 0 index, only increment end index
+////            inits = (name.substring(0, 1) + name.charAt(nameEndindex) + surname.charAt(0) + surname.charAt(surnameEndindex));
+////            inits = inits.toUpperCase();
+////        }
+//
+//        initials.add(inits);
+//        return inits;
     }
 
-    public static String generateEmail(Person person) {
-        String initials = generateInitials(person);
+    public static String generateEmail(Staff staff) {
+        String initials = generateInitials(staff);
         return initials + "@agile_hospital.com";
     }
 

@@ -2,8 +2,15 @@ package storage;
 
 import management.Patient;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class DaoPatientImpl<T extends Patient> implements Dao<T> {
     private final Database database = new Database();
@@ -34,14 +41,12 @@ public class DaoPatientImpl<T extends Patient> implements Dao<T> {
     @Override
     public void save(T patient) {
         database.connectToDB();
-
         String[] information = patient.getPersonInformation();
         String sql = "insert into patients values('%s', '%s', '%s', '%s', '%s', '%s', '%s')";
         for (String value :
                 information) {
             sql = sql.replaceFirst("%s", value.replaceAll(" ", "_"));
         }
-//        sql = String.format(sql, information);
 
         executeStatement(sql);
     }
@@ -65,5 +70,61 @@ public class DaoPatientImpl<T extends Patient> implements Dao<T> {
     @Override
     public T find(T obj) {
         return null;
+    }
+
+
+    @Override
+    public ArrayList<T> find(HashMap<String, String> params) {
+        database.connectToDB();
+
+        String sql = "select * from patients where ";
+        String values = "";
+
+        for (Map.Entry<String, String> entry :
+                params.entrySet()) {
+            String value = entry.getValue();
+
+            if (!value.toLowerCase().startsWith("like") && !value.startsWith("=")) {
+                value = " = " + value;
+            }
+            values = values.concat(entry.getKey() + value + " and ");
+        }
+
+        sql = sql + values.substring(0, values.length() - 4);
+
+        Statement statement = database.createStatement();
+
+        ArrayList<T> patients = new ArrayList<>();
+
+        try {
+            ResultSet resultSet = statement.executeQuery(sql);
+
+            while (resultSet.next()) {
+                patients.add((T) new Patient(
+                        resultSet.getString("uniqueId"),
+                        resultSet.getString("name"),
+                        resultSet.getString("surname"),
+                        stringToDate(resultSet.getString("birthdate")),
+                        Integer.parseInt(resultSet.getString("gender")),
+                        resultSet.getString("homeaddress"),
+                        Integer.parseInt(resultSet.getString("phonenumber"))
+                ));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return patients;
+    }
+
+    private Date stringToDate(String birthdate) {
+        try {
+            return new SimpleDateFormat("yyyy_MM_DD").parse(birthdate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
+
     }
 }

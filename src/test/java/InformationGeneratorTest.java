@@ -1,21 +1,19 @@
 import management.InformationGenerator;
-import management.Patient;
-import management.Person;
-import org.junit.Before;
+import management.Staff;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class InformationGeneratorTest {
 
-    private Person person = new Patient("Hjort", "Uran");
-    private Person person1 = new Patient("Hjort", "Uran");
-    private Person person2 = new Patient("Hjort", "Uran");
+    private Staff person = new Staff("Hjort", "Uran");
+    private Staff person1 = new Staff("Hjort", "Uran");
+    private Staff person2 = new Staff("Hjort", "Uran");
 
     @Test
     public void generateEmailWithTwoOverlappingInitials() {
         assertEquals("HJUR", InformationGenerator.generateEmail(person).substring(0, 4));
         assertEquals("HJUA", InformationGenerator.generateEmail(person1).substring(0, 4));
-        assertEquals("HOUA", InformationGenerator.generateEmail(person2).substring(0, 4));
+        assertEquals("HJUN", InformationGenerator.generateEmail(person2).substring(0, 4));
     }
 }
