@@ -3,6 +3,7 @@ package storage;
 
 import management.Staff;
 
+import javax.swing.plaf.nimbus.State;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -66,8 +67,31 @@ public class DaoStaffImpl<T extends Staff> implements Dao<T> {
     }
 
     @Override
-    public T find(T obj) {
+    public T find(T staff) {
+        database.connectToDB();
 
+        String sql = "select * from staff where uniqueid = %s";
+        sql = String.format(sql, staff.getUniqueId());
+
+        Statement statement = database.createStatement();
+
+        try {
+            ResultSet set = statement.executeQuery(sql);
+
+            if (set.next()) {
+                return (T) new Staff(set.getString("name"),
+                        set.getString("surname"),
+                        stringToDate(set.getString("birthdate")),
+                        Integer.parseInt(set.getString("gender")),
+                        set.getString("homeaddress"),
+                        Integer.parseInt(set.getString("phonenumber")));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        database.disconnectFromDB();
         return null;
     }
 

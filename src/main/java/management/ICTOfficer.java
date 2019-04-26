@@ -9,6 +9,12 @@ import java.util.Date;
 public class ICTOfficer extends Staff implements IRegistering, IChangeInformation {
     // TODO: Replace duplicate code for ICT Officer and Clerk, or find different approach
 
+    /**
+     * @param person with all members not null
+     * @param department to add person to
+     * @param <T> A subclass of Staff
+     * @return boolean representing if the registering was successful
+     */
     public <T extends Person> boolean registerPerson(T person, Department department) {
         // Check that the person is not registered
         if (isPersonRegistered(person, department)) {

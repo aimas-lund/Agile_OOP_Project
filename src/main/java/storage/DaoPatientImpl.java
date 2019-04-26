@@ -1,6 +1,7 @@
 package storage;
 
 import management.Patient;
+import management.Staff;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -68,7 +69,31 @@ public class DaoPatientImpl<T extends Patient> implements Dao<T> {
     }
 
     @Override
-    public T find(T obj) {
+    public T find(T patient) {
+        database.connectToDB();
+
+        String sql = "select * from patients where uniqueid = %s";
+        sql = String.format(sql, patient.getUniqueId());
+
+        Statement statement = database.createStatement();
+
+        try {
+            ResultSet set = statement.executeQuery(sql);
+
+            if (set.next()) {
+                return (T) new Patient(set.getString("name"),
+                        set.getString("surname"),
+                        stringToDate(set.getString("birthdate")),
+                        Integer.parseInt(set.getString("gender")),
+                        set.getString("homeaddress"),
+                        Integer.parseInt(set.getString("phonenumber")));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        database.disconnectFromDB();
         return null;
     }
 
