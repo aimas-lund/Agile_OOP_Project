@@ -5,6 +5,7 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import management.*;
+import exceptions.*;
 import storage.Dao;
 import storage.Database;
 import storage.DaoStaffImpl;
@@ -12,6 +13,7 @@ import storage.DaoStaffImpl;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -148,7 +150,6 @@ public class DatabaseSteps {
         assertEquals(DaoInt.find(staff),staff);
         HashMap<String,String> HMtest = new HashMap<String,String>();
         HMtest.put("name","Emil");
-
         assertEquals(DaoInt.find(HMtest),staff);
 
 
@@ -195,4 +196,43 @@ public class DatabaseSteps {
             assertEquals("exceptions.PersonNotFoundException: Person was not found with given parameters", e.toString());
         }
     }
+
+
+    @Given("an ICT-officer")
+    public void anIctOfficer() {
+        //ict
+
+    }
+    @When("specific information is needed")
+    public void specificInformation() {
+        staff = new Staff(
+                "NOT",
+                "DATABASE",
+                new Date(2019),
+                0,
+                "Homestreet 23",
+                45231298);
+        ict.registerPerson(staff,department);
+
+
+
+
+    }
+    @Then("the ICT officer should be able to search by keywords in the patient or staff database")
+    public void theIctOfficerShould(){
+        HashMap<String, String> params = new HashMap<>();
+        params.put("uniqueId", staff.getUniqueId());
+        try {
+            assertEquals(ict.find(params),staff);
+        } catch (PersonNotFoundException e) {
+            assertEquals("exceptions.PersonNotFoundException: Person was not found with given parameters", e.toString());
+        }
+
+
+
+
+    }
+
+
 }
+

@@ -1,13 +1,17 @@
 package management;
 
-import exceptions.FormatException;
+import exceptions.*;
 import storage.Dao;
 import storage.DaoStaffImpl;
-
+import exceptions.PersonNotFoundException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
-public class ICTOfficer extends Staff implements IRegistering, IChangeInformation {
+public class ICTOfficer extends Staff implements IRegistering, IChangeInformation, IQuery {
     // TODO: Replace duplicate code for ICT Officer and Clerk, or find different approach
+
+    private final Dao<Staff> daostaff= new DaoStaffImpl<>();
 
     public <T extends Person> boolean registerPerson(T person, Department department) {
         // Check that the person is not registered
@@ -15,7 +19,7 @@ public class ICTOfficer extends Staff implements IRegistering, IChangeInformatio
             return false;
         }
 
-        Dao<Staff> dao = new DaoStaffImpl<>();
+        Dao<Staff> daostaff = new DaoStaffImpl<>();
 
         // Give unique id
         addUniqueIdToPerson(person);
@@ -25,7 +29,7 @@ public class ICTOfficer extends Staff implements IRegistering, IChangeInformatio
         ((Staff) person).setEmail(email);
 
         // Add person to database
-        dao.save((Staff) person);
+        daostaff.save((Staff) person);
         department.getStaff().add((Staff) person);
         return true;
     }
@@ -90,5 +94,23 @@ public class ICTOfficer extends Staff implements IRegistering, IChangeInformatio
 
     public void setPersonName(Person person, String name) {
         person.setName(name);
+    }
+
+
+    public Object find(Object obj) throws PersonNotFoundException {
+        // TODO: Will be added later
+        return null;
+    }
+
+
+    @Override
+    public ArrayList<Staff> find(HashMap params) throws PersonNotFoundException {
+        ArrayList staffs = daostaff.find(params);
+
+        if (staffs.isEmpty()) {
+            throw new PersonNotFoundException("Person was not found with given parameters");
+        } else {
+            return staffs;
+        }
     }
 }

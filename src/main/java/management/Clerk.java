@@ -11,7 +11,8 @@ import java.util.HashMap;
 
 public class Clerk extends Staff implements IRegistering, IChangeInformation, IQuery {
 
-    private final Dao<Patient> dao = new DaoPatientImpl<>();
+    private final Dao<Patient> daopatient = new DaoPatientImpl<>();
+
 
     //TODO This should be patient and not T.
     public <T extends Person> boolean registerPerson(T person, Department department) {
@@ -22,7 +23,7 @@ public class Clerk extends Staff implements IRegistering, IChangeInformation, IQ
 
         addUniqueIdToPerson(person);
 
-        dao.save((Patient) person);
+        daopatient.save((Patient) person);
         department.getPatients().add((Patient) person);
 
         return true;
@@ -47,7 +48,7 @@ public class Clerk extends Staff implements IRegistering, IChangeInformation, IQ
 
     @Override
     public ArrayList find(HashMap params) throws PersonNotFoundException {
-        ArrayList patients = dao.find(params);
+        ArrayList patients = daopatient.find(params);
 
         if (patients.isEmpty()) {
             throw new PersonNotFoundException("Person was not found with given parameters");

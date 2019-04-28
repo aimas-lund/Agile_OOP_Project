@@ -25,3 +25,8 @@ Feature: Database
     Given a user
     When the user need specific information
     Then the user should be able to search by keywords or filters in the database.
+
+  Scenario: An ICT-officer search for information
+    Given an ICT officer
+    When specific information is needed
+    Then the ICT officer should be able to search by keywords in the patient or staff database
