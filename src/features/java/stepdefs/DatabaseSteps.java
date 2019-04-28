@@ -4,14 +4,16 @@ import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import exceptions.PersonNotFoundException;
 import management.*;
 import storage.Dao;
+import storage.DaoPatientImpl;
 import storage.Database;
-import storage.DaoStaffImpl;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -32,7 +34,6 @@ public class DatabaseSteps {
         clerk = new Clerk();
         patient = new Patient();
         ict = new ICTOfficer();
-
     }
     @Given("a user")
     public void a_user() {
@@ -130,54 +131,61 @@ public class DatabaseSteps {
 
     @When("the user need specific information")
     public void theUserNeedSpecificInformation() {
-
-
+        clerk.registerPerson(new Patient(
+                "Hilda",
+                "Stol",
+                new Date(1997),
+                0,
+                "Hildagade 1",
+                45231298), department);
         }
 
-    @Then("the user should be able to search by keywords or filters in the database")
+    @Then("the user should be able to search by keywords or filters in the database.")
     public void theUserShouldSearch() {
-        Dao<Staff> DaoInt = new DaoStaffImpl<>();
-        staff = new Staff("Emil", "Christensen", new Date(2019), 0, "Strandvejen 20", 30303030, "echristensen@hospital.dk", "EC");
-        ict.registerPerson(staff,department);
-        DaoInt.save(staff);
+        Dao<Patient> dao = new DaoPatientImpl<>();
 
-        DaoInt.find(staff);
-        assertEquals(DaoInt.find(staff),staff);
-        HashMap<String,String> HMtest = new HashMap<String,String>();
-        HMtest.put("name","Emil");
+        HashMap<String, String> params = new HashMap<>();
+        params.put("gender", "0");
 
-        assertEquals(DaoInt.find(HMtest),staff);
+        ArrayList<Patient> list = dao.find(params);
 
-
-
-
+        assertFalse(list.isEmpty());
         }
 
+    @Given("a user that can query the database")
+    public void aUserThatCanQueryTheDatabase() {
+        patient = new Patient(
+                "NOT",
+                "DATABASE",
+                new Date(2019),
+                0,
+                "Homestreet 23",
+                45231298);
 
+        assertNotNull(clerk);
+    }
 
+    @When("the person is not found")
+    public void thePersonIsNotFound() {
+        HashMap<String, String> params = new HashMap<>();
+        params.put("name", "'not'");
 
+        try {
+            assertNull(clerk.find(params));
+        } catch (PersonNotFoundException e) {
+//            e.printStackTrace();
+        }
+    }
 
-//
-//    @Given("a hospital")
-//    public void aHospital() {
-//        assertTrue(hospital instanceof Hospital);
-//    }
-//
-//    @And("the hospital does not have connection to the database")
-//    public void theHospitalDoesNotHaveConnectionToTheDatabase() {
-//        hospital.getDatabase().disconnectFromDB();
-//        assertFalse(hospital.getDatabase().hasConnection());
-//    }
-//
-//    @When("a hospital is instantiated")
-//    public void aHospitalIsInstantiated() {
-//        assertNotNull(hospital);
-//    }
-//
-//    @Then("a hospital is connected to the database")
-//    public void aHospitalIsConnectedToTheDatabase() {
-//        Hospital hospital_new = new Hospital();
-//        assertTrue(hospital_new.getDatabase().hasConnection());
-//        assertFalse(hospital.getDatabase().hasConnection());
-//    }
+    @Then("the user should be notified")
+    public void theUserShouldBeNotified() {
+        HashMap<String, String> params = new HashMap<>();
+        params.put("name", "'not'");
+
+        try {
+            assertNull(clerk.find(params));
+        } catch (PersonNotFoundException e) {
+            assertEquals("exceptions.PersonNotFoundException: Person was not found with given parameters", e.toString());
+        }
+    }
 }

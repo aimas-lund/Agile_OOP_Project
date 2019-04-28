@@ -16,6 +16,10 @@ Feature: Database
     When changing a person's information
     Then the user should not be able to change the unique ID of that person
 
+  Scenario: when a query returns nothing, user should be notified
+    Given a user that can query the database
+    When the person is not found
+    Then the user should be notified
 
   Scenario: a user searches for patients by keywords
     Given a user

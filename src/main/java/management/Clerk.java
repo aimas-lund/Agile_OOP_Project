@@ -1,13 +1,17 @@
 package management;
 
 import exceptions.FormatException;
-import exceptions.PersonAlreadyRegisteredException;
+import exceptions.PersonNotFoundException;
 import storage.Dao;
 import storage.DaoPatientImpl;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
-public class Clerk extends Staff implements IRegistering, IChangeInformation {
+public class Clerk extends Staff implements IRegistering, IChangeInformation, IQuery {
+
+    private final Dao<Patient> dao = new DaoPatientImpl<>();
 
     //TODO This should be patient and not T.
     public <T extends Person> boolean registerPerson(T person, Department department) {
@@ -17,8 +21,6 @@ public class Clerk extends Staff implements IRegistering, IChangeInformation {
         }
 
         addUniqueIdToPerson(person);
-
-        Dao<Patient> dao = new DaoPatientImpl<>();
 
         dao.save((Patient) person);
         department.getPatients().add((Patient) person);
@@ -35,6 +37,23 @@ public class Clerk extends Staff implements IRegistering, IChangeInformation {
             }
         }
         return false;
+    }
+
+    @Override
+    public Object find(Object obj) throws PersonNotFoundException {
+        // TODO: Will be added later
+        return null;
+    }
+
+    @Override
+    public ArrayList find(HashMap params) throws PersonNotFoundException {
+        ArrayList patients = dao.find(params);
+
+        if (patients.isEmpty()) {
+            throw new PersonNotFoundException("Person was not found with given parameters");
+        } else {
+            return patients;
+        }
     }
 
 
@@ -85,5 +104,4 @@ public class Clerk extends Staff implements IRegistering, IChangeInformation {
     public void setPersonName(Person person, String name) {
         person.setName(name);
     }
-
 }
