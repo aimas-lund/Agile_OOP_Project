@@ -1,13 +1,38 @@
 package management;
 
 import exceptions.FormatException;
+import exceptions.PersonNotFoundException;
 import storage.Dao;
 import storage.DaoStaffImpl;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
-public class ICTOfficer extends Staff implements IRegistering<Staff>, IChangeInformation {
+public class ICTOfficer extends Staff implements IRegistering<Staff>, IChangeInformation, IQuery<Staff> {
     private final Dao<Staff> dao = new DaoStaffImpl<>();
+
+    @Override
+    public Staff find(Staff staff) throws PersonNotFoundException {
+        Staff foundStaff = dao.find(staff);
+        if (foundStaff != null) {
+            return foundStaff;
+        } else {
+            throw new PersonNotFoundException("Person not found in database");
+        }
+
+    }
+
+    @Override
+    public ArrayList<Staff> find(HashMap<String, String> params) throws PersonNotFoundException {
+        ArrayList<Staff> staff = dao.find(params);
+
+        if (staff.isEmpty()) {
+            throw new PersonNotFoundException("No staff was found with given parameters");
+        } else {
+            return staff;
+        }
+    }
 
     /**
      * @param person with all members not null

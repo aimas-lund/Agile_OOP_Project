@@ -45,16 +45,16 @@ public class Clerk extends Staff implements IRegistering<Patient>, IChangeInform
         if (foundPatient != null) {
             return foundPatient;
         } else {
-            throw new PersonNotFoundException("Person not found in database");
+            throw new PersonNotFoundException("Patient not found in database");
         }
     }
 
     @Override
-    public ArrayList<Patient> find(HashMap params) throws PersonNotFoundException {
+    public ArrayList<Patient> find(HashMap<String, String> params) throws PersonNotFoundException {
         ArrayList<Patient> patients = dao.find(params);
 
         if (patients.isEmpty()) {
-            throw new PersonNotFoundException("Person was not found with given parameters");
+            throw new PersonNotFoundException("No patients were found with given parameters");
         } else {
             return patients;
         }
