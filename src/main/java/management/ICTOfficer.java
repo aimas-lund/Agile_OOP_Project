@@ -36,8 +36,13 @@ public class ICTOfficer extends Staff implements IRegistering<Staff>, IChangeInf
     }
 
     @Override
-    public boolean delete(Staff staff) {
-        return dao.delete(staff);
+    public boolean delete(Staff staff, Department department) {
+        if (dao.delete(staff)) {
+            department.remove(staff);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**

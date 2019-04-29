@@ -41,8 +41,13 @@ public class Clerk extends Staff implements IRegistering<Patient>, IChangeInform
     }
 
     @Override
-    public boolean delete(Patient patient) {
-        return dao.delete(patient);
+    public boolean delete(Patient patient, Department department) {
+        if (dao.delete(patient)) {
+            department.remove(patient);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override
