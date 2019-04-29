@@ -1,6 +1,5 @@
 package stepdefs;
 
-import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -9,8 +8,8 @@ import exceptions.PersonNotFoundException;
 import management.*;
 import storage.Dao;
 import storage.DaoPatientImpl;
-import storage.Database;
 import storage.DaoStaffImpl;
+import storage.Database;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -154,7 +153,7 @@ public class DatabaseSteps {
                 "Strandvejen 20",
                 30303030,
                 "echristensen@hospital.dk",
-                "EC");
+                "EMCH");
         ict.registerPerson(staff, department);
 
 
@@ -168,7 +167,7 @@ public class DatabaseSteps {
         assertEquals(daoStaff.find(staff).getUniqueId(),staff.getUniqueId());
         assertEquals(daoPatient.find(patient).getUniqueId(),patient.getUniqueId());
 
-        HashMap<String,String> HMtest = new HashMap<String,String>();
+        HashMap<String, String> HMtest = new HashMap<>();
         HMtest.put("name","Emil");
         for (Staff staff : daoStaff.find(HMtest)) {
             if (staff.getUniqueId().equals(this.staff.getUniqueId())) {
