@@ -82,7 +82,9 @@ public class DaoPatientImpl<T extends Patient> implements Dao<T> {
             ResultSet set = statement.executeQuery(sql);
 
             if (set.next()) {
-                foundPatient = (T) new Patient(set.getString("name"),
+                foundPatient = (T) new Patient(
+                        set.getString("uniqueid"),
+                        set.getString("name"),
                         set.getString("surname"),
                         stringToDate(set.getString("birthdate")),
                         Integer.parseInt(set.getString("gender")),

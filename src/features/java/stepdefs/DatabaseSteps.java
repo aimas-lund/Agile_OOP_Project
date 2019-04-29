@@ -164,11 +164,11 @@ public class DatabaseSteps {
         Dao<Staff> daoStaff = new DaoStaffImpl<>();
         Dao<Patient> daoPatient = new DaoPatientImpl<>();
 
-        assertEquals(daoStaff.find(staff).getUniqueId(),staff.getUniqueId());
+        assertEquals(daoStaff.find(staff).getUniqueId(), staff.getUniqueId());
         assertEquals(daoPatient.find(patient).getUniqueId(),patient.getUniqueId());
 
         HashMap<String, String> HMtest = new HashMap<>();
-        HMtest.put("name","Emil");
+        HMtest.put("name", "'Emil'");
         for (Staff staff : daoStaff.find(HMtest)) {
             if (staff.getUniqueId().equals(this.staff.getUniqueId())) {
                 assertEquals(staff.getUniqueId(), this.staff.getUniqueId());
@@ -176,7 +176,7 @@ public class DatabaseSteps {
         }
 
         HMtest.remove("name");
-        HMtest.put("name", "Hilda");
+        HMtest.put("name", "'Hilda'");
         for (Patient patient : daoPatient.find(HMtest)) {
             if (patient.getUniqueId().equals(this.patient.getUniqueId())) {
                 assertEquals(patient.getUniqueId(), this.patient.getUniqueId());
