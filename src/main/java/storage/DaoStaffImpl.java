@@ -61,8 +61,21 @@ public class DaoStaffImpl<T extends Staff> implements Dao<T> {
     }
 
     @Override
-    public void delete(T obj) {
+    public boolean delete(Staff staff) {
+        database.connectToDB();
 
+        String sql = "delete from staff where uniqueid = '%s'";
+        sql = String.format(sql, staff.getUniqueId());
+
+        Statement statement = database.createStatement();
+
+        try {
+            statement.executeUpdate(sql);
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     @Override

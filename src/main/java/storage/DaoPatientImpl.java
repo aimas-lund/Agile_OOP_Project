@@ -64,8 +64,21 @@ public class DaoPatientImpl<T extends Patient> implements Dao<T> {
     }
 
     @Override
-    public void delete(T obj) {
+    public boolean delete(Patient patient) {
+        database.connectToDB();
 
+        String sql = "delete from patients where uniqueid = '%s'";
+        sql = String.format(sql, patient.getUniqueId());
+
+        Statement statement = database.createStatement();
+
+        try {
+            statement.executeUpdate(sql);
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     @Override

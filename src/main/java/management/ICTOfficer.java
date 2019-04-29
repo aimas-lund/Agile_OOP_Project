@@ -58,6 +58,7 @@ public class ICTOfficer extends Staff implements IRegistering<Staff>, IChangeInf
         return true;
     }
 
+    // TODO: Search in database instead
     public boolean isPersonRegistered(Staff person, Department department) {
         // Search for same Unique ID
         for (Person staff : department.getStaff()) {
