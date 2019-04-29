@@ -6,37 +6,34 @@ import storage.DaoStaffImpl;
 
 import java.util.Date;
 
-public class ICTOfficer extends Staff implements IRegistering, IChangeInformation {
-    // TODO: Replace duplicate code for ICT Officer and Clerk, or find different approach
+public class ICTOfficer extends Staff implements IRegistering<Staff>, IChangeInformation {
+    private final Dao<Staff> dao = new DaoStaffImpl<>();
 
     /**
      * @param person with all members not null
      * @param department to add person to
-     * @param <T> A subclass of Staff
      * @return boolean representing if the registering was successful
      */
-    public <T extends Person> boolean registerPerson(T person, Department department) {
+    public boolean registerPerson(Staff person, Department department) {
         // Check that the person is not registered
         if (isPersonRegistered(person, department)) {
             return false;
         }
 
-        Dao<Staff> dao = new DaoStaffImpl<>();
-
         // Give unique id
         addUniqueIdToPerson(person);
 
         // Give person email
-        String email = InformationGenerator.generateEmail((Staff) person);
-        ((Staff) person).setEmail(email);
+        String email = InformationGenerator.generateEmail(person);
+        person.setEmail(email);
 
         // Add person to database
-        dao.save((Staff) person);
-        department.getStaff().add((Staff) person);
+        dao.save(person);
+        department.getStaff().add(person);
         return true;
     }
 
-    public <T extends Person> boolean isPersonRegistered(T person, Department department) {
+    public boolean isPersonRegistered(Staff person, Department department) {
         // Search for same Unique ID
         for (Person staff : department.getStaff()) {
             // TODO: Optimize find functionality, now is O(n)
