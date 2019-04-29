@@ -28,21 +28,6 @@ public class InformationGenerator {
             }
         }
         return null;
-////
-////        while (initials.contains(inits)) {
-////            if (nameEndindex >= surnameEndindex) {
-////                surnameEndindex++;
-////            } else {
-////                nameEndindex++;
-////            }
-////
-////            // TODO: split into 4 characters and concat, always start at 0 index, only increment end index
-////            inits = (name.substring(0, 1) + name.charAt(nameEndindex) + surname.charAt(0) + surname.charAt(surnameEndindex));
-////            inits = inits.toUpperCase();
-////        }
-//
-//        initials.add(inits);
-//        return inits;
     }
 
     public static String generateEmail(Staff staff) {

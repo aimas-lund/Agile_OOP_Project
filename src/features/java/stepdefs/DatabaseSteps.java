@@ -4,10 +4,12 @@ import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import exceptions.PersonNotFoundException;
 import management.*;
 import storage.Dao;
-import storage.Database;
+import storage.DaoPatientImpl;
 import storage.DaoStaffImpl;
+import storage.Database;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -33,6 +35,7 @@ public class DatabaseSteps {
         patient = new Patient();
         ict = new ICTOfficer();
     }
+
     @Given("a user")
     public void a_user() {
         assertNotNull(clerk);
@@ -71,6 +74,8 @@ public class DatabaseSteps {
 
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            database.disconnectFromDB();
         }
 
     }
@@ -101,6 +106,8 @@ public class DatabaseSteps {
 
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            database.disconnectFromDB();
         }
     }
 
@@ -129,35 +136,54 @@ public class DatabaseSteps {
 
     @When("the user need specific information")
     public void theUserNeedSpecificInformation() {
-        clerk.registerPerson(new Patient(
+        patient = new Patient(
                 "Hilda",
                 "Stol",
                 new Date(1997),
                 0,
                 "Hildagade 1",
-                45231298), department);
-        }
+                45231298);
+        clerk.registerPerson(patient, department);
 
-    @Then("the user should be able to search by keywords or filters in the database")
+        staff = new Staff(
+                "Emil",
+                "Christensen",
+                new Date(2019),
+                0,
+                "Strandvejen 20",
+                30303030,
+                "echristensen@hospital.dk",
+                "EMCH");
+        ict.registerPerson(staff, department);
+
+
+    }
+
+    @Then("the user should be able to search by keywords or filters in the database.")
     public void theUserShouldSearch() {
-        Dao<Staff> DaoInt = new DaoStaffImpl<>();
-        staff = new Staff("Emil", "Christensen", new Date(2019), 0, "Strandvejen 20", 30303030, "echristensen@hospital.dk", "EC");
-        ict.registerPerson(staff,department);
-        DaoInt.save(staff);
+        Dao<Staff> daoStaff = new DaoStaffImpl<>();
+        Dao<Patient> daoPatient = new DaoPatientImpl<>();
 
-        assertEquals(DaoInt.find(staff),staff);
-        HashMap<String,String> HMtest = new HashMap<String,String>();
-        HMtest.put("name","Emil");
+        assertEquals(daoStaff.find(staff).getUniqueId(), staff.getUniqueId());
+        assertEquals(daoPatient.find(patient).getUniqueId(),patient.getUniqueId());
 
-        assertEquals(DaoInt.find(HMtest),staff);
-
-
-
-
+        HashMap<String, String> HMtest = new HashMap<>();
+        HMtest.put("name", "'Emil'");
+        for (Staff staff : daoStaff.find(HMtest)) {
+            if (staff.getUniqueId().equals(this.staff.getUniqueId())) {
+                assertEquals(staff.getUniqueId(), this.staff.getUniqueId());
+            }
         }
 
+        HMtest.remove("name");
+        HMtest.put("name", "'Hilda'");
+        for (Patient patient : daoPatient.find(HMtest)) {
+            if (patient.getUniqueId().equals(this.patient.getUniqueId())) {
+                assertEquals(patient.getUniqueId(), this.patient.getUniqueId());
+            }
+        }
 
-
+    }
 
     @Given("a user that can query the database")
     public void aUserThatCanQueryTheDatabase() {
@@ -192,7 +218,8 @@ public class DatabaseSteps {
         try {
             assertNull(clerk.find(params));
         } catch (PersonNotFoundException e) {
-            assertEquals("exceptions.PersonNotFoundException: Person was not found with given parameters", e.toString());
+            assertEquals("exceptions.PersonNotFoundException: No patients were found with given parameters",
+                    e.toString());
         }
     }
 }
