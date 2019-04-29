@@ -30,13 +30,15 @@ public class ClerkTest {
     @Test
     public void registerPerson() {
         assertTrue(clerk.registerPerson(patient, department));
-
-
+        clerk.delete(patient, department);
     }
+
     @Test
-    public void registerPersonToMultipleDepartments() {
+    public void registerPersonToMultipleDepartmentsFails() {
         clerk.registerPerson(patient, department);
         assertFalse(clerk.registerPerson(patient, department));
+
+        clerk.delete(patient, department);
     }
 
     @Test
