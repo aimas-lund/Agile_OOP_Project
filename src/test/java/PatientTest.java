@@ -7,7 +7,7 @@ import static junit.framework.TestCase.assertTrue;
 
 public class PatientTest {
     Patient patient = new Patient();
-    Date birthdate = new Date(1990, 1, 1);
+    Date birthdate = new Date(631148400000L);
     Patient patientWithInformation = new Patient(
             "foo",
             "bar",
