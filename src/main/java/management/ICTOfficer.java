@@ -4,12 +4,13 @@ import exceptions.FormatException;
 import exceptions.PersonNotFoundException;
 import storage.Dao;
 import storage.DaoStaffImpl;
+import storage.IDelete;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
-public class ICTOfficer extends Staff implements IRegistering<Staff>, IChangeInformation, IQuery<Staff> {
+public class ICTOfficer extends Staff implements IRegistering<Staff>, IChangeInformation, IQuery<Staff>, IDelete<Staff> {
     private final Dao<Staff> dao = new DaoStaffImpl<>();
 
     @Override
@@ -32,6 +33,11 @@ public class ICTOfficer extends Staff implements IRegistering<Staff>, IChangeInf
         } else {
             return staff;
         }
+    }
+
+    @Override
+    public boolean delete(Staff staff) {
+        return dao.delete(staff);
     }
 
     /**
@@ -57,8 +63,8 @@ public class ICTOfficer extends Staff implements IRegistering<Staff>, IChangeInf
         department.getStaff().add(person);
         return true;
     }
-
     // TODO: Search in database instead
+
     public boolean isPersonRegistered(Staff person, Department department) {
         // Search for same Unique ID
         for (Person staff : department.getStaff()) {

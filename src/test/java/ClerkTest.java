@@ -31,6 +31,7 @@ public class ClerkTest {
     public void registerPerson() {
         assertTrue(clerk.registerPerson(patient, department));
 
+
     }
     @Test
     public void registerPersonToMultipleDepartments() {
