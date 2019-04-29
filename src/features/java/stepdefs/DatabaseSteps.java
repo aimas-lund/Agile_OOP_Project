@@ -218,7 +218,8 @@ public class DatabaseSteps {
         try {
             assertNull(clerk.find(params));
         } catch (PersonNotFoundException e) {
-            assertEquals("exceptions.PersonNotFoundException: Person was not found with given parameters", e.toString());
+            assertEquals("exceptions.PersonNotFoundException: No patients were found with given parameters",
+                    e.toString());
         }
     }
 }
