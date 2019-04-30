@@ -6,7 +6,7 @@ import static junit.framework.TestCase.*;
 
 public class PatientTest {
     private Patient patient = new Patient();
-    private Date birthdate = new Date(631148400000L);
+    private Date birthdate = new Date(631152000000L);
     private Patient patientWithInformation = new Patient(
             "foo",
             "bar",
