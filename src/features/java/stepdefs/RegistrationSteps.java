@@ -81,7 +81,7 @@ public class RegistrationSteps {
                 42042042
         );
 
-        // management.Clerk registers registeredPatient
+        // Clerk registers registeredPatient
         clerk.registerPerson(registeredPatient, department);
 
         // Check that the registeredPatient is added to department and others are not

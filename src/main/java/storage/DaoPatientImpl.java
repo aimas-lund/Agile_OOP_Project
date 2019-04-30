@@ -20,7 +20,7 @@ public class DaoPatientImpl<T extends Patient> implements Dao<T> {
         database.connectToDB();
 
         String[] information = patient.getPersonInformation();
-        String sql = "UPDATE patients set uniqueid = %s, name = %s, surname = %s, birthdate = %s, " +
+        String sql = "UPDATE patients set uniqueid = '%s', name = %s, surname = %s, birthdate = %s, " +
                 "gender = %s, homeaddress = %s, phonenumber = %s where uniqueId = %s";
 
         for (String value :
@@ -57,9 +57,10 @@ public class DaoPatientImpl<T extends Patient> implements Dao<T> {
             statement.executeUpdate(sql);
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            database.disconnectFromDB();
         }
 
-        database.disconnectFromDB();
     }
 
     @Override
@@ -68,8 +69,35 @@ public class DaoPatientImpl<T extends Patient> implements Dao<T> {
     }
 
     @Override
-    public T find(T obj) {
-        return null;
+    public T find(T patient) {
+        database.connectToDB();
+
+        String sql = "select * from patients where uniqueid = '%s'";
+        sql = String.format(sql, patient.getUniqueId());
+
+        Statement statement = database.createStatement();
+        T foundPatient = null;
+
+        try {
+            ResultSet set = statement.executeQuery(sql);
+
+            if (set.next()) {
+                foundPatient = (T) new Patient(
+                        set.getString("uniqueid"),
+                        set.getString("name"),
+                        set.getString("surname"),
+                        stringToDate(set.getString("birthdate")),
+                        Integer.parseInt(set.getString("gender")),
+                        set.getString("homeaddress"),
+                        Integer.parseInt(set.getString("phonenumber")));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        database.disconnectFromDB();
+        return foundPatient;
     }
 
 
@@ -114,7 +142,7 @@ public class DaoPatientImpl<T extends Patient> implements Dao<T> {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
+        database.disconnectFromDB();
         return patients;
     }
 

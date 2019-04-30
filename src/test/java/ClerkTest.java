@@ -1,7 +1,6 @@
 import management.Clerk;
 import management.Department;
 import management.Patient;
-import management.Person;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -12,7 +11,7 @@ import static junit.framework.TestCase.assertTrue;
 
 public class ClerkTest {
     private Clerk clerk = new Clerk();
-    private Person patient;
+    private Patient patient;
     private Department department;
 
 

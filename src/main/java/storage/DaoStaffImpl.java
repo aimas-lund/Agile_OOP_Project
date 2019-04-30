@@ -66,9 +66,37 @@ public class DaoStaffImpl<T extends Staff> implements Dao<T> {
     }
 
     @Override
-    public T find(T obj) {
+    public T find(T staff) {
+        database.connectToDB();
 
-        return null;
+        String sql = "select * from staff where uniqueid = '%s'";
+        sql = String.format(sql, staff.getUniqueId());
+
+        Statement statement = database.createStatement();
+        T foundStaff = null;
+
+        try {
+            ResultSet set = statement.executeQuery(sql);
+
+            if (set.next()) {
+                foundStaff = (T) new Staff(
+                        set.getString("uniqueid"),
+                        set.getString("name"),
+                        set.getString("surname"),
+                        stringToDate(set.getString("birthdate")),
+                        Integer.parseInt(set.getString("gender")),
+                        set.getString("homeaddress"),
+                        Integer.parseInt(set.getString("phonenumber")),
+                        set.getString("email"),
+                        set.getString("initials"));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        database.disconnectFromDB();
+        return foundStaff;
     }
 
     @Override
@@ -83,7 +111,7 @@ public class DaoStaffImpl<T extends Staff> implements Dao<T> {
             String value = entry.getValue();
 
             if (!value.toLowerCase().startsWith("like") && !value.startsWith("=")) {
-                value += " = " + value;
+                value = " = " + value;
             }
             values = values.concat(entry.getKey() + value + "and ");
         }
@@ -114,7 +142,7 @@ public class DaoStaffImpl<T extends Staff> implements Dao<T> {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
+        database.disconnectFromDB();
         return staff;
     }
 

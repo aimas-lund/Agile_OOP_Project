@@ -9,13 +9,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
-public class Clerk extends Staff implements IRegistering, IChangeInformation, IQuery {
+public class Clerk extends Staff implements IRegistering<Patient>, IChangeInformation, IQuery<Patient> {
 
-    private final Dao<Patient> daopatient = new DaoPatientImpl<>();
-
+    private final Dao<Patient> dao = new DaoPatientImpl<>();
 
     //TODO This should be patient and not T.
-    public <T extends Person> boolean registerPerson(T person, Department department) {
+    public boolean registerPerson(Patient person, Department department) {
         // Check that the person is not registered
         if (isPersonRegistered(person, department)) {
             return false;
@@ -23,13 +22,13 @@ public class Clerk extends Staff implements IRegistering, IChangeInformation, IQ
 
         addUniqueIdToPerson(person);
 
-        daopatient.save((Patient) person);
-        department.getPatients().add((Patient) person);
+        dao.save(person);
+        department.getPatients().add(person);
 
         return true;
     }
 
-    public <T extends Person> boolean isPersonRegistered(T person, Department department) {
+    public boolean isPersonRegistered(Patient person, Department department) {
         // Search for same Unique ID
         // TODO: Revisit for efficiency (loop is always run completely. O(n))
         for (Patient patient : department.getPatients()) {
@@ -41,17 +40,21 @@ public class Clerk extends Staff implements IRegistering, IChangeInformation, IQ
     }
 
     @Override
-    public Object find(Object obj) throws PersonNotFoundException {
-        // TODO: Will be added later
-        return null;
+    public Patient find(Patient patient) throws PersonNotFoundException {
+        Patient foundPatient = dao.find(patient);
+        if (foundPatient != null) {
+            return foundPatient;
+        } else {
+            throw new PersonNotFoundException("Patient not found in database");
+        }
     }
 
     @Override
-    public ArrayList find(HashMap params) throws PersonNotFoundException {
-        ArrayList patients = daopatient.find(params);
+    public ArrayList<Patient> find(HashMap<String, String> params) throws PersonNotFoundException {
+        ArrayList<Patient> patients = dao.find(params);
 
         if (patients.isEmpty()) {
-            throw new PersonNotFoundException("Person was not found with given parameters");
+            throw new PersonNotFoundException("No patients were found with given parameters");
         } else {
             return patients;
         }
@@ -105,4 +108,5 @@ public class Clerk extends Staff implements IRegistering, IChangeInformation, IQ
     public void setPersonName(Person person, String name) {
         person.setName(name);
     }
+
 }

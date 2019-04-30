@@ -4,16 +4,16 @@ import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import exceptions.PersonNotFoundException;
 import management.*;
-import exceptions.*;
 import storage.Dao;
-import storage.Database;
+import storage.DaoPatientImpl;
 import storage.DaoStaffImpl;
+import storage.Database;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -35,6 +35,7 @@ public class DatabaseSteps {
         patient = new Patient();
         ict = new ICTOfficer();
     }
+
     @Given("a user")
     public void a_user() {
         assertNotNull(clerk);
@@ -73,6 +74,8 @@ public class DatabaseSteps {
 
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            database.disconnectFromDB();
         }
 
     }
@@ -103,6 +106,8 @@ public class DatabaseSteps {
 
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            database.disconnectFromDB();
         }
     }
 
@@ -131,34 +136,54 @@ public class DatabaseSteps {
 
     @When("the user need specific information")
     public void theUserNeedSpecificInformation() {
-        clerk.registerPerson(new Patient(
+        patient = new Patient(
                 "Hilda",
                 "Stol",
                 new Date(1997),
                 0,
                 "Hildagade 1",
-                45231298), department);
-        }
+                45231298);
+        clerk.registerPerson(patient, department);
 
-    @Then("the user should be able to search by keywords or filters in the database")
+        staff = new Staff(
+                "Emil",
+                "Christensen",
+                new Date(2019),
+                0,
+                "Strandvejen 20",
+                30303030,
+                "echristensen@hospital.dk",
+                "EMCH");
+        ict.registerPerson(staff, department);
+
+
+    }
+
+    @Then("the user should be able to search by keywords or filters in the database.")
     public void theUserShouldSearch() {
-        Dao<Staff> DaoInt = new DaoStaffImpl<>();
-        staff = new Staff("Emil", "Christensen", new Date(2019), 0, "Strandvejen 20", 30303030, "echristensen@hospital.dk", "EC");
-        ict.registerPerson(staff,department);
-        DaoInt.save(staff);
+        Dao<Staff> daoStaff = new DaoStaffImpl<>();
+        Dao<Patient> daoPatient = new DaoPatientImpl<>();
 
-        assertEquals(DaoInt.find(staff),staff);
-        HashMap<String,String> HMtest = new HashMap<String,String>();
-        HMtest.put("name","Emil");
-        assertEquals(DaoInt.find(HMtest),staff);
+        assertEquals(daoStaff.find(staff).getUniqueId(), staff.getUniqueId());
+        assertEquals(daoPatient.find(patient).getUniqueId(),patient.getUniqueId());
 
-
-
-
+        HashMap<String, String> HMtest = new HashMap<>();
+        HMtest.put("name", "'Emil'");
+        for (Staff staff : daoStaff.find(HMtest)) {
+            if (staff.getUniqueId().equals(this.staff.getUniqueId())) {
+                assertEquals(staff.getUniqueId(), this.staff.getUniqueId());
+            }
         }
 
+        HMtest.remove("name");
+        HMtest.put("name", "'Hilda'");
+        for (Patient patient : daoPatient.find(HMtest)) {
+            if (patient.getUniqueId().equals(this.patient.getUniqueId())) {
+                assertEquals(patient.getUniqueId(), this.patient.getUniqueId());
+            }
+        }
 
-
+    }
 
     @Given("a user that can query the database")
     public void aUserThatCanQueryTheDatabase() {
@@ -193,46 +218,8 @@ public class DatabaseSteps {
         try {
             assertNull(clerk.find(params));
         } catch (PersonNotFoundException e) {
-            assertEquals("exceptions.PersonNotFoundException: Person was not found with given parameters", e.toString());
+            assertEquals("exceptions.PersonNotFoundException: No patients were found with given parameters",
+                    e.toString());
         }
     }
-
-
-    @Given("an ICT-officer")
-    public void anIctOfficer() {
-        //ict
-
-    }
-    @When("specific information is needed")
-    public void specificInformation() {
-        staff = new Staff(
-                "NOT",
-                "DATABASE",
-                new Date(2019),
-                0,
-                "Homestreet 23",
-                45231298);
-        ict.registerPerson(staff,department);
-
-
-
-
-    }
-    @Then("the ICT officer should be able to search by keywords in the patient or staff database")
-    public void theIctOfficerShould(){
-        HashMap<String, String> params = new HashMap<>();
-        params.put("uniqueId", staff.getUniqueId());
-        try {
-            assertEquals(ict.find(params),staff);
-        } catch (PersonNotFoundException e) {
-            assertEquals("exceptions.PersonNotFoundException: Person was not found with given parameters", e.toString());
-        }
-
-
-
-
-    }
-
-
 }
-

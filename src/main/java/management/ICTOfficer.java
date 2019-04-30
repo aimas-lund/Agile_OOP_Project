@@ -1,40 +1,64 @@
 package management;
 
-import exceptions.*;
+import exceptions.FormatException;
+import exceptions.PersonNotFoundException;
 import storage.Dao;
 import storage.DaoStaffImpl;
-import exceptions.PersonNotFoundException;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
-public class ICTOfficer extends Staff implements IRegistering, IChangeInformation, IQuery {
-    // TODO: Replace duplicate code for ICT Officer and Clerk, or find different approach
+public class ICTOfficer extends Staff implements IRegistering<Staff>, IChangeInformation, IQuery<Staff> {
+    private final Dao<Staff> dao = new DaoStaffImpl<>();
 
-    private final Dao<Staff> daostaff= new DaoStaffImpl<>();
+    @Override
+    public Staff find(Staff staff) throws PersonNotFoundException {
+        Staff foundStaff = dao.find(staff);
+        if (foundStaff != null) {
+            return foundStaff;
+        } else {
+            throw new PersonNotFoundException("Person not found in database");
+        }
 
-    public <T extends Person> boolean registerPerson(T person, Department department) {
+    }
+
+    @Override
+    public ArrayList<Staff> find(HashMap<String, String> params) throws PersonNotFoundException {
+        ArrayList<Staff> staff = dao.find(params);
+
+        if (staff.isEmpty()) {
+            throw new PersonNotFoundException("No staff was found with given parameters");
+        } else {
+            return staff;
+        }
+    }
+
+    /**
+     * @param person with all members not null
+     * @param department to add person to
+     * @return boolean representing if the registering was successful
+     */
+    public boolean registerPerson(Staff person, Department department) {
         // Check that the person is not registered
         if (isPersonRegistered(person, department)) {
             return false;
         }
 
-        Dao<Staff> daostaff = new DaoStaffImpl<>();
-
         // Give unique id
         addUniqueIdToPerson(person);
 
         // Give person email
-        String email = InformationGenerator.generateEmail((Staff) person);
-        ((Staff) person).setEmail(email);
+        String email = InformationGenerator.generateEmail(person);
+        person.setEmail(email);
 
         // Add person to database
-        daostaff.save((Staff) person);
-        department.getStaff().add((Staff) person);
+        dao.save(person);
+        department.getStaff().add(person);
         return true;
     }
 
-    public <T extends Person> boolean isPersonRegistered(T person, Department department) {
+    public boolean isPersonRegistered(Staff person, Department department) {
         // Search for same Unique ID
         for (Person staff : department.getStaff()) {
             // TODO: Optimize find functionality, now is O(n)
@@ -94,23 +118,5 @@ public class ICTOfficer extends Staff implements IRegistering, IChangeInformatio
 
     public void setPersonName(Person person, String name) {
         person.setName(name);
-    }
-
-
-    public Object find(Object obj) throws PersonNotFoundException {
-        // TODO: Will be added later
-        return null;
-    }
-
-
-    @Override
-    public ArrayList<Staff> find(HashMap params) throws PersonNotFoundException {
-        ArrayList staffs = daostaff.find(params);
-
-        if (staffs.isEmpty()) {
-            throw new PersonNotFoundException("Person was not found with given parameters");
-        } else {
-            return staffs;
-        }
     }
 }
