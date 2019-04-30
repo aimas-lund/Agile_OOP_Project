@@ -87,6 +87,8 @@ public class RegistrationSteps {
         // Check that the registeredPatient is added to department and others are not
         assertEquals(registeredPatient, department.getPatients().get(0));
         assertNotEquals(unregisteredPatient, department.getPatients().get(0));
+
+        clerk.delete(registeredPatient, department);
     }
 
     @Given("an already registered patient")
@@ -106,6 +108,7 @@ public class RegistrationSteps {
         // Check that the registered patient is there and not the unregistered one
         assertTrue(clerk.checkPatientRegistrationStatus(registeredPatient, department));
         assertFalse(clerk.checkPatientRegistrationStatus(unregisteredPatient, department));
+        clerk.delete(registeredPatient, department);
 
     }
 
@@ -117,6 +120,9 @@ public class RegistrationSteps {
 
         // Check that the registeredPatients have unique ids
         assertNotEquals(registeredPatient.getUniqueId(), unregisteredPatient.getUniqueId());
+
+        clerk.delete(registeredPatient, department);
+        clerk.delete(unregisteredPatient, department);
     }
 
     @Given("a newly hired employee")
@@ -157,6 +163,8 @@ public class RegistrationSteps {
         // Check that staff has been registered
         List<Staff> staff = department.getStaff();
         assertEquals(registeredStaff, staff.get(0));
+
+        ictOfficer.delete(registeredStaff, department);
     }
 
     @And("register a uniqueID")
@@ -280,6 +288,8 @@ public class RegistrationSteps {
         assertEquals(speciality, doctor.getSpeciality());
         assertEquals("Mortimer", doctor.getName());
         assertEquals(13371337, doctor.getPhoneNumber());
+
+        ictOfficer.delete(doctor, department);
     }
 
     @Given("a clerk")
@@ -323,6 +333,7 @@ public class RegistrationSteps {
         assertTrue(ictOfficer.isPersonRegistered(registeredStaff, department));
 
         ictOfficer.isPersonRegistered(registeredStaff, department);
+        ictOfficer.delete(registeredStaff, department);
 
     }
 }

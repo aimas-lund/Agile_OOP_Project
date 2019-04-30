@@ -5,6 +5,7 @@ import exceptions.PersonNotFoundException;
 import storage.Dao;
 import storage.DaoStaffImpl;
 import storage.DaoPatientImpl;
+import storage.IDelete;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -58,6 +59,16 @@ public class ICTOfficer extends Staff implements IRegistering<Staff>, IChangeInf
         }
     }
 
+    @Override
+    public boolean delete(Staff staff, Department department) {
+        if (daostaff.delete(staff)) {
+            department.remove(staff);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     /**
      * @param person with all members not null
      * @param department to add person to
@@ -81,6 +92,7 @@ public class ICTOfficer extends Staff implements IRegistering<Staff>, IChangeInf
         department.getStaff().add(person);
         return true;
     }
+    // TODO: Search in database instead
 
     public boolean isPersonRegistered(Staff person, Department department) {
         // Search for same Unique ID

@@ -76,8 +76,8 @@ public class DatabaseSteps {
             e.printStackTrace();
         } finally {
             database.disconnectFromDB();
+            clerk.delete(patient, department);
         }
-
     }
 
     @When("a new staff is hired to the hospital")
@@ -108,6 +108,7 @@ public class DatabaseSteps {
             e.printStackTrace();
         } finally {
             database.disconnectFromDB();
+            ict.delete(staff, department);
         }
     }
 
@@ -132,6 +133,7 @@ public class DatabaseSteps {
         String UniqueIdbefore = patient.getUniqueId();
         assertEquals(UniqueIdbefore, patient.getUniqueId());
         //You can not change ID.
+        clerk.delete(patient, department);
     }
 
     @When("the user need specific information")
@@ -182,6 +184,9 @@ public class DatabaseSteps {
                 assertEquals(patient.getUniqueId(), this.patient.getUniqueId());
             }
         }
+
+        ict.delete(staff, department);
+        clerk.delete(patient, department);
 
     }
 

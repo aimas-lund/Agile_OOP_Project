@@ -4,12 +4,13 @@ import exceptions.FormatException;
 import exceptions.PersonNotFoundException;
 import storage.Dao;
 import storage.DaoPatientImpl;
+import storage.IDelete;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
-public class Clerk extends Staff implements IRegistering<Patient>, IChangeInformation, IQueryPatients<Patient> {
+public class Clerk extends Staff implements IRegistering<Patient>, IChangeInformation, IQueryPatients<Patient>, IDelete<Patient> {
 
     private final Dao<Patient> dao = new DaoPatientImpl<>();
 
@@ -37,6 +38,16 @@ public class Clerk extends Staff implements IRegistering<Patient>, IChangeInform
             }
         }
         return false;
+    }
+
+    @Override
+    public boolean delete(Patient patient, Department department) {
+        if (dao.delete(patient)) {
+            department.remove(patient);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override
@@ -108,5 +119,4 @@ public class Clerk extends Staff implements IRegistering<Patient>, IChangeInform
     public void setPersonName(Person person, String name) {
         person.setName(name);
     }
-
 }
