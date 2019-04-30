@@ -21,11 +21,11 @@ public class PatientTest {
     }
     @Test
     public void getPersonInformationName() {
-        assertSame("foo", patientWithInformation.getPersonInformation()[1]);
+        assertEquals("foo", patientWithInformation.getPersonInformation()[1]);
     }
     @Test
     public void getPersonInformationSurname() {
-        assertSame("bar", patientWithInformation.getPersonInformation()[2]);
+        assertEquals("bar", patientWithInformation.getPersonInformation()[2]);
     }
     @Test
     public void getPersonInformationBirthdate() {
@@ -37,7 +37,7 @@ public class PatientTest {
     }
     @Test
     public void getPersonInformationHomeAddress() {
-        assertSame("Foo Bar Street 38", patientWithInformation.getPersonInformation()[5]);
+        assertEquals("Foo Bar Street 38", patientWithInformation.getPersonInformation()[5]);
     }
     @Test
     public void getPersonInformationPhoneNumber() {
