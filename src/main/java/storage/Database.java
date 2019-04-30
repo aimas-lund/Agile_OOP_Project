@@ -2,12 +2,15 @@ package storage;
 
 import java.sql.*;
 import java.util.ArrayList;
+import management.Department;
 
 public class Database {
     private Connection connection = null;
+    private Department department;
 
     public Database() {
         connectToDB();
+        department = new Department();
     }
 
     public void connectToDB() {
