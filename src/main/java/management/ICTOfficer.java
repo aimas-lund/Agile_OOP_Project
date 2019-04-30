@@ -15,7 +15,7 @@ public class ICTOfficer extends Staff implements IRegistering<Staff>, IChangeInf
     private final Dao<Patient> daopatient = new DaoPatientImpl<>();
 
     @Override
-    public Staff findstaff(Staff staff) throws PersonNotFoundException {
+    public Staff findStaff(Staff staff) throws PersonNotFoundException {
         Staff foundStaff = daostaff.find(staff);
         if (foundStaff != null) {
             return foundStaff;
@@ -26,7 +26,7 @@ public class ICTOfficer extends Staff implements IRegistering<Staff>, IChangeInf
     }
 
     @Override
-    public ArrayList<Staff> findstaff(HashMap<String, String> params) throws PersonNotFoundException {
+    public ArrayList<Staff> findStaff(HashMap<String, String> params) throws PersonNotFoundException {
         ArrayList<Staff> staff = daostaff.find(params);
 
         if (staff.isEmpty()) {
@@ -37,7 +37,7 @@ public class ICTOfficer extends Staff implements IRegistering<Staff>, IChangeInf
     }
 
     @Override
-    public Patient findpatient(Patient patient) throws PersonNotFoundException {
+    public Patient findPatient(Patient patient) throws PersonNotFoundException {
         Patient foundPatient = daopatient.find(patient);
         if (foundPatient != null) {
             return foundPatient;
@@ -48,7 +48,7 @@ public class ICTOfficer extends Staff implements IRegistering<Staff>, IChangeInf
     }
 
     @Override
-    public ArrayList<Patient> findpatient(HashMap<String, String> params) throws PersonNotFoundException {
+    public ArrayList<Patient> findPatient(HashMap<String, String> params) throws PersonNotFoundException {
         ArrayList<Patient> patient = daopatient.find(params);
 
         if (patient.isEmpty()) {

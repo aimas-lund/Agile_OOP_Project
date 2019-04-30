@@ -40,7 +40,7 @@ public class Clerk extends Staff implements IRegistering<Patient>, IChangeInform
     }
 
     @Override
-    public Patient findpatient(Patient patient) throws PersonNotFoundException {
+    public Patient findPatient(Patient patient) throws PersonNotFoundException {
         Patient foundPatient = dao.find(patient);
         if (foundPatient != null) {
             return foundPatient;
@@ -50,7 +50,7 @@ public class Clerk extends Staff implements IRegistering<Patient>, IChangeInform
     }
 
     @Override
-    public ArrayList<Patient> findpatient(HashMap<String, String> params) throws PersonNotFoundException {
+    public ArrayList<Patient> findPatient(HashMap<String, String> params) throws PersonNotFoundException {
         ArrayList<Patient> patients = dao.find(params);
 
         if (patients.isEmpty()) {
