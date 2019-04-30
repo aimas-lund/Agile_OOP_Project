@@ -2,8 +2,7 @@ import management.Patient;
 import java.util.Date;
 import org.junit.Test;
 
-import static junit.framework.TestCase.assertSame;
-import static junit.framework.TestCase.assertTrue;
+import static junit.framework.TestCase.*;
 
 public class PatientTest {
     Patient patient = new Patient();
@@ -30,11 +29,11 @@ public class PatientTest {
     }
     @Test
     public void getPersonInformationBirthdate() {
-        assertSame("1990_01_01", patientWithInformation.getPersonInformation()[3]);
+        assertEquals("1990_01_01", patientWithInformation.getPersonInformation()[3]);
     }
     @Test
     public void getPersonInformationGender() {
-        assertSame("0", patientWithInformation.getPersonInformation()[4]);
+        assertEquals("0", patientWithInformation.getPersonInformation()[4]);
     }
     @Test
     public void getPersonInformationHomeAddress() {
@@ -42,7 +41,7 @@ public class PatientTest {
     }
     @Test
     public void getPersonInformationPhoneNumber() {
-        assertSame("12345678", patientWithInformation.getPersonInformation()[6]);
+        assertEquals("12345678", patientWithInformation.getPersonInformation()[6]);
     }
 
 }
