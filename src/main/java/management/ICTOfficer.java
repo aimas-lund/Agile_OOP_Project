@@ -4,17 +4,19 @@ import exceptions.FormatException;
 import exceptions.PersonNotFoundException;
 import storage.Dao;
 import storage.DaoStaffImpl;
+import storage.DaoPatientImpl;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
-public class ICTOfficer extends Staff implements IRegistering<Staff>, IChangeInformation, IQuery<Staff> {
-    private final Dao<Staff> dao = new DaoStaffImpl<>();
+public class ICTOfficer extends Staff implements IRegistering<Staff>, IChangeInformation, IQueryStaff<Staff>, IQueryPatients<Patient> {
+    private final Dao<Staff> daostaff = new DaoStaffImpl<>();
+    private final Dao<Patient> daopatient = new DaoPatientImpl<>();
 
     @Override
-    public Staff find(Staff staff) throws PersonNotFoundException {
-        Staff foundStaff = dao.find(staff);
+    public Staff findstaff(Staff staff) throws PersonNotFoundException {
+        Staff foundStaff = daostaff.find(staff);
         if (foundStaff != null) {
             return foundStaff;
         } else {
@@ -24,13 +26,35 @@ public class ICTOfficer extends Staff implements IRegistering<Staff>, IChangeInf
     }
 
     @Override
-    public ArrayList<Staff> find(HashMap<String, String> params) throws PersonNotFoundException {
-        ArrayList<Staff> staff = dao.find(params);
+    public ArrayList<Staff> findstaff(HashMap<String, String> params) throws PersonNotFoundException {
+        ArrayList<Staff> staff = daostaff.find(params);
 
         if (staff.isEmpty()) {
             throw new PersonNotFoundException("No staff was found with given parameters");
         } else {
             return staff;
+        }
+    }
+
+    @Override
+    public Patient findpatient(Patient patient) throws PersonNotFoundException {
+        Patient foundPatient = daopatient.find(patient);
+        if (foundPatient != null) {
+            return foundPatient;
+        } else {
+            throw new PersonNotFoundException("Person not found in database");
+        }
+
+    }
+
+    @Override
+    public ArrayList<Patient> findpatient(HashMap<String, String> params) throws PersonNotFoundException {
+        ArrayList<Patient> patient = daopatient.find(params);
+
+        if (patient.isEmpty()) {
+            throw new PersonNotFoundException("No patient was found with given parameters");
+        } else {
+            return patient;
         }
     }
 
@@ -53,7 +77,7 @@ public class ICTOfficer extends Staff implements IRegistering<Staff>, IChangeInf
         person.setEmail(email);
 
         // Add person to database
-        dao.save(person);
+        daostaff.save(person);
         department.getStaff().add(person);
         return true;
     }

@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
-public class Clerk extends Staff implements IRegistering<Patient>, IChangeInformation, IQuery<Patient> {
+public class Clerk extends Staff implements IRegistering<Patient>, IChangeInformation, IQueryPatients<Patient> {
 
     private final Dao<Patient> dao = new DaoPatientImpl<>();
 
@@ -40,7 +40,7 @@ public class Clerk extends Staff implements IRegistering<Patient>, IChangeInform
     }
 
     @Override
-    public Patient find(Patient patient) throws PersonNotFoundException {
+    public Patient findpatient(Patient patient) throws PersonNotFoundException {
         Patient foundPatient = dao.find(patient);
         if (foundPatient != null) {
             return foundPatient;
@@ -50,7 +50,7 @@ public class Clerk extends Staff implements IRegistering<Patient>, IChangeInform
     }
 
     @Override
-    public ArrayList<Patient> find(HashMap<String, String> params) throws PersonNotFoundException {
+    public ArrayList<Patient> findpatient(HashMap<String, String> params) throws PersonNotFoundException {
         ArrayList<Patient> patients = dao.find(params);
 
         if (patients.isEmpty()) {

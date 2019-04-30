@@ -5,9 +5,9 @@ import exceptions.PersonNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public interface IQuery<T> {
-    T find(T obj) throws PersonNotFoundException;
+public interface IQueryStaff<Staff> {
+    Staff findstaff(Staff obj) throws PersonNotFoundException;
 
-    ArrayList<T> find(HashMap<String, String> params) throws PersonNotFoundException;
+    ArrayList<Staff> findstaff(HashMap<String, String> params) throws PersonNotFoundException;
 
 }
