@@ -12,23 +12,22 @@ import java.util.Date;
 import java.util.HashMap;
 
 public class ICTOfficer extends Staff implements IRegistering<Staff>, IChangeInformation, IQueryStaff<Staff>, IQueryPatients<Patient> {
-    private final Dao<Staff> daostaff = new DaoStaffImpl<>();
-    private final Dao<Patient> daopatient = new DaoPatientImpl<>();
+    private final Dao<Staff> daoStaff = new DaoStaffImpl<>();
+    private final Dao<Patient> daoPatient = new DaoPatientImpl<>();
 
     @Override
     public Staff findStaff(Staff staff) throws PersonNotFoundException {
-        Staff foundStaff = daostaff.find(staff);
+        Staff foundStaff = daoStaff.find(staff);
         if (foundStaff != null) {
             return foundStaff;
         } else {
             throw new PersonNotFoundException("Person not found in database");
         }
-
     }
 
     @Override
     public ArrayList<Staff> findStaff(HashMap<String, String> params) throws PersonNotFoundException {
-        ArrayList<Staff> staff = daostaff.find(params);
+        ArrayList<Staff> staff = daoStaff.find(params);
 
         if (staff.isEmpty()) {
             throw new PersonNotFoundException("No staff was found with given parameters");
@@ -39,7 +38,7 @@ public class ICTOfficer extends Staff implements IRegistering<Staff>, IChangeInf
 
     @Override
     public Patient findPatient(Patient patient) throws PersonNotFoundException {
-        Patient foundPatient = daopatient.find(patient);
+        Patient foundPatient = daoPatient.find(patient);
         if (foundPatient != null) {
             return foundPatient;
         } else {
@@ -50,7 +49,7 @@ public class ICTOfficer extends Staff implements IRegistering<Staff>, IChangeInf
 
     @Override
     public ArrayList<Patient> findPatient(HashMap<String, String> params) throws PersonNotFoundException {
-        ArrayList<Patient> patient = daopatient.find(params);
+        ArrayList<Patient> patient = daoPatient.find(params);
 
         if (patient.isEmpty()) {
             throw new PersonNotFoundException("No patient was found with given parameters");
@@ -59,9 +58,8 @@ public class ICTOfficer extends Staff implements IRegistering<Staff>, IChangeInf
         }
     }
 
-    @Override
     public boolean delete(Staff staff, Department department) {
-        if (daostaff.delete(staff)) {
+        if (daoStaff.delete(staff)) {
             department.remove(staff);
             return true;
         } else {
@@ -88,7 +86,7 @@ public class ICTOfficer extends Staff implements IRegistering<Staff>, IChangeInf
         person.setEmail(email);
 
         // Add person to database
-        daostaff.save(person);
+        daoStaff.save(person);
         department.getStaff().add(person);
         return true;
     }

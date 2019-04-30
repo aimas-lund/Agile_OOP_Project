@@ -209,7 +209,7 @@ public class DatabaseSteps {
         params.put("name", "'not'");
 
         try {
-            assertNull(clerk.findpatient(params));
+            assertNull(clerk.findPatient(params));
         } catch (PersonNotFoundException e) {
 //            e.printStackTrace();
         }
@@ -221,7 +221,7 @@ public class DatabaseSteps {
         params.put("name", "'not'");
 
         try {
-            assertNull(clerk.findpatient(params));
+            assertNull(clerk.findPatient(params));
         } catch (PersonNotFoundException e) {
             assertEquals("exceptions.PersonNotFoundException: No patients were found with given parameters",
                     e.toString());
@@ -268,14 +268,14 @@ public class DatabaseSteps {
         paramsstaff.put("name", "'Emil'");
 
         try {
-        assertNotNull(ict.findpatient(paramspatient));
+        assertNotNull(ict.findPatient(paramspatient));
         } catch (PersonNotFoundException e) {
             assertEquals("exceptions.PersonNotFoundException: No patients were found with given parameters",
                     e.toString());
         }
 
         try {
-            assertNotNull(ict.findstaff(paramsstaff));
+            assertNotNull(ict.findStaff(paramsstaff));
         } catch (PersonNotFoundException e) {
             assertEquals("exceptions.PersonNotFoundException: No patients were found with given parameters",
                     e.toString());
