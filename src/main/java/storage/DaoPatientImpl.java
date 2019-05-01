@@ -86,10 +86,10 @@ public class DaoPatientImpl<T extends Patient> implements Dao<T> {
         }
     }
 
-    public T find(T patient) {
+    public <T extends Patient> T find(T patient) {
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("uniqueid", patient.getUniqueId());
-        return find(hashMap).get(0); // Returns arrayList of length 1
+        return (T) find(hashMap).get(0); // Returns arrayList of length 1
     }
 
     @Override

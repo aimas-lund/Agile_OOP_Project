@@ -9,8 +9,7 @@ import storage.QueryRoleClerk;
 
 import java.util.Date;
 
-import static junit.framework.TestCase.assertFalse;
-import static junit.framework.TestCase.assertTrue;
+import static junit.framework.TestCase.*;
 
 public class ClerkTest {
     private QueryRoleClerk clerk = new QueryRoleClerk();
@@ -55,27 +54,28 @@ public class ClerkTest {
         int correct_phonenumber = 42042069;
         int incorrect_phonenumber = 420420693;
 
-        assertTrue(clerk.setPersonPhoneNumber(patient, correct_phonenumber));
-        assertFalse(clerk.setPersonPhoneNumber(patient, incorrect_phonenumber));
+        assertTrue(false);
+//        assertTrue(clerk.setPersonPhoneNumber(patient, correct_phonenumber));
+//        assertFalse(clerk.setPersonPhoneNumber(patient, incorrect_phonenumber));
     }
 
     @Test
     public void findPatientTestPass() throws PersonNotFoundException {
         clerk.registerPerson(patient, department);
-        assertEquals(clerk.findPatient(patient).getUniqueId(), patient.getUniqueId());
+        assertEquals(clerk.find(patient).getUniqueId(), patient.getUniqueId());
         clerk.delete(patient, department);
     }
 
     @Test(expected = PersonNotFoundException.class)
     public void findPatientTestFail() throws PersonNotFoundException {
-        clerk.findPatient(patient);
+        clerk.find(patient);
     }
 
     @Test(expected = PersonNotFoundException.class)
     public void findPatientTestFailDeletedPatient() throws PersonNotFoundException {
         clerk.registerPerson(patient, department);
         clerk.delete(patient, department);
-        clerk.findPatient(patient);
+        clerk.find(patient);
     }
 
     @Test

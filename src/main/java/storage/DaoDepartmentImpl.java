@@ -32,8 +32,9 @@ public class DaoDepartmentImpl<T extends Department> implements Dao<T> {
 
     @Override
     public boolean update(T obj, HashMap<String, String> params) {
-
+        return false;
     }
+
     @Override
     public boolean save(T patient) {
         database.connectToDB();
@@ -61,33 +62,10 @@ public class DaoDepartmentImpl<T extends Department> implements Dao<T> {
         return database.executeStatement(sql);
     }
 
-    @Override
     public T find(T department) {
-        database.connectToDB();
-
-        String sql = "select * from patients where uniqueid = '%s'";
-        sql = String.format(sql, department.getName());
-
-        Statement statement = database.createStatement();
-        T foundDepartment = null;
-
-        try {
-            ResultSet set = statement.executeQuery(sql);
-
-            if (set.next()) {
-                foundDepartment = (T) new Department(
-                        set.getString("uniqueId"),
-                        set.getString("name"),
-                        set.getInt("capacity"));
-
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        database.disconnectFromDB();
-        return foundDepartment;
+        HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put("uniqueid", department.getUniqueId());
+        return find(hashMap).get(0);
     }
 
 

@@ -26,12 +26,21 @@ public class QueryRoleClerk implements IUpdate, IQuery {
         } else {
             return (ArrayList<T>) patients;
         }
-
     }
 
     @Override
     public <T extends Person> ArrayList<T> find(HashMap<String, String> params, T table) throws PersonNotFoundException {
         return find(params);
+    }
+
+    @Override
+    public <T extends Person> boolean update(T person) {
+        if (person instanceof Patient) {
+            daoPatient.update((Patient) person);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override

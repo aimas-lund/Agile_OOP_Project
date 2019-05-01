@@ -5,11 +5,10 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import exceptions.PersonNotFoundException;
-import management.*;
-import storage.Dao;
-import storage.DaoPatientImpl;
-import storage.DaoStaffImpl;
-import storage.Database;
+import management.Department;
+import management.Patient;
+import management.Staff;
+import storage.*;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -21,19 +20,18 @@ import static junit.framework.TestCase.*;
 
 public class DatabaseSteps {
 
-    private Clerk clerk;
+    private QueryRoleClerk clerk;
     private Patient patient;
     private Department department;
-    private ICTOfficer ict;
+    private QueryRoleICT ict;
     private Staff staff;
-
 
     @Before
     public void setUp() {
         department = new Department("Mockdepartment", 10);
-        clerk = new Clerk();
+        clerk = new QueryRoleClerk();
         patient = new Patient();
-        ict = new ICTOfficer();
+        ict = new QueryRoleICT();
     }
 
     @Given("a user")
@@ -123,9 +121,9 @@ public class DatabaseSteps {
                 0,
                 "Homestreet 23",
                 45231298);
-        clerk.registerPerson(patient, department);
-        clerk.setPersonSurname(patient, "Moe");
 
+        clerk.registerPerson(patient, department);
+        clerk.update(staff);
 
     }
     @Then("the user should not be able to change the unique ID of that person")
@@ -163,8 +161,8 @@ public class DatabaseSteps {
 
     @Then("the user should be able to search by keywords or filters in the database.")
     public void theUserShouldSearch() {
-        Dao<Staff> daoStaff = new DaoStaffImpl<>();
-        Dao<Patient> daoPatient = new DaoPatientImpl<>();
+        DaoStaffImpl<Staff> daoStaff = new DaoStaffImpl<>();
+        DaoPatientImpl<Patient> daoPatient = new DaoPatientImpl<>();
 
         assertEquals(daoStaff.find(staff).getUniqueId(), staff.getUniqueId());
         assertEquals(daoPatient.find(patient).getUniqueId(),patient.getUniqueId());
@@ -209,7 +207,7 @@ public class DatabaseSteps {
         params.put("name", "'not'");
 
         try {
-            assertNull(clerk.findPatient(params));
+            assertNull(clerk.find(params));
         } catch (PersonNotFoundException e) {
 //            e.printStackTrace();
         }
@@ -221,7 +219,7 @@ public class DatabaseSteps {
         params.put("name", "'not'");
 
         try {
-            assertNull(clerk.findPatient(params));
+            assertNull(clerk.find(params));
         } catch (PersonNotFoundException e) {
             assertEquals("exceptions.PersonNotFoundException: No patients were found with given parameters",
                     e.toString());
@@ -268,14 +266,14 @@ public class DatabaseSteps {
         paramsstaff.put("name", "'Emil'");
 
         try {
-        assertNotNull(ict.findPatient(paramspatient));
+            assertNotNull(ict.find(paramspatient));
         } catch (PersonNotFoundException e) {
             assertEquals("exceptions.PersonNotFoundException: No patients were found with given parameters",
                     e.toString());
         }
 
         try {
-            assertNotNull(ict.findStaff(paramsstaff));
+            assertNotNull(ict.find(paramsstaff));
         } catch (PersonNotFoundException e) {
             assertEquals("exceptions.PersonNotFoundException: No patients were found with given parameters",
                     e.toString());

@@ -25,7 +25,6 @@ public class DaoPatientImplTest {
                 45231298);
         String oldName = patient.getName();
         assertTrue(dao.save(patient));
-
         new Clerk().setPersonName(patient,
                 "Aimas");
 

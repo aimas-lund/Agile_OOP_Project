@@ -7,27 +7,29 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class QueryRoleICT implements IUpdate, IQuery {
-    private final Dao<Staff> daoStaff = new DaoStaffImpl<>();
-    private final Dao<Patient> daoPatient = new DaoPatientImpl<>();
+    private final DaoStaffImpl<Staff> daoStaff = new DaoStaffImpl<>();
+    private final DaoPatientImpl<Patient> daoPatient = new DaoPatientImpl<>();
 
-    @Override
-    public <T extends Person> T find(String uniqueId) throws PersonNotFoundException {
-        if (uniqueId instanceof Patient) {
-            Patient foundPatient = daoPatient.find((Patient) uniqueId);
-            if (foundPatient != null) {
-                return (T) foundPatient;
-            } else {
-                throw new PersonNotFoundException("Patient not found in database");
-            }
-        } else if (uniqueId instanceof Staff) {
-            Staff foundStaff = daoStaff.find((Staff) uniqueId);
-            if (foundStaff != null) {
-                return (T) foundStaff;
-            } else {
-                throw new PersonNotFoundException("Staff not found in database");
-            }
+    public <T extends Patient> T find(Patient patient) throws PersonNotFoundException {
+        Patient foundPatient = daoPatient.find(patient);
+        if (foundPatient != null) {
+            return (T) foundPatient;
+        } else {
+            throw new PersonNotFoundException("Patient not found in database");
         }
-        throw new PersonNotFoundException("Person not searchable or found in database");
+    }
+
+    public <T extends Staff> T find(Staff staff) throws PersonNotFoundException {
+        Staff foundStaff = daoStaff.find(staff);
+        if (foundStaff != null) {
+            return (T) foundStaff;
+        } else {
+            throw new PersonNotFoundException("Staff not found in database");
+        }
+    }
+
+    public ArrayList<Staff> find(HashMap<String, String> params) throws PersonNotFoundException {
+        return find(params, new Staff());
     }
 
     @Override
@@ -46,52 +48,13 @@ public class QueryRoleICT implements IUpdate, IQuery {
     }
 
     @Override
-    public <T> boolean delete(T obj, Department department) {
+    public <T extends Person> boolean delete(T obj, Department department) {
         return false;
     }
 
-
     @Override
-    public Staff findStaff(Staff staff) throws PersonNotFoundException {
-        Staff foundStaff = daoStaff.find(staff);
-        if (foundStaff != null) {
-            return foundStaff;
-        } else {
-            throw new PersonNotFoundException("Person not found in database");
-        }
-    }
-
-    @Override
-    public ArrayList<Staff> findStaff(HashMap<String, String> params) throws PersonNotFoundException {
-        ArrayList<Staff> staff = daoStaff.find(params);
-
-        if (staff.isEmpty()) {
-            throw new PersonNotFoundException("No staff was found with given parameters");
-        } else {
-            return staff;
-        }
-    }
-
-    @Override
-    public Patient findPatient(Patient patient) throws PersonNotFoundException {
-        Patient foundPatient = daoPatient.find(patient);
-        if (foundPatient != null) {
-            return foundPatient;
-        } else {
-            throw new PersonNotFoundException("Person not found in database");
-        }
-
-    }
-
-    @Override
-    public ArrayList<Patient> findPatient(HashMap<String, String> params) throws PersonNotFoundException {
-        ArrayList<Patient> patient = daoPatient.find(params);
-
-        if (patient.isEmpty()) {
-            throw new PersonNotFoundException("No patient was found with given parameters");
-        } else {
-            return patient;
-        }
+    public <T extends Person> boolean update(T person) {
+        return false;
     }
 
     public boolean delete(Staff staff, Department department) {
@@ -115,7 +78,7 @@ public class QueryRoleICT implements IUpdate, IQuery {
         }
 
         // Give unique id
-        addUniqueIdToPerson(person);
+        InformationGenerator.generateUniqueID(person);
 
         // Give person email
         String email = InformationGenerator.generateEmail(person);
@@ -138,10 +101,6 @@ public class QueryRoleICT implements IUpdate, IQuery {
             }
         }
         return false;
-    }
-
-    private void addUniqueIdToPerson(Person person) {
-        person.setUniqueId(InformationGenerator.generateUniqueID());
     }
 
 }

@@ -18,103 +18,51 @@ public class DaoStaffImpl<T extends Staff> implements Dao<T> {
     private final Database database = new Database();
 
     public boolean update(T staff) {
-        database.connectToDB();
-
         String[] information = staff.getPersonInformation();
         String sql = "UPDATE staff set uniqueid = %s, name = %s, surname = %s, birthdate = %s, " +
                 "gender = %s, homeaddress = %s, phonenumber = %s, email = %s, initials = %s";
         String sqlWhere = String.format(" where uniqueId = %s", staff.getUniqueId());
 
-        executeStatement(information, sql + sqlWhere);
-    }
-
-    @SuppressWarnings("Duplicates")
-    private void executeStatement(String[] information, String sql) {
         for (String value :
                 information) {
             sql = sql.replaceFirst("%s", value.replaceAll(" ", "_"));
         }
 
-        try {
-            Statement statement = database.createStatement();
-            statement.executeUpdate(sql);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        database.disconnectFromDB();
+        return database.executeStatement(sql + sqlWhere);
     }
-
 
     @Override
     public boolean update(T obj, HashMap<String, String> params) {
-
+        return false;
     }
 
     @Override
     public boolean save(T staff) {
-        database.connectToDB();
-
         String[] information = staff.getPersonInformation();
         String sql = "insert into staff values('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')";
-        executeStatement(information, sql);
+
+        for (String value :
+                information) {
+            sql = sql.replaceFirst("%s", value.replaceAll(" ", "_"));
+        }
+
+        return database.executeStatement(sql);
+    }
+
+    public boolean delete(Staff staff) {
+        return delete(staff.getUniqueId());
     }
 
     @Override
-    public boolean delete(String staff) {
-        database.connectToDB();
-
+    public boolean delete(String uniqueId) {
         String sql = "delete from staff where uniqueid = '%s'";
-        sql = String.format(sql, staff.getUniqueId());
+        sql = String.format(sql, uniqueId);
 
-        Statement statement = database.createStatement();
-
-        try {
-            statement.executeUpdate(sql);
-            return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    @Override
-    public T find(T staff) {
-        database.connectToDB();
-
-        String sql = "select * from staff where uniqueid = '%s'";
-        sql = String.format(sql, staff.getUniqueId());
-
-        Statement statement = database.createStatement();
-        T foundStaff = null;
-
-        try {
-            ResultSet set = statement.executeQuery(sql);
-
-            if (set.next()) {
-                foundStaff = (T) new Staff(
-                        set.getString("uniqueid"),
-                        set.getString("name"),
-                        set.getString("surname"),
-                        stringToDate(set.getString("birthdate")),
-                        Integer.parseInt(set.getString("gender")),
-                        set.getString("homeaddress"),
-                        Integer.parseInt(set.getString("phonenumber")),
-                        set.getString("email"),
-                        set.getString("initials"));
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        database.disconnectFromDB();
-        return foundStaff;
+        return database.executeStatement(sql);
     }
 
     @Override
     public ArrayList<T> find(HashMap<String, String> params) {
-        database.connectToDB();
 
         String sql = "select * from staff where ";
         String values = "";
@@ -155,8 +103,13 @@ public class DaoStaffImpl<T extends Staff> implements Dao<T> {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        database.disconnectFromDB();
         return staff;
+    }
+
+    public <T extends Staff> T find(T staff) {
+        HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put("uniqueid", staff.getUniqueId());
+        return (T) find(hashMap).get(0);
     }
 
     private Date stringToDate(String birthdate) {
