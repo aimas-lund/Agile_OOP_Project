@@ -70,20 +70,10 @@ public class DaoPatientImpl<T extends Patient> implements Dao<T> {
 
     @Override
     public boolean delete(String uniqueId) {
-        database.connectToDB();
-
         String sql = "delete from patients where uniqueid = '%s'";
         sql = String.format(sql, uniqueId);
 
-        Statement statement = database.createStatement();
-
-        try {
-            statement.executeUpdate(sql);
-            return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
+        return database.executeStatement(sql);
     }
 
     public <T extends Patient> T find(T patient) {
@@ -130,7 +120,7 @@ public class DaoPatientImpl<T extends Patient> implements Dao<T> {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
         }
         database.disconnectFromDB();
         return patients;

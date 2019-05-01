@@ -34,11 +34,6 @@ public class ClerkTest {
         assertTrue(clerk.registerPerson(patient, department));
         clerk.delete(patient, department);
 
-        try {
-            clerk.find(patient);
-        } catch (PersonNotFoundException e) {
-            e.printStackTrace();
-        }
     }
 
     @Test
@@ -47,16 +42,6 @@ public class ClerkTest {
         assertFalse(clerk.registerPerson(patient, department));
 
         clerk.delete(patient, department);
-    }
-
-    @Test
-    public void setPersonPhoneNumber() {
-        int correct_phonenumber = 42042069;
-        int incorrect_phonenumber = 420420693;
-
-        assertTrue(false);
-//        assertTrue(clerk.setPersonPhoneNumber(patient, correct_phonenumber));
-//        assertFalse(clerk.setPersonPhoneNumber(patient, incorrect_phonenumber));
     }
 
     @Test

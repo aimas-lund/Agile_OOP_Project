@@ -10,8 +10,7 @@ import storage.DaoPatientImpl;
 import java.util.Date;
 import java.util.HashMap;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class DaoPatientImplTest {
     private final DaoPatientImpl<Patient> dao = new DaoPatientImpl<>();
@@ -28,6 +27,7 @@ public class DaoPatientImplTest {
                 "DTUStreet 56",
                 45231298);
 
+        dao.save(patient);
     }
 
     @After
@@ -39,9 +39,6 @@ public class DaoPatientImplTest {
 
     @Test
     public void updateAllValuesFromObject() {
-
-        assertTrue(dao.save(patient));
-
         new Clerk().setPersonName(patient,
                 "Aimas");
 
@@ -57,7 +54,6 @@ public class DaoPatientImplTest {
         hashMap.put("surname", "Simonsen");
         hashMap.put("gender", "0");
 
-        dao.save(patient);
         assertTrue(dao.update(patient, hashMap));
         assertEquals("Simon", dao.find(patient).getName());
         assertEquals("Simonsen", dao.find(patient).getSurname());
@@ -65,25 +61,30 @@ public class DaoPatientImplTest {
     }
 
     @Test
-    public void updateDuplicateValuesFails() {
+    public void updateMissingColumnsFails() {
         HashMap<String, String> hashMap = new HashMap<>();
-        hashMap.put("name", "Simon");
-        hashMap.put("name", "Aimas");
+        hashMap.put("dabbering", "Simon");
+
+        assertFalse(dao.update(patient, hashMap));
     }
 
     @Test
     public void save() {
+        assertEquals(patient.getUniqueId(), dao.find(patient).getUniqueId());
     }
 
     @Test
-    public void delete() {
-    }
-
-    @Test
-    public void delete1() {
+    public void saveMultipleFails() {
+        assertFalse(dao.save(patient));
     }
 
     @Test
     public void find() {
+        HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put("name", "Simon");
+        hashMap.put("surname", "Simonsen;'");
+        hashMap.put("gender", "0");
+
+        assertTrue(dao.find(hashMap).isEmpty());
     }
 }

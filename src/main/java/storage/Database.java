@@ -101,7 +101,6 @@ public class Database {
             disconnectFromDB();
             return true;
         } catch (SQLException e) {
-            e.printStackTrace();
             disconnectFromDB();
             return false;
         }
