@@ -54,7 +54,7 @@ public class Staff extends Person {
                 String.format("%d", this.getPhoneNumber()), this.getEmail(), this.getInitials()};
     }
 
-    void setInitials(String i) {
+    public void setInitials(String i) {
         this.initials = i;
     }
     public String getInitials() {
