@@ -10,6 +10,7 @@ public class Hospital {
 
     public void add(Department d) {
         departments.add(d);
+        addUniqueIdToDepartment(d);
     }
 
     public void remove(Department d) {
@@ -44,6 +45,10 @@ public class Hospital {
 
     public ArrayList<Department> getDepartments() {
         return departments;
+    }
+
+    private void addUniqueIdToDepartment(Department department) {
+        department.setUniqueId(InformationGenerator.generateUniqueID());
     }
 
 }

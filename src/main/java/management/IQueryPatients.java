@@ -5,9 +5,10 @@ import exceptions.PersonNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public interface IQueryPatients<Patient> {
-    Patient findPatient(Patient obj) throws PersonNotFoundException;
+public interface IQueryPatients<T extends Patient> {
+    T findPatient(T obj) throws PersonNotFoundException;
+    ArrayList<T> findPatient(HashMap<String, String> params) throws PersonNotFoundException;
 
-    ArrayList<Patient> findPatient(HashMap<String, String> params) throws PersonNotFoundException;
 
 }
+
