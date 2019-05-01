@@ -12,7 +12,7 @@ public class Department extends Hospital {
 	private int capacity;
 	private ArrayList<Patient> patients = new ArrayList<Patient>();
 	private ArrayList<Staff> staff = new ArrayList<Staff>();
-	private Bed[] beds;
+    private Bed[] beds = new Bed[0];
 
 	public Department(String name, int capacity) {
 		this.name = name;
@@ -36,14 +36,16 @@ public class Department extends Hospital {
 		staff.remove(s);
 	}
 	public void remove(Patient p) {
+        patients.remove(p);
+
 		for (Bed bed : beds) {
 			if (bed.getPatient() == p) {
 				removeFromBed(p);
 			}
 		}
-		patients.remove(p);
 	}
-	public void assign(Patient p) throws ExceededCapacityException {
+
+    public void assign(Patient p) throws ExceededCapacityException {
 		if (availableBeds()) {
 			if (!getPatients().contains(p)) {
 				add(p);

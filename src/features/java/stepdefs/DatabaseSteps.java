@@ -76,8 +76,8 @@ public class DatabaseSteps {
             e.printStackTrace();
         } finally {
             database.disconnectFromDB();
+            clerk.delete(patient, department);
         }
-
     }
 
     @When("a new staff is hired to the hospital")
@@ -108,6 +108,7 @@ public class DatabaseSteps {
             e.printStackTrace();
         } finally {
             database.disconnectFromDB();
+            ict.delete(staff, department);
         }
     }
 
@@ -132,6 +133,7 @@ public class DatabaseSteps {
         String UniqueIdbefore = patient.getUniqueId();
         assertEquals(UniqueIdbefore, patient.getUniqueId());
         //You can not change ID.
+        clerk.delete(patient, department);
     }
 
     @When("the user need specific information")
@@ -183,6 +185,9 @@ public class DatabaseSteps {
             }
         }
 
+        ict.delete(staff, department);
+        clerk.delete(patient, department);
+
     }
 
     @Given("a user that can query the database")
@@ -204,7 +209,7 @@ public class DatabaseSteps {
         params.put("name", "'not'");
 
         try {
-            assertNull(clerk.findpatient(params));
+            assertNull(clerk.findPatient(params));
         } catch (PersonNotFoundException e) {
 //            e.printStackTrace();
         }
@@ -216,7 +221,7 @@ public class DatabaseSteps {
         params.put("name", "'not'");
 
         try {
-            assertNull(clerk.findpatient(params));
+            assertNull(clerk.findPatient(params));
         } catch (PersonNotFoundException e) {
             assertEquals("exceptions.PersonNotFoundException: No patients were found with given parameters",
                     e.toString());
@@ -263,14 +268,14 @@ public class DatabaseSteps {
         paramsstaff.put("name", "'Emil'");
 
         try {
-        assertNotNull(ict.findpatient(paramspatient));
+        assertNotNull(ict.findPatient(paramspatient));
         } catch (PersonNotFoundException e) {
             assertEquals("exceptions.PersonNotFoundException: No patients were found with given parameters",
                     e.toString());
         }
 
         try {
-            assertNotNull(ict.findstaff(paramsstaff));
+            assertNotNull(ict.findStaff(paramsstaff));
         } catch (PersonNotFoundException e) {
             assertEquals("exceptions.PersonNotFoundException: No patients were found with given parameters",
                     e.toString());

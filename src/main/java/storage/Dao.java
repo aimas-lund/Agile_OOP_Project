@@ -11,7 +11,7 @@ public interface Dao<T> {
 
     void save(T obj);
 
-    void delete(T obj);
+    boolean delete(T obj);
 
     T find(T obj);
 
