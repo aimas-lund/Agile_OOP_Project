@@ -13,8 +13,20 @@ public class Department extends Hospital {
 	private ArrayList<Patient> patients = new ArrayList<Patient>();
 	private ArrayList<Staff> staff = new ArrayList<Staff>();
     private Bed[] beds = new Bed[0];
+    private String uniqueId;
+
 
 	public Department(String name, int capacity) {
+		this.name = name;
+		this.capacity = capacity;
+		this.beds = new Bed[capacity];
+		for (int id = 0; id < beds.length; id++) {
+			beds[id] = new Bed(id);
+		}
+	}
+
+	public Department(String uniqueId, String name, int capacity) {
+		this.uniqueId = uniqueId;
 		this.name = name;
 		this.capacity = capacity;
 		this.beds = new Bed[capacity];
@@ -142,4 +154,17 @@ public class Department extends Hospital {
 		return false;
 	}
 
+	public String[] getDepartmentInformation() {
+		return new String[]{this.getUniqueId(),this.getName(),String.format("%d",this.getAvailableBeds()),
+				String.format("%d",this.getCapacity())};
+	}
+
+	void setUniqueId(String uniqueID) {
+		this.uniqueId = uniqueID;
+	}
+
+
+	public String getUniqueId() {
+		return uniqueId;
+	}
 }
