@@ -64,6 +64,13 @@ public class ClerkTest {
         clerk.findPatient(patient);
     }
 
+    @Test(expected = PersonNotFoundException.class)
+    public void findPatientTestFailDeletedPatient() throws PersonNotFoundException {
+        clerk.registerPerson(patient, department);
+        clerk.delete(patient, department);
+        clerk.findPatient(patient);
+    }
+
     @Test
     public void checkPatientRegisteredTestTrue() {
         department.add(patient);
