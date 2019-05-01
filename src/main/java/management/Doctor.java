@@ -16,7 +16,7 @@ public class Doctor extends Staff {
         return speciality;
     }
 
-    void setSpeciality(Speciality speciality) {
+    public void setSpeciality(Speciality speciality) {
         this.speciality = speciality;
     }
 }
