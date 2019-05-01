@@ -1,18 +1,17 @@
 import exceptions.PersonNotFoundException;
-import management.Clerk;
 import management.Department;
 import management.Patient;
 import org.junit.Before;
 import org.junit.Test;
+import storage.QueryRoleClerk;
 
 import java.util.Date;
 
 import static junit.framework.TestCase.assertFalse;
 import static junit.framework.TestCase.assertTrue;
-import static org.junit.Assert.assertEquals;
 
 public class ClerkTest {
-    private Clerk clerk = new Clerk();
+    private QueryRoleClerk clerk = new QueryRoleClerk();
     private Patient patient;
     private Department department;
 
@@ -33,6 +32,12 @@ public class ClerkTest {
     public void registerPerson() {
         assertTrue(clerk.registerPerson(patient, department));
         clerk.delete(patient, department);
+
+        try {
+            clerk.find(patient);
+        } catch (PersonNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test

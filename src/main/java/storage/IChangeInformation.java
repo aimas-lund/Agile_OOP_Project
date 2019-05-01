@@ -1,4 +1,6 @@
-package management;
+package storage;
+
+import management.Person;
 
 import java.util.Date;
 
