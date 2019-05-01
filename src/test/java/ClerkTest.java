@@ -1,3 +1,4 @@
+import exceptions.PersonNotFoundException;
 import management.Clerk;
 import management.Department;
 import management.Patient;
@@ -8,6 +9,7 @@ import java.util.Date;
 
 import static junit.framework.TestCase.assertFalse;
 import static junit.framework.TestCase.assertTrue;
+import static org.junit.Assert.assertEquals;
 
 public class ClerkTest {
     private Clerk clerk = new Clerk();
@@ -51,8 +53,15 @@ public class ClerkTest {
     }
 
     @Test
-    public void findPatientTest() {
+    public void findPatientTestPass() throws PersonNotFoundException {
+        clerk.registerPerson(patient, department);
+        assertEquals(clerk.findPatient(patient).getUniqueId(), patient.getUniqueId());
+        clerk.delete(patient, department);
+    }
 
+    @Test(expected = PersonNotFoundException.class)
+    public void findPatientTestFail() throws PersonNotFoundException {
+        clerk.findPatient(patient);
     }
 
     @Test
