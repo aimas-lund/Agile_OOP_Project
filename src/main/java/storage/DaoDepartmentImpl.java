@@ -14,7 +14,7 @@ public class DaoDepartmentImpl<T extends Department> implements Dao<T> {
     private final Database database = new Database();
 
     @Override
-    public void update(T Department) {
+    public boolean update(T Department) {
         database.connectToDB();
 
         String[] information = Department.getDepartmentInformation();
@@ -27,15 +27,15 @@ public class DaoDepartmentImpl<T extends Department> implements Dao<T> {
 
         sql = String.format(sql, Department.getUniqueId());
 
-        executeStatement(sql);
+        return database.executeStatement(sql);
     }
 
     @Override
-    public void update(T obj, String[] params) {
+    public boolean update(T obj, HashMap<String, String> params) {
 
     }
     @Override
-    public void save(T patient) {
+    public boolean save(T patient) {
         database.connectToDB();
         String[] information = patient.getDepartmentInformation();
         String sql = "insert into patients values('%s','%s', '%s', '%s')";
@@ -44,38 +44,21 @@ public class DaoDepartmentImpl<T extends Department> implements Dao<T> {
             sql = sql.replaceFirst("%s", value.replaceAll(" ", "_"));
         }
 
-        executeStatement(sql);
+        return database.executeStatement(sql);
     }
 
-
-    private void executeStatement(String sql) {
-        try {
-            Statement statement = database.createStatement();
-            statement.executeUpdate(sql);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            database.disconnectFromDB();
-        }
-
+    public boolean delete(Department department) {
+        return delete(department.getUniqueId());
     }
 
     @Override
-    public boolean delete(Department department) {
+    public boolean delete(String uniqueid) {
         database.connectToDB();
 
         String sql = "delete from department where name = '%s'";
-        sql = String.format(sql, department.getName());
+        sql = String.format(sql, uniqueid);
 
-        Statement statement = database.createStatement();
-
-        try {
-            statement.executeUpdate(sql);
-            return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
+        return database.executeStatement(sql);
     }
 
     @Override

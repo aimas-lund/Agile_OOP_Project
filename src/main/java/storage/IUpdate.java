@@ -8,5 +8,5 @@ public interface IUpdate {
 
     <T extends Person> boolean isPersonRegistered(T person, Department department);
 
-    <T> boolean delete(T obj, Department department);
+    <T extends Person> boolean delete(T obj, Department department);
 }

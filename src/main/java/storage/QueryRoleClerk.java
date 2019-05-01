@@ -10,29 +10,28 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class QueryRoleClerk implements IUpdate, IQuery {
-    private final Dao<Patient> dao = new DaoPatientImpl<>();
+    private final Dao<Patient> daoPatient = new DaoPatientImpl<>();
 
-    @Override
-    public <T extends Person> T find(T obj) throws PersonNotFoundException {
-        Patient foundPatient = dao.find((Patient) obj);
-        if (foundPatient != null) {
-            return (T) foundPatient;
+    public <T extends Person> T find(T patient) throws PersonNotFoundException {
+        HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put("uniqueid", patient.getUniqueId());
+        return find(hashMap, patient).get(0); // Returns arrayList of length 1
+    }
+
+    public <T extends Person> ArrayList<T> find(HashMap<String, String> params) throws PersonNotFoundException {
+        ArrayList<Patient> patients = daoPatient.find(params);
+
+        if (patients.isEmpty()) {
+            throw new PersonNotFoundException("No patients were found with given parameters");
         } else {
-            throw new PersonNotFoundException("Patient not found in database");
+            return (ArrayList<T>) patients;
         }
 
     }
 
     @Override
     public <T extends Person> ArrayList<T> find(HashMap<String, String> params, T table) throws PersonNotFoundException {
-        ArrayList<Patient> patients = dao.find(params);
-
-        if (patients.isEmpty()) {
-            throw new PersonNotFoundException("No patients were found with given parameters");
-        } else {
-            return patients;
-        }
-
+        return find(params);
     }
 
     @Override
@@ -42,10 +41,10 @@ public class QueryRoleClerk implements IUpdate, IQuery {
             return false;
         }
 
-        addUniqueIdToPerson(person);
+        InformationGenerator.generateUniqueID(person);
 
-        dao.save(person);
-        department.getPatients().add(person);
+        daoPatient.save((Patient) person);
+        department.getPatients().add((Patient) person);
 
         return true;
     }
@@ -63,17 +62,13 @@ public class QueryRoleClerk implements IUpdate, IQuery {
     }
 
     @Override
-    public <T> boolean delete(T obj, Department department) {
-        if (dao.delete(patient)) {
-            department.remove(patient);
+    public <T extends Person> boolean delete(T patient, Department department) {
+        if (daoPatient.delete(patient.getUniqueId())) {
+            department.remove((Patient) patient);
             return true;
         } else {
             return false;
         }
-    }
-
-    private void addUniqueIdToPerson(Person person) {
-        person.setUniqueId(InformationGenerator.generateUniqueID());
     }
 
     public boolean checkPatientRegistrationStatus(Patient patient, Department department) {
@@ -94,7 +89,7 @@ public class QueryRoleClerk implements IUpdate, IQuery {
 //
 //        addUniqueIdToPerson(person);
 //
-//        dao.save(person);
+//        daoPatient.save(person);
 //        department.getPatients().add(person);
 //
 //        return true;
@@ -113,7 +108,7 @@ public class QueryRoleClerk implements IUpdate, IQuery {
 //
 //    @Override
 //    public boolean delete(Patient patient, Department department) {
-//        if (dao.delete(patient)) {
+//        if (daoPatient.delete(patient)) {
 //            department.remove(patient);
 //            return true;
 //        } else {
@@ -123,7 +118,7 @@ public class QueryRoleClerk implements IUpdate, IQuery {
 //
 //    @Override
 //    public Patient findPatient(Patient patient) throws PersonNotFoundException {
-//        Patient foundPatient = dao.find(patient);
+//        Patient foundPatient = daoPatient.find(patient);
 //        if (foundPatient != null) {
 //            return foundPatient;
 //        } else {
@@ -133,7 +128,7 @@ public class QueryRoleClerk implements IUpdate, IQuery {
 //
 //    @Override
 //    public ArrayList<Patient> findPatient(HashMap<String, String> params) throws PersonNotFoundException {
-//        ArrayList<Patient> patients = dao.find(params);
+//        ArrayList<Patient> patients = daoPatient.find(params);
 //
 //        if (patients.isEmpty()) {
 //            throw new PersonNotFoundException("No patients were found with given parameters");

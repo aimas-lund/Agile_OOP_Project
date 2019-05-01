@@ -48,7 +48,7 @@ public class Hospital {
     }
 
     private void addUniqueIdToDepartment(Department department) {
-        department.setUniqueId(InformationGenerator.generateUniqueID());
+        InformationGenerator.generateUniqueID(department);
     }
 
 }

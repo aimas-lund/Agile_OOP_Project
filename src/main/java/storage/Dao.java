@@ -5,15 +5,13 @@ import java.util.HashMap;
 
 public interface Dao<T> {
 
-    void update(T obj);
+    boolean update(T obj);
 
-    void update(T obj, String[] params);
+    boolean update(T obj, HashMap<String, String> params);
 
-    void save(T obj);
+    boolean save(T obj);
 
-    boolean delete(T obj);
-
-    T find(T obj);
+    boolean delete(String uniqueId);
 
     ArrayList<T> find(HashMap<String, String> params);
 }

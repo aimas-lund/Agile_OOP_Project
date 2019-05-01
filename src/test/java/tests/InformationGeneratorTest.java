@@ -1,3 +1,5 @@
+package tests;
+
 import management.InformationGenerator;
 import management.Staff;
 import org.junit.Test;

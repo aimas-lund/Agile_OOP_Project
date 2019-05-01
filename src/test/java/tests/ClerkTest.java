@@ -1,3 +1,5 @@
+package tests;
+
 import exceptions.PersonNotFoundException;
 import management.Department;
 import management.Patient;
@@ -81,12 +83,14 @@ public class ClerkTest {
         department.add(patient);
         assertTrue(clerk.checkPatientRegistrationStatus(patient, department));
     }
+
     @Test
     public void checkPatientRegisteredTestFalsePatient() {
         department.add(patient);
         Patient falsePatient = new Patient();
         assertFalse(clerk.checkPatientRegistrationStatus(falsePatient, department));
     }
+
     @Test
     public void checkPatientRegisteredTestFalseDepartment() {
         department.add(patient);

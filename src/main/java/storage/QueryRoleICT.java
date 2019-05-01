@@ -11,23 +11,23 @@ public class QueryRoleICT implements IUpdate, IQuery {
     private final Dao<Patient> daoPatient = new DaoPatientImpl<>();
 
     @Override
-    public <T extends Person> T find(T obj) throws PersonNotFoundException {
-        if (obj instanceof Patient) {
-            Patient foundPatient = daoPatient.find((Patient) obj);
+    public <T extends Person> T find(String uniqueId) throws PersonNotFoundException {
+        if (uniqueId instanceof Patient) {
+            Patient foundPatient = daoPatient.find((Patient) uniqueId);
             if (foundPatient != null) {
                 return (T) foundPatient;
             } else {
                 throw new PersonNotFoundException("Patient not found in database");
             }
-        } else if (obj instanceof Staff) {
-            Staff foundStaff = daoStaff.find((Staff) obj);
-
+        } else if (uniqueId instanceof Staff) {
+            Staff foundStaff = daoStaff.find((Staff) uniqueId);
             if (foundStaff != null) {
                 return (T) foundStaff;
             } else {
                 throw new PersonNotFoundException("Staff not found in database");
             }
         }
+        throw new PersonNotFoundException("Person not searchable or found in database");
     }
 
     @Override

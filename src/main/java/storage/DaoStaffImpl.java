@@ -17,7 +17,7 @@ public class DaoStaffImpl<T extends Staff> implements Dao<T> {
 
     private final Database database = new Database();
 
-    public void update(T staff) {
+    public boolean update(T staff) {
         database.connectToDB();
 
         String[] information = staff.getPersonInformation();
@@ -47,12 +47,12 @@ public class DaoStaffImpl<T extends Staff> implements Dao<T> {
 
 
     @Override
-    public void update(T obj, String[] params) {
+    public boolean update(T obj, HashMap<String, String> params) {
 
     }
 
     @Override
-    public void save(T staff) {
+    public boolean save(T staff) {
         database.connectToDB();
 
         String[] information = staff.getPersonInformation();
@@ -61,7 +61,7 @@ public class DaoStaffImpl<T extends Staff> implements Dao<T> {
     }
 
     @Override
-    public boolean delete(Staff staff) {
+    public boolean delete(String staff) {
         database.connectToDB();
 
         String sql = "delete from staff where uniqueid = '%s'";
