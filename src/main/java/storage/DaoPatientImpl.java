@@ -18,8 +18,8 @@ public class DaoPatientImpl<T extends Patient> implements Dao<T> {
     @Override
     public boolean update(Patient patient) {
         String[] information = patient.getPersonInformation();
-        String sql = "UPDATE patients set uniqueid = '%s', name = %s, surname = %s, birthdate = %s, " +
-                "gender = %s, homeaddress = %s, phonenumber = %s where uniqueId = %s";
+        String sql = "UPDATE patients set uniqueid = '%s', name = '%s', surname = '%s', birthdate = '%s', " +
+                "gender = '%s', homeaddress = '%s', phonenumber = '%s' where uniqueId = '%s'";
 
         for (String value :
                 information) {
@@ -28,17 +28,32 @@ public class DaoPatientImpl<T extends Patient> implements Dao<T> {
 
         sql = String.format(sql, patient.getUniqueId());
 
-        return executeStatement(sql);
+        return database.executeStatement(sql);
     }
 
     @Override
-    public boolean update(T obj, HashMap<String, String> params) {
-        return false;
+    public boolean update(T patient, HashMap<String, String> params) {
+        String sql = "UPDATE patients set ";
+        String values = "";
+
+        for (Map.Entry<String, String> entry : params.entrySet()) {
+            String value = entry.getValue();
+
+            value = " = " + "'" + value + "'";
+
+            values = values.concat(entry.getKey() + value + ", ");
+        }
+
+        values = values.substring(0, values.length() - 2);
+
+        sql = sql + values +
+                String.format(" where uniqueId = '%s'", patient.getUniqueId());
+
+        return database.executeStatement(sql);
     }
 
     @Override
     public boolean save(T patient) {
-        database.connectToDB();
         String[] information = patient.getPersonInformation();
         String sql = "insert into patients values('%s', '%s', '%s', '%s', '%s', '%s', '%s')";
         for (String value :
@@ -46,22 +61,7 @@ public class DaoPatientImpl<T extends Patient> implements Dao<T> {
             sql = sql.replaceFirst("%s", value.replaceAll(" ", "_"));
         }
 
-        return executeStatement(sql);
-    }
-
-    private boolean executeStatement(String sql) {
-        database.connectToDB();
-
-        try {
-            Statement statement = database.createStatement();
-            statement.executeUpdate(sql);
-            database.disconnectFromDB();
-            return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            database.disconnectFromDB();
-            return false;
-        }
+        return database.executeStatement(sql);
     }
 
     public boolean delete(Patient patient) {
