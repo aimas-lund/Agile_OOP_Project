@@ -42,7 +42,7 @@ public class Staff extends Person {
         return email;
     }
 
-    public void setEmail(String email) {
+    void setEmail(String email) {
         this.email = email;
         this.initials = email.substring(0, 4);
     }
@@ -54,7 +54,7 @@ public class Staff extends Person {
                 String.format("%d", this.getPhoneNumber()), this.getEmail(), this.getInitials()};
     }
 
-    public void setInitials(String i) {
+    void setInitials(String i) {
         this.initials = i;
     }
     public String getInitials() {

@@ -95,7 +95,7 @@ public abstract class Person {
         return uniqueId;
     }
 
-    public void setUniqueId(String uniqueID) {
+    void setUniqueId(String uniqueID) {
         this.uniqueId = uniqueID;
     }
 

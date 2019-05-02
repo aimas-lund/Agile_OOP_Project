@@ -27,12 +27,12 @@ public class DaoPatientImplTest {
                 "DTUStreet 56",
                 45231298);
 
-        dao.save(patient);
+        assertTrue(dao.save(patient));
     }
 
     @After
     public void tearDown() {
-        dao.delete(patient);
+        assertTrue(dao.delete(patient));
         patient = new Patient();
     }
 
