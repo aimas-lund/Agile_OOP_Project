@@ -17,47 +17,6 @@ public class DaoStaffImpl<T extends Staff> implements Dao<T> {
 
     private final Database database = new Database();
 
-    public boolean update(T staff) {
-        String[] information = staff.getPersonInformation();
-        String sql = "UPDATE staff set uniqueid = '%s', name = '%s', surname = '%s', birthdate = '%s', " +
-                "gender = '%s', homeaddress = '%s', phonenumber = '%s', email = '%s', initials = '%s'";
-        String sqlWhere = String.format(" where uniqueId = '%s'", staff.getUniqueId());
-
-        for (String value :
-                information) {
-            sql = sql.replaceFirst("%s", value.replaceAll(" ", "_"));
-        }
-
-        return database.executeStatement(sql + sqlWhere);
-    }
-
-    @Override
-    public boolean update(T staff, HashMap<String, String> params) {
-        String sql = "UPDATE staff set ";
-        String values = "";
-
-        if (params.containsKey("initials")) {
-            params.put("email", params.get("initials") + "@agile_hospital.com");
-        } else if (params.containsKey("email")) {
-            params.put("initials", params.get("email").substring(0, 4));
-        }
-
-        for (Map.Entry<String, String> entry : params.entrySet()) {
-            String value = entry.getValue();
-
-            value = " = " + "'" + value + "'";
-
-            values = values.concat(entry.getKey() + value + ", ");
-        }
-
-        values = values.substring(0, values.length() - 2);
-
-        sql = sql + values +
-                String.format(" where uniqueId = '%s'", staff.getUniqueId());
-
-        return database.executeStatement(sql);
-    }
-
     @Override
     public boolean save(T staff) {
         String[] information = staff.getPersonInformation();
@@ -69,24 +28,6 @@ public class DaoStaffImpl<T extends Staff> implements Dao<T> {
         }
 
         return database.executeStatement(sql);
-    }
-
-    public boolean delete(Staff staff) {
-        return delete(staff.getUniqueId());
-    }
-
-    @Override
-    public boolean delete(String uniqueId) {
-        String sql = "delete from staff where uniqueid = '%s'";
-        sql = String.format(sql, uniqueId);
-
-        return database.executeStatement(sql);
-    }
-
-    public <T extends Staff> T find(T staff) {
-        HashMap<String, String> hashMap = new HashMap<>();
-        hashMap.put("uniqueid", staff.getUniqueId());
-        return (T) find(hashMap).get(0);
     }
 
     @Override
@@ -133,6 +74,65 @@ public class DaoStaffImpl<T extends Staff> implements Dao<T> {
         }
         database.disconnectFromDB();
         return staff;
+    }
+
+    public <T extends Staff> T find(T staff) {
+        HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put("uniqueid", staff.getUniqueId());
+        return (T) find(hashMap).get(0);
+    }
+
+    public boolean delete(Staff staff) {
+        return delete(staff.getUniqueId());
+    }
+
+    @Override
+    public boolean delete(String uniqueId) {
+        String sql = "delete from staff where uniqueid = '%s'";
+        sql = String.format(sql, uniqueId);
+
+        return database.executeStatement(sql);
+    }
+
+    public boolean update(T staff) {
+        String[] information = staff.getPersonInformation();
+        String sql = "UPDATE staff set uniqueid = '%s', name = '%s', surname = '%s', birthdate = '%s', " +
+                "gender = '%s', homeaddress = '%s', phonenumber = '%s', email = '%s', initials = '%s'";
+        String sqlWhere = String.format(" where uniqueId = '%s'", staff.getUniqueId());
+
+        for (String value :
+                information) {
+            sql = sql.replaceFirst("%s", value.replaceAll(" ", "_"));
+        }
+
+        return database.executeStatement(sql + sqlWhere);
+    }
+
+    @Override
+    public boolean update(T staff, HashMap<String, String> params) {
+        String sql = "UPDATE staff set ";
+        String values = "";
+
+        if (params.containsKey("initials")) {
+            params.put("email", params.get("initials") + "@agile_hospital.com");
+        } else if (params.containsKey("email")) {
+            params.put("initials", params.get("email").substring(0, 4));
+        }
+
+        for (Map.Entry<String, String> entry : params.entrySet()) {
+            String value = entry.getValue();
+
+            value = " = " + "'" + value + "'";
+
+            values = values.concat(entry.getKey() + value + ", ");
+        }
+
+        values = values.substring(0, values.length() - 2);
+
+        sql = sql + values +
+                String.format(" where uniqueId = '%s'", staff.getUniqueId());
+
+        return database.executeStatement(sql);
     }
 
     private Date stringToDate(String birthdate) {

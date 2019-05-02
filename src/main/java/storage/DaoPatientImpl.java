@@ -16,43 +16,6 @@ public class DaoPatientImpl<T extends Patient> implements Dao<T> {
     private final Database database = new Database();
 
     @Override
-    public boolean update(T patient) {
-        String[] information = patient.getPersonInformation();
-        String sql = "UPDATE patients set uniqueid = '%s', name = '%s', surname = '%s', birthdate = '%s', " +
-                "gender = '%s', homeaddress = '%s', phonenumber = '%s' where uniqueId = '%s'";
-
-        for (String value :
-                information) {
-            sql = sql.replaceFirst("%s", value.replaceAll(" ", "_"));
-        }
-
-        sql = String.format(sql, patient.getUniqueId());
-
-        return database.executeStatement(sql);
-    }
-
-    @Override
-    public boolean update(T patient, HashMap<String, String> params) {
-        String sql = "UPDATE patients set ";
-        String values = "";
-
-        for (Map.Entry<String, String> entry : params.entrySet()) {
-            String value = entry.getValue();
-
-            value = " = " + "'" + value + "'";
-
-            values = values.concat(entry.getKey() + value + ", ");
-        }
-
-        values = values.substring(0, values.length() - 2);
-
-        sql = sql + values +
-                String.format(" where uniqueId = '%s'", patient.getUniqueId());
-
-        return database.executeStatement(sql);
-    }
-
-    @Override
     public boolean save(T patient) {
         String[] information = patient.getPersonInformation();
         String sql = "insert into patients values('%s', '%s', '%s', '%s', '%s', '%s', '%s')";
@@ -62,24 +25,6 @@ public class DaoPatientImpl<T extends Patient> implements Dao<T> {
         }
 
         return database.executeStatement(sql);
-    }
-
-    public boolean delete(T patient) {
-        return delete(patient.getUniqueId());
-    }
-
-    @Override
-    public boolean delete(String uniqueId) {
-        String sql = "delete from patients where uniqueid = '%s'";
-        sql = String.format(sql, uniqueId);
-
-        return database.executeStatement(sql);
-    }
-
-    public <T extends Patient> T find(T patient) {
-        HashMap<String, String> hashMap = new HashMap<>();
-        hashMap.put("uniqueid", patient.getUniqueId());
-        return (T) find(hashMap).get(0); // Returns arrayList of length 1
     }
 
     @Override
@@ -124,6 +69,61 @@ public class DaoPatientImpl<T extends Patient> implements Dao<T> {
         }
         database.disconnectFromDB();
         return patients;
+    }
+
+    public <T extends Patient> T find(T patient) {
+        HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put("uniqueid", patient.getUniqueId());
+        return (T) find(hashMap).get(0); // Returns arrayList of length 1
+    }
+
+    public boolean delete(T patient) {
+        return delete(patient.getUniqueId());
+    }
+
+    @Override
+    public boolean delete(String uniqueId) {
+        String sql = "delete from patients where uniqueid = '%s'";
+        sql = String.format(sql, uniqueId);
+
+        return database.executeStatement(sql);
+    }
+
+    @Override
+    public boolean update(T patient) {
+        String[] information = patient.getPersonInformation();
+        String sql = "UPDATE patients set uniqueid = '%s', name = '%s', surname = '%s', birthdate = '%s', " +
+                "gender = '%s', homeaddress = '%s', phonenumber = '%s' where uniqueId = '%s'";
+
+        for (String value :
+                information) {
+            sql = sql.replaceFirst("%s", value.replaceAll(" ", "_"));
+        }
+
+        sql = String.format(sql, patient.getUniqueId());
+
+        return database.executeStatement(sql);
+    }
+
+    @Override
+    public boolean update(T patient, HashMap<String, String> params) {
+        String sql = "UPDATE patients set ";
+        String values = "";
+
+        for (Map.Entry<String, String> entry : params.entrySet()) {
+            String value = entry.getValue();
+
+            value = " = " + "'" + value + "'";
+
+            values = values.concat(entry.getKey() + value + ", ");
+        }
+
+        values = values.substring(0, values.length() - 2);
+
+        sql = sql + values +
+                String.format(" where uniqueId = '%s'", patient.getUniqueId());
+
+        return database.executeStatement(sql);
     }
 
     private Date stringToDate(String birthdate) {

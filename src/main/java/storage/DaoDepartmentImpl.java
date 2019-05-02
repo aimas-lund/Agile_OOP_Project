@@ -14,31 +14,9 @@ public class DaoDepartmentImpl<T extends Department> implements Dao<T> {
     private final Database database = new Database();
 
     @Override
-    public boolean update(T Department) {
+    public boolean save(T department) {
         database.connectToDB();
-
-        String[] information = Department.getDepartmentInformation();
-        String sql = "UPDATE patients set uniqueId = %s, name = %s, availablebeds = %s, capacity = %s where uniqueId = %s";
-
-        for (String value :
-                information) {
-            sql = sql.replaceFirst("%s", value.replaceAll(" ", "_"));
-        }
-
-        sql = String.format(sql, Department.getUniqueId());
-
-        return database.executeStatement(sql);
-    }
-
-    @Override
-    public boolean update(T obj, HashMap<String, String> params) {
-        return false;
-    }
-
-    @Override
-    public boolean save(T patient) {
-        database.connectToDB();
-        String[] information = patient.getDepartmentInformation();
+        String[] information = department.getDepartmentInformation();
         String sql = "insert into patients values('%s','%s', '%s', '%s')";
         for (String value :
                 information) {
@@ -47,27 +25,6 @@ public class DaoDepartmentImpl<T extends Department> implements Dao<T> {
 
         return database.executeStatement(sql);
     }
-
-    public boolean delete(Department department) {
-        return delete(department.getUniqueId());
-    }
-
-    @Override
-    public boolean delete(String uniqueid) {
-        database.connectToDB();
-
-        String sql = "delete from department where name = '%s'";
-        sql = String.format(sql, uniqueid);
-
-        return database.executeStatement(sql);
-    }
-
-    public T find(T department) {
-        HashMap<String, String> hashMap = new HashMap<>();
-        hashMap.put("uniqueid", department.getUniqueId());
-        return find(hashMap).get(0);
-    }
-
 
     @Override
     public ArrayList<T> find(HashMap<String, String> params) {
@@ -108,6 +65,48 @@ public class DaoDepartmentImpl<T extends Department> implements Dao<T> {
         }
         database.disconnectFromDB();
         return departments;
+    }
+
+    public T find(T department) {
+        HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put("uniqueid", department.getUniqueId());
+        return find(hashMap).get(0);
+    }
+
+    public boolean delete(Department department) {
+        return delete(department.getUniqueId());
+    }
+
+    @Override
+    public boolean delete(String uniqueid) {
+        database.connectToDB();
+
+        String sql = "delete from department where name = '%s'";
+        sql = String.format(sql, uniqueid);
+
+        return database.executeStatement(sql);
+    }
+
+    @Override
+    public boolean update(T Department) {
+        database.connectToDB();
+
+        String[] information = Department.getDepartmentInformation();
+        String sql = "UPDATE patients set uniqueId = %s, name = %s, availablebeds = %s, capacity = %s where uniqueId = %s";
+
+        for (String value :
+                information) {
+            sql = sql.replaceFirst("%s", value.replaceAll(" ", "_"));
+        }
+
+        sql = String.format(sql, Department.getUniqueId());
+
+        return database.executeStatement(sql);
+    }
+
+    @Override
+    public boolean update(T obj, HashMap<String, String> params) {
+        return false;
     }
 
 }
