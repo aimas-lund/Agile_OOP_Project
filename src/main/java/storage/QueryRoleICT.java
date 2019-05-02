@@ -60,19 +60,18 @@ public class QueryRoleICT implements IUpdate, IQuery {
         return (T) findPatient(hashMap).get(0);
     }
 
-    public ArrayList<Staff> find(HashMap<String, String> params) throws PersonNotFoundException {
-        return find(params, new Staff());
+    public <T extends Staff> T find(Staff staff) throws PersonNotFoundException {
+        HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put("uniqueid", staff.getUniqueId());
+        return (T) findStaff(hashMap).get(0);
     }
 
     public ArrayList<Staff> findStaff(HashMap<String, String> params) throws PersonNotFoundException {
         return find(params, new Staff());
     }
 
-        if (persons.isEmpty()) {
-            throw new PersonNotFoundException("No person were found with given parameters");
-        } else {
-            return persons;
-        }
+    public ArrayList<Patient> findPatient(HashMap<String, String> params) throws PersonNotFoundException {
+        return find(params, new Patient());
     }
 
     @Override
