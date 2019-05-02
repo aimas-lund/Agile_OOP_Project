@@ -1,7 +1,7 @@
 package tests;
 
-import management.Clerk;
 import management.Patient;
+import management.PersonInformationFacade;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -39,8 +39,7 @@ public class DaoPatientImplTest {
 
     @Test
     public void updateAllValuesFromObject() {
-        new Clerk().setPersonName(patient,
-                "Aimas");
+        new PersonInformationFacade(patient).setPersonName("Aimas");
 
         assertTrue(dao.update(patient));
         assertEquals("Aimas", dao.find(patient).getName());

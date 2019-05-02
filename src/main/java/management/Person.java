@@ -17,7 +17,11 @@ public abstract class Person {
     private String uniqueId;
 
     Person() {
+    }
 
+    public Person(String uniqueId, String name, String surname, Date birthdate, int gender, String homeaddress, int phonenumber) {
+        this(name, surname, birthdate, gender, homeaddress, phonenumber);
+        this.setUniqueId(uniqueId);
     }
 
     public Person(String name, String surname, Date birthdate, int gender, String homeaddress, int phonenumber) {

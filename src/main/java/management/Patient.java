@@ -13,8 +13,7 @@ public class Patient extends Person {
     }
 
     public Patient(String uniqueId, String name, String surname, Date birthdate, int gender, String homeaddress, int phonenumber) {
-        this(name, surname, birthdate, gender, homeaddress, phonenumber);
-        this.setUniqueId(uniqueId);
+        super(uniqueId, name, surname, birthdate, gender, homeaddress, phonenumber);
     }
 
     public Patient(String name, String surname, Date birthdate, int gender, String homeaddress, int phonenumber) {

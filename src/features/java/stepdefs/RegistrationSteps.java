@@ -206,7 +206,7 @@ public class RegistrationSteps {
         String email1 = InformationGenerator.generateEmail(registeredStaff);
 
         // Assign email
-        registeredStaff.setEmail(email1);
+        new PersonInformationFacade(registeredStaff).setStaffEmail(email1);
 
         // Check it is stored and the correct initials are there
         assertEquals(registeredStaff.getEmail(), email1);

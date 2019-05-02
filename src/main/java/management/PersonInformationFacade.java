@@ -65,4 +65,16 @@ public class PersonInformationFacade {
             ((Staff) person).setInitials(initials);
         }
     }
+
+    public void setPatientAlive(boolean alive) {
+        if (person instanceof Patient) {
+            ((Patient) person).setAlive(alive);
+        }
+    }
+
+    public void setDoctorSpeciality(Speciality speciality) {
+        if (person instanceof Doctor) {
+            ((Doctor) person).setSpeciality(speciality);
+        }
+    }
 }

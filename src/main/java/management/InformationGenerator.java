@@ -15,6 +15,7 @@ public class InformationGenerator {
     }
 
     private static String generateInitials(Person person) {
+        // TODO: Get all initials from database
         getPersonInformation(person);
         String inits;
 
@@ -36,7 +37,8 @@ public class InformationGenerator {
     }
 
     public static void generateUniqueID(Person person) {
-        person.setUniqueId(UUID.randomUUID().toString());
+        String uniqueID = UUID.randomUUID().toString();
+        new PersonInformationFacade(person).setPersonUniqueId(uniqueID);
     }
 
     static void generateUniqueID(Department department) {
