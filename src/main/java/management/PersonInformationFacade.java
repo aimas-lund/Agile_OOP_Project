@@ -54,10 +54,11 @@ public class PersonInformationFacade {
         person.setUniqueId(uniqueId);
     }
 
-    public void setStaffEmail(String email) {
+    public boolean setStaffEmail(String email) {
         if (person instanceof Staff) {
-            ((Staff) person).setEmail(email);
+            return ((Staff) person).setEmail(email);
         }
+        return false;
     }
 
     public void setStaffInitials(String initials) {

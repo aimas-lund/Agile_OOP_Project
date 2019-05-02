@@ -39,13 +39,18 @@ public class Staff extends Person {
         return email;
     }
 
-    void setEmail(String email) {
+    boolean setEmail(String email) {
+        if (!(email.contains("@agile_hospital.com"))) {
+            return false;
+        }
         this.email = email;
         this.initials = email.substring(0, 4);
+        return true;
     }
 
     void setInitials(String i) {
         this.initials = i;
+        this.email = initials + "@agile_hospital.com";
     }
 
     public String getInitials() {
