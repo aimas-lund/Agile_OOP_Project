@@ -104,9 +104,4 @@ public class DaoDepartmentImpl<T extends Department> implements IDao<T> {
         return database.executeStatement(sql);
     }
 
-    @Override
-    public boolean update(T obj, HashMap<String, String> params) {
-        return false;
-    }
-
 }

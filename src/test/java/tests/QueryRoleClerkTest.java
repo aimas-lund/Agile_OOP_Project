@@ -64,22 +64,7 @@ public class QueryRoleClerkTest {
     }
 
     @Test
-    public void checkPatientRegisteredTestTrue() {
-        department.add(patient);
-        assertTrue(queryRoleClerk.checkPatientRegistrationStatus(patient, department));
-    }
-
-    @Test
-    public void checkPatientRegisteredTestFalsePatient() {
-        department.add(patient);
-        Patient falsePatient = new Patient();
-        assertFalse(queryRoleClerk.checkPatientRegistrationStatus(falsePatient, department));
-    }
-
-    @Test
-    public void checkPatientRegisteredTestFalseDepartment() {
-        department.add(patient);
-        Department falseDepartment = new Department();
-        assertFalse(queryRoleClerk.checkPatientRegistrationStatus(patient, falseDepartment));
+    public void deleteFails() {
+        queryRoleClerk.delete(new Patient("name", "surname"), department);
     }
 }

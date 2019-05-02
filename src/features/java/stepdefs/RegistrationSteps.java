@@ -109,8 +109,8 @@ public class RegistrationSteps {
     @Then("the clerk should be able to check if the patient is registered")
     public void theClerkShouldBeAbleToCheckIfThePatientIsRegistered() {
         // Check that the registered patient is there and not the unregistered one
-        assertTrue(clerk.checkPatientRegistrationStatus(registeredPatient, department));
-        assertFalse(clerk.checkPatientRegistrationStatus(unregisteredPatient, department));
+        assertTrue(clerk.isPersonRegistered(registeredPatient, department));
+        assertFalse(clerk.isPersonRegistered(unregisteredPatient, department));
         clerk.delete(registeredPatient, department);
 
     }

@@ -123,7 +123,7 @@ public class DatabaseSteps {
                 45231298);
 
         clerk.registerPerson(patient, department);
-        clerk.update(staff);
+        clerk.update(patient);
 
     }
     @Then("the user should not be able to change the unique ID of that person")

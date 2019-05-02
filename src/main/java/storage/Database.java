@@ -36,13 +36,14 @@ public class Database {
     }
 
     public boolean hasConnection() {
+        if (connection == null) return false;
+
         try {
             return (!connection.isClosed());
         } catch (SQLException e) {
             e.printStackTrace();
-        } catch (NullPointerException e) {
-            return false;
         }
+
         return false;
     }
 

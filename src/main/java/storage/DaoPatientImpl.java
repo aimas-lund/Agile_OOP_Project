@@ -53,18 +53,21 @@ public class DaoPatientImpl<T extends Patient> implements IDao<T> {
             ResultSet resultSet = statement.executeQuery(sql);
 
             while (resultSet.next()) {
+
+                Date birthdate = new SimpleDateFormat("yyyy_MM_DD").parse(resultSet.getString("birthdate"));
+
                 patients.add((T) new Patient(
                         resultSet.getString("uniqueId"),
                         resultSet.getString("name"),
                         resultSet.getString("surname"),
-                        stringToDate(resultSet.getString("birthdate")),
+                        birthdate,
                         Integer.parseInt(resultSet.getString("gender")),
                         resultSet.getString("homeaddress"),
                         Integer.parseInt(resultSet.getString("phonenumber"))
                 ));
             }
 
-        } catch (SQLException e) {
+        } catch (SQLException | ParseException e) {
 //            e.printStackTrace();
         }
         database.disconnectFromDB();
@@ -97,6 +100,8 @@ public class DaoPatientImpl<T extends Patient> implements IDao<T> {
 
         for (String value :
                 information) {
+            if (value == null) return false;
+
             sql = sql.replaceFirst("%s", value.replaceAll(" ", "_"));
         }
 
@@ -105,34 +110,4 @@ public class DaoPatientImpl<T extends Patient> implements IDao<T> {
         return database.executeStatement(sql);
     }
 
-    @Override
-    public boolean update(T patient, HashMap<String, String> params) {
-        String sql = "UPDATE patients set ";
-        String values = "";
-
-        for (Map.Entry<String, String> entry : params.entrySet()) {
-            String value = entry.getValue();
-
-            value = " = " + "'" + value + "'";
-
-            values = values.concat(entry.getKey() + value + ", ");
-        }
-
-        values = values.substring(0, values.length() - 2);
-
-        sql = sql + values +
-                String.format(" where uniqueId = '%s'", patient.getUniqueId());
-
-        return database.executeStatement(sql);
-    }
-
-    private Date stringToDate(String birthdate) {
-        try {
-            return new SimpleDateFormat("yyyy_MM_DD").parse(birthdate);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return null;
-
-    }
 }

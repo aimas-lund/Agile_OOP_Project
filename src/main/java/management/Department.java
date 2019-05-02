@@ -9,8 +9,8 @@ public class Department {
     private String uniqueId;
 	private String name;
 	private int capacity;
-	private ArrayList<Patient> patients = new ArrayList<Patient>();
-	private ArrayList<Staff> staff = new ArrayList<Staff>();
+	private ArrayList<Patient> patients = new ArrayList<>();
+	private ArrayList<Staff> staff = new ArrayList<>();
     private Bed[] beds = new Bed[0];
 
 

@@ -56,11 +56,13 @@ public class DaoStaffImpl<T extends Staff> implements IDao<T> {
             ResultSet resultSet = statement.executeQuery(sql);
 
             while (resultSet.next()) {
+                Date birthdate = new SimpleDateFormat("yyyy_mm_dd").parse(resultSet.getString("birthdate"));
+
                 staff.add((T) new Staff(
                         resultSet.getString("uniqueId"),
                         resultSet.getString("name"),
                         resultSet.getString("surname"),
-                        stringToDate(resultSet.getString("birthdate")),
+                        birthdate,
                         Integer.parseInt(resultSet.getString("gender")),
                         resultSet.getString("homeaddress").replaceAll("_", " "),
                         Integer.parseInt(resultSet.getString("phonenumber")),
@@ -69,7 +71,7 @@ public class DaoStaffImpl<T extends Staff> implements IDao<T> {
                 ));
             }
 
-        } catch (SQLException e) {
+        } catch (SQLException | ParseException e) {
             e.printStackTrace();
         }
         database.disconnectFromDB();
@@ -102,37 +104,12 @@ public class DaoStaffImpl<T extends Staff> implements IDao<T> {
 
         for (String value :
                 information) {
+            if (value == null) return false;
+
             sql = sql.replaceFirst("%s", value.replaceAll(" ", "_"));
         }
 
         return database.executeStatement(sql + sqlWhere);
-    }
-
-    @Override
-    public boolean update(T staff, HashMap<String, String> params) {
-        String sql = "UPDATE staff set ";
-        String values = "";
-
-        if (params.containsKey("initials")) {
-            params.put("email", params.get("initials") + "@agile_hospital.com");
-        } else if (params.containsKey("email")) {
-            params.put("initials", params.get("email").substring(0, 4));
-        }
-
-        for (Map.Entry<String, String> entry : params.entrySet()) {
-            String value = entry.getValue();
-
-            value = " = " + "'" + value + "'";
-
-            values = values.concat(entry.getKey() + value + ", ");
-        }
-
-        values = values.substring(0, values.length() - 2);
-
-        sql = sql + values +
-                String.format(" where uniqueId = '%s'", staff.getUniqueId());
-
-        return database.executeStatement(sql);
     }
 
     private Date stringToDate(String birthdate) {

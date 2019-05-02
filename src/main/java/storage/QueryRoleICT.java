@@ -93,49 +93,29 @@ public class QueryRoleICT implements IUpdate, IQuery {
         }
     }
 
-
-    public boolean delete(Staff staff, Department department) {
-        if (daoStaff.delete(staff)) {
-            department.remove(staff);
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public boolean delete(Patient patient, Department department) {
-        if (daoPatient.delete(patient)) {
-            department.remove(patient);
-            return true;
-        } else {
-            return false;
-        }
-    }
-
     @Override
     public <T extends Person> boolean delete(T person, Department department) {
         if (person instanceof Staff) {
-            return delete((Staff) person, department);
+            if (daoStaff.delete((Staff) person)) {
+                department.remove((Staff) person);
+                return true;
+            }
         } else if (person instanceof Patient) {
-            return delete((Patient) person, department);
+            if (daoPatient.delete((Patient) person)) {
+                department.remove((Patient) person);
+                return true;
+            }
         }
         return false;
     }
 
     @Override
     public <T extends Person> boolean update(T person) {
+        if (person instanceof Patient) {
+            return daoPatient.update((Patient) person);
+        } else if (person instanceof Staff) {
+            return daoStaff.update((Staff) person);
+        }
         return false;
     }
-
-
-    // TODO: Revisit
-//    private <T extends Person> String getDatabaseTable(T type) {
-//        for (Annotation annotation: type.getClass().getAnnotations()) {
-//            if (annotation instanceof Table) {
-//                return ((Table) annotation).name();
-//            }
-//        }
-//        return null;
-
-//    }
 }

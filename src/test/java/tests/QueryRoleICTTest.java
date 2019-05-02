@@ -1,7 +1,9 @@
 package tests;
 
+import exceptions.PersonNotFoundException;
 import management.Department;
 import management.Patient;
+import management.PersonInformationFacade;
 import management.Staff;
 import org.junit.After;
 import org.junit.Before;
@@ -9,9 +11,9 @@ import org.junit.Test;
 import storage.QueryRoleICT;
 
 import java.util.Date;
+import java.util.HashMap;
 
-import static junit.framework.TestCase.assertFalse;
-import static junit.framework.TestCase.assertTrue;
+import static junit.framework.TestCase.*;
 
 
 public class QueryRoleICTTest {
@@ -70,52 +72,79 @@ public class QueryRoleICTTest {
     }
 
     @Test
-    public void isPersonRegistered() {
-
-    }
-
-    @Test
     public void findPatient() {
-//        queryRoleICT.find(patient);
-    }
-
-    @Test
-    public void find() {
-
-    }
-
-    @Test
-    public void find1() {
+        try {
+            queryRoleICT.find(patient);
+        } catch (PersonNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
     public void findStaff() {
+        try {
+            queryRoleICT.find(staff);
+        } catch (PersonNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test(expected = PersonNotFoundException.class)
+    public void findStaffThrows() throws PersonNotFoundException {
+        queryRoleICT.find(new Staff("name", "surname"));
+    }
+
+    @Test(expected = PersonNotFoundException.class)
+    public void findPatientThrows() throws PersonNotFoundException {
+        queryRoleICT.find(new Patient("name", "surname"));
+    }
+
+    @Test(expected = PersonNotFoundException.class)
+    public void findEmptyArray() throws PersonNotFoundException {
+        HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put("uniqueid", "nonexistent");
+
+        queryRoleICT.find(hashMap, new Patient());
     }
 
     @Test
-    public void find2() {
+    public void deleteStaffFails() {
+        queryRoleICT.delete(new Staff("name", "surname"), department);
     }
 
     @Test
-    public void registerPerson1() {
+    public void deletePatientFails() {
+        queryRoleICT.delete(new Staff("name", "surname"), department);
     }
 
     @Test
-    public void isPersonRegistered1() {
+    public void updateStaff() throws PersonNotFoundException {
+        new PersonInformationFacade(staff).setStaffInitials("HjNO");
+        new PersonInformationFacade(staff).setPersonName("Hjalte");
+        new PersonInformationFacade(staff).setPersonSurname("Nordgaard");
+
+        assertTrue(queryRoleICT.update(staff));
+        Staff actual = queryRoleICT.find(staff);
+        assertEquals("Hjalte", actual.getName());
+        assertEquals("Nordgaard", actual.getSurname());
+        assertEquals("HJNO", actual.getInitials());
+        assertEquals("HJNO@agile_hospital.com", actual.getEmail());
     }
 
     @Test
-    public void delete() {
+    public void updatePatient() throws PersonNotFoundException {
+        new PersonInformationFacade(patient).setPersonName("Hjalte");
+        new PersonInformationFacade(patient).setPersonSurname("Nordgaard");
+
+        assertTrue(queryRoleICT.update(patient));
+        Patient actual = queryRoleICT.find(patient);
+        assertEquals("Hjalte", actual.getName());
+        assertEquals("Nordgaard", actual.getSurname());
     }
 
     @Test
-    public void update() {
+    public void updateFails() {
+        assertFalse(queryRoleICT.update(new Staff("name", "surname")));
     }
-
-    @Test
-    public void delete1() {
-
-    }
-
 
 }

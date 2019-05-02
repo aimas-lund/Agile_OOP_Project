@@ -13,5 +13,4 @@ public interface IDao<T> {
 
     boolean update(T obj);
 
-    boolean update(T obj, HashMap<String, String> params);
 }

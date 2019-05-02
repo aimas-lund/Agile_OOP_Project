@@ -47,28 +47,6 @@ public class DaoPatientImplTest {
     }
 
     @Test
-    public void updateSomeValuesFromHashMap() {
-        HashMap<String, String> hashMap = new HashMap<>();
-        hashMap.put("name", "Simon");
-        hashMap.put("surname", "Simonsen");
-        hashMap.put("gender", "0");
-
-        assertTrue(dao.update(patient, hashMap));
-        assertEquals("Simon", dao.find(patient).getName());
-        assertEquals("Simonsen", dao.find(patient).getSurname());
-        assertEquals(0, dao.find(patient).getGender());
-    }
-
-
-    @Test
-    public void updateMissingColumnsFails() {
-        HashMap<String, String> hashMap = new HashMap<>();
-        hashMap.put("dabbering", "Simon");
-
-        assertFalse(dao.update(patient, hashMap));
-    }
-
-    @Test
     public void save() {
         assertEquals(patient.getUniqueId(), dao.find(patient).getUniqueId());
     }
