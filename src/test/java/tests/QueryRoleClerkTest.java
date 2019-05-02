@@ -11,8 +11,8 @@ import java.util.Date;
 
 import static junit.framework.TestCase.*;
 
-public class ClerkTest {
-    private QueryRoleClerk clerk = new QueryRoleClerk();
+public class QueryRoleClerkTest {
+    private QueryRoleClerk queryRoleClerk = new QueryRoleClerk();
     private Patient patient;
     private Department department;
 
@@ -31,55 +31,55 @@ public class ClerkTest {
 
     @Test
     public void registerPerson() {
-        assertTrue(clerk.registerPerson(patient, department));
-        clerk.delete(patient, department);
+        assertTrue(queryRoleClerk.registerPerson(patient, department));
+        queryRoleClerk.delete(patient, department);
 
     }
 
     @Test
     public void registerPersonToMultipleDepartmentsFails() {
-        clerk.registerPerson(patient, department);
-        assertFalse(clerk.registerPerson(patient, department));
+        queryRoleClerk.registerPerson(patient, department);
+        assertFalse(queryRoleClerk.registerPerson(patient, department));
 
-        clerk.delete(patient, department);
+        queryRoleClerk.delete(patient, department);
     }
 
     @Test
     public void findPatientTestPass() throws PersonNotFoundException {
-        clerk.registerPerson(patient, department);
-        assertEquals(clerk.find(patient).getUniqueId(), patient.getUniqueId());
-        clerk.delete(patient, department);
+        queryRoleClerk.registerPerson(patient, department);
+        assertEquals(queryRoleClerk.find(patient).getUniqueId(), patient.getUniqueId());
+        queryRoleClerk.delete(patient, department);
     }
 
     @Test(expected = PersonNotFoundException.class)
     public void findPatientTestFail() throws PersonNotFoundException {
-        clerk.find(patient);
+        queryRoleClerk.find(patient);
     }
 
     @Test(expected = PersonNotFoundException.class)
     public void findPatientTestFailDeletedPatient() throws PersonNotFoundException {
-        clerk.registerPerson(patient, department);
-        clerk.delete(patient, department);
-        clerk.find(patient);
+        queryRoleClerk.registerPerson(patient, department);
+        queryRoleClerk.delete(patient, department);
+        queryRoleClerk.find(patient);
     }
 
     @Test
     public void checkPatientRegisteredTestTrue() {
         department.add(patient);
-        assertTrue(clerk.checkPatientRegistrationStatus(patient, department));
+        assertTrue(queryRoleClerk.checkPatientRegistrationStatus(patient, department));
     }
 
     @Test
     public void checkPatientRegisteredTestFalsePatient() {
         department.add(patient);
         Patient falsePatient = new Patient();
-        assertFalse(clerk.checkPatientRegistrationStatus(falsePatient, department));
+        assertFalse(queryRoleClerk.checkPatientRegistrationStatus(falsePatient, department));
     }
 
     @Test
     public void checkPatientRegisteredTestFalseDepartment() {
         department.add(patient);
         Department falseDepartment = new Department();
-        assertFalse(clerk.checkPatientRegistrationStatus(patient, falseDepartment));
+        assertFalse(queryRoleClerk.checkPatientRegistrationStatus(patient, falseDepartment));
     }
 }

@@ -9,6 +9,34 @@ import java.util.HashMap;
 public class QueryRoleClerk implements IUpdate, IQuery {
     private final IDao<Patient> daoPatient = new DaoPatientImpl<>();
 
+    @Override
+    public <T extends Person> boolean registerPerson(T person, Department department) {
+        // Check that the person is not registered
+        if (isPersonRegistered(person, department)) {
+            return false;
+        }
+
+        if (person.getUniqueId() == null) {
+            String uniqueId = InformationGenerator.generateUniqueID(person);
+            new PersonInformationFacade(person).setPersonUniqueId(uniqueId);
+        }
+
+        daoPatient.save((Patient) person);
+        department.add((Patient) person);
+
+        return true;
+    }
+
+    @Override
+    public <T extends Person> boolean isPersonRegistered(T person, Department department) {
+        // Search for same Unique ID
+        // TODO: Revisit for efficiency (loop is always run completely. O(n))
+        for (Patient patient : department.getPatients()) {
+            if (patient.getUniqueId().equals(person.getUniqueId())) return true;
+        }
+        return false;
+    }
+
     public <T extends Person> T find(T patient) throws PersonNotFoundException {
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("uniqueid", patient.getUniqueId());
@@ -39,36 +67,6 @@ public class QueryRoleClerk implements IUpdate, IQuery {
         } else {
             return false;
         }
-    }
-
-    @Override
-    public <T extends Person> boolean registerPerson(T person, Department department) {
-        // Check that the person is not registered
-        if (isPersonRegistered(person, department)) {
-            return false;
-        }
-
-        if (person.getUniqueId() == null) {
-            String uniqueId = InformationGenerator.generateUniqueID(person);
-            new PersonInformationFacade(person).setPersonUniqueId(uniqueId);
-        }
-
-        daoPatient.save((Patient) person);
-        department.getPatients().add((Patient) person);
-
-        return true;
-    }
-
-    @Override
-    public <T extends Person> boolean isPersonRegistered(T person, Department department) {
-        // Search for same Unique ID
-        // TODO: Revisit for efficiency (loop is always run completely. O(n))
-        for (Patient patient : department.getPatients()) {
-            if (patient.getUniqueId().equals(person.getUniqueId())) {
-                return true;
-            }
-        }
-        return false;
     }
 
     @Override

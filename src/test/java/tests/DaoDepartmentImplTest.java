@@ -15,7 +15,6 @@ public class DaoDepartmentImplTest {
     public void setUp() {
         department = new Department("ER", 1);
 
-        daoDepartment.save(department);
     }
 
     @After
