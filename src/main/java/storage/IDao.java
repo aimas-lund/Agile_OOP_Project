@@ -3,7 +3,7 @@ package storage;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public interface Dao<T> {
+public interface IDao<T> {
 
     boolean save(T obj);
 

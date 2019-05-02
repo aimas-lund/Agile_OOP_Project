@@ -5,16 +5,17 @@ import exceptions.UnavailableBedException;
 
 import java.util.ArrayList;
 
-public class Department extends Hospital {
-
-	// Setters
+public class Department {
+    private String uniqueId;
 	private String name;
 	private int capacity;
 	private ArrayList<Patient> patients = new ArrayList<Patient>();
 	private ArrayList<Staff> staff = new ArrayList<Staff>();
     private Bed[] beds = new Bed[0];
-    private String uniqueId;
 
+
+    public Department() {
+    }
 
 	public Department(String name, int capacity) {
 		this.name = name;
@@ -26,28 +27,23 @@ public class Department extends Hospital {
 	}
 
 	public Department(String uniqueId, String name, int capacity) {
+        this(name, capacity);
 		this.uniqueId = uniqueId;
-		this.name = name;
-		this.capacity = capacity;
-		this.beds = new Bed[capacity];
-		for (int id = 0; id < beds.length; id++) {
-			beds[id] = new Bed(id);
-		}
-	}
-
-	public Department() {
 	}
 
 	public void add(Staff s) {
 		staff.add(s);
 	}
+
 	public void add(Patient p) {
 		patients.add(p);
 	}
+
 	public void remove(Staff s) {
 		staff.remove(s);
 	}
-	public void remove(Patient p) {
+
+    public void remove(Patient p) {
         patients.remove(p);
 
 		for (Bed bed : beds) {
@@ -56,6 +52,13 @@ public class Department extends Hospital {
 			}
 		}
 	}
+
+    public void removeFromBed(Patient p) {
+        if (patientInBed(p)) {
+            Bed bed = getPatientBed(p);
+            bed.empty();
+        }
+    }
 
     public void assign(Patient p) throws ExceededCapacityException {
 		if (availableBeds()) {
@@ -68,7 +71,8 @@ public class Department extends Hospital {
 			throw new ExceededCapacityException("No available beds " + getAvailableBeds());
 		}
 	}
-	public void assign(Patient p, int id) throws UnavailableBedException {
+
+    public void assign(Patient p, int id) throws UnavailableBedException {
 		if (beds[id].isOccupied()) {
 			throw new UnavailableBedException("Bed is occupied");
 		}
@@ -78,7 +82,8 @@ public class Department extends Hospital {
 		Bed bed = beds[id];
 		bed.fill(p);
 	}
-	public void move(Patient p) throws ExceededCapacityException {
+
+    public void move(Patient p) throws ExceededCapacityException {
 		if (patientInBed(p)) {
 			Bed b1 = getPatientBed(p);
 			assign(p);
@@ -87,7 +92,8 @@ public class Department extends Hospital {
 			assign(p);
 		}
 	}
-	public void move(Patient p, int id) throws UnavailableBedException {
+
+    public void move(Patient p, int id) throws UnavailableBedException {
 		if (patientInBed(p)) {
 			Bed bed = getPatientBed(p);
 			assign(p,id);
@@ -96,35 +102,52 @@ public class Department extends Hospital {
 			assign(p,id);
 		}
 	}
-	public void removeFromBed(Patient p) {
-		if (patientInBed(p)) {
-			Bed bed = getPatientBed(p);
-			bed.empty();
-		}
-	}
+
+    public boolean availableBeds() {
+        for (Bed bed : beds) {
+            if (bed.getPatient() == null) return true;
+        }
+        return false;
+    }
+
+    public boolean patientInBed(Patient p) {
+        for (Bed bed : beds) {
+            if (bed.getPatient() == p) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 	public String getName() {
 		return name;
 	}
-	public int getCapacity() {
+
+    public int getCapacity() {
 		return capacity;
 	}
-	public Bed[] getBeds() {
+
+    public Bed[] getBeds() {
 		return beds;
 	}
-	public int getAvailableBeds() {
+
+    public int getAvailableBeds() {
 		int available = 0;
 		for (Bed bed : beds) {
 			if (bed.getPatient() == null) available++;
 		}
 		return available;
 	}
-	public ArrayList<Patient> getPatients() {
+
+    public ArrayList<Patient> getPatients() {
 		return patients;
 	}
-	public ArrayList<Staff> getStaff() {
+
+    public ArrayList<Staff> getStaff() {
 		return staff;
 	}
-	public Bed getPatientBed(Patient p) {
+
+    public Bed getPatientBed(Patient p) {
 		for (Bed bed : beds) {
 			if (bed.getPatient() == p) {
 				return bed;
@@ -132,26 +155,12 @@ public class Department extends Hospital {
 		}
 		return null;
 	}
-	public Bed getAvailableBed() throws ExceededCapacityException {
+
+    public Bed getAvailableBed() throws ExceededCapacityException {
 		for (Bed bed : beds) {
 			if (!bed.isOccupied()) return bed;
 		}
 		throw new ExceededCapacityException("No available beds");
-	}
-
-	public boolean availableBeds() {
-		for (Bed bed : beds) {
-			if (bed.getPatient() == null) return true;
-		}
-		return false;
-	}
-	public boolean patientInBed(Patient p) {
-		for (Bed bed : beds) {
-			if (bed.getPatient() == p) {
-				return true;
-			}
-		}
-		return false;
 	}
 
 	public String[] getDepartmentInformation() {
@@ -162,7 +171,6 @@ public class Department extends Hospital {
 	void setUniqueId(String uniqueID) {
 		this.uniqueId = uniqueID;
 	}
-
 
 	public String getUniqueId() {
 		return uniqueId;

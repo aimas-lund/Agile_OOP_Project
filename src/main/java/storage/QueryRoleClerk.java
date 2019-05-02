@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class QueryRoleClerk implements IUpdate, IQuery {
-    private final Dao<Patient> daoPatient = new DaoPatientImpl<>();
+    private final IDao<Patient> daoPatient = new DaoPatientImpl<>();
 
     public <T extends Person> T find(T patient) throws PersonNotFoundException {
         HashMap<String, String> hashMap = new HashMap<>();

@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DaoDepartmentImpl<T extends Department> implements Dao<T> {
+public class DaoDepartmentImpl<T extends Department> implements IDao<T> {
 
     private final Database database = new Database();
 

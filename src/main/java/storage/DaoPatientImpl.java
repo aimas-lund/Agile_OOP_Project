@@ -12,7 +12,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DaoPatientImpl<T extends Patient> implements Dao<T> {
+public class DaoPatientImpl<T extends Patient> implements IDao<T> {
     private final Database database = new Database();
 
     @Override

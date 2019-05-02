@@ -3,7 +3,7 @@ package management;
 import java.util.ArrayList;
 
 public class Hospital {
-    private ArrayList<Department> departments = new ArrayList<Department>();
+    private ArrayList<Department> departments = new ArrayList<>();
 
     public Hospital() {
     }

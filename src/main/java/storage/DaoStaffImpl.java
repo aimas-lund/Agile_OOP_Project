@@ -13,7 +13,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DaoStaffImpl<T extends Staff> implements Dao<T> {
+public class DaoStaffImpl<T extends Staff> implements IDao<T> {
 
     private final Database database = new Database();
 
