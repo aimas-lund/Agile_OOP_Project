@@ -2,6 +2,7 @@ package management;
 
 import java.util.Date;
 
+//@Table(name = "patients")
 public class Patient extends Person {
     private boolean alive = true;
 
@@ -25,6 +26,10 @@ public class Patient extends Person {
         return new String[]{this.getUniqueId(), this.getName(), this.getSurname(),
                 dateToString(this.getBirthdate()), String.format("%d", this.getGender()), this.getHomeAddress(),
                 String.format("%d", this.getPhoneNumber())};
+    }
+
+    void setAlive(boolean alive) {
+        this.alive = alive;
     }
 
     public boolean isAlive() {
