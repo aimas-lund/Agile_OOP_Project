@@ -11,21 +11,15 @@ public class QueryRoleICT implements IUpdate, IQuery {
     private final DaoPatientImpl<Patient> daoPatient = new DaoPatientImpl<>();
 
     public <T extends Patient> T find(Patient patient) throws PersonNotFoundException {
-        Patient foundPatient = daoPatient.find(patient);
-        if (foundPatient != null) {
-            return (T) foundPatient;
-        } else {
-            throw new PersonNotFoundException("Patient not found in database");
-        }
+        HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put("uniqueid", patient.getUniqueId());
+        return (T) findPatient(hashMap).get(0);
     }
 
     public <T extends Staff> T find(Staff staff) throws PersonNotFoundException {
-        Staff foundStaff = daoStaff.find(staff);
-        if (foundStaff != null) {
-            return (T) foundStaff;
-        } else {
-            throw new PersonNotFoundException("Staff not found in database");
-        }
+        HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put("uniqueid", staff.getUniqueId());
+        return (T) findStaff(hashMap).get(0);
     }
 
     public ArrayList<Staff> find(HashMap<String, String> params) throws PersonNotFoundException {
@@ -33,9 +27,32 @@ public class QueryRoleICT implements IUpdate, IQuery {
     }
 
     @Override
-    public <T extends Person> ArrayList<T> find(HashMap<String, String> params, T table) throws PersonNotFoundException {
-        return null;
+    public <T extends Person> ArrayList<T> find(HashMap<String, String> params, T type) throws PersonNotFoundException {
+        ArrayList<T> persons = new ArrayList<>(0);
+
+        if (type instanceof Patient) {
+            persons = (ArrayList<T>) daoPatient.find(params);
+
+        } else if (type instanceof Staff) {
+            persons = (ArrayList<T>) daoStaff.find(params);
+        }
+
+        if (persons.isEmpty()) {
+            throw new PersonNotFoundException("No person were found with given parameters");
+        } else {
+            return persons;
+        }
     }
+
+// TODO: Revisit
+//    private <T extends Person> String getDatabaseTable(T type) {
+//        for (Annotation annotation: type.getClass().getAnnotations()) {
+//            if (annotation instanceof Table) {
+//                return ((Table) annotation).name();
+//            }
+//        }
+//        return null;
+//    }
 
     @Override
     public <T extends Person> boolean registerPerson(T person, Department department) {
@@ -67,26 +84,31 @@ public class QueryRoleICT implements IUpdate, IQuery {
     }
 
     /**
-     * @param person     with all members not null
+     * @param staff     with all members not null
      * @param department to add person to
      * @return boolean representing if the registering was successful
      */
-    public boolean registerPerson(Staff person, Department department) {
+    public boolean registerPerson(Staff staff, Department department) {
         // Check that the person is not registered
-        if (isPersonRegistered(person, department)) {
+        if (isPersonRegistered(staff, department)) {
             return false;
         }
 
         // Give unique id
-        InformationGenerator.generateUniqueID(person);
+        if (staff.getUniqueId() == null) {
+            String uniqueID = InformationGenerator.generateUniqueID(staff);
+            new PersonInformationFacade(staff).setPersonUniqueId(uniqueID);
+        }
 
-        // Give person email
-        String email = InformationGenerator.generateEmail(person);
-        person.setEmail(email);
+        if (staff.getEmail() == null) {
+            // Give person email
+            String email = InformationGenerator.generateEmail(staff);
+            new PersonInformationFacade(staff).setStaffEmail(email);
+        }
 
         // Add person to database
-        daoStaff.save(person);
-        department.getStaff().add(person);
+        daoStaff.save(staff);
+        department.getStaff().add(staff);
         return true;
     }
 

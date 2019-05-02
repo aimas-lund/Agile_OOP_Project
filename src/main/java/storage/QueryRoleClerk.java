@@ -1,10 +1,7 @@
 package storage;
 
 import exceptions.PersonNotFoundException;
-import management.Department;
-import management.InformationGenerator;
-import management.Patient;
-import management.Person;
+import management.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,6 +34,7 @@ public class QueryRoleClerk implements IUpdate, IQuery {
     public <T extends Person> boolean update(T person) {
         if (person instanceof Patient) {
             daoPatient.update((Patient) person);
+            // TODO: Test that the person is also update in-memory
             return true;
         } else {
             return false;
@@ -50,7 +48,10 @@ public class QueryRoleClerk implements IUpdate, IQuery {
             return false;
         }
 
-        InformationGenerator.generateUniqueID(person);
+        if (person.getUniqueId() == null) {
+            String uniqueId = InformationGenerator.generateUniqueID(person);
+            new PersonInformationFacade(person).setPersonUniqueId(uniqueId);
+        }
 
         daoPatient.save((Patient) person);
         department.getPatients().add((Patient) person);

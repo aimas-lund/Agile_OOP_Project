@@ -1,6 +1,7 @@
 package tests;
 
 import management.Department;
+import management.PersonInformationFacade;
 import management.Staff;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,7 +24,7 @@ public class StaffTest {
                 0,
                 "Internet Blvd. 4",
                 87654321);
-        staff.setEmail("bemc@hospital.com");
+        new PersonInformationFacade(staff).setStaffEmail("bemc@agile_hospital.com");
     }
 
     @Test
@@ -58,17 +59,17 @@ public class StaffTest {
 
     @Test
     public void getEmailTest() {
-        assertEquals("bemc@hospital.com", staff.getEmail());
+        assertEquals("BEMC@agile_hospital.com", staff.getEmail());
     }
 
     @Test
     public void getInitialsFromEmailTest() {
-        assertEquals("bemc", staff.getInitials());
+        assertEquals("BEMC", staff.getInitials());
     }
 
     @Test
     public void getInitialsTest() {
-        staff.setInitials("bemu");
-        assertEquals("bemu", staff.getInitials());
+        new PersonInformationFacade(staff).setStaffInitials("bemu");
+        assertEquals("BEMU", staff.getInitials());
     }
 }

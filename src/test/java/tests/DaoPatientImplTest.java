@@ -59,6 +59,7 @@ public class DaoPatientImplTest {
         assertEquals(0, dao.find(patient).getGender());
     }
 
+
     @Test
     public void updateMissingColumnsFails() {
         HashMap<String, String> hashMap = new HashMap<>();

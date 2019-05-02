@@ -16,7 +16,7 @@ public class DaoPatientImpl<T extends Patient> implements Dao<T> {
     private final Database database = new Database();
 
     @Override
-    public boolean update(Patient patient) {
+    public boolean update(T patient) {
         String[] information = patient.getPersonInformation();
         String sql = "UPDATE patients set uniqueid = '%s', name = '%s', surname = '%s', birthdate = '%s', " +
                 "gender = '%s', homeaddress = '%s', phonenumber = '%s' where uniqueId = '%s'";
@@ -64,7 +64,7 @@ public class DaoPatientImpl<T extends Patient> implements Dao<T> {
         return database.executeStatement(sql);
     }
 
-    public boolean delete(Patient patient) {
+    public boolean delete(T patient) {
         return delete(patient.getUniqueId());
     }
 

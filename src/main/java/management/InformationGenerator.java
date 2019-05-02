@@ -36,9 +36,8 @@ public class InformationGenerator {
         return initials + "@agile_hospital.com";
     }
 
-    public static void generateUniqueID(Person person) {
-        String uniqueID = UUID.randomUUID().toString();
-        new PersonInformationFacade(person).setPersonUniqueId(uniqueID);
+    public static String generateUniqueID(Person person) {
+        return UUID.randomUUID().toString();
     }
 
     static void generateUniqueID(Department department) {

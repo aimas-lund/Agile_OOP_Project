@@ -50,7 +50,7 @@ public class RegistrationSteps {
         Patient oldPatient = this.registeredPatient;
 
         // Make new patient
-        this.registeredPatient = new Patient(
+        this.registeredPatient = new Patient("testID",
                 "Freja",
                 "Sif",
                 new Date(230),
@@ -152,7 +152,7 @@ public class RegistrationSteps {
         cal.set(1997, Calendar.DECEMBER, 23);
 
         // Register staff
-        registeredPatient = new Patient("Billy",
+        registeredStaff = new Staff("Billy",
                 "Mcloving",
                 cal.getTime(),
                 0,

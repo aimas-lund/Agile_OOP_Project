@@ -43,13 +43,14 @@ public class Staff extends Person {
         if (!(email.contains("@agile_hospital.com"))) {
             return false;
         }
-        this.email = email;
-        this.initials = email.substring(0, 4);
+        String initials = email.substring(0, 4).toUpperCase();
+        this.initials = initials;
+        this.email = initials + "@agile_hospital.com";
         return true;
     }
 
     void setInitials(String i) {
-        this.initials = i;
+        this.initials = i.toUpperCase();
         this.email = initials + "@agile_hospital.com";
     }
 

@@ -1,6 +1,7 @@
 package tests;
 
 import management.Doctor;
+import management.PersonInformationFacade;
 import management.Speciality;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,7 +15,7 @@ public class DoctorTest {
     @Before
     public void setup() {
         doctor = new Doctor();
-        doctor.setSpeciality(Speciality.NEUROLOGY);
+        new PersonInformationFacade(doctor).setDoctorSpeciality(Speciality.NEUROLOGY);
     }
 
     @Test

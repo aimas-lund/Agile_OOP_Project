@@ -168,7 +168,7 @@ public class DatabaseSteps {
         assertEquals(daoPatient.find(patient).getUniqueId(),patient.getUniqueId());
 
         HashMap<String, String> HMtest = new HashMap<>();
-        HMtest.put("name", "'Emil'");
+        HMtest.put("name", "Emil");
         for (Staff staff : daoStaff.find(HMtest)) {
             if (staff.getUniqueId().equals(this.staff.getUniqueId())) {
                 assertEquals(staff.getUniqueId(), this.staff.getUniqueId());
@@ -176,7 +176,7 @@ public class DatabaseSteps {
         }
 
         HMtest.remove("name");
-        HMtest.put("name", "'Hilda'");
+        HMtest.put("name", "Hilda");
         for (Patient patient : daoPatient.find(HMtest)) {
             if (patient.getUniqueId().equals(this.patient.getUniqueId())) {
                 assertEquals(patient.getUniqueId(), this.patient.getUniqueId());
@@ -204,7 +204,7 @@ public class DatabaseSteps {
     @When("the person is not found")
     public void thePersonIsNotFound() {
         HashMap<String, String> params = new HashMap<>();
-        params.put("name", "'not'");
+        params.put("name", "not");
 
         try {
             assertNull(clerk.find(params));
@@ -216,7 +216,7 @@ public class DatabaseSteps {
     @Then("the user should be notified")
     public void theUserShouldBeNotified() {
         HashMap<String, String> params = new HashMap<>();
-        params.put("name", "'not'");
+        params.put("name", "not");
 
         try {
             assertNull(clerk.find(params));
@@ -260,24 +260,28 @@ public class DatabaseSteps {
     public void ShouldBeAbleToSearch(){
 
         HashMap<String, String> paramspatient = new HashMap<>();
-        paramspatient.put("name", "'Hilda'");
+        paramspatient.put("name", "Hilda");
 
         HashMap<String, String> paramsstaff = new HashMap<>();
         paramsstaff.put("name", "'Emil'");
 
         try {
-            assertNotNull(ict.find(paramspatient));
+            assertNotNull(ict.findPatient(paramspatient));
         } catch (PersonNotFoundException e) {
             assertEquals("exceptions.PersonNotFoundException: No patients were found with given parameters",
                     e.toString());
         }
 
+        ict.delete(patient, department);
+
         try {
-            assertNotNull(ict.find(paramsstaff));
+            assertNotNull(ict.findStaff(paramsstaff));
         } catch (PersonNotFoundException e) {
             assertEquals("exceptions.PersonNotFoundException: No patients were found with given parameters",
                     e.toString());
         }
+
+        ict.delete(staff, department);
 
 
     }

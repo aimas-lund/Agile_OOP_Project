@@ -19,9 +19,9 @@ public class DaoStaffImpl<T extends Staff> implements Dao<T> {
 
     public boolean update(T staff) {
         String[] information = staff.getPersonInformation();
-        String sql = "UPDATE staff set uniqueid = %s, name = %s, surname = %s, birthdate = %s, " +
-                "gender = %s, homeaddress = %s, phonenumber = %s, email = %s, initials = %s";
-        String sqlWhere = String.format(" where uniqueId = %s", staff.getUniqueId());
+        String sql = "UPDATE staff set uniqueid = '%s', name = '%s', surname = '%s', birthdate = '%s', " +
+                "gender = '%s', homeaddress = '%s', phonenumber = '%s', email = '%s', initials = '%s'";
+        String sqlWhere = String.format(" where uniqueId = '%s'", staff.getUniqueId());
 
         for (String value :
                 information) {
@@ -32,8 +32,30 @@ public class DaoStaffImpl<T extends Staff> implements Dao<T> {
     }
 
     @Override
-    public boolean update(T obj, HashMap<String, String> params) {
-        return false;
+    public boolean update(T staff, HashMap<String, String> params) {
+        String sql = "UPDATE staff set ";
+        String values = "";
+
+        if (params.containsKey("initials")) {
+            params.put("email", params.get("initials") + "@agile_hospital.com");
+        } else if (params.containsKey("email")) {
+            params.put("initials", params.get("email").substring(0, 4));
+        }
+
+        for (Map.Entry<String, String> entry : params.entrySet()) {
+            String value = entry.getValue();
+
+            value = " = " + "'" + value + "'";
+
+            values = values.concat(entry.getKey() + value + ", ");
+        }
+
+        values = values.substring(0, values.length() - 2);
+
+        sql = sql + values +
+                String.format(" where uniqueId = '%s'", staff.getUniqueId());
+
+        return database.executeStatement(sql);
     }
 
     @Override
@@ -61,8 +83,15 @@ public class DaoStaffImpl<T extends Staff> implements Dao<T> {
         return database.executeStatement(sql);
     }
 
+    public <T extends Staff> T find(T staff) {
+        HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put("uniqueid", staff.getUniqueId());
+        return (T) find(hashMap).get(0);
+    }
+
     @Override
     public ArrayList<T> find(HashMap<String, String> params) {
+        database.connectToDB();
 
         String sql = "select * from staff where ";
         String values = "";
@@ -71,10 +100,9 @@ public class DaoStaffImpl<T extends Staff> implements Dao<T> {
                 params.entrySet()) {
             String value = entry.getValue();
 
-            if (!value.toLowerCase().startsWith("like") && !value.startsWith("=")) {
-                value = " = " + value;
-            }
-            values = values.concat(entry.getKey() + value + "and ");
+            value = " = " + "'" + value + "'";
+
+            values = values.concat(entry.getKey() + value + " and ");
         }
 
         sql = sql + values.substring(0, values.length() - 4);
@@ -93,7 +121,7 @@ public class DaoStaffImpl<T extends Staff> implements Dao<T> {
                         resultSet.getString("surname"),
                         stringToDate(resultSet.getString("birthdate")),
                         Integer.parseInt(resultSet.getString("gender")),
-                        resultSet.getString("homeaddress"),
+                        resultSet.getString("homeaddress").replaceAll("_", " "),
                         Integer.parseInt(resultSet.getString("phonenumber")),
                         resultSet.getString("email"),
                         resultSet.getString("initials")
@@ -103,13 +131,8 @@ public class DaoStaffImpl<T extends Staff> implements Dao<T> {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        database.disconnectFromDB();
         return staff;
-    }
-
-    public <T extends Staff> T find(T staff) {
-        HashMap<String, String> hashMap = new HashMap<>();
-        hashMap.put("uniqueid", staff.getUniqueId());
-        return (T) find(hashMap).get(0);
     }
 
     private Date stringToDate(String birthdate) {
