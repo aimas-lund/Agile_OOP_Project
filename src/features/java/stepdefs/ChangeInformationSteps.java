@@ -4,10 +4,7 @@ import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import management.Clerk;
-import management.ICTOfficer;
-import management.Patient;
-import management.Staff;
+import management.*;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -30,7 +27,7 @@ public class ChangeInformationSteps {
     @And("a person with information")
     public void aPersonWithInformation() {
         // Set information
-        ictOfficer.setPersonInformation(patientWithInformation,
+        new PersonInformationFacade(patientWithInformation).setPersonInformation(
                 "Kaj",
                 "Andreasen",
                 new GregorianCalendar(2000, Calendar.JANUARY, 1).getTime(),
@@ -60,8 +57,7 @@ public class ChangeInformationSteps {
         int oldPhoneNumber = patientWithInformation.getPhoneNumber();
 
         // Set new values
-        ictOfficer.setPersonPhoneNumber(patientWithInformation,
-                13371337);
+        new PersonInformationFacade(patientWithInformation).setPersonPhoneNumber(13371337);
 
         // Check that the value has changed
         assertNotEquals(oldPhoneNumber, patientWithInformation.getPhoneNumber());
@@ -81,10 +77,8 @@ public class ChangeInformationSteps {
         String oldAddress = patientWithInformation.getHomeAddress();
 
         // Set new values
-        clerk.setPersonBirthdate(patientWithInformation,
-                new GregorianCalendar(1990, Calendar.JANUARY, 1).getTime());
-        clerk.setPersonHomeAddress(patientWithInformation,
-                "Vejen på gaden 10");
+        new PersonInformationFacade(patientWithInformation).setPersonBirthdate(new GregorianCalendar(1990, Calendar.JANUARY, 1).getTime());
+        new PersonInformationFacade(patientWithInformation).setPersonHomeAddress("Vejen på gaden 10");
 
         // Check that the values have changed
         assertNotEquals(oldAddress, patientWithInformation.getHomeAddress());
@@ -110,8 +104,8 @@ public class ChangeInformationSteps {
         int wrongPhoneNumber = 123123;
 
         // Try to save values.. Poorly structured scenario, should change.
-        ictOfficer.setPersonName(staffWithInformation, wrongName);
-        ictOfficer.setPersonPhoneNumber(staffWithInformation, wrongPhoneNumber);
+        new PersonInformationFacade(staffWithInformation).setPersonName(wrongName);
+        new PersonInformationFacade(staffWithInformation).setPersonPhoneNumber(wrongPhoneNumber);
     }
 
 
@@ -120,7 +114,7 @@ public class ChangeInformationSteps {
         // Define wrong input
         int wrongPhoneNumber = 123123;
 
-        assertFalse(ictOfficer.setPersonPhoneNumber(staffWithInformation, wrongPhoneNumber));
+        assertFalse(new PersonInformationFacade(staffWithInformation).setPersonPhoneNumber(wrongPhoneNumber));
 
     }
 }

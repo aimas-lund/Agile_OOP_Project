@@ -1,10 +1,12 @@
+package tests;
+
 import management.Doctor;
+import management.PersonInformationFacade;
 import management.Speciality;
 import org.junit.Before;
 import org.junit.Test;
-import java.util.Date;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class DoctorTest {
 
@@ -13,7 +15,7 @@ public class DoctorTest {
     @Before
     public void setup() {
         doctor = new Doctor();
-        doctor.setSpeciality(Speciality.NEUROLOGY);
+        new PersonInformationFacade(doctor).setDoctorSpeciality(Speciality.NEUROLOGY);
     }
 
     @Test

@@ -1,7 +1,5 @@
 package management;
 
-import exceptions.FormatException;
-
 import java.util.Date;
 
 public class Staff extends Person {
@@ -15,36 +13,19 @@ public class Staff extends Person {
         super(name, surname, birthdate, gender, homeaddress, phonenumber);
     }
     public Staff(String name, String surname, Date birthdate, int gender, String homeaddress, int phonenumber, String email, String initials) {
-        this.setName(name);
-        this.setSurname(surname);
-        this.setBirthdate(birthdate);
-        this.setGender(gender);
-        this.setHomeAddress(homeaddress);
-        try {
-            this.setPhoneNumber(phonenumber);
-        } catch (FormatException e) {
-            e.printStackTrace();
-        }
-        this.setEmail (email);
-        this.setInitials (initials);
+        super(name, surname, birthdate, gender, homeaddress, phonenumber);
+        this.setEmail(email);
+        this.setInitials(initials);
     }
 
     public Staff(String uniqueId, String name, String surname, Date birthdate, int gender, String homeaddress, int phonenumber, String email, String initials) {
-        this(name, surname, birthdate, gender, homeaddress, phonenumber, email, initials);
-        this.setUniqueId(uniqueId);
+        super(uniqueId, name, surname, birthdate, gender, homeaddress, phonenumber);
+        this.setEmail(email);
+        this.setInitials(initials);
     }
 
     public Staff(String name, String surname) {
         super(name, surname);
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-        this.initials = email.substring(0, 4);
     }
 
     @Override
@@ -54,9 +35,25 @@ public class Staff extends Person {
                 String.format("%d", this.getPhoneNumber()), this.getEmail(), this.getInitials()};
     }
 
-    public void setInitials(String i) {
-        this.initials = i;
+    public String getEmail() {
+        return email;
     }
+
+    boolean setEmail(String email) {
+        if (!(email.contains("@agile_hospital.com"))) {
+            return false;
+        }
+        String initials = email.substring(0, 4).toUpperCase();
+        this.initials = initials;
+        this.email = initials + "@agile_hospital.com";
+        return true;
+    }
+
+    void setInitials(String i) {
+        this.initials = i.toUpperCase();
+        this.email = initials + "@agile_hospital.com";
+    }
+
     public String getInitials() {
         return initials;
     }

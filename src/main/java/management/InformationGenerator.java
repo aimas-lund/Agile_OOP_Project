@@ -15,6 +15,7 @@ public class InformationGenerator {
     }
 
     private static String generateInitials(Person person) {
+        // TODO: Get all initials from database
         getPersonInformation(person);
         String inits;
 
@@ -35,8 +36,11 @@ public class InformationGenerator {
         return initials + "@agile_hospital.com";
     }
 
-    static String generateUniqueID() {
+    public static String generateUniqueID(Person person) {
         return UUID.randomUUID().toString();
     }
 
+    static void generateUniqueID(Department department) {
+        department.setUniqueId(UUID.randomUUID().toString());
+    }
 }

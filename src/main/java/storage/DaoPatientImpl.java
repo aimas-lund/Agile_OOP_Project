@@ -12,35 +12,11 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DaoPatientImpl<T extends Patient> implements Dao<T> {
+public class DaoPatientImpl<T extends Patient> implements IDao<T> {
     private final Database database = new Database();
 
     @Override
-    public void update(T patient) {
-        database.connectToDB();
-
-        String[] information = patient.getPersonInformation();
-        String sql = "UPDATE patients set uniqueid = '%s', name = %s, surname = %s, birthdate = %s, " +
-                "gender = %s, homeaddress = %s, phonenumber = %s where uniqueId = %s";
-
-        for (String value :
-                information) {
-            sql = sql.replaceFirst("%s", value.replaceAll(" ", "_"));
-        }
-
-        sql = String.format(sql, patient.getUniqueId());
-
-        executeStatement(sql);
-    }
-
-    @Override
-    public void update(T obj, String[] params) {
-
-    }
-
-    @Override
-    public void save(T patient) {
-        database.connectToDB();
+    public boolean save(T patient) {
         String[] information = patient.getPersonInformation();
         String sql = "insert into patients values('%s', '%s', '%s', '%s', '%s', '%s', '%s')";
         for (String value :
@@ -48,71 +24,8 @@ public class DaoPatientImpl<T extends Patient> implements Dao<T> {
             sql = sql.replaceFirst("%s", value.replaceAll(" ", "_"));
         }
 
-        executeStatement(sql);
+        return database.executeStatement(sql);
     }
-
-    private void executeStatement(String sql) {
-        try {
-            Statement statement = database.createStatement();
-            statement.executeUpdate(sql);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            database.disconnectFromDB();
-        }
-
-    }
-
-    @Override
-    public boolean delete(Patient patient) {
-        database.connectToDB();
-
-        String sql = "delete from patients where uniqueid = '%s'";
-        sql = String.format(sql, patient.getUniqueId());
-
-        Statement statement = database.createStatement();
-
-        try {
-            statement.executeUpdate(sql);
-            return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    @Override
-    public T find(T patient) {
-        database.connectToDB();
-
-        String sql = "select * from patients where uniqueid = '%s'";
-        sql = String.format(sql, patient.getUniqueId());
-
-        Statement statement = database.createStatement();
-        T foundPatient = null;
-
-        try {
-            ResultSet set = statement.executeQuery(sql);
-
-            if (set.next()) {
-                foundPatient = (T) new Patient(
-                        set.getString("uniqueid"),
-                        set.getString("name"),
-                        set.getString("surname"),
-                        stringToDate(set.getString("birthdate")),
-                        Integer.parseInt(set.getString("gender")),
-                        set.getString("homeaddress"),
-                        Integer.parseInt(set.getString("phonenumber")));
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        database.disconnectFromDB();
-        return foundPatient;
-    }
-
 
     @Override
     public ArrayList<T> find(HashMap<String, String> params) {
@@ -125,9 +38,8 @@ public class DaoPatientImpl<T extends Patient> implements Dao<T> {
                 params.entrySet()) {
             String value = entry.getValue();
 
-            if (!value.toLowerCase().startsWith("like") && !value.startsWith("=")) {
-                value = " = " + value;
-            }
+            value = " = " + "'" + value + "'";
+
             values = values.concat(entry.getKey() + value + " and ");
         }
 
@@ -141,31 +53,61 @@ public class DaoPatientImpl<T extends Patient> implements Dao<T> {
             ResultSet resultSet = statement.executeQuery(sql);
 
             while (resultSet.next()) {
+
+                Date birthdate = new SimpleDateFormat("yyyy_MM_DD").parse(resultSet.getString("birthdate"));
+
                 patients.add((T) new Patient(
                         resultSet.getString("uniqueId"),
                         resultSet.getString("name"),
                         resultSet.getString("surname"),
-                        stringToDate(resultSet.getString("birthdate")),
+                        birthdate,
                         Integer.parseInt(resultSet.getString("gender")),
                         resultSet.getString("homeaddress"),
                         Integer.parseInt(resultSet.getString("phonenumber"))
                 ));
             }
 
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (SQLException | ParseException e) {
+//            e.printStackTrace();
         }
         database.disconnectFromDB();
         return patients;
     }
 
-    private Date stringToDate(String birthdate) {
-        try {
-            return new SimpleDateFormat("yyyy_MM_DD").parse(birthdate);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return null;
-
+    public <T extends Patient> T find(T patient) {
+        HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put("uniqueid", patient.getUniqueId());
+        return (T) find(hashMap).get(0); // Returns arrayList of length 1
     }
+
+    public boolean delete(T patient) {
+        return delete(patient.getUniqueId());
+    }
+
+    @Override
+    public boolean delete(String uniqueId) {
+        String sql = "delete from patients where uniqueid = '%s'";
+        sql = String.format(sql, uniqueId);
+
+        return database.executeStatement(sql);
+    }
+
+    @Override
+    public boolean update(T patient) {
+        String[] information = patient.getPersonInformation();
+        String sql = "UPDATE patients set uniqueid = '%s', name = '%s', surname = '%s', birthdate = '%s', " +
+                "gender = '%s', homeaddress = '%s', phonenumber = '%s' where uniqueId = '%s'";
+
+        for (String value :
+                information) {
+            if (value == null) return false;
+
+            sql = sql.replaceFirst("%s", value.replaceAll(" ", "_"));
+        }
+
+        sql = String.format(sql, patient.getUniqueId());
+
+        return database.executeStatement(sql);
+    }
+
 }

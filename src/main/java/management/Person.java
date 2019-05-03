@@ -17,7 +17,11 @@ public abstract class Person {
     private String uniqueId;
 
     Person() {
+    }
 
+    public Person(String uniqueId, String name, String surname, Date birthdate, int gender, String homeaddress, int phonenumber) {
+        this(name, surname, birthdate, gender, homeaddress, phonenumber);
+        this.setUniqueId(uniqueId);
     }
 
     public Person(String name, String surname, Date birthdate, int gender, String homeaddress, int phonenumber) {
@@ -102,7 +106,12 @@ public abstract class Person {
     public abstract String[] getPersonInformation();
 
     public String dateToString(Date birthdate) {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy_MM_DD");
-        return format.format(birthdate);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy_MM_dd");
+
+        if (birthdate == null) {
+            return "N/A";
+        } else {
+            return format.format(birthdate);
+        }
     }
 }

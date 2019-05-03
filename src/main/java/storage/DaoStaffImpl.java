@@ -13,103 +13,21 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DaoStaffImpl<T extends Staff> implements Dao<T> {
+public class DaoStaffImpl<T extends Staff> implements IDao<T> {
 
     private final Database database = new Database();
 
-    public void update(T staff) {
-        database.connectToDB();
-
+    @Override
+    public boolean save(T staff) {
         String[] information = staff.getPersonInformation();
-        String sql = "UPDATE staff set uniqueid = %s, name = %s, surname = %s, birthdate = %s, " +
-                "gender = %s, homeaddress = %s, phonenumber = %s, email = %s, initials = %s";
-        String sqlWhere = String.format(" where uniqueId = %s", staff.getUniqueId());
+        String sql = "insert into staff values('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')";
 
-        executeStatement(information, sql + sqlWhere);
-    }
-
-    @SuppressWarnings("Duplicates")
-    private void executeStatement(String[] information, String sql) {
         for (String value :
                 information) {
             sql = sql.replaceFirst("%s", value.replaceAll(" ", "_"));
         }
 
-        try {
-            Statement statement = database.createStatement();
-            statement.executeUpdate(sql);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        database.disconnectFromDB();
-    }
-
-
-    @Override
-    public void update(T obj, String[] params) {
-
-    }
-
-    @Override
-    public void save(T staff) {
-        database.connectToDB();
-
-        String[] information = staff.getPersonInformation();
-        String sql = "insert into staff values('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')";
-        executeStatement(information, sql);
-    }
-
-    @Override
-    public boolean delete(Staff staff) {
-        database.connectToDB();
-
-        String sql = "delete from staff where uniqueid = '%s'";
-        sql = String.format(sql, staff.getUniqueId());
-
-        Statement statement = database.createStatement();
-
-        try {
-            statement.executeUpdate(sql);
-            return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    @Override
-    public T find(T staff) {
-        database.connectToDB();
-
-        String sql = "select * from staff where uniqueid = '%s'";
-        sql = String.format(sql, staff.getUniqueId());
-
-        Statement statement = database.createStatement();
-        T foundStaff = null;
-
-        try {
-            ResultSet set = statement.executeQuery(sql);
-
-            if (set.next()) {
-                foundStaff = (T) new Staff(
-                        set.getString("uniqueid"),
-                        set.getString("name"),
-                        set.getString("surname"),
-                        stringToDate(set.getString("birthdate")),
-                        Integer.parseInt(set.getString("gender")),
-                        set.getString("homeaddress"),
-                        Integer.parseInt(set.getString("phonenumber")),
-                        set.getString("email"),
-                        set.getString("initials"));
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        database.disconnectFromDB();
-        return foundStaff;
+        return database.executeStatement(sql);
     }
 
     @Override
@@ -123,10 +41,9 @@ public class DaoStaffImpl<T extends Staff> implements Dao<T> {
                 params.entrySet()) {
             String value = entry.getValue();
 
-            if (!value.toLowerCase().startsWith("like") && !value.startsWith("=")) {
-                value = " = " + value;
-            }
-            values = values.concat(entry.getKey() + value + "and ");
+            value = " = " + "'" + value + "'";
+
+            values = values.concat(entry.getKey() + value + " and ");
         }
 
         sql = sql + values.substring(0, values.length() - 4);
@@ -139,24 +56,60 @@ public class DaoStaffImpl<T extends Staff> implements Dao<T> {
             ResultSet resultSet = statement.executeQuery(sql);
 
             while (resultSet.next()) {
+                Date birthdate = new SimpleDateFormat("yyyy_mm_dd").parse(resultSet.getString("birthdate"));
+
                 staff.add((T) new Staff(
                         resultSet.getString("uniqueId"),
                         resultSet.getString("name"),
                         resultSet.getString("surname"),
-                        stringToDate(resultSet.getString("birthdate")),
+                        birthdate,
                         Integer.parseInt(resultSet.getString("gender")),
-                        resultSet.getString("homeaddress"),
+                        resultSet.getString("homeaddress").replaceAll("_", " "),
                         Integer.parseInt(resultSet.getString("phonenumber")),
                         resultSet.getString("email"),
                         resultSet.getString("initials")
                 ));
             }
 
-        } catch (SQLException e) {
+        } catch (SQLException | ParseException e) {
             e.printStackTrace();
         }
         database.disconnectFromDB();
         return staff;
+    }
+
+    public <T extends Staff> T find(T staff) {
+        HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put("uniqueid", staff.getUniqueId());
+        return (T) find(hashMap).get(0);
+    }
+
+    public boolean delete(Staff staff) {
+        return delete(staff.getUniqueId());
+    }
+
+    @Override
+    public boolean delete(String uniqueId) {
+        String sql = "delete from staff where uniqueid = '%s'";
+        sql = String.format(sql, uniqueId);
+
+        return database.executeStatement(sql);
+    }
+
+    public boolean update(T staff) {
+        String[] information = staff.getPersonInformation();
+        String sql = "UPDATE staff set uniqueid = '%s', name = '%s', surname = '%s', birthdate = '%s', " +
+                "gender = '%s', homeaddress = '%s', phonenumber = '%s', email = '%s', initials = '%s'";
+        String sqlWhere = String.format(" where uniqueId = '%s'", staff.getUniqueId());
+
+        for (String value :
+                information) {
+            if (value == null) return false;
+
+            sql = sql.replaceFirst("%s", value.replaceAll(" ", "_"));
+        }
+
+        return database.executeStatement(sql + sqlWhere);
     }
 
     private Date stringToDate(String birthdate) {

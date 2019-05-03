@@ -6,6 +6,8 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import management.*;
+import storage.QueryRoleClerk;
+import storage.QueryRoleICT;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -18,8 +20,8 @@ public class RegistrationSteps {
     private Patient registeredPatient;
     private Patient unregisteredPatient;
     private Department department = new Department();
-    private Clerk clerk = new Clerk();
-    private ICTOfficer ictOfficer = new ICTOfficer();
+    private QueryRoleClerk clerk = new QueryRoleClerk();
+    private QueryRoleICT ictOfficer = new QueryRoleICT();
     private Staff registeredStaff = new Staff();
     private Staff unregisteredStaff = new Staff();
     private Doctor doctor = new Doctor();
@@ -48,7 +50,7 @@ public class RegistrationSteps {
         Patient oldPatient = this.registeredPatient;
 
         // Make new patient
-        this.registeredPatient = new Patient(
+        this.registeredPatient = new Patient("testID",
                 "Freja",
                 "Sif",
                 new Date(230),
@@ -71,8 +73,9 @@ public class RegistrationSteps {
         Calendar cal = Calendar.getInstance();
         cal.set(1995, Calendar.APRIL, 20);
 
-        // management.Clerk needs registeredPatient information
-        clerk.setPersonInformation(registeredPatient,
+        // Clerk needs registeredPatient information
+        clerk.update(registeredPatient);
+        registeredPatient = new Patient(
                 "Emil",
                 "pølz Ballermann",
                 cal.getTime(),
@@ -106,8 +109,8 @@ public class RegistrationSteps {
     @Then("the clerk should be able to check if the patient is registered")
     public void theClerkShouldBeAbleToCheckIfThePatientIsRegistered() {
         // Check that the registered patient is there and not the unregistered one
-        assertTrue(clerk.checkPatientRegistrationStatus(registeredPatient, department));
-        assertFalse(clerk.checkPatientRegistrationStatus(unregisteredPatient, department));
+        assertTrue(clerk.isPersonRegistered(registeredPatient, department));
+        assertFalse(clerk.isPersonRegistered(unregisteredPatient, department));
         clerk.delete(registeredPatient, department);
 
     }
@@ -128,10 +131,10 @@ public class RegistrationSteps {
     @Given("a newly hired employee")
     public void aNewlyHiredEmployee() {
         // Get old ICTOfficer
-        ICTOfficer oldIctOfficer = this.ictOfficer;
+        QueryRoleICT oldIctOfficer = this.ictOfficer;
 
         // Make new ICTOfficer
-        this.ictOfficer = new ICTOfficer();
+        this.ictOfficer = new QueryRoleICT();
 
         // Check that they aren't the same
         assertNotSame(oldIctOfficer, ictOfficer);
@@ -149,8 +152,7 @@ public class RegistrationSteps {
         cal.set(1997, Calendar.DECEMBER, 23);
 
         // Register staff
-        ictOfficer.setPersonInformation(registeredStaff,
-                "Billy",
+        registeredStaff = new Staff("Billy",
                 "Mcloving",
                 cal.getTime(),
                 0,
@@ -180,10 +182,8 @@ public class RegistrationSteps {
     @And("work email should be generated")
     public void workEmailShouldBeGenerated() {
         // Set necessary information
-        ictOfficer.setPersonName(registeredStaff, "Molly");
-        ictOfficer.setPersonSurname(registeredStaff, "McLovin");
-        ictOfficer.setPersonName(unregisteredStaff, "Emil");
-        ictOfficer.setPersonSurname(unregisteredStaff, "Ballermann");
+        registeredStaff = new Staff("Molly", "McLovin");
+        unregisteredStaff = new Staff("Emil", "Ballermann");
 
         // Generate emails
         String email1 = InformationGenerator.generateEmail(registeredStaff);
@@ -200,14 +200,13 @@ public class RegistrationSteps {
     @When("he is assigned a work email")
     public void he_is_assigned_a_work_email() {
         // Set necessary information
-        ictOfficer.setPersonName(registeredStaff, "Solomun");
-        ictOfficer.setPersonSurname(registeredStaff, "Bjergsen");
+        registeredStaff = new Staff("Solomun", "Bjergsen");
 
         // Generate email
         String email1 = InformationGenerator.generateEmail(registeredStaff);
 
         // Assign email
-        registeredStaff.setEmail(email1);
+        new PersonInformationFacade(registeredStaff).setStaffEmail(email1);
 
         // Check it is stored and the correct initials are there
         assertEquals(registeredStaff.getEmail(), email1);
@@ -217,8 +216,7 @@ public class RegistrationSteps {
     @When("his initials overlap with someone else's")
     public void his_initials_overlap_with_someone_else_s() {
         // Set necessary information for overlap
-        ictOfficer.setPersonName(unregisteredStaff, "Soren");
-        ictOfficer.setPersonSurname(unregisteredStaff, "BjLamar");
+        unregisteredStaff = new Staff("Soren", "BjLamar");
 
         // Get initials directly
         String staff1_initials = unregisteredStaff.getName().substring(0, 2) + unregisteredStaff.getSurname().substring(0, 2);
@@ -281,7 +279,7 @@ public class RegistrationSteps {
         cal.set(1990, Calendar.APRIL, 20);
 
         // Set patient information
-        ictOfficer.setDoctorInformation(doctor, speciality, "Mortimer", "Montgomery", cal.getTime(), 0,
+        doctor = new Doctor(speciality, "Mortimer", "Montgomery", cal.getTime(), 0,
                 "myhouse", 13371337);
 
         // Check that some information has been set

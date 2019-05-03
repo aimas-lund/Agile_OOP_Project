@@ -9,104 +9,22 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DaoDepartmentImpl<T extends Department> implements Dao<T> {
+public class DaoDepartmentImpl<T extends Department> implements IDao<T> {
 
     private final Database database = new Database();
 
     @Override
-    public void update(T Department) {
+    public boolean save(T department) {
         database.connectToDB();
-
-        String[] information = Department.getDepartmentInformation();
-        String sql = "UPDATE patients set uniqueId = %s, name = %s, availablebeds = %s, capacity = %s where uniqueId = %s";
-
-        for (String value :
-                information) {
-            sql = sql.replaceFirst("%s", value.replaceAll(" ", "_"));
-        }
-
-        sql = String.format(sql, Department.getUniqueId());
-
-        executeStatement(sql);
-    }
-
-    @Override
-    public void update(T obj, String[] params) {
-
-    }
-    @Override
-    public void save(T patient) {
-        database.connectToDB();
-        String[] information = patient.getDepartmentInformation();
+        String[] information = department.getDepartmentInformation();
         String sql = "insert into patients values('%s','%s', '%s', '%s')";
         for (String value :
                 information) {
             sql = sql.replaceFirst("%s", value.replaceAll(" ", "_"));
         }
 
-        executeStatement(sql);
+        return database.executeStatement(sql);
     }
-
-
-    private void executeStatement(String sql) {
-        try {
-            Statement statement = database.createStatement();
-            statement.executeUpdate(sql);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            database.disconnectFromDB();
-        }
-
-    }
-
-    @Override
-    public boolean delete(Department department) {
-        database.connectToDB();
-
-        String sql = "delete from department where name = '%s'";
-        sql = String.format(sql, department.getName());
-
-        Statement statement = database.createStatement();
-
-        try {
-            statement.executeUpdate(sql);
-            return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    @Override
-    public T find(T department) {
-        database.connectToDB();
-
-        String sql = "select * from patients where uniqueid = '%s'";
-        sql = String.format(sql, department.getName());
-
-        Statement statement = database.createStatement();
-        T foundDepartment = null;
-
-        try {
-            ResultSet set = statement.executeQuery(sql);
-
-            if (set.next()) {
-                foundDepartment = (T) new Department(
-                        set.getString("uniqueId"),
-                        set.getString("name"),
-                        set.getInt("capacity"));
-
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        database.disconnectFromDB();
-        return foundDepartment;
-    }
-
 
     @Override
     public ArrayList<T> find(HashMap<String, String> params) {
@@ -147,6 +65,43 @@ public class DaoDepartmentImpl<T extends Department> implements Dao<T> {
         }
         database.disconnectFromDB();
         return departments;
+    }
+
+    public T find(T department) {
+        HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put("uniqueid", department.getUniqueId());
+        return find(hashMap).get(0);
+    }
+
+    public boolean delete(Department department) {
+        return delete(department.getUniqueId());
+    }
+
+    @Override
+    public boolean delete(String uniqueid) {
+        database.connectToDB();
+
+        String sql = "delete from department where name = '%s'";
+        sql = String.format(sql, uniqueid);
+
+        return database.executeStatement(sql);
+    }
+
+    @Override
+    public boolean update(T Department) {
+        database.connectToDB();
+
+        String[] information = Department.getDepartmentInformation();
+        String sql = "UPDATE patients set uniqueId = %s, name = %s, availablebeds = %s, capacity = %s where uniqueId = %s";
+
+        for (String value :
+                information) {
+            sql = sql.replaceFirst("%s", value.replaceAll(" ", "_"));
+        }
+
+        sql = String.format(sql, Department.getUniqueId());
+
+        return database.executeStatement(sql);
     }
 
 }

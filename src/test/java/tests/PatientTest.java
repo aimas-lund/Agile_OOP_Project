@@ -1,8 +1,12 @@
+package tests;
+
 import management.Patient;
-import java.util.Date;
 import org.junit.Test;
 
-import static junit.framework.TestCase.*;
+import java.util.Date;
+
+import static junit.framework.TestCase.assertEquals;
+import static junit.framework.TestCase.assertTrue;
 
 public class PatientTest {
     private Patient patient = new Patient();
@@ -19,26 +23,32 @@ public class PatientTest {
     public void isAlive() {
         assertTrue(patient.isAlive());
     }
+
     @Test
     public void getPersonInformationName() {
         assertEquals("foo", patientWithInformation.getPersonInformation()[1]);
     }
+
     @Test
     public void getPersonInformationSurname() {
         assertEquals("bar", patientWithInformation.getPersonInformation()[2]);
     }
+
     @Test
     public void getPersonInformationBirthdate() {
         assertEquals("1990_01_01", patientWithInformation.getPersonInformation()[3]);
     }
+
     @Test
     public void getPersonInformationGender() {
         assertEquals("0", patientWithInformation.getPersonInformation()[4]);
     }
+
     @Test
     public void getPersonInformationHomeAddress() {
         assertEquals("Foo Bar Street 38", patientWithInformation.getPersonInformation()[5]);
     }
+
     @Test
     public void getPersonInformationPhoneNumber() {
         assertEquals("12345678", patientWithInformation.getPersonInformation()[6]);
