@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Test</title>
+
+    <form action="/postPatients">
+        First name: <input type="text" name="name">
+        Last name: <input type="text" name="surname">
+        Number: <input type="tel" name="phoneNumber">
+        Gender: <input type="text" name="gender">
+        <button type="submit" formmethod="post">Submit</button>
+    </form>
+    <p></p>
+    <form action="/findPatient">
+        Search name: <input type="text" name="name">
+        <button type="submit" formmethod="post">Submit</button>
+    </form>
+    <p></p>
+    <form action="/patient">
+        ID: <input type="tel" name="id">
+        First name: <input type="text" name="name">
+        Last name: <input type="text" name="surname">
+        Number: <input type="tel" name="phoneNumber">
+        Gender: <input type="text" name="gender">
+        <button type="submit" formmethod="post">Submit</button>
+    </form>
+</head>
+<body>
+
+</body>
+</html>
