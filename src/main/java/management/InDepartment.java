@@ -4,31 +4,55 @@ import exceptions.ExceededCapacityException;
 import exceptions.UnavailableBedException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class InDepartment extends Department {
     private Bed[] beds = new Bed[0];
-    //    private patientsInBeds
-    private int capacity;
+    private final int totalCapacity;
+    private HashMap<Patient, Bed> patientsInBeds = new HashMap<>();
+    private int currentCapacity = 0;
 
     public InDepartment() {
+        totalCapacity = 0;
     }
 
     public InDepartment(String uniqueId) {
         super(uniqueId);
+        totalCapacity = 0;
+
     }
 
     public InDepartment(String uniqueId, String name) {
         super(uniqueId, name);
+        totalCapacity = 0;
+
     }
 
-    public InDepartment(String uniqueId, String name, int capacity) {
+    public InDepartment(String uniqueId, String name, int totalCapacity) {
         super(uniqueId, name);
-        this.capacity = capacity;
+        this.totalCapacity = totalCapacity;
+        this.currentCapacity = totalCapacity;
 
-        beds = new Bed[capacity];
+        beds = new Bed[totalCapacity];
 
-        for (int i = 0; i < capacity; i++) {
+        for (int i = 0; i < totalCapacity; i++) {
             beds[i] = new Bed(i);
+        }
+    }
+
+    public InDepartment(String uniqueId, String name, int totalCapacity, int currentCapacity) {
+        this(uniqueId, name, totalCapacity);
+        this.currentCapacity = currentCapacity;
+    }
+
+    public InDepartment(String uniqueId, String name, int totalCapacity, int currentCapacity,
+                        HashMap<Patient, Bed> patientsInBeds) {
+        this(uniqueId, name, totalCapacity, currentCapacity);
+
+        for (Map.Entry<Patient, Bed> entry : patientsInBeds.entrySet()) {
+            beds[entry.getValue().getId()] = entry.getValue();
+            add(entry.getKey());
         }
     }
 
@@ -39,8 +63,11 @@ public class InDepartment extends Department {
             }
             Bed bed = getAvailableBeds().get(0);
             bed.fill(p);
+            patientsInBeds.put(p, bed);
+            currentCapacity--;
+
         } else {
-            throw new ExceededCapacityException("No available beds ");
+            throw new ExceededCapacityException("No available beds");
         }
     }
 
@@ -53,25 +80,29 @@ public class InDepartment extends Department {
         }
         Bed bed = beds[bedId];
         bed.fill(p);
+        patientsInBeds.put(p, bed);
+        currentCapacity--;
     }
 
     public void discharge(Patient p) {
         remove(p);
         removeFromBed(p);
+        currentCapacity++;
     }
 
     public void removeFromBed(Patient p) {
         if (patientInBed(p)) {
             Bed bed = getBedWithPatient(p);
             bed.empty();
+            patientsInBeds.remove(p);
+            currentCapacity++;
         }
     }
 
     public void move(Patient p) throws ExceededCapacityException {
         if (patientInBed(p)) {
-            Bed b1 = getBedWithPatient(p);
+            removeFromBed(p);
             assign(p);
-            b1.empty();
         } else {
             assign(p);
         }
@@ -79,31 +110,24 @@ public class InDepartment extends Department {
 
     public void move(Patient p, int id) throws UnavailableBedException {
         if (patientInBed(p)) {
-            Bed bed = getBedWithPatient(p);
+            removeFromBed(p);
             assign(p, id);
-            bed.empty();
         } else {
             assign(p, id);
         }
     }
 
     public boolean hasAvailableBeds() {
-        // TODO: Can add observer
-        for (Bed bed : beds) {
-            if (bed.getPatient() == null) return true;
-        }
-        return false;
+        return currentCapacity > 0;
     }
 
     public Bed getBedWithPatient(Patient p) {
-        for (Bed bed : beds) {
-            if (bed.getPatient() == p) {
-                return bed;
-            }
-        }
-        return null;
+        return patientsInBeds.get(p);
     }
 
+    public HashMap<Patient, Bed> getPatientsInBeds() {
+        return patientsInBeds;
+    }
 
     public ArrayList<Bed> getAvailableBeds() throws ExceededCapacityException {
         ArrayList<Bed> available = new ArrayList<>();
@@ -119,26 +143,29 @@ public class InDepartment extends Department {
     }
 
     public boolean patientInBed(Patient p) {
-        for (Bed bed : beds) {
-            if (bed.getPatient() == p) {
-                return true;
-            }
-        }
-        return false;
+        return patientsInBeds.containsKey(p);
     }
 
     public Bed[] getBeds() {
         return beds;
     }
 
-    public int getCapacity() {
-        return capacity;
+    public int getTotalCapacity() {
+        return totalCapacity;
     }
 
     @Override
     public String[] getDepartmentInformation() {
-        return new String[]{this.getUniqueId(), this.getClass().getCanonicalName(), this.g};
+        return new String[]{this.getUniqueId(), this.getClass().getCanonicalName(), String.valueOf(this.getCurrentCapacity()),
+                String.valueOf(this.getTotalCapacity())};
     }
 
 
+    public int getCurrentCapacity() {
+        return currentCapacity;
+    }
+
+    public void setCurrentCapacity(int currentCapacity) {
+        this.currentCapacity = currentCapacity;
+    }
 }
