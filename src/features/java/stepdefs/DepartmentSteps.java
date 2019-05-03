@@ -1,14 +1,14 @@
 package stepdefs;
 
+import core.buildings.InDepartment;
+import core.persons.Patient;
+import core.persons.Staff;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import exceptions.ExceededCapacityException;
 import exceptions.UnavailableBedException;
-import management.InDepartment;
-import management.Patient;
-import management.Staff;
 
 import static org.junit.Assert.*;
 

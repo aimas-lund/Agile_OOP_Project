@@ -1,9 +1,13 @@
 package stepdefs;
 
+import core.buildings.Department;
+import core.buildings.InDepartment;
+import core.persons.Hospital;
+import core.persons.Patient;
+import core.persons.Staff;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import management.*;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;

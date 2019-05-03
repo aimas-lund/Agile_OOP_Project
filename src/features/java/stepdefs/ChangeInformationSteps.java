@@ -1,10 +1,10 @@
 package stepdefs;
 
+import core.persons.*;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import management.*;
 
 import java.util.Calendar;
 import java.util.Date;

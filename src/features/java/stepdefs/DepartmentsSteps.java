@@ -1,10 +1,15 @@
 package stepdefs;
 
 
+import core.buildings.Department;
+import core.buildings.OutDepartment;
+import core.persons.Bed;
+import core.persons.Hospital;
+import core.persons.Patient;
+import core.persons.Staff;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import management.*;
 
 import java.util.ArrayList;
 

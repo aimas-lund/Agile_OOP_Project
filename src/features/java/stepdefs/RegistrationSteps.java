@@ -1,13 +1,20 @@
 package stepdefs;
 
+import core.buildings.Department;
+import core.buildings.OutDepartment;
+import core.persons.Doctor;
+import core.persons.Patient;
+import core.persons.PersonInformationFacade;
+import core.persons.Staff;
+import core.utility.InformationGenerator;
+import core.utility.Speciality;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import management.*;
-import storage.QueryRoleClerk;
-import storage.QueryRoleICT;
+import persistence.query_roles.QueryRoleClerk;
+import persistence.query_roles.QueryRoleICT;
 
 import java.util.Calendar;
 import java.util.Date;
