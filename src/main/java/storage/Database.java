@@ -1,7 +1,5 @@
 package storage;
 
-import management.Department;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -10,11 +8,9 @@ import java.util.ArrayList;
 
 public class Database {
     private Connection connection = null;
-    private Department department;
 
     public Database() {
         connectToDB();
-        department = new Department();
     }
 
     public void connectToDB() {

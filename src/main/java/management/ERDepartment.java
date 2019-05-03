@@ -1,6 +1,6 @@
 package management;
 
-public class ERDepartment extends Department {
+public class ERDepartment extends DepartmentBeds {
 
     public ERDepartment() {
     }
@@ -9,4 +9,7 @@ public class ERDepartment extends Department {
         super(uniqueId);
     }
 
+    public ERDepartment(String uniqueId, String name) {
+        super(uniqueId, name);
+    }
 }

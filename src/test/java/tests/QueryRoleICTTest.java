@@ -1,10 +1,7 @@
 package tests;
 
 import exceptions.PersonNotFoundException;
-import management.Department;
-import management.Patient;
-import management.PersonInformationFacade;
-import management.Staff;
+import management.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,7 +21,7 @@ public class QueryRoleICTTest {
 
     @Before
     public void setUp() {
-        department = new Department("test", 1);
+        department = new InDepartment("dep1", "mock", 1);
 
         patient = new Patient(
                 "testID",
@@ -109,12 +106,12 @@ public class QueryRoleICTTest {
 
     @Test
     public void deleteStaffFails() {
-        queryRoleICT.delete(new Staff("name", "surname"), department);
+        queryRoleICT.delete(new Staff("id"), department);
     }
 
     @Test
     public void deletePatientFails() {
-        queryRoleICT.delete(new Staff("name", "surname"), department);
+        queryRoleICT.delete(new Staff("id2"), department);
     }
 
     @Test

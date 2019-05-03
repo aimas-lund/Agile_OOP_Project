@@ -21,6 +21,10 @@ public class Patient extends Person {
         super(name, surname, birthdate, gender, homeaddress, phonenumber);
     }
 
+    public Patient(String uniqueId) {
+        super(uniqueId);
+    }
+
     @Override
     public String[] getPersonInformation() {
         return new String[]{this.getUniqueId(), this.getName(), this.getSurname(),

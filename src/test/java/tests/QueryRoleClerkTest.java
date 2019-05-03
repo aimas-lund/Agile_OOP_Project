@@ -2,6 +2,7 @@ package tests;
 
 import exceptions.PersonNotFoundException;
 import management.Department;
+import management.InDepartment;
 import management.Patient;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,7 +27,7 @@ public class QueryRoleClerkTest {
                 1,
                 "DTUStreet 56",
                 45231298);
-        department = new Department();
+        department = new InDepartment();
     }
 
     @Test

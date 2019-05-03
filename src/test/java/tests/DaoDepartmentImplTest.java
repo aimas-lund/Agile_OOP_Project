@@ -1,6 +1,7 @@
 package tests;
 
 import management.Department;
+import management.InDepartment;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,7 +14,7 @@ public class DaoDepartmentImplTest {
 
     @Before
     public void setUp() {
-        department = new Department("ER", 1);
+        department = new InDepartment("dep2", "ER", 1);
 
     }
 

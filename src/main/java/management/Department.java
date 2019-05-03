@@ -8,14 +8,14 @@ public abstract class Department {
 	private ArrayList<Patient> patients = new ArrayList<>();
 	private ArrayList<Staff> staff = new ArrayList<>();
 
-    public Department() {
+	protected Department() {
     }
 
-    public Department(String uniqueId) {
+	protected Department(String uniqueId) {
 		this.uniqueId = uniqueId;
 	}
 
-    public Department(String uniqueId, String name) {
+	protected Department(String uniqueId, String name) {
         this.uniqueId = uniqueId;
         this.name = name;
     }
@@ -45,7 +45,7 @@ public abstract class Department {
 	}
 
 	public String[] getDepartmentInformation() {
-        return new String[]{this.getUniqueId(), this.getClass().getCanonicalName()};
+		return new String[]{this.uniqueId, this.getClass().getCanonicalName()};
 	}
 
 	void setUniqueId(String uniqueID) {

@@ -12,10 +12,10 @@ public class HospitalBedTest {
 
     private final Hospital hospital = new Hospital();
     private ArrayList<Department> depts = hospital.getDepartments();
-    private final Department department = new Department("ER",10);
+    private final Department department = new InDepartment("dep1", "ER", 10);
     private final Patient patient = new Patient();
     private final Staff staff = new Staff();
-    private final Department department2 = new Department("ER2",10);
+    private final Department department2 = new InDepartment("dep2", "ER2", 10);
     private Bed bed;
 
     @Before

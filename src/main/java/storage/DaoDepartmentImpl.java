@@ -1,6 +1,7 @@
 package storage;
 
 import management.Department;
+import management.ERDepartment;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -53,11 +54,10 @@ public class DaoDepartmentImpl<T extends Department> implements IDao<T> {
             ResultSet resultSet = statement.executeQuery(sql);
 
             while (resultSet.next()) {
-                departments.add((T) new Department(
+                departments.add((T) new ERDepartment(
                         resultSet.getString("uniqueId"),
-                        resultSet.getString("name"),
-                        resultSet.getInt("capacity"))
-                );
+                        resultSet.getString("name")
+                ));
             }
 
         } catch (SQLException e) {

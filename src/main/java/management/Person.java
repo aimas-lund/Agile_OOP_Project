@@ -16,15 +16,19 @@ public abstract class Person {
     private int phoneNumber;
     private String uniqueId;
 
+    public Person(String uniqueId) {
+        this.uniqueId = uniqueId;
+    }
+
     Person() {
     }
 
-    public Person(String uniqueId, String name, String surname, Date birthdate, int gender, String homeaddress, int phonenumber) {
+    protected Person(String uniqueId, String name, String surname, Date birthdate, int gender, String homeaddress, int phonenumber) {
         this(name, surname, birthdate, gender, homeaddress, phonenumber);
         this.setUniqueId(uniqueId);
     }
 
-    public Person(String name, String surname, Date birthdate, int gender, String homeaddress, int phonenumber) {
+    protected Person(String name, String surname, Date birthdate, int gender, String homeaddress, int phonenumber) {
         this.setName(name);
         this.setSurname(surname);
         this.setBirthdate(birthdate);
@@ -108,19 +112,19 @@ public abstract class Person {
     public String dateToString(Date birthdate) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy_MM_dd");
 
-        if (birthdate == null) {
-            return "N/A";
-        } else {
-            return format.format(birthdate);
-        }
+        return birthdate == null ? "N/A" : format.format(birthdate);
     }
 
     public boolean equals(Person person) {
-        return uniqueId.equals(person.getUniqueId());
+        return uniqueId.equals(person.uniqueId);
     }
 
     @Override
     public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+
         if (obj instanceof Person) {
             return equals((Person) obj);
         }

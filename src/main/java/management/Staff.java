@@ -6,6 +6,10 @@ public class Staff extends Person {
     private String email;
     private String initials;
 
+    public Staff(String uniqueId) {
+        super(uniqueId);
+    }
+
     public Staff(){
     }
 
@@ -32,7 +36,7 @@ public class Staff extends Person {
     public String[] getPersonInformation() {
         return new String[]{this.getUniqueId(), this.getName(), this.getSurname(),
                 dateToString(this.getBirthdate()), String.format("%d", this.getGender()), this.getHomeAddress(),
-                String.format("%d", this.getPhoneNumber()), this.getEmail(), this.getInitials()};
+                String.format("%d", this.getPhoneNumber()), this.email, this.initials};
     }
 
     public String getEmail() {

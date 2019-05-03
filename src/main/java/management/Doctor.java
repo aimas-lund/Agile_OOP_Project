@@ -17,6 +17,10 @@ public class Doctor extends Staff {
         this.speciality = speciality;
     }
 
+    public Doctor(String uniqueId) {
+        super(uniqueId);
+    }
+
     public Speciality getSpeciality() {
         return speciality;
     }

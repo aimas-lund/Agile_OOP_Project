@@ -6,6 +6,7 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import exceptions.PersonNotFoundException;
 import management.Department;
+import management.InDepartment;
 import management.Patient;
 import management.Staff;
 import storage.*;
@@ -28,7 +29,7 @@ public class DatabaseSteps {
 
     @Before
     public void setUp() {
-        department = new Department("Mockdepartment", 10);
+        department = new InDepartment("Mockdepartment", "name", 10);
         clerk = new QueryRoleClerk();
         patient = new Patient();
         ict = new QueryRoleICT();
@@ -113,7 +114,7 @@ public class DatabaseSteps {
 
     @When("changing a person's information")
     public void changingAPersonsInformation() {
-        department = new Department("Mockdepartment", 10);
+        department = new InDepartment("Mockdepartment", "Name", 10);
         patient = new Patient(
                 "Simon",
                 "Muuu",

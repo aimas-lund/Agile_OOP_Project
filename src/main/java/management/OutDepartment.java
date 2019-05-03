@@ -8,4 +8,7 @@ public class OutDepartment extends Department {
         super(uniqueId);
     }
 
+    public OutDepartment(String uniqueId, String name) {
+        super(uniqueId, name);
+    }
 }
