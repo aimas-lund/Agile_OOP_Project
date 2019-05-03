@@ -114,4 +114,16 @@ public abstract class Person {
             return format.format(birthdate);
         }
     }
+
+    public boolean equals(Person person) {
+        return uniqueId.equals(person.getUniqueId());
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Person) {
+            return equals((Person) obj);
+        }
+        return super.equals(obj);
+    }
 }
