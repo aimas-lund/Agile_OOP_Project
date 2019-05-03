@@ -264,7 +264,7 @@ public class DatabaseSteps {
         paramspatient.put("name", "Hilda");
 
         HashMap<String, String> paramsstaff = new HashMap<>();
-        paramsstaff.put("name", "'Emil'");
+        paramsstaff.put("name", "Emil");
 
         try {
             assertNotNull(ict.findPatient(paramspatient));

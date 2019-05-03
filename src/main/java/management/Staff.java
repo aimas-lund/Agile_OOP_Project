@@ -16,6 +16,7 @@ public class Staff extends Person {
     public Staff(String name, String surname, Date birthdate, int gender, String homeaddress, int phonenumber) {
         super(name, surname, birthdate, gender, homeaddress, phonenumber);
     }
+
     public Staff(String name, String surname, Date birthdate, int gender, String homeaddress, int phonenumber, String email, String initials) {
         super(name, surname, birthdate, gender, homeaddress, phonenumber);
         this.setEmail(email);
