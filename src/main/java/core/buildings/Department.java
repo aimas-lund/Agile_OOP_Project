@@ -51,10 +51,6 @@ public abstract class Department {
 		return new String[]{this.uniqueId, this.getClass().getCanonicalName()};
 	}
 
-	void setUniqueId(String uniqueID) {
-		this.uniqueId = uniqueID;
-	}
-
 	public String getUniqueId() {
 		return uniqueId;
 	}
@@ -63,7 +59,11 @@ public abstract class Department {
         return name;
     }
 
-    public void setName(String name) {
+    void setUniqueId(String uniqueID) {
+        this.uniqueId = uniqueID;
+    }
+
+    void setName(String name) {
         this.name = name;
     }
 }
