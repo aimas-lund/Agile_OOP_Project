@@ -11,14 +11,10 @@ public abstract class Department {
 	private ArrayList<Patient> patients = new ArrayList<>();
 	private ArrayList<Staff> staff = new ArrayList<>();
 
-	protected Department() {
+	Department() {
     }
 
-	protected Department(String uniqueId) {
-		this.uniqueId = uniqueId;
-	}
-
-	protected Department(String uniqueId, String name) {
+	Department(String uniqueId, String name) {
         this.uniqueId = uniqueId;
         this.name = name;
     }
@@ -39,6 +35,14 @@ public abstract class Department {
         patients.remove(p);
 	}
 
+	public boolean isPatientInDepartment(Patient patient) {
+		return patients.contains(patient);
+	}
+
+	public boolean isStaffInDepartment(Staff staff) {
+		return this.staff.contains(staff);
+	}
+
     public ArrayList<Patient> getPatients() {
 		return patients;
 	}
@@ -48,7 +52,7 @@ public abstract class Department {
 	}
 
 	public String[] getDepartmentInformation() {
-		return new String[]{this.uniqueId, this.getClass().getCanonicalName()};
+		return new String[]{this.uniqueId, this.name, this.getClass().getSimpleName()};
 	}
 
 	public String getUniqueId() {
@@ -59,11 +63,5 @@ public abstract class Department {
         return name;
     }
 
-    void setUniqueId(String uniqueID) {
-        this.uniqueId = uniqueID;
-    }
 
-    void setName(String name) {
-        this.name = name;
-    }
 }

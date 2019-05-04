@@ -1,5 +1,6 @@
 package stepdefs;
 
+import core.buildings.BedManager;
 import core.buildings.InDepartment;
 import core.persons.Patient;
 import core.persons.Staff;
@@ -75,14 +76,16 @@ public class DepartmentSteps {
     // Assign patient to available bed
     @Then("I should assign them to an available bed")
     public void iShouldAssignThemToAnAvailableBed() throws ExceededCapacityException {
-        validDept.assign(patient1);
+        BedManager bedManager = new BedManager(validDept);
+        bedManager.assignToBed(patient1);
         assertTrue(validDept.patientInBed(patient1));
     }
 
     // Assign patient to specific bed
     @Then("I want to assign them to a specific bed")
     public void iWantToAssignThemToASpecificBed() throws UnavailableBedException {
-        validDept.assign(patient1,69);
+        BedManager bedManager = new BedManager(validDept);
+        bedManager.assignToBed(patient1,69);
         assertEquals(validDept.getBeds()[69].getPatient(),patient1);
     }
 
@@ -92,14 +95,16 @@ public class DepartmentSteps {
     }
     @Then("I should be able to move them to another available bed")
     public void iShouldBeAbleToMoveThemToAnotherAvailableBed() throws ExceededCapacityException {
-        validDept.move(patient2);
+        BedManager bedManager = new BedManager(validDept);
+        bedManager.changeBed(patient2);
         assertEquals(validDept.getBedWithPatient(patient2).getPatient(), patient2);
     }
 
     // Move patient to specific bed
     @Then("I should be able to move them to a specific bed")
     public void iShouldBeAbleToMoveThemToASpecificBed() throws UnavailableBedException {
-        validDept.move(patient2,70);
+        BedManager bedManager = new BedManager(validDept);
+        bedManager.changeBed(patient2,70);
         assertEquals((validDept.getBeds())[70].getPatient(),patient2);
     }
 
@@ -109,8 +114,9 @@ public class DepartmentSteps {
     }
     @Then("I should be able to remove them from the bed")
     public void iShouldBeAbleToRemoveThemFromTheBed() throws ExceededCapacityException {
-        validDept.assign(patient1);
-        validDept.removeFromBed(patient1);
+        BedManager bedManager = new BedManager(validDept);
+        bedManager.assignToBed(patient1);
+        bedManager.removeFromBed(patient1);
         assertFalse(validDept.patientInBed(patient1));
     }
 
@@ -131,9 +137,10 @@ public class DepartmentSteps {
     }
     @Then("I should be able to retrieve how many available beds there's left")
     public void iShouldBeAbleToRetrieveHowManyAvailableBedsThereSLeft() {
+        BedManager bedManager = new BedManager(validDept);
         assertEquals(emptyDept.getCurrentCapacity(), 0);
-        validDept.removeFromBed(patient1);
-        validDept.removeFromBed(patient2);
+        bedManager.removeFromBed(patient1);
+        bedManager.removeFromBed(patient2);
         assertEquals(validDept.getCurrentCapacity(), 80);
     }
 
@@ -158,7 +165,8 @@ public class DepartmentSteps {
     // Get patient's bed
     @And("the patient is in a bed")
     public void thePatientIsInABed() throws UnavailableBedException {
-        validDept.assign(patient2,0);
+        BedManager bedManager = new BedManager(validDept);
+        bedManager.assignToBed(patient2,0);
         assertTrue(validDept.patientInBed(patient2));
         assertEquals(validDept.getBedWithPatient(patient2), validDept.getBeds()[0]);
     }
@@ -190,8 +198,9 @@ public class DepartmentSteps {
     }
     @Then("I should know if the patient is assigned to a bed")
     public void iShouldKnowIfThePatientIsAssignedToABed() throws ExceededCapacityException {
-        validDept.assign(patient1);
-        validDept.removeFromBed(patient2);
+        BedManager bedManager = new BedManager(validDept);
+        bedManager.assignToBed(patient1);
+        bedManager.removeFromBed(patient2);
         assertTrue(validDept.patientInBed(patient1));
         assertFalse(validDept.patientInBed(patient2));
     }

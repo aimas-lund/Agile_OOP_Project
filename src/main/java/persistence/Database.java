@@ -79,13 +79,14 @@ public class Database {
         return true;
     }
 
-    public void deleteTable(String name) {
+    public boolean deleteTable(String name) {
         Statement statement = createStatement();
-        String sql = String.format("drop table if exists %s", name);
+        String sql = String.format("drop table %s", name);
         try {
             statement.executeUpdate(sql);
+            return true;
         } catch (SQLException e) {
-            e.printStackTrace();
+            return false;
         }
     }
 

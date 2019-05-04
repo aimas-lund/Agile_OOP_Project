@@ -106,9 +106,9 @@ public class HospitalBedTest {
 
     @Test
     public void removeDept() {
-        hospital.add (department);
-        hospital.remove (department);
-        assertTrue (depts.isEmpty ());
+        hospital.add(department);
+        hospital.remove(department);
+        assertTrue(depts.isEmpty());
     }
 }
 

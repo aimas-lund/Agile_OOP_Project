@@ -66,8 +66,8 @@ public class DatabaseTest {
 
         // create new table structure named "test"
         ArrayList<ArrayList<String>> list = new ArrayList<>(2);
-        list.add(0, new ArrayList<String>(Arrays.asList("key", "integer")));
-        list.add(1, new ArrayList<String>(Arrays.asList("name", "string")));
+        list.add(0, new ArrayList<>(Arrays.asList("key", "integer")));
+        list.add(1, new ArrayList<>(Arrays.asList("name", "string")));
         assertTrue(database.createTable("test", list));
 
         // insert into table
@@ -89,12 +89,9 @@ public class DatabaseTest {
         assertFalse(database.createTable("test", list));
     }
 
-    // TODO: Fix this test
-
     @Test
     public void deleteTable() {
         Statement statement = database.createStatement();
-
         // Delete table if currently exists
         try {
             statement.executeUpdate("drop table if exists test");
@@ -103,7 +100,7 @@ public class DatabaseTest {
         }
 
         // use deleteTable method on a non-existing table
-        database.deleteTable("test");
+        assertFalse(database.deleteTable("test"));
 
         // create a table
         try {
@@ -113,7 +110,7 @@ public class DatabaseTest {
         }
 
         // use deleteTable method on an existing table
-        database.deleteTable("test");
+        assertTrue(database.deleteTable("test"));
 
     }
 

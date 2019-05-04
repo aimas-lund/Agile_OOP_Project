@@ -1,9 +1,8 @@
 package core.persons;
 
 public class Bed {
-
     private Boolean occupied;
-    private int id;
+    private final int id;
     private Patient patient;
 
     public Bed(int i) {

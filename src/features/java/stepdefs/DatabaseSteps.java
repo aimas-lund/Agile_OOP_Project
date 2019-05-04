@@ -24,7 +24,6 @@ import java.util.HashMap;
 import static junit.framework.TestCase.*;
 
 public class DatabaseSteps {
-
     private QueryRoleClerk clerk;
     private Patient patient;
     private Department department;

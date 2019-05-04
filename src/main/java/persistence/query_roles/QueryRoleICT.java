@@ -35,7 +35,6 @@ public class QueryRoleICT implements IUpdate, IQuery {
                 String email = InformationGenerator.generateEmail((Staff) person);
                 new PersonInformationFacade(person).setStaffEmail(email);
             }
-
             success = daoStaff.save((Staff) person);
             department.add((Staff) person);
 
