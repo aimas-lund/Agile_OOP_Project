@@ -11,14 +11,13 @@ class PatientController {
     // Aggregate root
 
     @GetMapping("/getPatients")
-    public String all() {
-        //return repository.findAll();
-        return "all";
+    public List<Patient> all() {
+        return repository.findAll();
     }
 
     @PostMapping("/postPatients")
     public @ResponseBody Patient newPatient(Patient newPatient) {
-        //repository.save(newPatient);
+        repository.save(newPatient);
         return newPatient;
     }
 
@@ -28,13 +27,11 @@ class PatientController {
     }
 
     // Single item
-
     /*
     @GetMapping("/patients/{id}")
     Patient one(@PathVariable Long id) {
 
-        return repository.findById(id)
-                .orElseThrow(() -> new PatientNotFoundException(id));
+        return repository.findById(id);
     }
 
     @DeleteMapping("/patients/{id}")
