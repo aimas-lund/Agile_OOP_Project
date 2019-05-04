@@ -113,13 +113,4 @@ public class DaoStaffImpl<T extends Staff> implements IDao<T> {
         return database.executeStatement(sql + sqlWhere);
     }
 
-    private Date stringToDate(String birthdate) {
-        try {
-            return new SimpleDateFormat("yyyy_mm_dd").parse(birthdate);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return null;
-
-    }
 }
