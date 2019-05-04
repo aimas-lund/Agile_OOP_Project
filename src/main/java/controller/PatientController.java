@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 class PatientController {
 
     // Aggregate root
-
+/*
     @GetMapping("/getPatients")
     public List<Patient> all() {
         return repository.findAll();
@@ -27,7 +27,7 @@ class PatientController {
     }
 
     // Single item
-    /*
+
     @GetMapping("/patients/{id}")
     Patient one(@PathVariable Long id) {
 

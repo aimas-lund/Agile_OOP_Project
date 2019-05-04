@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Homepage</title>
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <link rel="stylesheet" type="text/css" href="css/dashboard.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/script.js"></script>
+</head>
+<body>
+<header>
+    <div class="elements">
+                <span class="logo">
+                    Team Syntactic Sugar: <br/>Fake Hospital
+                </span>
+        <span th:inline="text" class="user" style="display:flex;">
+                    Howdy [[${#httpServletRequest.remoteUser}]]!
+                    <form th:action="@{/logout}" method="post" class="sign-out">
+                        <input type="submit" value="Sign Out"/>
+                    </form>
+
+                </span>
+    </div>
+</header>
+<div class="flex">
+    <div class="flex-container content">
+        <h2>Clerk dashboard</h2>
+
+        <div class="dashboard-menu">
+            <h3>Register staff <i class="fa fa-caret-down" aria-hidden="true"></i></h3>
+            <form class="dashboard-action" id="registerStaff" autocomplete="on">
+                <div class="input-container doubleContainer">
+                    <input class="input-field" type="text" placeholder="Name" name="name" id="name" required>
+                    <input class="input-field" type="text" placeholder="Surname" name="surname" id="surname" required>
+                </div>
+                <div class="input-container doubleContainer" >
+                    <input class="input-field" type="text" placeholder="Home address" name="homeAddress" id="homeAddress" required>
+                    <input class="input-field" type="tel" placeholder="Phone number" name="phoneNumber" id="phoneNumber" required>
+                </div>
+                <div class="input-container singleContainer">
+                    <input class="input-field" type="email" placeholder="E-mail" name="email" id="email" required>
+                </div>
+                <div class="input-container tripleContainer">
+                    <input class="input-field" type="date" placeholder="Birthday" name="birthday" id="birthday" required>
+                    <select  class="dropdown" form="registerStaff" name="gender" id="gender" required>
+                        <option value="" disabled selected hidden>Gender</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                    </select>
+                    <select class="dropdown" form="registerStaff" name="role" id="role" required>
+                        <option value="" disabled selected hidden>Role</option>
+                        <option value="Doctor">Doctor</option>
+                        <option value="Nurse">Nurse</option>
+                        <option value="Clerk">Clerk</option>
+                        <option value="ICT Officer">ICT Officer</option>
+                    </select>
+                </div>
+                <div class="submitButton">
+                    <button type="submit" formmethod="post" class="btn">Register</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
