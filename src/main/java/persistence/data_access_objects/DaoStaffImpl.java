@@ -58,7 +58,6 @@ public class DaoStaffImpl<T extends Staff> implements IDao<T> {
 
             while (resultSet.next()) {
                 Date birthdate = new SimpleDateFormat("yyyy_mm_dd").parse(resultSet.getString("birthdate"));
-
                 staff.add((T) new Staff(
                         resultSet.getString("uniqueId"),
                         resultSet.getString("name"),

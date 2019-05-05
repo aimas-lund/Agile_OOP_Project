@@ -204,5 +204,6 @@ public class DepartmentSteps {
         assertTrue(validDept.patientInBed(patient1));
         assertFalse(validDept.patientInBed(patient2));
     }
+
 }
 

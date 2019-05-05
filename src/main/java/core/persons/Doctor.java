@@ -1,11 +1,13 @@
 package core.persons;
 
+import core.buildings.OutDepartment;
 import core.utility.Speciality;
 
 import java.util.Date;
 
 public class Doctor extends Staff {
     private Speciality speciality;
+    private Patient treatedPatient;
 
     public Doctor() {
     }
@@ -29,5 +31,17 @@ public class Doctor extends Staff {
 
     void setSpeciality(Speciality speciality) {
         this.speciality = speciality;
+    }
+
+    public void callWaitingPatient(OutDepartment outDepartment) {
+        treatedPatient = outDepartment.getNextWaitingPatient();
+    }
+
+    public void dischargeTreatedPatient() {
+        treatedPatient = null;
+    }
+
+    public Patient getTreatedPatient() {
+        return treatedPatient;
     }
 }
