@@ -81,9 +81,8 @@ public class RegistrationSteps {
         cal.set(1995, Calendar.APRIL, 20);
 
         // Clerk needs registeredPatient information
-        clerk.update(registeredPatient);
         registeredPatient = new Patient(
-                "pat1",
+                "pat1123",
                 "Emil",
                 "pølz Ballermann",
                 cal.getTime(),
@@ -106,7 +105,7 @@ public class RegistrationSteps {
     public void anAlreadyRegisteredPatient() {
         // Register patient to department (without information)
         clerk.registerPerson(registeredPatient, department);
-        assertTrue(department.getPatients().contains(registeredPatient));
+        assertTrue(department.isPatientInDepartment(registeredPatient));
     }
 
     @When("the patient goes to the hospital")

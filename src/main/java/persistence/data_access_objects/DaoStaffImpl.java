@@ -23,13 +23,15 @@ public class DaoStaffImpl<T extends Staff> implements IDao<T> {
     public boolean save(T staff) {
         String[] information = staff.getPersonInformation();
 
-        String sql = "insert into staff values('%s', '%s', '%s', date('%s'), '%s', '%s', '%s', '%s', '%s', '%s', ";
-        String sqlSuffix;
+        String sql = "insert into staff values('%s', '%s', '%s', date('%s'), '%s', '%s', '%s', '%s', '%s', ";
+
+        String sqlSuffix = "'" + staff.getClass().getSimpleName() + "'";
+
         if (staff instanceof Doctor && ((Doctor) staff).getSpeciality() != null) {
             String speciality = ((Doctor) staff).getSpeciality().toString();
-            sqlSuffix = String.format("'%s')", speciality);
+            sqlSuffix += String.format(", '%s')", speciality);
         } else {
-            sqlSuffix = "null)";
+            sqlSuffix += ", null)";
         }
 
         sql += sqlSuffix;
@@ -38,8 +40,6 @@ public class DaoStaffImpl<T extends Staff> implements IDao<T> {
                 information) {
             sql = sql.replaceFirst("%s", value.replaceAll(" ", "_"));
         }
-
-        sql = sql.replaceFirst("%s", staff.getClass().getSimpleName());
 
         return database.executeStatement(sql);
     }
@@ -126,9 +126,18 @@ public class DaoStaffImpl<T extends Staff> implements IDao<T> {
     }
 
     public boolean update(T staff) {
+        // TODO : update this
         String[] information = staff.getPersonInformation();
         String sql = "UPDATE staff set uniqueid = '%s', name = '%s', surname = '%s', birthdate = date('%s'), " +
-                "gender = '%s', homeaddress = '%s', phonenumber = '%s', email = '%s', initials = '%s'";
+                "gender = '%s', homeaddress = '%s', phonenumber = '%s', email = '%s', initials = '%s', " +
+                "role = '%s', speciality = ";
+
+        if (staff instanceof Doctor) {
+            sql += String.format("'%s'", ((Doctor) staff).getSpeciality());
+        } else {
+            sql += "null";
+        }
+
         String sqlWhere = String.format(" where uniqueId = '%s'", staff.getUniqueId());
 
         for (String value :
@@ -137,6 +146,8 @@ public class DaoStaffImpl<T extends Staff> implements IDao<T> {
 
             sql = sql.replaceFirst("%s", value.replaceAll(" ", "_"));
         }
+
+        sql = sql.replaceFirst("%s", staff.getClass().getSimpleName());
 
         return database.executeStatement(sql + sqlWhere);
     }
