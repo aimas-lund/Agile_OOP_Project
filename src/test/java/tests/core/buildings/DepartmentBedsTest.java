@@ -1,6 +1,9 @@
 package tests.core.buildings;
 
-import core.buildings.*;
+import core.buildings.BedManager;
+import core.buildings.DepartmentBeds;
+import core.buildings.ERDepartment;
+import core.buildings.InDepartment;
 import core.persons.Bed;
 import core.persons.Patient;
 import exceptions.ExceededCapacityException;
@@ -42,7 +45,7 @@ public class DepartmentBedsTest {
         patientsInBed.put(patient, new Bed(5));
         DepartmentBeds fullDepartment2 = new ERDepartment(uniqueid, name, totalCapacity, currentCapacity, patientsInBed);
 
-        assertTrue(fullDepartment.patientInBed(patient));
+        assertTrue(fullDepartment.isPatientInBed(patient));
         assertTrue(fullDepartment.getBed(0).isOccupied());
         assertFalse(fullDepartment.getBed(1).isOccupied());
         assertTrue(fullDepartment2.getBed(5).isOccupied());

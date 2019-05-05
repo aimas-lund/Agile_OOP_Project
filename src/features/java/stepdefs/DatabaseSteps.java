@@ -2,6 +2,7 @@ package stepdefs;
 
 import core.buildings.Department;
 import core.buildings.InDepartment;
+import core.persons.Clerk;
 import core.persons.Gender;
 import core.persons.Patient;
 import core.persons.Staff;
@@ -85,8 +86,8 @@ public class DatabaseSteps {
 
     @When("a new staff is hired to the hospital")
     public void aNewStaffIsHiredToTheHospital() {
-        staff = new Staff("Emil", "Christensen", new Date(2019), Gender.MALE, "Strandvejen 20", 30303030, "echristensen@hospital.dk", "EC");
-        ict.registerPerson(staff, department);
+        staff = new Clerk("Emil", "Christensen", new Date(2019), Gender.MALE, "Strandvejen 20", 30303030, "echristensen@hospital.dk", "EC");
+        assertTrue(ict.registerPerson(staff, department));
     }
 
     @Then("the user should add the staff to the database")
@@ -150,7 +151,7 @@ public class DatabaseSteps {
                 45231298);
         clerk.registerPerson(patient, department);
 
-        staff = new Staff(
+        staff = new Clerk(
                 "Emil",
                 "Christensen",
                 new Date(2019),
@@ -247,7 +248,7 @@ public class DatabaseSteps {
                 45231298);
         clerk.registerPerson(patient, department);
 
-        staff = new Staff(
+        staff = new Clerk(
                 "Emil",
                 "Christensen",
                 new Date(2019),

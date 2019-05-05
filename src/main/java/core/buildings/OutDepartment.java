@@ -29,4 +29,8 @@ public class OutDepartment extends Department {
     public boolean hasWaitingPatients() {
         return waitingPatients.peek() != null;
     }
+
+    public Queue<Patient> getWaitingPatients() {
+        return waitingPatients;
+    }
 }

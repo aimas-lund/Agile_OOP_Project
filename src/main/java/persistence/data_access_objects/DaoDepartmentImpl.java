@@ -82,7 +82,7 @@ public class DaoDepartmentImpl<T extends Department> implements IDao<T> {
     public boolean delete(String uniqueid) {
         database.connectToDB();
 
-        String sql = "delete from department where name = '%s'";
+        String sql = "delete from departments where name = '%s'";
         sql = String.format(sql, uniqueid);
 
         return database.executeStatement(sql);

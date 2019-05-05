@@ -1,5 +1,6 @@
 package stepdefs;
 
+import core.buildings.InDepartment;
 import core.buildings.OutDepartment;
 import core.persons.Doctor;
 import core.persons.Gender;
@@ -18,6 +19,7 @@ import static org.junit.Assert.*;
 public class AdmissionSteps {
     private Doctor doctor = new Doctor("staff1");
     private OutDepartment outDepartment = new OutDepartment();
+    private InDepartment inDepartment = new InDepartment("dep1", "Saint NAME", 1);
     private QueryRoleNurse nurse = new QueryRoleNurse();
     private Patient patient = new Patient("asdf");
     private QueryRoleClerk clerk = new QueryRoleClerk();
@@ -75,5 +77,19 @@ public class AdmissionSteps {
         nurse.assignPatientToWaitingRoom(patient, outDepartment);
         assertEquals(patient, outDepartment.getNextWaitingPatient());
         assertNull(outDepartment.getNextWaitingPatient());
+    }
+
+    @Given("an in department")
+    public void anInDepartment() {
+        assertNotNull(inDepartment);
+    }
+
+    @Then("the nurse should assign the patient to a bed in the in department")
+    public void theNurseShouldAssignThePatientToABedInTheInDepartment() {
+        assertTrue(nurse.assignPatientToBed(patient, inDepartment));
+
+        assertTrue(inDepartment.isPatientInBed(patient));
+
+        assertFalse(nurse.assignPatientToBed(new Patient(), inDepartment));
     }
 }

@@ -2,10 +2,7 @@ package tests.persistence.query_roles;
 
 import core.buildings.Department;
 import core.buildings.InDepartment;
-import core.persons.Gender;
-import core.persons.Patient;
-import core.persons.PersonInformationFacade;
-import core.persons.Staff;
+import core.persons.*;
 import exceptions.PersonNotFoundException;
 import org.junit.After;
 import org.junit.Before;
@@ -39,7 +36,7 @@ public class QueryRoleICTTest {
 
         assertTrue(queryRoleICT.registerPerson(patient, department));
 
-        staff = new Staff(
+        staff = new Clerk(
                 "testID2",
                 "Oline",
                 "Fischersen",
@@ -60,7 +57,7 @@ public class QueryRoleICTTest {
         assertTrue(queryRoleICT.delete(patient, department));
 
         patient = new Patient();
-        staff = new Staff();
+        staff = new Clerk();
     }
 
     @Test
@@ -93,7 +90,7 @@ public class QueryRoleICTTest {
 
     @Test(expected = PersonNotFoundException.class)
     public void findStaffThrows() throws PersonNotFoundException {
-        queryRoleICT.find(new Staff("name", "surname"));
+        queryRoleICT.find(new Clerk("name", "surname"));
     }
 
     @Test(expected = PersonNotFoundException.class)
@@ -111,12 +108,12 @@ public class QueryRoleICTTest {
 
     @Test
     public void deleteStaffFails() {
-        queryRoleICT.delete(new Staff("id"), department);
+        queryRoleICT.delete(new Clerk("id"), department);
     }
 
     @Test
     public void deletePatientFails() {
-        queryRoleICT.delete(new Staff("id2"), department);
+        queryRoleICT.delete(new Clerk("id2"), department);
     }
 
     @Test
@@ -146,7 +143,7 @@ public class QueryRoleICTTest {
 
     @Test
     public void updateFails() {
-        Staff staff = new Staff("name", "surname");
+        Staff staff = new Clerk("name", "surname");
         new PersonInformationFacade(staff).setPersonGender(Gender.MALE);
 
         assertFalse(queryRoleICT.update(staff));
