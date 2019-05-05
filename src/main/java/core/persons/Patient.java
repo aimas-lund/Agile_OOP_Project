@@ -1,7 +1,10 @@
 package core.persons;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.Date;
 
+@JsonIgnoreProperties(value = {"personInformation"})
 public class Patient extends Person {
     private boolean alive = true;
 
