@@ -22,6 +22,10 @@ public class OutDepartment extends Department {
         waitingPatients.add(patient);
     }
 
+    public boolean isPatientWaiting(Patient patient) {
+        return waitingPatients.contains(patient);
+    }
+
     public Patient getNextWaitingPatient() {
         return waitingPatients.poll();
     }

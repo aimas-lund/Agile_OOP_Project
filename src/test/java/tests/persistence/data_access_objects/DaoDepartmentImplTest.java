@@ -2,20 +2,22 @@ package tests.persistence.data_access_objects;
 
 import core.buildings.Department;
 import core.buildings.InDepartment;
+import core.buildings.OutDepartment;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import persistence.data_access_objects.DaoDepartmentImpl;
 
 public class DaoDepartmentImplTest {
-    private Department department;
+    private Department inDepartment;
+    private Department outDepartment;
     private DaoDepartmentImpl<Department> daoDepartment = new DaoDepartmentImpl<>();
 
 
     @Before
     public void setUp() {
-        department = new InDepartment("dep2", "ER", 1);
-
+        inDepartment = new InDepartment("dep2", "ER", 1);
+        outDepartment = new OutDepartment();
     }
 
     @After
@@ -48,5 +50,29 @@ public class DaoDepartmentImplTest {
 
     @Test
     public void update1() {
+    }
+
+    @Test
+    public void save1() {
+    }
+
+    @Test
+    public void find2() {
+    }
+
+    @Test
+    public void find3() {
+    }
+
+    @Test
+    public void delete2() {
+    }
+
+    @Test
+    public void delete3() {
+    }
+
+    @Test
+    public void update2() {
     }
 }
