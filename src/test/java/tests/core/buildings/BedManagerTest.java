@@ -75,7 +75,7 @@ public class BedManagerTest {
     @Test
     public void patientInBedTest() throws ExceededCapacityException {
         bedManager1.assignToBed(patient1);
-        assertTrue(departmentWithCapacity1.patientInBed(patient1));
+        assertTrue(departmentWithCapacity1.isPatientInBed(patient1));
     }
 
 
@@ -102,7 +102,7 @@ public class BedManagerTest {
     public void removePatientTest2() throws ExceededCapacityException {
         bedManager1.assignToBed(patient1);
         bedManager1.discharge(patient1);
-        assertFalse(departmentWithCapacity1.patientInBed(patient1));
+        assertFalse(departmentWithCapacity1.isPatientInBed(patient1));
     }
 
     @Test

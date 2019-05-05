@@ -3,7 +3,6 @@ package core.buildings;
 import core.persons.Bed;
 import core.persons.Patient;
 import exceptions.ExceededCapacityException;
-import exceptions.UnavailableBedException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -100,7 +99,7 @@ public abstract class DepartmentBeds extends Department {
         return available;
     }
 
-    public boolean patientInBed(Patient p) {
+    public boolean isPatientInBed(Patient p) {
         return patientsInBeds.containsKey(p);
     }
 

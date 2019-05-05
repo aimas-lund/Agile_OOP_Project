@@ -78,7 +78,7 @@ public class DepartmentSteps {
     public void iShouldAssignThemToAnAvailableBed() throws ExceededCapacityException {
         BedManager bedManager = new BedManager(validDept);
         bedManager.assignToBed(patient1);
-        assertTrue(validDept.patientInBed(patient1));
+        assertTrue(validDept.isPatientInBed(patient1));
     }
 
     // Assign patient to specific bed
@@ -117,7 +117,7 @@ public class DepartmentSteps {
         BedManager bedManager = new BedManager(validDept);
         bedManager.assignToBed(patient1);
         bedManager.removeFromBed(patient1);
-        assertFalse(validDept.patientInBed(patient1));
+        assertFalse(validDept.isPatientInBed(patient1));
     }
 
     // Get name and capacity of department
@@ -167,7 +167,7 @@ public class DepartmentSteps {
     public void thePatientIsInABed() throws UnavailableBedException {
         BedManager bedManager = new BedManager(validDept);
         bedManager.assignToBed(patient2,0);
-        assertTrue(validDept.patientInBed(patient2));
+        assertTrue(validDept.isPatientInBed(patient2));
         assertEquals(validDept.getBedWithPatient(patient2), validDept.getBeds()[0]);
     }
     @Then("I should be able to find which bed the patient is in")
@@ -201,8 +201,8 @@ public class DepartmentSteps {
         BedManager bedManager = new BedManager(validDept);
         bedManager.assignToBed(patient1);
         bedManager.removeFromBed(patient2);
-        assertTrue(validDept.patientInBed(patient1));
-        assertFalse(validDept.patientInBed(patient2));
+        assertTrue(validDept.isPatientInBed(patient1));
+        assertFalse(validDept.isPatientInBed(patient2));
     }
 
 }
