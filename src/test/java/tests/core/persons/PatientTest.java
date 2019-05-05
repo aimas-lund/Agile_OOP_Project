@@ -37,7 +37,7 @@ public class PatientTest {
 
     @Test
     public void getPersonInformationBirthdate() {
-        assertEquals("1990_01_01", patientWithInformation.getPersonInformation()[3]);
+        assertEquals("1990-01-01", patientWithInformation.getPersonInformation()[3]);
     }
 
     @Test

@@ -22,7 +22,7 @@ public class DaoStaffImpl<T extends Staff> implements IDao<T> {
     @Override
     public boolean save(T staff) {
         String[] information = staff.getPersonInformation();
-        String sql = "insert into staff values('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')";
+        String sql = "insert into staff values('%s', '%s', '%s', date('%s'), '%s', '%s', '%s', '%s', '%s')";
 
         for (String value :
                 information) {
@@ -58,7 +58,8 @@ public class DaoStaffImpl<T extends Staff> implements IDao<T> {
             ResultSet resultSet = statement.executeQuery(sql);
 
             while (resultSet.next()) {
-                Date birthdate = new SimpleDateFormat("yyyy_mm_dd").parse(resultSet.getString("birthdate"));
+                Date birthdate = new SimpleDateFormat("yyyy-MM-dd").parse(resultSet.getString("birthdate"));
+
                 staff.add((T) new Staff(
                         resultSet.getString("uniqueId"),
                         resultSet.getString("name"),
@@ -99,7 +100,7 @@ public class DaoStaffImpl<T extends Staff> implements IDao<T> {
 
     public boolean update(T staff) {
         String[] information = staff.getPersonInformation();
-        String sql = "UPDATE staff set uniqueid = '%s', name = '%s', surname = '%s', birthdate = '%s', " +
+        String sql = "UPDATE staff set uniqueid = '%s', name = '%s', surname = '%s', birthdate = date('%s'), " +
                 "gender = '%s', homeaddress = '%s', phonenumber = '%s', email = '%s', initials = '%s'";
         String sqlWhere = String.format(" where uniqueId = '%s'", staff.getUniqueId());
 

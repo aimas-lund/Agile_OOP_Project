@@ -19,7 +19,7 @@ public class DaoDepartmentImpl<T extends Department> implements IDao<T> {
     public boolean save(T department) {
         database.connectToDB();
         String[] information = department.getDepartmentInformation();
-        String sql = "insert into patients values('%s','%s', '%s', '%s')";
+        String sql = "insert into patients values('%s', '%s', '%s', '%s')";
         for (String value :
                 information) {
             sql = sql.replaceFirst("%s", value.replaceAll(" ", "_"));
