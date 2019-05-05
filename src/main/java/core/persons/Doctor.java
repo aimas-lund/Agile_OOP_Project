@@ -12,11 +12,11 @@ public class Doctor extends Staff {
     public Doctor() {
     }
 
-    public Doctor(String name, String surname, Date birthdate, int gender, String homeaddress, int phonenumber) {
+    public Doctor(String name, String surname, Date birthdate, Gender gender, String homeaddress, int phonenumber) {
         super(name, surname, birthdate, gender, homeaddress, phonenumber);
     }
 
-    public Doctor(Speciality speciality, String name, String surname, Date birthdate, int gender, String homeaddress, int phonenumber) {
+    public Doctor(Speciality speciality, String name, String surname, Date birthdate, Gender gender, String homeaddress, int phonenumber) {
         super(name, surname, birthdate, gender, homeaddress, phonenumber);
         this.speciality = speciality;
     }

@@ -12,7 +12,7 @@ public class PersonInformationFacade {
         this.person = person;
     }
 
-    public void setPersonInformation(String name, String surname, Date birthdate, int gender,
+    public void setPersonInformation(String name, String surname, Date birthdate, Gender gender,
                                      String homeAddress, int phoneNumber) {
         setPersonName(name);
         setPersonSurname(surname);
@@ -35,7 +35,7 @@ public class PersonInformationFacade {
         person.setHomeAddress(homeAddress);
     }
 
-    public void setPersonGender(int gender) {
+    public void setPersonGender(Gender gender) {
         person.setGender(gender);
     }
 

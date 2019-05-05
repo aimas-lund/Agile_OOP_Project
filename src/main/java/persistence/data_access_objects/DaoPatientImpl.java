@@ -1,5 +1,6 @@
 package persistence.data_access_objects;
 
+import core.persons.Gender;
 import core.persons.Patient;
 import persistence.Database;
 
@@ -62,7 +63,7 @@ public class DaoPatientImpl<T extends Patient> implements IDao<T> {
                         resultSet.getString("name"),
                         resultSet.getString("surname"),
                         birthdate,
-                        Integer.parseInt(resultSet.getString("gender")),
+                        Gender.valueOf(resultSet.getString("gender")),
                         resultSet.getString("homeaddress"),
                         Integer.parseInt(resultSet.getString("phonenumber"))
                 ));

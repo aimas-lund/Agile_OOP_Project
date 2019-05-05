@@ -11,7 +11,7 @@ public abstract class Person {
     private String name;
     private String surname;
     private Date birthdate;
-    private int gender;
+    private Gender gender;
     private String homeAddress;
     private int phoneNumber;
     private String uniqueId;
@@ -23,12 +23,12 @@ public abstract class Person {
     Person() {
     }
 
-    protected Person(String uniqueId, String name, String surname, Date birthdate, int gender, String homeaddress, int phonenumber) {
+    protected Person(String uniqueId, String name, String surname, Date birthdate, Gender gender, String homeaddress, int phonenumber) {
         this(name, surname, birthdate, gender, homeaddress, phonenumber);
         this.setUniqueId(uniqueId);
     }
 
-    protected Person(String name, String surname, Date birthdate, int gender, String homeaddress, int phonenumber) {
+    protected Person(String name, String surname, Date birthdate, Gender gender, String homeaddress, int phonenumber) {
         this.setName(name);
         this.setSurname(surname);
         this.setBirthdate(birthdate);
@@ -70,11 +70,11 @@ public abstract class Person {
         this.birthdate = birthdate;
     }
 
-    public int getGender() {
+    public Gender getGender() {
         return gender;
     }
 
-    void setGender(int gender) {
+    void setGender(Gender gender) {
         this.gender = gender;
     }
 
