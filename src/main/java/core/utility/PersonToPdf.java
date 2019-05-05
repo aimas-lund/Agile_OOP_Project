@@ -1,4 +1,4 @@
-package management;
+package core.utility;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -7,7 +7,8 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
-
+import core.buildings.Department;
+import core.persons.Patient;
 
 
 import java.io.FileNotFoundException;
@@ -24,7 +25,7 @@ public class PersonToPdf {
     public void PersonToPdf() {
 
     }
-    public void PatientToPdf(Patient patient) throws IOException, DocumentException, URISyntaxException {
+    public void PatientToPdf(Department department) throws IOException, DocumentException, URISyntaxException {
         Document document = new Document();
         PdfWriter.getInstance(document, new FileOutputStream("iTextTable.pdf"));
 
@@ -32,9 +33,16 @@ public class PersonToPdf {
 
         PdfPTable table = new PdfPTable(7);
         addTableHeader(table);
-        addRows(table,patient);
 
+        for (Patient p : department.getPatients()) {
+
+            addRows(table,p);
+
+
+
+        }
         document.add(table);
+
         document.close();
     }
 
@@ -50,10 +58,12 @@ public class PersonToPdf {
     }
 
     private void addRows(PdfPTable table, Patient patient) {
+
         table.addCell(patient.getUniqueId());
         table.addCell(patient.getName());
         table.addCell(patient.getSurname());
-        table.addCell(String.format("%d", patient.getGender()));
+        //TODO get gender to work
+        table.addCell((patient.getGender()).toString());
         table.addCell(patient.getHomeAddress());
         table.addCell(String.format("%d",patient.getPhoneNumber()));
         table.addCell(dateToString(patient.getBirthdate()));
