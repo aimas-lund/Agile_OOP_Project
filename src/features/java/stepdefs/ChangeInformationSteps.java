@@ -1,10 +1,10 @@
 package stepdefs;
 
+import core.persons.*;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import management.*;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -14,9 +14,8 @@ import static org.junit.Assert.*;
 
 public class ChangeInformationSteps {
     private ICTOfficer ictOfficer = new ICTOfficer();
-    private Clerk clerk = new Clerk();
     private Patient patientWithInformation = new Patient();
-    private Staff staffWithInformation = new Staff();
+    private Staff staffWithInformation = new Clerk();
 
     @Given("an ICT officer")
     public void anICTOfficer() {
@@ -31,13 +30,13 @@ public class ChangeInformationSteps {
                 "Kaj",
                 "Andreasen",
                 new GregorianCalendar(2000, Calendar.JANUARY, 1).getTime(),
-                0,
+                Gender.MALE,
                 "VejenPåGaden",
                 42013370
         );
 
         // Check that some values are not null
-        assertSame(0, patientWithInformation.getGender());
+        assertSame(Gender.MALE, patientWithInformation.getGender());
         assertNotNull(patientWithInformation.getName());
         assertNotNull(patientWithInformation.getSurname());
         assertNotNull(patientWithInformation.getBirthdate());

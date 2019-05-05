@@ -30,10 +30,9 @@ Feature: Registration
     Then take next letter in his name
 
   Scenario Outline: A doctor has a specialization
-    Given a new Doctor
+    Given a new Doctor with specialization "<specialization>"
     When being registered as a staff member
-    #noinspection CucumberUndefinedStep
-    Then their specialization "<specialization>" should be specified along other information
+    Then their specialization should be specified saved in the database
     Examples:
       | specialization                     |
       | Dermatology                        |

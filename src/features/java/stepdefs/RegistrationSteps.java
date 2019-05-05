@@ -1,13 +1,18 @@
 package stepdefs;
 
+import core.buildings.Department;
+import core.buildings.OutDepartment;
+import core.persons.*;
+import core.utility.InformationGenerator;
+import core.utility.Speciality;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import management.*;
-import storage.QueryRoleClerk;
-import storage.QueryRoleICT;
+import exceptions.PersonNotFoundException;
+import persistence.query_roles.QueryRoleClerk;
+import persistence.query_roles.QueryRoleICT;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -19,27 +24,29 @@ import static org.junit.Assert.*;
 public class RegistrationSteps {
     private Patient registeredPatient;
     private Patient unregisteredPatient;
-    private Department department = new Department();
+    private Department department = new OutDepartment();
     private QueryRoleClerk clerk = new QueryRoleClerk();
     private QueryRoleICT ictOfficer = new QueryRoleICT();
-    private Staff registeredStaff = new Staff();
-    private Staff unregisteredStaff = new Staff();
-    private Doctor doctor = new Doctor();
+    private Staff registeredStaff = new Clerk("regStaff");
+    private Staff unregisteredStaff = new Clerk("unRegStaff");
+    private Doctor doctor = new Doctor("doc1");
 
     @Before
     public void setUp() {
         registeredPatient = new Patient(
+                "regpat1",
                 "Thor",
                 "Odin",
                 new Date(1337),
-                1,
+                Gender.FEMALE,
                 "Asgaard 23",
                 45231232);
         unregisteredPatient = new Patient(
+                "unregpat2",
                 "Dank",
                 "Meister",
                 new Date(420),
-                0,
+                Gender.MALE,
                 "Groove street 23",
                 13371337);
     }
@@ -54,7 +61,7 @@ public class RegistrationSteps {
                 "Freja",
                 "Sif",
                 new Date(230),
-                0,
+                Gender.FEMALE,
                 "Asgaard 16",
                 45231252);
 
@@ -74,12 +81,12 @@ public class RegistrationSteps {
         cal.set(1995, Calendar.APRIL, 20);
 
         // Clerk needs registeredPatient information
-        clerk.update(registeredPatient);
         registeredPatient = new Patient(
+                "pat1123",
                 "Emil",
                 "pølz Ballermann",
                 cal.getTime(),
-                0,
+                Gender.FEMALE,
                 "DirtyStinkingBass, 4 tv",
                 42042042
         );
@@ -98,7 +105,7 @@ public class RegistrationSteps {
     public void anAlreadyRegisteredPatient() {
         // Register patient to department (without information)
         clerk.registerPerson(registeredPatient, department);
-        assertTrue(department.getPatients().contains(registeredPatient));
+        assertTrue(department.isPatientInDepartment(registeredPatient));
     }
 
     @When("the patient goes to the hospital")
@@ -152,10 +159,10 @@ public class RegistrationSteps {
         cal.set(1997, Calendar.DECEMBER, 23);
 
         // Register staff
-        registeredStaff = new Staff("Billy",
+        registeredStaff = new Clerk("Billy",
                 "Mcloving",
                 cal.getTime(),
-                0,
+                Gender.MALE,
                 "my house, middle of the street",
                 51558588);
 
@@ -182,8 +189,8 @@ public class RegistrationSteps {
     @And("work email should be generated")
     public void workEmailShouldBeGenerated() {
         // Set necessary information
-        registeredStaff = new Staff("Molly", "McLovin");
-        unregisteredStaff = new Staff("Emil", "Ballermann");
+        registeredStaff = new Clerk("Molly", "McLovin");
+        unregisteredStaff = new Clerk("Emil", "Ballermann");
 
         // Generate emails
         String email1 = InformationGenerator.generateEmail(registeredStaff);
@@ -200,7 +207,7 @@ public class RegistrationSteps {
     @When("he is assigned a work email")
     public void he_is_assigned_a_work_email() {
         // Set necessary information
-        registeredStaff = new Staff("Solomun", "Bjergsen");
+        registeredStaff = new Clerk("Solomun", "Bjergsen");
 
         // Generate email
         String email1 = InformationGenerator.generateEmail(registeredStaff);
@@ -216,7 +223,7 @@ public class RegistrationSteps {
     @When("his initials overlap with someone else's")
     public void his_initials_overlap_with_someone_else_s() {
         // Set necessary information for overlap
-        unregisteredStaff = new Staff("Soren", "BjLamar");
+        unregisteredStaff = new Clerk("Soren", "BjLamar");
 
         // Get initials directly
         String staff1_initials = unregisteredStaff.getName().substring(0, 2) + unregisteredStaff.getSurname().substring(0, 2);
@@ -236,35 +243,8 @@ public class RegistrationSteps {
         assertNotEquals(staff1_email.substring(0, 4), staff2_email.substring(0, 4));
     }
 
-    @Given("a new Doctor")
-    public void aNewDoctor() {
-        // Get old doctor
-        Doctor oldDoctor = this.doctor;
-
-        // Make new doctor
-        this.doctor = new Doctor(
-                "Freja",
-                "Sif",
-                new Date(230),
-                0,
-                "Asgaard 16",
-                45231252);
-
-        // Check that they aren't the same
-        assertNotSame(oldDoctor, doctor);
-    }
-
-    @When("being registered as a staff member")
-    public void beingRegisteredAsAStaffMember() {
-        // Register staff to department
-        ictOfficer.registerPerson(doctor, department);
-
-        // Check that he is registered
-        assertSame(department.getStaff().get(0), doctor);
-    }
-
-    @Then("their specialization {string} should be specified along other information")
-    public void theirSpecializationShouldBeSpecifiedAlongOtherInformation(String doctorSpeciality) {
+    @Given("a new Doctor with specialization {string}")
+    public void aNewDoctorWithSpecialization(String doctorSpeciality) {
         // Get speciality as enum
         Speciality speciality = null;
 
@@ -279,15 +259,30 @@ public class RegistrationSteps {
         cal.set(1990, Calendar.APRIL, 20);
 
         // Set patient information
-        doctor = new Doctor(speciality, "Mortimer", "Montgomery", cal.getTime(), 0,
+        doctor = new Doctor(speciality, "Mortimer", "Montgomery", cal.getTime(), Gender.MALE,
                 "myhouse", 13371337);
 
-        // Check that some information has been set
-        assertEquals(speciality, doctor.getSpeciality());
-        assertEquals("Mortimer", doctor.getName());
-        assertEquals(13371337, doctor.getPhoneNumber());
+    }
 
-        ictOfficer.delete(doctor, department);
+    @When("being registered as a staff member")
+    public void beingRegisteredAsAStaffMember() {
+        // Register staff to department
+        ictOfficer.registerPerson(doctor, department);
+
+        // Check that he is registered
+        assertSame(department.getStaff().get(0), doctor);
+    }
+
+    @Then("their specialization should be specified saved in the database")
+    public void theirSpecializationShouldBeSpecifiedSavedInTheDatabase() {
+        // Check that some information has been set
+        try {
+            Doctor doctor = ictOfficer.find(this.doctor);
+            assertNotNull(doctor.getSpeciality());
+            ictOfficer.delete(doctor, department);
+        } catch (PersonNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     @Given("a clerk")
@@ -301,7 +296,7 @@ public class RegistrationSteps {
         // Check that there is a staff member
         assertNotNull(registeredStaff);
 
-        registeredStaff = new Staff("Biver", "Thomsen", new Date(2000), 0, "mithjem 23", 43236581);
+        registeredStaff = new Clerk("Biver", "Thomsen", new Date(2000), Gender.FEMALE, "mithjem 23", 43236581);
     }
 
     @When("they are already in the system")
@@ -334,4 +329,5 @@ public class RegistrationSteps {
         ictOfficer.delete(registeredStaff, department);
 
     }
+
 }

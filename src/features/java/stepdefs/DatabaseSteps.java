@@ -1,14 +1,21 @@
 package stepdefs;
 
+import core.buildings.Department;
+import core.buildings.InDepartment;
+import core.persons.Clerk;
+import core.persons.Gender;
+import core.persons.Patient;
+import core.persons.Staff;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import exceptions.PersonNotFoundException;
-import management.Department;
-import management.Patient;
-import management.Staff;
-import storage.*;
+import persistence.Database;
+import persistence.data_access_objects.DaoPatientImpl;
+import persistence.data_access_objects.DaoStaffImpl;
+import persistence.query_roles.QueryRoleClerk;
+import persistence.query_roles.QueryRoleICT;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -19,7 +26,6 @@ import java.util.HashMap;
 import static junit.framework.TestCase.*;
 
 public class DatabaseSteps {
-
     private QueryRoleClerk clerk;
     private Patient patient;
     private Department department;
@@ -28,7 +34,7 @@ public class DatabaseSteps {
 
     @Before
     public void setUp() {
-        department = new Department("Mockdepartment", 10);
+        department = new InDepartment("Mockdepartment", "name", 10);
         clerk = new QueryRoleClerk();
         patient = new Patient();
         ict = new QueryRoleICT();
@@ -45,7 +51,7 @@ public class DatabaseSteps {
                 "Bobby",
                 "Fischer",
                 new Date(2019),
-                0,
+                Gender.FEMALE,
                 "Homestreet 23",
                 45231298);
 
@@ -80,8 +86,8 @@ public class DatabaseSteps {
 
     @When("a new staff is hired to the hospital")
     public void aNewStaffIsHiredToTheHospital() {
-        staff = new Staff("Emil", "Christensen", new Date(2019), 0, "Strandvejen 20", 30303030, "echristensen@hospital.dk", "EC");
-        ict.registerPerson(staff, department);
+        staff = new Clerk("Emil", "Christensen", new Date(2019), Gender.MALE, "Strandvejen 20", 30303030, "echristensen@hospital.dk", "EC");
+        assertTrue(ict.registerPerson(staff, department));
     }
 
     @Then("the user should add the staff to the database")
@@ -113,12 +119,12 @@ public class DatabaseSteps {
 
     @When("changing a person's information")
     public void changingAPersonsInformation() {
-        department = new Department("Mockdepartment", 10);
+        department = new InDepartment("Mockdepartment", "Name", 10);
         patient = new Patient(
                 "Simon",
                 "Muuu",
                 new Date(2019),
-                0,
+                Gender.MALE,
                 "Homestreet 23",
                 45231298);
 
@@ -140,16 +146,16 @@ public class DatabaseSteps {
                 "Hilda",
                 "Stol",
                 new Date(1997),
-                0,
+                Gender.FEMALE,
                 "Hildagade 1",
                 45231298);
         clerk.registerPerson(patient, department);
 
-        staff = new Staff(
+        staff = new Clerk(
                 "Emil",
                 "Christensen",
                 new Date(2019),
-                0,
+                Gender.FEMALE,
                 "Strandvejen 20",
                 30303030,
                 "echristensen@hospital.dk",
@@ -194,7 +200,7 @@ public class DatabaseSteps {
                 "NOT",
                 "DATABASE",
                 new Date(2019),
-                0,
+                Gender.MALE,
                 "Homestreet 23",
                 45231298);
 
@@ -237,16 +243,16 @@ public class DatabaseSteps {
                 "Hilda",
                 "Stol",
                 new Date(1997),
-                0,
+                Gender.FEMALE,
                 "Hildagade 1",
                 45231298);
         clerk.registerPerson(patient, department);
 
-        staff = new Staff(
+        staff = new Clerk(
                 "Emil",
                 "Christensen",
                 new Date(2019),
-                0,
+                Gender.MALE,
                 "Strandvejen 20",
                 30303030,
                 "echristensen@hospital.dk",
@@ -263,7 +269,7 @@ public class DatabaseSteps {
         paramspatient.put("name", "Hilda");
 
         HashMap<String, String> paramsstaff = new HashMap<>();
-        paramsstaff.put("name", "'Emil'");
+        paramsstaff.put("name", "Emil");
 
         try {
             assertNotNull(ict.findPatient(paramspatient));
