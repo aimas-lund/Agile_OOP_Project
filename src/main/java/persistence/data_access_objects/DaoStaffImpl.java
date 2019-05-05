@@ -56,7 +56,6 @@ public class DaoStaffImpl<T extends Staff> implements IDao<T> {
 
         try {
             ResultSet resultSet = statement.executeQuery(sql);
-
             while (resultSet.next()) {
                 Date birthdate = new SimpleDateFormat("yyyy-MM-dd").parse(resultSet.getString("birthdate"));
 
