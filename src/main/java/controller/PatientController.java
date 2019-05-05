@@ -2,7 +2,7 @@ package controller;
 
 import java.util.List;
 
-import management.Patient;
+//import management.Patient;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
