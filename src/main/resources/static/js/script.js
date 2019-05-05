@@ -1,15 +1,15 @@
-function searchPatientParam() {
+function searchPatient() {
     var option = $("#searchPatientParam").val();
-    $(".patient").hide();
-    $(".patient").removeAttr("required","false");
+    $(".searchPatient").hide();
+    $(".searchPatient").removeAttr("required","false");
     $("#p" + option).show();
     $("#p" + option).attr("required", "true");
 
 }
-function searchStaffParam() {
+function searchStaff() {
     var option = $("#searchStaffParam").val();
-    $(".staff").hide();
-    $(".staff").removeAttr("required","false");
+    $(".searchStaff").hide();
+    $(".searchStaff").removeAttr("required","false");
     $("#s" + option).show();
     $("#s" + option).attr("required", "true");
 
