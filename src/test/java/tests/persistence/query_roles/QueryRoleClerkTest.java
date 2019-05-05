@@ -2,6 +2,7 @@ package tests.persistence.query_roles;
 
 import core.buildings.Department;
 import core.buildings.InDepartment;
+import core.persons.Gender;
 import core.persons.Patient;
 import exceptions.PersonNotFoundException;
 import org.junit.Before;
@@ -24,7 +25,7 @@ public class QueryRoleClerkTest {
                 "Oline",
                 "Fischersen",
                 new Date(1556668800000L), // Date: 01_05_2019
-                1,
+                Gender.FEMALE,
                 "DTUStreet 56",
                 45231298);
         department = new InDepartment();

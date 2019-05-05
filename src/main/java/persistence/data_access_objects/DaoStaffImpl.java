@@ -1,6 +1,7 @@
 package persistence.data_access_objects;
 
 
+import core.persons.Gender;
 import core.persons.Staff;
 import persistence.Database;
 
@@ -63,7 +64,7 @@ public class DaoStaffImpl<T extends Staff> implements IDao<T> {
                         resultSet.getString("name"),
                         resultSet.getString("surname"),
                         birthdate,
-                        Integer.parseInt(resultSet.getString("gender")),
+                        Gender.valueOf(resultSet.getString("gender")),
                         resultSet.getString("homeaddress").replaceAll("_", " "),
                         Integer.parseInt(resultSet.getString("phonenumber")),
                         resultSet.getString("email"),

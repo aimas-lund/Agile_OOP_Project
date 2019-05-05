@@ -1,6 +1,7 @@
 package tests.core.persons;
 
 import core.buildings.Department;
+import core.persons.Gender;
 import core.persons.PersonInformationFacade;
 import core.persons.Staff;
 import org.junit.Before;
@@ -21,7 +22,7 @@ public class StaffTest {
                 "Beth",
                 "McMuffin",
                 new Date(631152000000L),
-                0,
+                Gender.FEMALE,
                 "Internet Blvd. 4",
                 87654321);
         new PersonInformationFacade(staff).setStaffEmail("bemc@agile_hospital.com");
@@ -44,7 +45,7 @@ public class StaffTest {
 
     @Test
     public void getPersonInformationGender() {
-        assertEquals("0", staff.getPersonInformation()[4]);
+        assertEquals(Gender.FEMALE, Gender.valueOf(staff.getPersonInformation()[4]));
     }
 
     @Test

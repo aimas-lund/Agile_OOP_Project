@@ -1,5 +1,6 @@
 package tests.persistence.data_access_objects;
 
+import core.persons.Gender;
 import core.persons.Patient;
 import core.persons.PersonInformationFacade;
 import org.junit.After;
@@ -23,7 +24,7 @@ public class DaoPatientImplTest {
                 "Oline",
                 "Fischersen",
                 new Date(1556668800000L), // Date: 01_05_2019
-                1,
+                Gender.FEMALE,
                 "DTUStreet 56",
                 45231298);
 

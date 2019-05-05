@@ -2,6 +2,7 @@ package stepdefs;
 
 import core.buildings.Department;
 import core.buildings.InDepartment;
+import core.persons.Gender;
 import core.persons.Patient;
 import core.persons.Staff;
 import cucumber.api.java.Before;
@@ -49,7 +50,7 @@ public class DatabaseSteps {
                 "Bobby",
                 "Fischer",
                 new Date(2019),
-                0,
+                Gender.FEMALE,
                 "Homestreet 23",
                 45231298);
 
@@ -84,7 +85,7 @@ public class DatabaseSteps {
 
     @When("a new staff is hired to the hospital")
     public void aNewStaffIsHiredToTheHospital() {
-        staff = new Staff("Emil", "Christensen", new Date(2019), 0, "Strandvejen 20", 30303030, "echristensen@hospital.dk", "EC");
+        staff = new Staff("Emil", "Christensen", new Date(2019), Gender.MALE, "Strandvejen 20", 30303030, "echristensen@hospital.dk", "EC");
         ict.registerPerson(staff, department);
     }
 
@@ -122,7 +123,7 @@ public class DatabaseSteps {
                 "Simon",
                 "Muuu",
                 new Date(2019),
-                0,
+                Gender.MALE,
                 "Homestreet 23",
                 45231298);
 
@@ -144,7 +145,7 @@ public class DatabaseSteps {
                 "Hilda",
                 "Stol",
                 new Date(1997),
-                0,
+                Gender.FEMALE,
                 "Hildagade 1",
                 45231298);
         clerk.registerPerson(patient, department);
@@ -153,7 +154,7 @@ public class DatabaseSteps {
                 "Emil",
                 "Christensen",
                 new Date(2019),
-                0,
+                Gender.FEMALE,
                 "Strandvejen 20",
                 30303030,
                 "echristensen@hospital.dk",
@@ -198,7 +199,7 @@ public class DatabaseSteps {
                 "NOT",
                 "DATABASE",
                 new Date(2019),
-                0,
+                Gender.MALE,
                 "Homestreet 23",
                 45231298);
 
@@ -241,7 +242,7 @@ public class DatabaseSteps {
                 "Hilda",
                 "Stol",
                 new Date(1997),
-                0,
+                Gender.FEMALE,
                 "Hildagade 1",
                 45231298);
         clerk.registerPerson(patient, department);
@@ -250,7 +251,7 @@ public class DatabaseSteps {
                 "Emil",
                 "Christensen",
                 new Date(2019),
-                0,
+                Gender.MALE,
                 "Strandvejen 20",
                 30303030,
                 "echristensen@hospital.dk",

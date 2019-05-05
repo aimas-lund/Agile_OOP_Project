@@ -1,5 +1,6 @@
 package tests.core.persons;
 
+import core.persons.Gender;
 import core.persons.Patient;
 import org.junit.Test;
 
@@ -15,7 +16,7 @@ public class PatientTest {
             "foo",
             "bar",
             birthdate,
-            0,
+            Gender.MALE,
             "Foo Bar Street 38",
             12345678);
 
@@ -41,7 +42,7 @@ public class PatientTest {
 
     @Test
     public void getPersonInformationGender() {
-        assertEquals("0", patientWithInformation.getPersonInformation()[4]);
+        assertEquals(Gender.MALE, Gender.valueOf(patientWithInformation.getPersonInformation()[4]));
     }
 
     @Test

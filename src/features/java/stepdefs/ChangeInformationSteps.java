@@ -1,9 +1,6 @@
 package stepdefs;
 
-import core.persons.ICTOfficer;
-import core.persons.Patient;
-import core.persons.PersonInformationFacade;
-import core.persons.Staff;
+import core.persons.*;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -33,13 +30,13 @@ public class ChangeInformationSteps {
                 "Kaj",
                 "Andreasen",
                 new GregorianCalendar(2000, Calendar.JANUARY, 1).getTime(),
-                0,
+                Gender.MALE,
                 "VejenPåGaden",
                 42013370
         );
 
         // Check that some values are not null
-        assertSame(0, patientWithInformation.getGender());
+        assertSame(Gender.MALE, patientWithInformation.getGender());
         assertNotNull(patientWithInformation.getName());
         assertNotNull(patientWithInformation.getSurname());
         assertNotNull(patientWithInformation.getBirthdate());
