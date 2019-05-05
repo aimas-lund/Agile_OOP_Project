@@ -1,22 +1,24 @@
 package stepdefs;
 
+import core.buildings.Department;
+import core.buildings.InDepartment;
+import core.persons.Hospital;
+import core.persons.Patient;
+import core.persons.Staff;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import management.Department;
-import management.Hospital;
-import management.Patient;
-import management.Staff;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class PatientStaffDistributionSteps {
 
-    private Hospital hospital = new Hospital ();
-    private Staff staff = new Staff ();
-    private Patient patient = new Patient ();
-    private Department department1 = new Department ("ER", 10);
-    private Department department2 = new Department ("New", 5);
+    private Hospital hospital = new Hospital();
+    private Staff staff = new Staff("staff1");
+    private Patient patient = new Patient("pat1");
+    private Department department1 = new InDepartment("dep1", "ER", 10);
+    private Department department2 = new InDepartment("dep2", "New", 5);
 
 
     @When("their condition changes such that they need the attention of a different department")

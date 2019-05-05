@@ -1,14 +1,19 @@
 package stepdefs;
 
+import core.buildings.Department;
+import core.buildings.InDepartment;
+import core.persons.Patient;
+import core.persons.Staff;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import exceptions.PersonNotFoundException;
-import management.Department;
-import management.Patient;
-import management.Staff;
-import storage.*;
+import persistence.Database;
+import persistence.data_access_objects.DaoPatientImpl;
+import persistence.data_access_objects.DaoStaffImpl;
+import persistence.query_roles.QueryRoleClerk;
+import persistence.query_roles.QueryRoleICT;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -19,7 +24,6 @@ import java.util.HashMap;
 import static junit.framework.TestCase.*;
 
 public class DatabaseSteps {
-
     private QueryRoleClerk clerk;
     private Patient patient;
     private Department department;
@@ -28,7 +32,7 @@ public class DatabaseSteps {
 
     @Before
     public void setUp() {
-        department = new Department("Mockdepartment", 10);
+        department = new InDepartment("Mockdepartment", "name", 10);
         clerk = new QueryRoleClerk();
         patient = new Patient();
         ict = new QueryRoleICT();
@@ -113,7 +117,7 @@ public class DatabaseSteps {
 
     @When("changing a person's information")
     public void changingAPersonsInformation() {
-        department = new Department("Mockdepartment", 10);
+        department = new InDepartment("Mockdepartment", "Name", 10);
         patient = new Patient(
                 "Simon",
                 "Muuu",
@@ -263,7 +267,7 @@ public class DatabaseSteps {
         paramspatient.put("name", "Hilda");
 
         HashMap<String, String> paramsstaff = new HashMap<>();
-        paramsstaff.put("name", "'Emil'");
+        paramsstaff.put("name", "Emil");
 
         try {
             assertNotNull(ict.findPatient(paramspatient));

@@ -1,13 +1,20 @@
 package stepdefs;
 
+import core.buildings.Department;
+import core.buildings.OutDepartment;
+import core.persons.Doctor;
+import core.persons.Patient;
+import core.persons.PersonInformationFacade;
+import core.persons.Staff;
+import core.utility.InformationGenerator;
+import core.utility.Speciality;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import management.*;
-import storage.QueryRoleClerk;
-import storage.QueryRoleICT;
+import persistence.query_roles.QueryRoleClerk;
+import persistence.query_roles.QueryRoleICT;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -19,16 +26,17 @@ import static org.junit.Assert.*;
 public class RegistrationSteps {
     private Patient registeredPatient;
     private Patient unregisteredPatient;
-    private Department department = new Department();
+    private Department department = new OutDepartment();
     private QueryRoleClerk clerk = new QueryRoleClerk();
     private QueryRoleICT ictOfficer = new QueryRoleICT();
-    private Staff registeredStaff = new Staff();
-    private Staff unregisteredStaff = new Staff();
-    private Doctor doctor = new Doctor();
+    private Staff registeredStaff = new Staff("regStaff");
+    private Staff unregisteredStaff = new Staff("unRegStaff");
+    private Doctor doctor = new Doctor("doc1");
 
     @Before
     public void setUp() {
         registeredPatient = new Patient(
+                "regpat1",
                 "Thor",
                 "Odin",
                 new Date(1337),
@@ -36,6 +44,7 @@ public class RegistrationSteps {
                 "Asgaard 23",
                 45231232);
         unregisteredPatient = new Patient(
+                "unregpat2",
                 "Dank",
                 "Meister",
                 new Date(420),
@@ -76,6 +85,7 @@ public class RegistrationSteps {
         // Clerk needs registeredPatient information
         clerk.update(registeredPatient);
         registeredPatient = new Patient(
+                "pat1",
                 "Emil",
                 "pølz Ballermann",
                 cal.getTime(),
@@ -281,6 +291,7 @@ public class RegistrationSteps {
         // Set patient information
         doctor = new Doctor(speciality, "Mortimer", "Montgomery", cal.getTime(), 0,
                 "myhouse", 13371337);
+        new PersonInformationFacade(doctor).setPersonUniqueId("doc1");
 
         // Check that some information has been set
         assertEquals(speciality, doctor.getSpeciality());

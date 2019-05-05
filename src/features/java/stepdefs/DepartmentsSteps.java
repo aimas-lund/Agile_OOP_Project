@@ -1,10 +1,15 @@
 package stepdefs;
 
 
+import core.buildings.Department;
+import core.buildings.OutDepartment;
+import core.persons.Bed;
+import core.persons.Hospital;
+import core.persons.Patient;
+import core.persons.Staff;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import management.*;
 
 import java.util.ArrayList;
 
@@ -14,10 +19,10 @@ import static junit.framework.TestCase.*;
 public class DepartmentsSteps {
 
     Hospital h = new Hospital ();
-    Department existingDept = new Department ();
-    Department newDept = new Department ();
-    Staff s = new Staff ();
-    Patient p = new Patient ();
+    Department existingDept = new OutDepartment();
+    Department newDept = new OutDepartment();
+    Staff s = new Staff("staff1");
+    Patient p = new Patient("pat1");
     Bed b = new Bed (1);
 
     @Then("the hospital should be able to assign the patient to a specific department.")
