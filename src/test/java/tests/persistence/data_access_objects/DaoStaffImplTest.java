@@ -1,5 +1,6 @@
 package tests.persistence.data_access_objects;
 
+import core.persons.Clerk;
 import core.persons.Gender;
 import core.persons.PersonInformationFacade;
 import core.persons.Staff;
@@ -19,7 +20,7 @@ public class DaoStaffImplTest {
 
     @Before
     public void setUp() {
-        staff = new Staff(
+        staff = new Clerk(
                 "testID",
                 "Oline",
                 "Fischersen",
@@ -92,7 +93,7 @@ public class DaoStaffImplTest {
 
     @Test
     public void findMultiples() {
-        Staff staffNew = new Staff(
+        Staff staffNew = new Clerk(
                 "testID2",
                 "Aimas",
                 "Odgaard",

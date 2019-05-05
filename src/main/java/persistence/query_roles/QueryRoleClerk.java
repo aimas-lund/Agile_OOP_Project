@@ -27,8 +27,9 @@ public class QueryRoleClerk implements IUpdate, IQuery {
             new PersonInformationFacade(person).setPersonUniqueId(uniqueId);
         }
 
-        daoPatient.save((Patient) person);
-        department.add((Patient) person);
+        if (daoPatient.save((Patient) person)) {
+            department.add((Patient) person);
+        }
 
         return true;
     }

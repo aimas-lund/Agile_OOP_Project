@@ -1,10 +1,7 @@
 package persistence.query_roles;
 
 import core.buildings.Department;
-import core.persons.Patient;
-import core.persons.Person;
-import core.persons.PersonInformationFacade;
-import core.persons.Staff;
+import core.persons.*;
 import core.utility.InformationGenerator;
 import exceptions.PersonNotFoundException;
 import persistence.data_access_objects.DaoPatientImpl;
@@ -36,11 +33,17 @@ public class QueryRoleICT implements IUpdate, IQuery {
                 new PersonInformationFacade(person).setStaffEmail(email);
             }
             success = daoStaff.save((Staff) person);
-            department.add((Staff) person);
+
+            if (success) {
+                department.add((Staff) person);
+            }
 
         } else if (person instanceof Patient) {
             success = daoPatient.save((Patient) person);
-            department.add((Patient) person);
+
+            if (success) {
+                department.add((Patient) person);
+            }
         }
 
         return success;
@@ -73,7 +76,7 @@ public class QueryRoleICT implements IUpdate, IQuery {
     }
 
     public ArrayList<Staff> findStaff(HashMap<String, String> params) throws PersonNotFoundException {
-        return find(params, new Staff());
+        return find(params, new Clerk());
     }
 
     public ArrayList<Patient> findPatient(HashMap<String, String> params) throws PersonNotFoundException {
