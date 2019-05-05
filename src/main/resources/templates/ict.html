@@ -65,18 +65,19 @@
         <div class="dashboard-menu">
             <h3 >Register patient <i class="fa fa-caret-down" aria-hidden="true"></i></h3>
 
-            <form class="dashboard-action" id="registerPatient" autocomplete="on" action="/registerPatient" target="hiddenFrame">
+            <form class="dashboard-action" id="registerPatient" autocomplete="on" action="/registerPatient" >
                 <div class="input-container">
                     <input class="input-field" type="text" placeholder="Name" name="name" id="name" required>
                     <input class="input-field" type="text" placeholder="Surname" name="surname" id="surname" required>
                 </div>
                 <div class="input-container" >
                     <input class="input-field" type="text" placeholder="Home address" name="homeAddress" id="homeAddress" required>
+                    <input class="input-field" type="text" placeholder="ID" name="id" id="id" required>
                 </div>
                 <div class="input-container">
                     <input class="input-field" type="tel" placeholder="Phone number" name="phoneNumber" id="phoneNumber" required>
                     <input class="input-field" type="date" placeholder="Birthday" name="birthday" id="birthday" required>
-                    <select class="dropdown" form="registerStaff" name="gender" id="gender" required>
+                    <select class="dropdown" form="registerPatient" name="gender" id="gender" required>
                         <option value="" disabled selected hidden>Gender</option>
                         <option value="male">Male</option>
                         <option value="female">Female</option>
@@ -99,7 +100,7 @@
                         <option value="department">Department</option>
                     </select>
                     <input class="input-field search searchStaff" type="text" placeholder="Name" name="name" id="sname">
-                    <input class="input-field search searchStaff" type="tel" placeholder="ID" name="id" id="sid">
+                    <input class="input-field search searchStaff" type="tel" placeholder="ID" name="id"Person id="sid">
                     <input class="input-field search searchStaff" type="text" placeholder="Department" name="department" id="sdepartment" >
 
                 </div>
@@ -129,6 +130,16 @@
                 </div>
             </form>
         </div>
+        <form action="/test" method="post" id="test">
+            <select class="dropdown" form="test" name="role" required>
+                <option value="" disabled selected hidden>Role</option>
+                <option value="Doctor">Doctor</option>
+                <option value="Nurse">Nurse</option>
+                <option value="Clerk">Clerk</option>
+                <option value="ICT Officer">ICT Officer</option>
+            </select>
+            <button type="submit" class="btn">search</button>
+        </form>
     </div>
     <div class="flex-container searchResults"></div>
 </div>
