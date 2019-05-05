@@ -114,11 +114,11 @@ public class Database {
         }
     }
 
-    public boolean executePreparedStatement(PreparedStatement statement) {
-        return executePreparedStatement(statement, true);
+    public boolean executePreparedStatementBatch(PreparedStatement statement) {
+        return executePreparedStatementBatch(statement, true);
     }
 
-    public boolean executePreparedStatement(PreparedStatement statement, boolean shouldCommit) {
+    public boolean executePreparedStatementBatch(PreparedStatement statement, boolean shouldCommit) {
         boolean success;
         try {
             try {
@@ -133,6 +133,40 @@ public class Database {
                 if (shouldCommit) {
                     connection.commit();
                 }
+                success = true;
+            } catch (SQLException e) {
+                connection.rollback();
+                success = false;
+            } finally {
+                if (shouldCommit) {
+                    connection.close();
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            success = false;
+        }
+        return success;
+    }
+
+    public boolean executePreparedStatement(PreparedStatement statement) {
+        return executePreparedStatement(statement, true);
+    }
+
+    public boolean executePreparedStatement(PreparedStatement statement, boolean shouldCommit) {
+        boolean success;
+        try {
+            try {
+                int update = statement.executeUpdate();
+
+                if (update <= 0) {
+                    return false;
+                }
+
+                if (shouldCommit) {
+                    connection.commit();
+                }
+
                 success = true;
             } catch (SQLException e) {
                 connection.rollback();

@@ -46,47 +46,17 @@ public class DaoDepartmentImplTest {
     }
 
     @Test
-    public void find() {
-        return;
+    public void saveDeletePatient() {
+        Patient patient = new Patient("etId");
+        assertTrue(daoDepartment.save(patient, inDepartment));
+        assertTrue(daoDepartment.delete(patient, inDepartment));
     }
 
     @Test
-    public void find1() {
+    public void saveDeleteStaff() {
+        Clerk staff = new Clerk("etId2");
+        assertTrue(daoDepartment.save(staff, inDepartment));
+        assertTrue(daoDepartment.delete(staff, inDepartment));
     }
 
-    @Test
-    public void delete1() {
-    }
-
-    @Test
-    public void update() {
-    }
-
-    @Test
-    public void update1() {
-    }
-
-    @Test
-    public void save1() {
-    }
-
-    @Test
-    public void find2() {
-    }
-
-    @Test
-    public void find3() {
-    }
-
-    @Test
-    public void delete2() {
-    }
-
-    @Test
-    public void delete3() {
-    }
-
-    @Test
-    public void update2() {
-    }
 }
