@@ -61,7 +61,7 @@ public class DaoPatientImplTest {
     public void find() {
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("name", "Simon");
-        hashMap.put("surname", "Simonsen;'");
+        hashMap.put("surname", "Simonsen");
         hashMap.put("gender", "0");
 
         assertTrue(dao.find(hashMap).isEmpty());
