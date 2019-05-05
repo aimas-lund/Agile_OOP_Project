@@ -20,7 +20,7 @@ public class DaoPatientImpl<T extends Patient> implements IDao<T> {
     @Override
     public boolean save(T patient) {
         String[] information = patient.getPersonInformation();
-        String sql = "insert into patients values('%s', '%s', '%s', '%s', '%s', '%s', '%s')";
+        String sql = "insert into patients values('%s', '%s', '%s', date('%s'), '%s', '%s', '%s')";
         for (String value :
                 information) {
             sql = sql.replaceFirst("%s", value.replaceAll(" ", "_"));
@@ -56,8 +56,7 @@ public class DaoPatientImpl<T extends Patient> implements IDao<T> {
 
             while (resultSet.next()) {
 
-                Date birthdate = new SimpleDateFormat("yyyy_MM_DD").parse(resultSet.getString("birthdate"));
-
+                Date birthdate = new SimpleDateFormat("yyyy-MM-dd").parse(resultSet.getString("birthdate"));
                 patients.add((T) new Patient(
                         resultSet.getString("uniqueId"),
                         resultSet.getString("name"),
@@ -70,7 +69,7 @@ public class DaoPatientImpl<T extends Patient> implements IDao<T> {
             }
 
         } catch (SQLException | ParseException e) {
-//            e.printStackTrace();
+            e.printStackTrace();
         }
         database.disconnectFromDB();
         return patients;
@@ -97,7 +96,7 @@ public class DaoPatientImpl<T extends Patient> implements IDao<T> {
     @Override
     public boolean update(T patient) {
         String[] information = patient.getPersonInformation();
-        String sql = "UPDATE patients set uniqueid = '%s', name = '%s', surname = '%s', birthdate = '%s', " +
+        String sql = "UPDATE patients set uniqueid = '%s', name = '%s', surname = '%s', birthdate = date('%s'), " +
                 "gender = '%s', homeaddress = '%s', phonenumber = '%s' where uniqueId = '%s'";
 
         for (String value :

@@ -40,7 +40,7 @@ public class StaffTest {
 
     @Test
     public void getPersonInformationBirthdate() {
-        assertEquals("1990_01_01", staff.getPersonInformation()[3]);
+        assertEquals("1990-01-01", staff.getPersonInformation()[3]);
     }
 
     @Test

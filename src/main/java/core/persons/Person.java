@@ -110,7 +110,7 @@ public abstract class Person {
     public abstract String[] getPersonInformation();
 
     public String dateToString(Date birthdate) {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy_MM_dd");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
         return birthdate == null ? "N/A" : format.format(birthdate);
     }
