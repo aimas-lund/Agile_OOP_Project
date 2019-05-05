@@ -8,6 +8,10 @@ public class ICTOfficer extends Staff {
         super(uniqueId, name, surname, birthdate, gender, homeaddress, phonenumber, email, initials);
     }
 
+    public ICTOfficer(String uniqueId) {
+        super(uniqueId);
+    }
+
     public ICTOfficer() {
 
     }

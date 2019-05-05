@@ -3,37 +3,40 @@ package persistence.data_access_objects;
 import core.buildings.Department;
 import core.buildings.DepartmentBeds;
 import core.buildings.OutDepartment;
-import core.persons.Gender;
+import core.persons.Bed;
 import core.persons.Patient;
 import core.persons.Staff;
 import persistence.Database;
 
-import java.sql.*;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.Map;
 
 public class DaoDepartmentImpl<T extends Department> implements IDao<T> {
     private static ArrayList<String> uniqueids;
     private final Database database = new Database();
 
+    static {
+        uniqueids = new ArrayList<>();
+    }
+
     @Override
     public boolean save(T department) {
         if (!saveDepartment(department)) {
             return false;
-        } else if (savePatients(department)) {
+        } else if (!saveAllPatients(department)) {
             return false;
-        } else if (saveStaff(department)) {
+        } else if (!saveAllStaff(department)) {
             return false;
         }
         database.commit();
+        database.disconnectFromDB();
         return true;
     }
 
-    private boolean saveDepartment(T department) {
+    public boolean saveDepartment(T department) {
         String sql = "insert into departments values(?, ?, ?, ?, ?)";
 
         try {
@@ -49,7 +52,7 @@ public class DaoDepartmentImpl<T extends Department> implements IDao<T> {
                 statement.setNull(3, Types.INTEGER);
                 statement.setNull(4, Types.INTEGER);
             }
-
+            statement.addBatch();
             return database.executePreparedStatement(statement, false);
 
         } catch (SQLException e) {
@@ -58,8 +61,8 @@ public class DaoDepartmentImpl<T extends Department> implements IDao<T> {
         }
     }
 
-    private boolean saveStaff(T department) {
-        String sql = "insert into staff_in_departments values('%s', '%s')";
+    public boolean saveAllStaff(T department) {
+        String sql = "insert into staff_in_departments values(?, ?)";
         ArrayList<String> tempUniqueIds = new ArrayList<>();
 
         try {
@@ -88,8 +91,8 @@ public class DaoDepartmentImpl<T extends Department> implements IDao<T> {
 
     }
 
-    private boolean savePatients(T department) {
-        String sql = "insert into patients_in_departments values('%s', '%s', %s, %s)";
+    public boolean saveAllPatients(T department) {
+        String sql = "insert into patients_in_departments values(?, ?, ?, ?)";
         ArrayList<String> tempUniqueIds = new ArrayList<>();
 
         try {
@@ -105,8 +108,13 @@ public class DaoDepartmentImpl<T extends Department> implements IDao<T> {
                 statement.setString(2, department.getUniqueId());
 
                 if (department instanceof DepartmentBeds) {
-                    statement.setObject(3, ((DepartmentBeds) department).getBedWithPatient(patient));
-                    statement.setNull(4, Types.BOOLEAN);
+                    Bed bed = ((DepartmentBeds) department).getBedWithPatient(patient);
+                    if (bed == null) {
+                        statement.setNull(3, Types.INTEGER);
+                    } else {
+                        statement.setInt(3, bed.getId());
+                    }
+                    statement.setBoolean(4, false);
                 } else if (department instanceof OutDepartment) {
                     statement.setNull(3, Types.INTEGER);
                     statement.setBoolean(4, ((OutDepartment) department).isPatientWaiting(patient));
@@ -128,86 +136,96 @@ public class DaoDepartmentImpl<T extends Department> implements IDao<T> {
         }
     }
 
+    public boolean save(Patient patient, T Department) {
+        return false;
+    }
+
+    public boolean save(Staff staff, T department) {
+        return false;
+    }
+
     @Override
     public ArrayList<T> find(HashMap<String, String> params) {
-        database.connectToDB();
-
-        String sql = "select * from patients where ";
-        String values = "";
-
-        for (Map.Entry<String, String> entry :
-                params.entrySet()) {
-            String value = entry.getValue();
-
-            value = " = " + "'" + value + "'";
-
-            values = values.concat(entry.getKey() + value + " and ");
-        }
-
-        sql = sql + values.substring(0, values.length() - 4);
-
-        Statement statement = database.createStatement();
-
-        ArrayList<T> patients = new ArrayList<>();
-
-        try {
-            ResultSet resultSet = statement.executeQuery(sql);
-
-            while (resultSet.next()) {
-
-                Date birthdate = new SimpleDateFormat("yyyy-MM-dd").parse(resultSet.getString("birthdate"));
-                patients.add((T) new Patient(
-                        resultSet.getString("uniqueId"),
-                        resultSet.getString("name"),
-                        resultSet.getString("surname"),
-                        birthdate,
-                        Gender.valueOf(resultSet.getString("gender")),
-                        resultSet.getString("homeaddress"),
-                        Integer.parseInt(resultSet.getString("phonenumber"))
-                ));
-            }
-
-        } catch (SQLException | ParseException e) {
-            e.printStackTrace();
-        }
-        database.disconnectFromDB();
-        return patients;
+        return null;
     }
 
-    public <T extends Patient> T find(T patient) {
-        HashMap<String, String> hashMap = new HashMap<>();
-        hashMap.put("uniqueid", patient.getUniqueId());
-        return (T) find(hashMap).get(0); // Returns arrayList of length 1
+    public ArrayList<Patient> findAllPatientsInDepartment(T department) {
+        return null;
     }
 
-    public boolean delete(T patient) {
-        return delete(patient.getUniqueId());
+    public ArrayList<Staff> findAllStaffInDepartment(T department) {
+        return null;
+    }
+
+    public T find(T department) {
+        return null;
+    }
+
+    public Department findDepartmentOfPerson(Staff staff) {
+        return null;
+    }
+
+    public Department findDepartmentOfPerson(Patient patient) {
+        return null;
     }
 
     @Override
     public boolean delete(String uniqueId) {
-        String sql = "delete from patients where uniqueid = '%s'";
-        sql = String.format(sql, uniqueId);
+        String sqlDeleteDepartment = "delete from departments where uniqueId = ?";
+        String sqlDeleteStaff = "delete from patients_in_departments where departmentId = ?";
+        String sqlDeletePatients = "delete from staff_in_departments where departmentId = ?";
 
-        return database.executeStatement(sql);
+        PreparedStatement preparedStatement;
+        try {
+            preparedStatement = database.prepareStatement(sqlDeleteDepartment);
+            preparedStatement.setString(1, uniqueId);
+            preparedStatement.addBatch();
+            boolean b1 = database.executePreparedStatement(preparedStatement, false);
+
+            preparedStatement = database.prepareStatement(sqlDeleteStaff);
+            preparedStatement.setString(1, uniqueId);
+            preparedStatement.addBatch();
+            boolean b2 = database.executePreparedStatement(preparedStatement, false);
+
+            preparedStatement = database.prepareStatement(sqlDeletePatients);
+            preparedStatement.setString(1, uniqueId);
+            preparedStatement.addBatch();
+            boolean b3 = database.executePreparedStatement(preparedStatement, false);
+
+            database.commit();
+            database.disconnectFromDB();
+            return b1 && b2 && b3;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+    }
+
+    public boolean delete(Staff staff, T department) {
+        return false;
+    }
+
+    public boolean delete(Patient patient, T department) {
+        return false;
+    }
+
+    public boolean delete(T department) {
+        return delete(department.getUniqueId());
+    }
+
+    public boolean update(Staff staff, T department) {
+        return false;
+    }
+
+    public boolean update(Patient patient, T department) {
+        return false;
     }
 
     @Override
-    public boolean update(T patient) {
-        String[] information = patient.getPersonInformation();
-        String sql = "UPDATE patients set uniqueid = '%s', name = '%s', surname = '%s', birthdate = date('%s'), " +
-                "gender = '%s', homeaddress = '%s', phonenumber = '%s' where uniqueId = '%s'";
-
-        for (String value :
-                information) {
-            if (value == null) return false;
-
-            sql = sql.replaceFirst("%s", value.replaceAll(" ", "_"));
-        }
-
-        sql = String.format(sql, patient.getUniqueId());
-
-        return database.executeStatement(sql);
+    public boolean update(T department) {
+        return false;
     }
 
 }

@@ -59,7 +59,6 @@ public class Database {
         if (!(hasConnection())) {
             connectToDB();
         }
-
         return connection.prepareStatement(sql);
 
     }
@@ -127,11 +126,10 @@ public class Database {
 
                 for (int update :
                         updateCount) {
-                    if (update < 0) {
+                    if (update < 1) {
                         return false;
                     }
                 }
-
                 if (shouldCommit) {
                     connection.commit();
                 }
@@ -140,7 +138,9 @@ public class Database {
                 connection.rollback();
                 success = false;
             } finally {
-                connection.close();
+                if (shouldCommit) {
+                    connection.close();
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
