@@ -1,6 +1,9 @@
 package stepdefs;
 
-import core.persons.*;
+import core.persons.ICTOfficer;
+import core.persons.Patient;
+import core.persons.PersonInformationFacade;
+import core.persons.Staff;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -14,7 +17,6 @@ import static org.junit.Assert.*;
 
 public class ChangeInformationSteps {
     private ICTOfficer ictOfficer = new ICTOfficer();
-    private Clerk clerk = new Clerk();
     private Patient patientWithInformation = new Patient();
     private Staff staffWithInformation = new Staff();
 
