@@ -52,8 +52,8 @@ public class DaoDepartmentImpl<T extends Department> implements IDao<T> {
                 statement.setNull(3, Types.INTEGER);
                 statement.setNull(4, Types.INTEGER);
             }
-            statement.addBatch();
-            return database.executePreparedStatementBatch(statement, false);
+
+            return database.executePreparedStatement(statement, false);
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -88,7 +88,6 @@ public class DaoDepartmentImpl<T extends Department> implements IDao<T> {
             e.printStackTrace();
             return false;
         }
-
     }
 
     public boolean saveAllPatients(T department) {
@@ -276,16 +275,61 @@ public class DaoDepartmentImpl<T extends Department> implements IDao<T> {
     }
 
     public boolean update(Staff staff, T department) {
+        String sql = "update staff_in_departments set staffId = ?, departmentId = ?";
+
+        try {
+            PreparedStatement statement = database.prepareStatement(sql);
+
+            statement.setString(1, staff.getUniqueId());
+            statement.setString(2, department.getUniqueId());
+
+            return database.executePreparedStatement(statement);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return false;
     }
 
     public boolean update(Patient patient, T department) {
+        String sql = "update patients_in_departments set patientId = ?, departmentId = ?, bedId = ?, isWaiting = ?";
+
+        try {
+            PreparedStatement statement = database.prepareStatement(sql);
+
+            buildPatientStatement(department, statement, patient);
+
+            return database.executePreparedStatement(statement);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return false;
     }
 
     @Override
     public boolean update(T department) {
-        return false;
+        String sql = "update departments set name = ?, totalCapacity = ?, currentCapacity = ?";
+
+        try {
+            PreparedStatement statement = database.prepareStatement(sql);
+            statement.setString(1, department.getName());
+
+            if (department instanceof DepartmentBeds) {
+                statement.setInt(2, ((DepartmentBeds) department).getTotalCapacity());
+                statement.setInt(3, ((DepartmentBeds) department).getCurrentCapacity());
+            } else {
+                statement.setNull(2, Types.INTEGER);
+                statement.setNull(3, Types.INTEGER);
+            }
+
+            return database.executePreparedStatement(statement);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+
     }
 
 }

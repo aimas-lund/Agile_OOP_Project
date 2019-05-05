@@ -1,10 +1,7 @@
 package tests.persistence.data_access_objects;
 
 import core.buildings.*;
-import core.persons.Clerk;
-import core.persons.ICTOfficer;
-import core.persons.Nurse;
-import core.persons.Patient;
+import core.persons.*;
 import exceptions.ExceededCapacityException;
 import org.junit.After;
 import org.junit.Before;
@@ -22,11 +19,13 @@ public class DaoDepartmentImplTest {
     @Before
     public void setUp() {
         inDepartment = new InDepartment("dep2", "ER", 3);
-        outDepartment = new OutDepartment();
+        outDepartment = new OutDepartment("someid", "name");
     }
 
     @After
     public void tearDown() {
+        daoDepartment.delete(inDepartment);
+        daoDepartment.delete(outDepartment);
     }
 
     @Test
@@ -57,6 +56,36 @@ public class DaoDepartmentImplTest {
         Clerk staff = new Clerk("etId2");
         assertTrue(daoDepartment.save(staff, inDepartment));
         assertTrue(daoDepartment.delete(staff, inDepartment));
+    }
+
+    @Test
+    public void updateDepartment() {
+        assertTrue(daoDepartment.save(inDepartment));
+
+        inDepartment = new InDepartment("dep2", "new", 6);
+
+        assertTrue(daoDepartment.update(inDepartment));
+    }
+
+    @Test
+    public void updatePatient() {
+        Patient patient = new Patient("patientsomething");
+
+        try {
+            new BedManager(inDepartment).assignToBed(patient);
+        } catch (ExceededCapacityException e) {
+            e.printStackTrace();
+        }
+
+        assertTrue(daoDepartment.save(patient, inDepartment));
+        assertTrue(daoDepartment.update(patient, inDepartment));
+    }
+
+    @Test
+    public void updateStaff() {
+        Staff staff = new Clerk("someid");
+        assertTrue(daoDepartment.save(staff, inDepartment));
+        assertTrue(daoDepartment.update(staff, outDepartment));
     }
 
 }
