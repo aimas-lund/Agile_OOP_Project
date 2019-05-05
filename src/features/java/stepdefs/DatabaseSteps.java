@@ -122,7 +122,7 @@ public class DatabaseSteps {
                 "Simon",
                 "Muuu",
                 new Date(2019),
-                0,
+                Gender.MALE,
                 "Homestreet 23",
                 45231298);
 
@@ -144,7 +144,7 @@ public class DatabaseSteps {
                 "Hilda",
                 "Stol",
                 new Date(1997),
-                0,
+                Gender.FEMALE,
                 "Hildagade 1",
                 45231298);
         clerk.registerPerson(patient, department);
@@ -153,7 +153,7 @@ public class DatabaseSteps {
                 "Emil",
                 "Christensen",
                 new Date(2019),
-                0,
+                Gender.FEMALE,
                 "Strandvejen 20",
                 30303030,
                 "echristensen@hospital.dk",
@@ -198,7 +198,7 @@ public class DatabaseSteps {
                 "NOT",
                 "DATABASE",
                 new Date(2019),
-                0,
+                Gender.MALE,
                 "Homestreet 23",
                 45231298);
 
@@ -241,7 +241,7 @@ public class DatabaseSteps {
                 "Hilda",
                 "Stol",
                 new Date(1997),
-                0,
+                Gender.FEMALE,
                 "Hildagade 1",
                 45231298);
         clerk.registerPerson(patient, department);
@@ -250,7 +250,7 @@ public class DatabaseSteps {
                 "Emil",
                 "Christensen",
                 new Date(2019),
-                0,
+                Gender.MALE,
                 "Strandvejen 20",
                 30303030,
                 "echristensen@hospital.dk",

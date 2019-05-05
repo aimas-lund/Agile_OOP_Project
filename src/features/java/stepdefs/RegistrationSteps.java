@@ -2,10 +2,7 @@ package stepdefs;
 
 import core.buildings.Department;
 import core.buildings.OutDepartment;
-import core.persons.Doctor;
-import core.persons.Patient;
-import core.persons.PersonInformationFacade;
-import core.persons.Staff;
+import core.persons.*;
 import core.utility.InformationGenerator;
 import core.utility.Speciality;
 import cucumber.api.java.Before;
@@ -40,7 +37,7 @@ public class RegistrationSteps {
                 "Thor",
                 "Odin",
                 new Date(1337),
-                1,
+                Gender.FEMALE,
                 "Asgaard 23",
                 45231232);
         unregisteredPatient = new Patient(
@@ -48,7 +45,7 @@ public class RegistrationSteps {
                 "Dank",
                 "Meister",
                 new Date(420),
-                0,
+                Gender.MALE,
                 "Groove street 23",
                 13371337);
     }
@@ -63,7 +60,7 @@ public class RegistrationSteps {
                 "Freja",
                 "Sif",
                 new Date(230),
-                0,
+                Gender.FEMALE,
                 "Asgaard 16",
                 45231252);
 
@@ -89,7 +86,7 @@ public class RegistrationSteps {
                 "Emil",
                 "pølz Ballermann",
                 cal.getTime(),
-                0,
+                Gender.FEMALE,
                 "DirtyStinkingBass, 4 tv",
                 42042042
         );
@@ -165,7 +162,7 @@ public class RegistrationSteps {
         registeredStaff = new Staff("Billy",
                 "Mcloving",
                 cal.getTime(),
-                0,
+                Gender.MALE,
                 "my house, middle of the street",
                 51558588);
 
@@ -256,7 +253,7 @@ public class RegistrationSteps {
                 "Freja",
                 "Sif",
                 new Date(230),
-                0,
+                Gender.MALE,
                 "Asgaard 16",
                 45231252);
 
@@ -289,7 +286,7 @@ public class RegistrationSteps {
         cal.set(1990, Calendar.APRIL, 20);
 
         // Set patient information
-        doctor = new Doctor(speciality, "Mortimer", "Montgomery", cal.getTime(), 0,
+        doctor = new Doctor(speciality, "Mortimer", "Montgomery", cal.getTime(), Gender.MALE,
                 "myhouse", 13371337);
         new PersonInformationFacade(doctor).setPersonUniqueId("doc1");
 
@@ -312,7 +309,7 @@ public class RegistrationSteps {
         // Check that there is a staff member
         assertNotNull(registeredStaff);
 
-        registeredStaff = new Staff("Biver", "Thomsen", new Date(2000), 0, "mithjem 23", 43236581);
+        registeredStaff = new Staff("Biver", "Thomsen", new Date(2000), Gender.FEMALE, "mithjem 23", 43236581);
     }
 
     @When("they are already in the system")

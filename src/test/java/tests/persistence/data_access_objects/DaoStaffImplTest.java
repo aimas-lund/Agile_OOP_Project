@@ -1,5 +1,6 @@
 package tests.persistence.data_access_objects;
 
+import core.persons.Gender;
 import core.persons.PersonInformationFacade;
 import core.persons.Staff;
 import org.junit.After;
@@ -23,7 +24,7 @@ public class DaoStaffImplTest {
                 "Oline",
                 "Fischersen",
                 new Date(1556668800000L), // Date: 01_05_2019
-                1,
+                Gender.MALE,
                 "DTUStreet 56",
                 45231298,
                 "OLFI@agile_hospital.com",
@@ -96,7 +97,7 @@ public class DaoStaffImplTest {
                 "Aimas",
                 "Odgaard",
                 new Date(1556668800000L), // Date: 01_05_2019
-                1,
+                Gender.MALE,
                 "DTUStreet 52",
                 45231298,
                 "AIOD@agile_hospital.com",
@@ -105,7 +106,7 @@ public class DaoStaffImplTest {
         daoStaff.save(staffNew);
 
         HashMap<String, String> hashMap = new HashMap<>();
-        hashMap.put("gender", "1");
+        hashMap.put("gender", Gender.MALE.toString());
 
         assertEquals(2, daoStaff.find(hashMap).size());
 

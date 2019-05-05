@@ -2,6 +2,7 @@ package tests.persistence.query_roles;
 
 import core.buildings.Department;
 import core.buildings.InDepartment;
+import core.persons.Gender;
 import core.persons.Patient;
 import core.persons.PersonInformationFacade;
 import core.persons.Staff;
@@ -32,7 +33,7 @@ public class QueryRoleICTTest {
                 "Jorgen",
                 "Vlad",
                 new Date(1556668800000L), // Date: 01_05_2019
-                1,
+                Gender.MALE,
                 "DTUStreet 51",
                 45231298);
 
@@ -43,7 +44,7 @@ public class QueryRoleICTTest {
                 "Oline",
                 "Fischersen",
                 new Date(1556668800000L), // Date: 01_05_2019
-                1,
+                Gender.MALE,
                 "DTUStreet 56",
                 45231298,
                 "OLFI@saxobank.com",
@@ -145,7 +146,10 @@ public class QueryRoleICTTest {
 
     @Test
     public void updateFails() {
-        assertFalse(queryRoleICT.update(new Staff("name", "surname")));
+        Staff staff = new Staff("name", "surname");
+        new PersonInformationFacade(staff).setPersonGender(Gender.MALE);
+
+        assertFalse(queryRoleICT.update(staff));
     }
 
 }

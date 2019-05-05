@@ -28,7 +28,7 @@ public class Patient extends Person {
     @Override
     public String[] getPersonInformation() {
         return new String[]{this.getUniqueId(), this.getName(), this.getSurname(),
-                dateToString(this.getBirthdate()), String.format("%d", this.getGender()), this.getHomeAddress(),
+                dateToString(this.getBirthdate()), this.getGender().toString(), this.getHomeAddress(),
                 String.format("%d", this.getPhoneNumber())};
     }
 
