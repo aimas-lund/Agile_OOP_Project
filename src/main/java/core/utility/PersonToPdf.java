@@ -62,7 +62,6 @@ public class PersonToPdf {
         table.addCell(patient.getUniqueId());
         table.addCell(patient.getName());
         table.addCell(patient.getSurname());
-        //TODO get gender to work
         table.addCell((patient.getGender()).toString());
         table.addCell(patient.getHomeAddress());
         table.addCell(String.format("%d",patient.getPhoneNumber()));
