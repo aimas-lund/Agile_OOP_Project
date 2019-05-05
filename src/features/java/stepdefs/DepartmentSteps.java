@@ -2,6 +2,7 @@ package stepdefs;
 
 import core.buildings.BedManager;
 import core.buildings.InDepartment;
+import core.persons.Clerk;
 import core.persons.Patient;
 import core.persons.Staff;
 import cucumber.api.java.en.And;
@@ -18,7 +19,7 @@ public class DepartmentSteps {
     private InDepartment emptyDept = new InDepartment("dep2", "empty", 0);
     private Patient patient1 = new Patient("patient1");
     private Patient patient2 = new Patient("patient2");
-    private Staff staff = new Staff("staff1");
+    private Staff staff = new Clerk("staff1");
 
     // A department is made (capacity)
     @Given("a department")

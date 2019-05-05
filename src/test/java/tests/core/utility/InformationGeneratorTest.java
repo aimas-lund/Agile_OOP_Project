@@ -1,5 +1,6 @@
 package tests.core.utility;
 
+import core.persons.Clerk;
 import core.persons.Staff;
 import core.utility.InformationGenerator;
 import org.junit.Test;
@@ -8,9 +9,9 @@ import static org.junit.Assert.assertEquals;
 
 public class InformationGeneratorTest {
 
-    private Staff person = new Staff("Hjort", "Uran");
-    private Staff person1 = new Staff("Hjort", "Uran");
-    private Staff person2 = new Staff("Hjort", "Uran");
+    private Staff person = new Clerk("Hjort", "Uran");
+    private Staff person1 = new Clerk("Hjort", "Uran");
+    private Staff person2 = new Clerk("Hjort", "Uran");
 
     @Test
     public void generateEmailWithTwoOverlappingInitials() {

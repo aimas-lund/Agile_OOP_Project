@@ -3,6 +3,7 @@ package tests.core.buildings;
 import core.buildings.BedManager;
 import core.buildings.InDepartment;
 import core.persons.Bed;
+import core.persons.Clerk;
 import core.persons.Patient;
 import core.persons.Staff;
 import exceptions.ExceededCapacityException;
@@ -28,7 +29,7 @@ public class BedManagerTest {
     public void setUp() {
         patient2 = new Patient("pat2");
         patient1 = new Patient("pat1");
-        staff = new Staff("staff1");
+        staff = new Clerk("staff1");
         departmentWithCapacity10 = new InDepartment("departmentWithCapacity10", "Saint John", 10);
         departmentWithCapacity1 = new InDepartment("departmentWithCapacity1", "Saint Alice", 1);
         departmentWithCapacity0 = new InDepartment("departmentWithCapacity0", "Saint Knuckles");
