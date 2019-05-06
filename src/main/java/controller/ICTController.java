@@ -14,10 +14,8 @@ import javax.print.Doc;
 @RestController
 class ICTController {
 
+    Doctor doctor;
     // Aggregate root
-
-
-
 
 /*
 
@@ -43,18 +41,15 @@ class ICTController {
 
         Date birthDate=new SimpleDateFormat("yyyy-MM-dd").parse(birthdate);
 
-        Doctor doctor = new Doctor();
-
 
         if (role.equals("Doctor")) {
             Speciality spec = Speciality.valueOf(speciality.toUpperCase());
             doctor = new Doctor(spec,name,surname,birthDate,gender,homeAddress,phoneNumber);
-
         }
-
 
         return doctor;
     }
+
 
 //    @PostMapping(value = "/registerPatient")
 //    public @ResponseBody

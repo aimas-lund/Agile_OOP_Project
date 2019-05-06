@@ -70,39 +70,44 @@ public class ClerkController {
 
     @PostMapping(value = "/updatePatient")
     public @ResponseBody
-    Patient updatePatient(@RequestParam(value="id") String id,
+    String updatePatient(@RequestParam(value="id") String id,
                           @RequestParam(value="name", required = false) String name,
                           @RequestParam(value="surname", required = false) String surname,
                           @RequestParam(value="birthday", required = false) String birthdate,
-                          @RequestParam(value = "gender", required = false) String gen,
+                          @RequestParam(value = "gender", required = false) String gender,
                           @RequestParam(value = "homeAddress", required = false) String homeAddress,
-                          @RequestParam(value="phoneNumber", required = false) String phoneNumber) throws ParseException, PersonNotFoundException {
+                          @RequestParam(value="phoneNumber", required = false) String phoneNumber,
+                          @RequestParam(value="text", required = false) String textbox,
+                          @RequestParam(value="number", required = false) String number,
+                          @RequestParam(value="date", required = false) String date,
+                          @RequestParam(value="gen", required = false) String gen) throws ParseException, PersonNotFoundException {
 
         HashMap<String, String> hashMap = new HashMap<String, String>();
-        hashMap.put("id",id);
+        hashMap.put("uniqueid",id);
 
         Patient patient = (Patient) QRK.find(hashMap).get(0);
         PIF = new PersonInformationFacade(patient);
+        PIF.setPersonName("dfgsfsdfs");
 
         if (name!= null) {
-            PIF.setPersonName(name);
+            PIF.setPersonName(textbox);
         }
         else if (surname != null)
-            PIF.setPersonSurname(name);
+            PIF.setPersonSurname(textbox);
         else if (birthdate != null) {
-            Date birthDate = new SimpleDateFormat("yyyy-MM-dd").parse(birthdate);
+            Date birthDate = new SimpleDateFormat("yyyy-MM-dd").parse(date);
             PIF.setPersonBirthdate(birthDate);
         }
-        else if (gen!=null) {
-            Gender gender = Gender.valueOf((gen.toUpperCase()));
-            PIF.setPersonGender(gender);
+        else if (gender!=null) {
+            Gender genderx = Gender.valueOf((gen.toUpperCase()));
+            PIF.setPersonGender(genderx);
         }
         else if (homeAddress != null)
-            PIF.setPersonHomeAddress(homeAddress);
-        else if (phoneNumber!=null)
-            PIF.setPersonPhoneNumber(Integer.valueOf(phoneNumber));
+            PIF.setPersonHomeAddress(textbox);
+        else if (phoneNumber!= null)
+            PIF.setPersonPhoneNumber(Integer.valueOf(number));
 
-        return patient;
+        return "Patient has been updated";
     }
 
 }
