@@ -8,8 +8,9 @@ import org.junit.Before;
 import org.junit.Test;
 import persistence.data_access_objects.DaoDepartmentImpl;
 
-import static junit.framework.TestCase.assertFalse;
-import static junit.framework.TestCase.assertTrue;
+import java.util.HashMap;
+
+import static junit.framework.TestCase.*;
 
 public class DaoDepartmentImplTest {
     private DepartmentBeds inDepartment;
@@ -21,8 +22,9 @@ public class DaoDepartmentImplTest {
 
     @Before
     public void setUp() {
-        inDepartment = new InDepartment("id2", "Saint John", 6);
-        outDepartment = new OutDepartment("id", "name");
+        // Make sure the test sql script has been run before testing
+        inDepartment = new InDepartment("id", "Saint John", 6);
+        outDepartment = new OutDepartment("id2", "Saint Anders");
 
         inDepartmentTest = new InDepartment("inTest", "Saint test", 6);
         outDepartmentTest = new OutDepartment("outTest", "name");
@@ -38,6 +40,120 @@ public class DaoDepartmentImplTest {
     public void tearDown() {
         daoDepartment.delete(inDepartmentTest);
         daoDepartment.delete(outDepartmentTest);
+    }
+
+    @Test
+    public void updateNotBedDepartment() {
+        assertTrue(daoDepartment.update(outDepartment));
+    }
+
+    @Test
+    public void updateFails() {
+        assertFalse(daoDepartment.update(new Clerk("notanid"), inDepartment));
+        assertFalse(daoDepartment.update(new Patient("notanid"), inDepartment));
+    }
+
+    @Test
+    public void deleteStaffFails() {
+        assertFalse(daoDepartment.delete(new Clerk("notanid"), inDepartment));
+    }
+
+    @Test
+    public void findDepartmentIdOfPersonStaff() {
+        String depId = daoDepartment.findDepartmentIdOfPerson(new Clerk("staff1"));
+        assertEquals("id", depId);
+    }
+
+    @Test
+    public void findDepartmentIdOfPersonPatient() {
+        String depId = daoDepartment.findDepartmentIdOfPerson(new Patient("patient3"));
+        assertEquals("id3", depId);
+    }
+
+    @Test
+    public void findDepartmentByObject() {
+        Department findDepartment = new OutDepartment("id2", "Saint Anders");
+
+        OutDepartment department = (OutDepartment) daoDepartment.find(findDepartment);
+        assertNotNull(department);
+        assertTrue(department.hasWaitingPatients());
+        assertFalse(department.getStaff().isEmpty());
+        assertFalse(department.getPatients().isEmpty());
+    }
+
+
+    @Test
+    public void findERDepartmentByUniqueId() {
+        HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put("uniqueId", "id3");
+
+        ERDepartment department = (ERDepartment) daoDepartment.find(hashMap).get(0);
+        assertNotNull(department);
+        assertEquals(0, department.getCurrentCapacity());
+        assertEquals(1, department.getTotalCapacity());
+        assertFalse(department.getPatients().isEmpty());
+        assertFalse(department.getPatientsInBeds().isEmpty());
+        assertFalse(department.getStaff().isEmpty());
+        assertFalse(department.hasAvailableBeds());
+
+        assertTrue(department.isPatientInBed(department.getPatients().get(0)));
+
+    }
+
+    @Test
+    public void findOutDepartmentByUniqueId() {
+        HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put("uniqueId", "id2");
+
+        OutDepartment department = (OutDepartment) daoDepartment.find(hashMap).get(0);
+        assertNotNull(department);
+        assertTrue(department.hasWaitingPatients());
+        assertFalse(department.getStaff().isEmpty());
+        assertFalse(department.getPatients().isEmpty());
+    }
+
+    @Test
+    public void findInDepartmentByUniqueId() {
+        HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put("uniqueId", "id");
+
+        InDepartment department = (InDepartment) daoDepartment.find(hashMap).get(0);
+        assertNotNull(department);
+        assertEquals(4, department.getCurrentCapacity());
+        assertEquals(5, department.getTotalCapacity());
+        assertFalse(department.getPatients().isEmpty());
+        assertFalse(department.getPatientsInBeds().isEmpty());
+        assertFalse(department.getStaff().isEmpty());
+        assertTrue(department.hasAvailableBeds());
+
+        assertTrue(department.isPatientInBed(department.getPatients().get(0)));
+
+    }
+
+    @Test
+    public void saveEmptyStaffFails() {
+        Clerk clerk = new Clerk();
+        assertFalse(daoDepartment.save(clerk, inDepartmentTest));
+    }
+
+    @Test
+    public void saveStaffDuplicateFails() {
+        Clerk clerk = new Clerk("patienttest1");
+        assertTrue(daoDepartment.save(clerk, inDepartmentTest));
+        assertFalse(daoDepartment.save(clerk, inDepartmentTest));
+    }
+
+    @Test
+    public void saveEmptyPatientFails() {
+        Patient patient = new Patient();
+        assertFalse(daoDepartment.save(patient, inDepartmentTest));
+    }
+
+    @Test
+    public void savePatientDuplicateFails() {
+        Patient patient = new Patient("patienttest1");
+        assertTrue(daoDepartment.save(patient, inDepartmentTest));
+        assertFalse(daoDepartment.save(patient, inDepartmentTest));
     }
 
     @Test
@@ -88,10 +204,10 @@ public class DaoDepartmentImplTest {
         inDepartmentTest.add(new ICTOfficer("ICTOfficer"));
 
         BedManager bedManager = new BedManager(inDepartmentTest);
-        bedManager.assignToBed(new Patient("patient1"));
-        bedManager.assignToBed(new Patient("patient2"));
+        bedManager.assignToBed(new Patient("patienttest1"));
+        bedManager.assignToBed(new Patient("patienttest2"));
 
-        inDepartmentTest.add(new Patient("patient3"));
+        inDepartmentTest.add(new Patient("patienttest3"));
         assertTrue(daoDepartment.save(inDepartmentTest));
         assertTrue(daoDepartment.delete(inDepartmentTest));
 
@@ -130,6 +246,7 @@ public class DaoDepartmentImplTest {
             e.printStackTrace();
         }
 
+        daoDepartment.delete(patient, inDepartment); // Precautionary delete
         assertTrue(daoDepartment.save(patient, inDepartment));
 
         try {
@@ -151,9 +268,5 @@ public class DaoDepartmentImplTest {
         assertTrue(daoDepartment.delete(staff, outDepartment));
     }
 
-    @Test
-    public void findDepartmentIdOfStaff() {
-
-    }
 
 }
