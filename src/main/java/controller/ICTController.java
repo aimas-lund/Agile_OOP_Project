@@ -58,52 +58,50 @@ class ICTController {
         return doctor;
     }
 
-    /*
-    @PostMapping(value = "/registerPatient")
-    public @ResponseBody
-        //Patient newPatient(Patient newPatient) {
-    Patient newPatient(@RequestParam(value="name") String name,
-                       @RequestParam(value="surname") String surname,
-                       @RequestParam(value="birthday") String birthdate,
-                       @RequestParam(value = "gender") String gen,
-                       @RequestParam(value = "homeAddress") String homeAddress,
-                       @RequestParam(value="phoneNumber") int phoneNumber) throws ParseException {
-
-
-        Gender gender = Gender.valueOf((gen.toUpperCase()));
-
-
-        Date birthDate=new SimpleDateFormat("yyyy-MM-dd").parse(birthdate);
-        Patient newPatient = new Patient(name,surname, birthDate, gender, homeAddress, phoneNumber);
-        return newPatient;
-
-    }
+//    @PostMapping(value = "/registerPatient")
+//    public @ResponseBody
+//        //Patient newPatient(Patient newPatient) {
+//    Patient newPatient(@RequestParam(value="name") String name,
+//                       @RequestParam(value="surname") String surname,
+//                       @RequestParam(value="birthday") String birthdate,
+//                       @RequestParam(value = "gender") String gen,
+//                       @RequestParam(value = "homeAddress") String homeAddress,
+//                       @RequestParam(value="phoneNumber") int phoneNumber) throws ParseException {
+//
+//
+//        Gender gender = Gender.valueOf((gen.toUpperCase()));
+//
+//
+//        Date birthDate = new SimpleDateFormat("yyyy-MM-dd").parse(birthdate);
+//        Patient newPatient = new Patient(name, surname, birthDate, gender, homeAddress, phoneNumber);
+//        return newPatient;
+//
+//    }
 
 
 
 
 
 //(String uniqueId, String name, String surname, Date birthdate, Gender gender, String homeaddress, int phonenumber)
-/*
 
-    @PostMapping("/findPatient")
-    public @ResponseBody String findPatient(String name) {
-        return name;
-    }
+//
+//    @PostMapping("/findPatient")
+//    public @ResponseBody String findPatient(String name) {
+//        return name;
+//    }
+//
+//    // Single item
+//
+//    @GetMapping("/patients/{id}")
+//    Patient one(@PathVariable Long id) {
+//
+//        return repository.findById(id);
+//    }
+//
+//    @DeleteMapping("/patients/{id}")
+//    void deletePatient(@PathVariable Long id) {
+//        repository.deleteById(id);
+//    }
 
-    // Single item
-
-    @GetMapping("/patients/{id}")
-    Patient one(@PathVariable Long id) {
-
-        return repository.findById(id);
-    }
-
-    @DeleteMapping("/patients/{id}")
-    void deletePatient(@PathVariable Long id) {
-        repository.deleteById(id);
-    }
-
-     */
 }
 

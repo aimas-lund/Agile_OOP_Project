@@ -63,29 +63,29 @@ public class ClerkController {
 
     }
 
-    @PostMapping(value = "/updatePatient")
-    public @ResponseBody
-    Patient updatePatient(@RequestParam(value="id") String id,
-                        @RequestParam(value="name", required = false) String name,
-                       @RequestParam(value="surname", required = false) String surname,
-                       @RequestParam(value="birthday", required = false) String birthdate,
-                       @RequestParam(value = "gender", required = false) String gen,
-                       @RequestParam(value = "homeAddress", required = false) String homeAddress,
-                       @RequestParam(value="phoneNumber", required = false) int phoneNumber) throws ParseException, PersonNotFoundException {
-
-        HashMap<String, String> hashMap = new HashMap<String, String>();
-        hashMap.put("id",id);
-
-        Patient patient = (Patient) QRK.find(hashMap).get(0);
-        if (name!= null) {
-           patient.setName(name);
-        }
-
-
-
-
-
-        return patient;
-    }
+//    @PostMapping(value = "/updatePatient")
+//    public @ResponseBody
+//    Patient updatePatient(@RequestParam(value="id") String id,
+//                        @RequestParam(value="name", required = false) String name,
+//                       @RequestParam(value="surname", required = false) String surname,
+//                       @RequestParam(value="birthday", required = false) String birthdate,
+//                       @RequestParam(value = "gender", required = false) String gen,
+//                       @RequestParam(value = "homeAddress", required = false) String homeAddress,
+//                       @RequestParam(value="phoneNumber", required = false) int phoneNumber) throws ParseException, PersonNotFoundException {
+//
+//        HashMap<String, String> hashMap = new HashMap<String, String>();
+//        hashMap.put("id",id);
+//
+//        Patient patient = (Patient) QRK.find(hashMap).get(0);
+//        if (name!= null) {
+//           patient.setName(name);
+//        }
+//
+//
+//
+//
+//
+//        return patient;
+//    }
 
 }
