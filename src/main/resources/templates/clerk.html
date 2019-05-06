@@ -27,37 +27,97 @@
     <div class="flex-container content">
         <h2>Clerk dashboard</h2>
 
+        <!-- Register patient -->
         <div class="dashboard-menu">
-            <h3>Register staff <i class="fa fa-caret-down" aria-hidden="true"></i></h3>
-            <form class="dashboard-action" id="registerStaff" autocomplete="on">
-                <div class="input-container doubleContainer">
-                    <input class="input-field" type="text" placeholder="Name" name="name" id="name" required>
-                    <input class="input-field" type="text" placeholder="Surname" name="surname" id="surname" required>
+            <h3 >Register patient <i class="fa fa-caret-down" aria-hidden="true"></i></h3>
+
+            <form class="dashboard-action" id="registerPatient" autocomplete="on" action="/registerPatient" >
+                <div class="input-container">
+                    <input class="input-field" type="text" placeholder="Name" name="name" required>
+                    <input class="input-field" type="text" placeholder="Surname" name="surname" required>
                 </div>
-                <div class="input-container doubleContainer" >
-                    <input class="input-field" type="text" placeholder="Home address" name="homeAddress" id="homeAddress" required>
-                    <input class="input-field" type="tel" placeholder="Phone number" name="phoneNumber" id="phoneNumber" required>
+                <div class="input-container" >
+                    <input class="input-field" type="text" placeholder="Home address" name="homeAddress" required>
                 </div>
-                <div class="input-container singleContainer">
-                    <input class="input-field" type="email" placeholder="E-mail" name="email" id="email" required>
-                </div>
-                <div class="input-container tripleContainer">
-                    <input class="input-field" type="date" placeholder="Birthday" name="birthday" id="birthday" required>
-                    <select  class="dropdown" form="registerStaff" name="gender" id="gender" required>
+                <div class="input-container">
+                    <input class="input-field" type="tel" placeholder="Phone number" name="phoneNumber" required>
+                    <input class="input-field" type="date" placeholder="Birthday" name="birthday" required>
+                    <select class="dropdown" form="registerPatient" name="gender" required>
                         <option value="" disabled selected hidden>Gender</option>
                         <option value="male">Male</option>
                         <option value="female">Female</option>
                     </select>
-                    <select class="dropdown" form="registerStaff" name="role" id="role" required>
-                        <option value="" disabled selected hidden>Role</option>
-                        <option value="Doctor">Doctor</option>
-                        <option value="Nurse">Nurse</option>
-                        <option value="Clerk">Clerk</option>
-                        <option value="ICT Officer">ICT Officer</option>
+                    <button type="submit" formmethod="post" class="btn">Register</button>
+                </div>
+                <div class="input-container submitButton">
+                    <input class="input-field" type="text" placeholder="Register to which department"  name="department" required>
+                    <button type="submit" formmethod="post" class="btn">Register</button>
+                </div>
+            </form>
+        </div>
+        <!-- assign to dept? -->
+
+        <!-- Update patient -->
+        <div class="dashboard-menu">
+            <h3 >Update patient <i class="fa fa-caret-down" aria-hidden="true"></i></h3>
+
+            <form class="dashboard-action" id="updatePatient" autocomplete="on" action="/updatePatient" >
+                <div class="input-container">
+                    <input class="input-field" type="text" placeholder="ID" name="id" required>
+                    <select class="dropdown" form="updatePatient" id="selectParamPatient" name="parameter" onchange="upPatient()" required>
+                        <option value="" disabled selected hidden>Choose value to update</option>
+                        <option value="name">Name</option>
+                        <option value="surname">Surname</option>
+                        <option value="homeAddress">Home address</option>
+                        <option value="phoneNumber">Phone number</option>
+                        <option value="birthday">Birthday</option>
+                        <option value="gender">Gender</option>
+                    </select>
+                    <input class="input-field update" id="text" style="display:block" type="text" placeholder="Text field" name="text">
+                    <input class="input-field update" id="num" type="tel" placeholder="Phone number" name="phoneNumber" required>
+                    <input class="input-field update" id="date" type="date" placeholder="Birthday" name="birthday">
+                    <select class="dropdown update" id="gender" form="registerPatient" name="gender" required>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
                     </select>
                 </div>
+                <div class="input-container">
+
+                </div>
                 <div class="submitButton">
-                    <button type="submit" formmethod="post" class="btn">Register</button>
+                    <button type="submit" formmethod="post" class="btn">Update</button>
+                </div>
+            </form>
+        </div>
+        <!-- Search for patient -->
+        <div class="dashboard-menu">
+            <h3>Search for patient<i class="fa fa-caret-down" aria-hidden="true"></i></h3>
+            <form class="dashboard-action" id="searchPatient" autocomplete="on" action="/searchPatient" >
+                <div class="input-container">
+                    <select class="dropdown" form="searchPatient" id="searchPatientParam" name="searchParameter"
+                            onchange="searchPatient()" required>
+                        <option value="" disabled selected hidden>Choose a search parameter</option>
+                        <option value="name">Name</option>
+                        <option value="id">ID</option>
+                        <option value="department">Department</option>
+                    </select>
+                    <input class="input-field search searchPatient" type="text" placeholder="Name" name="name" id="pname">
+                    <input class="input-field search searchPatient" type="tel" placeholder="ID" name="id" id="pid">
+                    <input class="input-field search searchPatient" type="text" placeholder="Department"  name="department" id="pdepartment" >
+
+                </div>
+                <div class="submitButton">
+                    <button type="submit" formmethod="post" class="btn">Search</button>
+                </div>
+            </form>
+        </div>
+        <!-- Delete patient -->
+        <div class="dashboard-menu">
+            <h3>Delete person<i class="fa fa-caret-down" aria-hidden="true"></i></h3>
+            <form class="dashboard-action" id="deletePatient" autocomplete="on" action="/deletePatient">
+                <div class="input-container">
+                    <input class="input-field" type="text" placeholder="ID" name="id" required style="width:25%">
+                    <button type="submit" formmethod="post" class="btn">Delete</button>
                 </div>
             </form>
         </div>

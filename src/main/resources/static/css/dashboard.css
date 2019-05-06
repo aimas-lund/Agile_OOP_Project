@@ -1,4 +1,4 @@
-.search {
+.search, .update {
     display:none;
 }
 #searchStaffParam, #searchPatientParam {
@@ -17,7 +17,7 @@
 .dashboard-menu {
     width: 100%;
     margin: 20px 0px;
-    
+
     border-radius: 10px;
     border: 2px solid grey;
 }

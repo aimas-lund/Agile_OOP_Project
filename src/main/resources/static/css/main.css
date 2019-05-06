@@ -29,7 +29,7 @@ header {
     margin-top: 100px;
     display: flex;
     justify-content: center;
-    
+
     /* Support for other browsers */
     display: -webkit-box;
     display: -webkit-flex;
@@ -45,7 +45,7 @@ header {
     position: relative;
     display: flex;
     justify-content: center;
-    
+
     /* Support for other browsers */
     display: -webkit-box;
     display: -webkit-flex;
@@ -110,5 +110,13 @@ header {
 }
 .flex-container {
     width: 50%;
+}
+.content {
     padding: 20px;
+}
+.id-field {
+    width:30%;
+}
+.inline {
+    width: 20%;
 }

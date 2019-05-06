@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+    <title>Homepage</title>
+        <link rel="stylesheet" type="text/css" href="css/main.css">
+        <link rel="stylesheet" type="text/css" href="css/dashboard.css">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+        <script src="js/jquery.min.js"></script>
+        <script src="js/script.js"></script>
+</head>
+    <body>
+        <header>
+            <div class="elements">
+                        <span class="logo">
+                            Team Syntactic Sugar: <br/>Fake Hospital
+                        </span>
+                <span th:inline="text" class="user" style="display:flex;">
+                            Howdy [[${#httpServletRequest.remoteUser}]]!
+                            <form th:action="@{/logout}" method="post" class="sign-out">
+                                <input type="submit" value="Sign Out"/>
+                            </form>
+
+                        </span>
+            </div>
+        </header>
+        <div class="flex">
+            <div class="flex-container content">
+                <h2>Nurse dashboard</h2>
+                <!-- 
+                Move patients between bed
+                Assign to department/bed/waiting rooms
+                Discharge patients
+                Move patients around in a department
+                -->
+                <!-- Search for patient -->
+                <div class="dashboard-menu">
+                    <h3>Search for patient<i class="fa fa-caret-down" aria-hidden="true"></i></h3>
+                    <form class="dashboard-action" id="searchPatient" autocomplete="on" action="/searchPatient" >
+                        <div class="input-container">
+                            <select class="dropdown" form="searchPatient" id="searchPatientParam" name="searchParameter"
+                                    onchange="searchPatient()" required>
+                                <option value="" disabled selected hidden>Choose a search parameter</option>
+                                <option value="name">Name</option>
+                                <option value="id">ID</option>
+                                <option value="department">Department</option>
+                            </select>
+                            <input class="input-field search searchPatient" type="text" placeholder="Name" name="name" id="pname">
+                            <input class="input-field search searchPatient" type="tel" placeholder="ID" name="id" id="pid">
+                            <input class="input-field search searchPatient" type="text" placeholder="Department"  name="department" id="pdepartment" >
+
+                        </div>
+                        <div class="submitButton">
+                            <button type="submit" formmethod="post" class="btn">Search</button>
+                        </div>
+                    </form>
+                </div>
+                <!-- Assign patient to waiting room/bed -->
+                <div class="dashboard-menu">
+                    <h3>Assign patient to department<i class="fa fa-caret-down" aria-hidden="true"></i></h3>
+                    <form class="dashboard-action" id="assignPatient" autocomplete="on" action="/assignPatient">
+                        <div class="input-container">
+                            <input class="input-field" type="text" placeholder="ID" name="id">
+                            <input class="input-field" type="text" placeholder="Department" name="department">
+                        </div>
+                        <div class="submitButton">
+                            <button type="submit" formmethod="post" class="btn">Assign</button>
+                        </div>
+                    </form>
+                </div>
+                <!-- Discharge patient -->
+                <div class="dashboard-menu">
+                    <h3>Delete person<i class="fa fa-caret-down" aria-hidden="true"></i></h3>
+                    <form class="dashboard-action" id="dischargePatient" autocomplete="on" action="/dischargePatient">
+                        <div class="input-container">
+                            <input class="input-field id-field" type="text" placeholder="ID" name="id" required>
+                            <button type="submit" formmethod="post" class="btn">Discharge</button>
+                        </div>
+                    </form>
+                </div>
+                
+                
+                <!-- BedManger things -->
+                <!-- Assign to bed -->
+                <div class="dashboard-menu">
+                    <h3>Assign patient to bed<i class="fa fa-caret-down" aria-hidden="true"></i></h3>
+                    <form class="dashboard-action" id="assignPatient" autocomplete="on" action="/assignPatient">
+                        <div class="input-container">
+                            <input class="input-field" type="text" placeholder="Patient ID" name="id" required>
+                            <input class="input-field" type="tel" placeholder="Optional bed ID" name="bedId">
+                            <button type="submit" formmethod="post" class="btn inline">Assign</button>
+                        </div>
+                    </form>
+                </div>
+                
+                
+                
+            </div>
+            <div class="flex-container searchResults">
+
+            </div>
+        </div>
+    </body>
+</html>

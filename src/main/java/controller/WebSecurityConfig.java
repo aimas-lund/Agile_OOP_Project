@@ -26,7 +26,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .exceptionHandling().accessDeniedPage("/error.html")
                 .and()
                 .authorizeRequests()
-                    .antMatchers("/staff/**").hasAnyRole("STAFF","ICT")
+                    .antMatchers("/doctor/**").hasAnyRole("DOCTOR","ICT")
+                    .antMatchers("/nurse/**").hasAnyRole("NURSE","ICT")
                     .antMatchers("/clerk/**").hasAnyRole("CLERK","ICT")
                     .antMatchers("/ict/**").hasRole("ICT")
                     .and()
@@ -42,7 +43,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication()
-                .withUser("staff").password(encoder().encode("staff")).roles("STAFF")
+                .withUser("doctor").password(encoder().encode("doctor")).roles("DOCTOR")
+                .and()
+                .withUser("nurse").password(encoder().encode("nurse")).roles("NURSE")
                 .and()
                 .withUser("clerk").password(encoder().encode("clerk")).roles("CLERK")
                 .and()
