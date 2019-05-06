@@ -68,7 +68,7 @@ public class DatabaseSteps {
         try {
             PreparedStatement statement = database.prepareStatement(sql);
             statement.setString(1, patient.getUniqueId());
-            rs = statement.executeQuery(sql);
+            rs = statement.executeQuery();
 
             assertTrue(rs.next());
             while (rs.next()) {
@@ -100,7 +100,7 @@ public class DatabaseSteps {
         try {
             PreparedStatement statement = database.prepareStatement(sql);
             statement.setString(1, staff.getUniqueId());
-            rs = statement.executeQuery(sql);
+            rs = statement.executeQuery();
 
             assertTrue(rs.next());
             while (rs.next()) {
