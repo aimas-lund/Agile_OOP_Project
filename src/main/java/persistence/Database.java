@@ -95,75 +95,64 @@ public class Database {
         }
     }
 
-    public boolean executePreparedStatementBatch(PreparedStatement statement) {
+    public boolean executePreparedStatementBatch(PreparedStatement statement) throws SQLException {
         return executePreparedStatementBatch(statement, true);
     }
 
-    public boolean executePreparedStatementBatch(PreparedStatement statement, boolean shouldCommit) {
-        boolean success;
+    public boolean executePreparedStatementBatch(PreparedStatement statement, boolean shouldCommit) throws SQLException {
         try {
-            try {
-                int[] updateCount = statement.executeBatch();
+            int[] updateCount = statement.executeBatch();
 
-                for (int update :
-                        updateCount) {
-                    if (update < 1) {
-                        return false;
-                    }
-                }
-                if (shouldCommit) {
-                    connection.commit();
-                }
-                success = true;
-            } catch (SQLException e) {
-                connection.rollback();
-                success = false;
-            } finally {
-                if (shouldCommit) {
-                    connection.close();
+            if (updateCount.length == 0) {
+                return false;
+            }
+            for (int update :
+                    updateCount) {
+                if (update < 1) {
+                    return false;
                 }
             }
+            if (shouldCommit) {
+                connection.commit();
+            }
+            return true;
         } catch (SQLException e) {
-            e.printStackTrace();
-            success = false;
+            connection.rollback();
+            throw new SQLException(e);
+        } finally {
+            if (shouldCommit) {
+                connection.close();
+            }
         }
-        return success;
     }
 
-    public boolean executePreparedStatement(PreparedStatement statement) {
+    public boolean executePreparedStatement(PreparedStatement statement) throws SQLException {
         return executePreparedStatement(statement, true);
     }
 
-    public boolean executePreparedStatement(PreparedStatement statement, boolean shouldCommit) {
-        boolean success;
+    public boolean executePreparedStatement(PreparedStatement statement, boolean shouldCommit) throws SQLException {
         try {
-            try {
-                int update = statement.executeUpdate();
+            int update = statement.executeUpdate();
 
-                if (update <= 0) {
-                    return false;
-                }
-
-                if (shouldCommit && !connection.getAutoCommit()) {
-                    connection.commit();
-                }
-
-                success = true;
-            } catch (SQLException e) {
-                if (!connection.getAutoCommit()) {
-                    connection.rollback();
-                }
-                success = false;
-            } finally {
-                if (shouldCommit) {
-                    connection.close();
-                }
+            if (update <= 0) {
+                return false;
             }
+
+            if (shouldCommit && !connection.getAutoCommit()) {
+                connection.commit();
+            }
+
+            return true;
         } catch (SQLException e) {
-            e.printStackTrace();
-            success = false;
+            if (!connection.getAutoCommit()) {
+                connection.rollback();
+            }
+            throw new SQLException(e);
+        } finally {
+            if (shouldCommit) {
+                connection.close();
+            }
         }
-        return success;
     }
 
 

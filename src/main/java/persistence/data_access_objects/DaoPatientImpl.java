@@ -24,11 +24,9 @@ public class DaoPatientImpl<T extends Patient> implements IDao<T> {
 
             return database.executePreparedStatement(statement);
         } catch (SQLException e) {
-
-            e.printStackTrace();
+            return false;
         }
 
-        return false;
     }
 
     private void buildPatientInformationSql(T patient, PreparedStatement statement) throws SQLException {

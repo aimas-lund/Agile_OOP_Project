@@ -82,7 +82,6 @@ public class DaoDepartmentImpl<T extends Department> implements IDao<T> {
             return database.executePreparedStatement(statement, false);
 
         } catch (SQLException e) {
-            e.printStackTrace();
             return false;
         }
     }
@@ -96,22 +95,23 @@ public class DaoDepartmentImpl<T extends Department> implements IDao<T> {
 
             for (Staff staff :
                     department.getStaff()) {
+
                 if (uniqueids.contains(staff.getUniqueId())) {
                     continue;
                 }
                 statement.setString(1, staff.getUniqueId());
                 statement.setString(2, department.getUniqueId());
                 statement.addBatch();
+                tempUniqueIds.add(staff.getUniqueId());
             }
 
-            if (database.executePreparedStatementBatch(statement, false)) {
-                uniqueids.addAll(tempUniqueIds);
-                return true;
-            } else {
+            if (!database.executePreparedStatementBatch(statement, false)) {
                 return false;
             }
+
+            uniqueids.addAll(tempUniqueIds);
+            return true;
         } catch (SQLException e) {
-            e.printStackTrace();
             return false;
         }
     }
@@ -135,15 +135,13 @@ public class DaoDepartmentImpl<T extends Department> implements IDao<T> {
                 tempUniqueIds.add(patient.getUniqueId());
             }
 
-            if (database.executePreparedStatementBatch(statement, false)) {
-                uniqueids.addAll(tempUniqueIds);
-                return true;
-            } else {
+            if (!database.executePreparedStatementBatch(statement, false)) {
                 return false;
             }
+            uniqueids.addAll(tempUniqueIds);
+            return true;
 
         } catch (SQLException e) {
-            e.printStackTrace();
             return false;
         }
     }
@@ -454,12 +452,12 @@ public class DaoDepartmentImpl<T extends Department> implements IDao<T> {
             preparedStatement.setString(1, uniqueId);
             boolean b3 = database.executePreparedStatement(preparedStatement, false);
 
+            // no patients or staff, so b2 and b3 are false but it deletes
             database.commit();
             database.disconnectFromDB();
             return b1 && b2 && b3;
 
         } catch (SQLException e) {
-            e.printStackTrace();
             return false;
         }
     }
@@ -499,17 +497,20 @@ public class DaoDepartmentImpl<T extends Department> implements IDao<T> {
     }
 
     public boolean delete(T department) {
+        department.getPatients().forEach((patient) -> uniqueids.remove(patient.getUniqueId()));
+        department.getStaff().forEach((staff) -> uniqueids.remove(staff.getUniqueId()));
+
         return delete(department.getUniqueId());
     }
 
     public boolean update(Staff staff, T department) {
-        String sql = "update staff_in_departments set staffId = ?, departmentId = ?";
+        String sql = "update staff_in_departments set departmentId = ? where staffId = ?";
 
         try {
             PreparedStatement statement = database.prepareStatement(sql);
 
-            statement.setString(1, staff.getUniqueId());
-            statement.setString(2, department.getUniqueId());
+            statement.setString(1, department.getUniqueId());
+            statement.setString(2, staff.getUniqueId());
 
             if (database.executePreparedStatement(statement)) {
                 uniqueids.remove(staff.getUniqueId());
@@ -523,12 +524,14 @@ public class DaoDepartmentImpl<T extends Department> implements IDao<T> {
     }
 
     public boolean update(Patient patient, T department) {
-        String sql = "update patients_in_departments set patientId = ?, departmentId = ?, bedId = ?, isWaiting = ?";
+        String sql = "update patients_in_departments set patientId = ?, departmentId = ?, bedId = ?, isWaiting = ?" +
+                " where patientId = ?";
 
         try {
             PreparedStatement statement = database.prepareStatement(sql);
 
             buildPatientStatement(department, statement, patient);
+            statement.setString(5, patient.getUniqueId());
 
             return database.executePreparedStatement(statement);
 

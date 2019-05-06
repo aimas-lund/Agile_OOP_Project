@@ -7,10 +7,10 @@ import java.util.ArrayList;
 
 public abstract class Department {
 	private String name;
+
     private String uniqueId;
 	private ArrayList<Patient> patients = new ArrayList<>();
 	private ArrayList<Staff> staff = new ArrayList<>();
-
 	Department() {
     }
 
@@ -67,6 +67,22 @@ public abstract class Department {
 
     public String getName() {
         return name;
+    }
+
+    void setName(String name) {
+        this.name = name;
+    }
+
+    void setUniqueId(String uniqueId) {
+        this.uniqueId = uniqueId;
+    }
+
+    void setPatients(ArrayList<Patient> patients) {
+        this.patients = patients;
+    }
+
+    void setStaff(ArrayList<Staff> staff) {
+        this.staff = staff;
     }
 
 
