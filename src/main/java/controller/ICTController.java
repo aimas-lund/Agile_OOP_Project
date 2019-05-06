@@ -82,12 +82,7 @@ class ICTController {
 
 //(String uniqueId, String name, String surname, Date birthdate, Gender gender, String homeaddress, int phonenumber)
 
-//
-//    @PostMapping("/findPatient")
-//    public @ResponseBody String findPatient(String name) {
-//        return name;
-//    }
-//
+
 //    // Single item
 //
 //    @GetMapping("/patients/{id}")

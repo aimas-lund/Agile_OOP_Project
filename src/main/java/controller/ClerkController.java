@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 public class ClerkController {
     QueryRoleClerk QRK = new QueryRoleClerk();
     DaoDepartmentImpl dept = new DaoDepartmentImpl();
+    PersonInformationFacade PIF;
 
     @PostMapping(value = "/registerPatient")
     public @ResponseBody
@@ -67,29 +68,41 @@ public class ClerkController {
 
     }
 
-//    @PostMapping(value = "/updatePatient")
-//    public @ResponseBody
-//    Patient updatePatient(@RequestParam(value="id") String id,
-//                        @RequestParam(value="name", required = false) String name,
-//                       @RequestParam(value="surname", required = false) String surname,
-//                       @RequestParam(value="birthday", required = false) String birthdate,
-//                       @RequestParam(value = "gender", required = false) String gen,
-//                       @RequestParam(value = "homeAddress", required = false) String homeAddress,
-//                       @RequestParam(value="phoneNumber", required = false) int phoneNumber) throws ParseException, PersonNotFoundException {
-//
-//        HashMap<String, String> hashMap = new HashMap<String, String>();
-//        hashMap.put("id",id);
-//
-//        Patient patient = (Patient) QRK.find(hashMap).get(0);
-//        if (name!= null) {
-//           patient.setName(name);
-//        }
-//
-//
-//
-//
-//
-//        return patient;
-//    }
+    @PostMapping(value = "/updatePatient")
+    public @ResponseBody
+    Patient updatePatient(@RequestParam(value="id") String id,
+                          @RequestParam(value="name", required = false) String name,
+                          @RequestParam(value="surname", required = false) String surname,
+                          @RequestParam(value="birthday", required = false) String birthdate,
+                          @RequestParam(value = "gender", required = false) String gen,
+                          @RequestParam(value = "homeAddress", required = false) String homeAddress,
+                          @RequestParam(value="phoneNumber", required = false) String phoneNumber) throws ParseException, PersonNotFoundException {
+
+        HashMap<String, String> hashMap = new HashMap<String, String>();
+        hashMap.put("id",id);
+
+        Patient patient = (Patient) QRK.find(hashMap).get(0);
+        PIF = new PersonInformationFacade(patient);
+
+        if (name!= null) {
+            PIF.setPersonName(name);
+        }
+        else if (surname != null)
+            PIF.setPersonSurname(name);
+        else if (birthdate != null) {
+            Date birthDate = new SimpleDateFormat("yyyy-MM-dd").parse(birthdate);
+            PIF.setPersonBirthdate(birthDate);
+        }
+        else if (gen!=null) {
+            Gender gender = Gender.valueOf((gen.toUpperCase()));
+            PIF.setPersonGender(gender);
+        }
+        else if (homeAddress != null)
+            PIF.setPersonHomeAddress(homeAddress);
+        else if (phoneNumber!=null)
+            PIF.setPersonPhoneNumber(Integer.valueOf(phoneNumber));
+
+        return patient;
+    }
 
 }

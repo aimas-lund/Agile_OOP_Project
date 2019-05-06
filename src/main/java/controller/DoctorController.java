@@ -34,4 +34,5 @@ public class DoctorController {
         OutDepartment dept = (OutDepartment) depts.get(0);
         return dept.getNextWaitingPatient();
     }
+
 }
