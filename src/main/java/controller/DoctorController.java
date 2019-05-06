@@ -23,23 +23,6 @@ public class DoctorController {
     Doctor doctor = new Doctor();
     // search patients
 
-    @PostMapping("/searchPatient")
-    public @ResponseBody
-    ArrayList<Patient> findPatient(
-            @RequestParam(value = "name", required=false) String name,
-            @RequestParam(value="id", required =false) String id,
-            @RequestParam(value = "department", required = false) String department) throws PersonNotFoundException {
-
-
-        HashMap<String, String> hashMap = new HashMap<String, String>();
-        hashMap.put("name",name);
-        hashMap.put("uniqueid",id);
-        hashMap.put("department",department);
-
-        return daopatient.find(hashMap);
-
-    }
-
     // get waiting patients
 
     @GetMapping("/nextPatient")
