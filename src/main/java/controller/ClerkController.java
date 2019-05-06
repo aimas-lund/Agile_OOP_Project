@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import core.buildings.Department;
+import core.buildings.InDepartment;
 import core.persons.*;
 
 import exceptions.FormatException;
@@ -35,10 +36,10 @@ public class ClerkController {
         Date birthDate=new SimpleDateFormat("yyyy-MM-dd").parse(birthdate);
         Patient newPatient = new Patient(name,surname, birthDate, gender, homeAddress, phoneNumber);
 
-        //Department mockDept = new Department();
+        InDepartment mockDept = new InDepartment();
 
 
-        //QueryRoleClerk.registerPerson(newPatient, department);
+        QRK.registerPerson(newPatient, mockDept);
 
         return newPatient;
 

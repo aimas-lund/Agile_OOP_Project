@@ -43,8 +43,6 @@ class ICTController {
 
         Date birthDate=new SimpleDateFormat("yyyy-MM-dd").parse(birthdate);
 
-
-
         Doctor doctor = new Doctor();
 
 
