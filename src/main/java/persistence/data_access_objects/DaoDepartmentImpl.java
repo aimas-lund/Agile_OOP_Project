@@ -18,7 +18,6 @@ public class DaoDepartmentImpl<T extends Department> implements IDao<T> {
 
     static {
         getUniqueids();
-        System.out.println("I am unique id");
     }
 
     private static void getUniqueids() {
@@ -67,7 +66,7 @@ public class DaoDepartmentImpl<T extends Department> implements IDao<T> {
         String sql = "insert into departments values(?, ?, ?, ?, ?)";
 
         try {
-            PreparedStatement statement = database.prepareStatement(sql);
+            PreparedStatement statement = database.prepareStatement(sql, false);
             statement.setString(1, department.getUniqueId());
             statement.setString(2, department.getName());
             statement.setString(5, department.getClass().getSimpleName());
@@ -93,7 +92,7 @@ public class DaoDepartmentImpl<T extends Department> implements IDao<T> {
         ArrayList<String> tempUniqueIds = new ArrayList<>();
 
         try {
-            PreparedStatement statement = database.prepareStatement(sql);
+            PreparedStatement statement = database.prepareStatement(sql, false);
 
             for (Staff staff :
                     department.getStaff()) {
@@ -122,7 +121,7 @@ public class DaoDepartmentImpl<T extends Department> implements IDao<T> {
         ArrayList<String> tempUniqueIds = new ArrayList<>();
 
         try {
-            PreparedStatement statement = database.prepareStatement(sql);
+            PreparedStatement statement = database.prepareStatement(sql, false);
 
             for (Patient patient :
                     department.getPatients()) {
@@ -443,15 +442,15 @@ public class DaoDepartmentImpl<T extends Department> implements IDao<T> {
 
         PreparedStatement preparedStatement;
         try {
-            preparedStatement = database.prepareStatement(sqlDeleteDepartment);
+            preparedStatement = database.prepareStatement(sqlDeleteDepartment, false);
             preparedStatement.setString(1, uniqueId);
             boolean b1 = database.executePreparedStatement(preparedStatement, false);
 
-            preparedStatement = database.prepareStatement(sqlDeleteStaff);
+            preparedStatement = database.prepareStatement(sqlDeleteStaff, false);
             preparedStatement.setString(1, uniqueId);
             boolean b2 = database.executePreparedStatement(preparedStatement, false);
 
-            preparedStatement = database.prepareStatement(sqlDeletePatient);
+            preparedStatement = database.prepareStatement(sqlDeletePatient, false);
             preparedStatement.setString(1, uniqueId);
             boolean b3 = database.executePreparedStatement(preparedStatement, false);
 

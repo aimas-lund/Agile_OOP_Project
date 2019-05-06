@@ -4,13 +4,10 @@ import core.persons.Gender;
 import core.persons.Patient;
 import persistence.Database;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,20 +16,33 @@ public class DaoPatientImpl<T extends Patient> implements IDao<T> {
 
     @Override
     public boolean save(T patient) {
-        String[] information = patient.getPersonInformation();
-        String sql = "insert into patients values('%s', '%s', '%s', date('%s'), '%s', '%s', '%s')";
-        for (String value :
-                information) {
-            sql = sql.replaceFirst("%s", value.replaceAll(" ", "_"));
+        String sql = "insert into patients values(?, ?, ?, ?, ?, ?, ?)";
+
+        try {
+            PreparedStatement statement = database.prepareStatement(sql);
+            buildPatientInformationSql(patient, statement);
+
+            return database.executePreparedStatement(statement);
+        } catch (SQLException e) {
+
+            e.printStackTrace();
         }
 
-        return database.executeStatement(sql);
+        return false;
+    }
+
+    private void buildPatientInformationSql(T patient, PreparedStatement statement) throws SQLException {
+        statement.setString(1, patient.getUniqueId());
+        statement.setString(2, patient.getName());
+        statement.setString(3, patient.getSurname());
+        statement.setDate(4, new java.sql.Date(patient.getBirthdate().getTime()));
+        statement.setString(5, patient.getGender().toString());
+        statement.setString(6, patient.getHomeAddress()); //.replaceAll(" ", "_")
+        statement.setInt(7, patient.getPhoneNumber());
     }
 
     @Override
     public ArrayList<T> find(HashMap<String, String> params) {
-        database.connectToDB();
-
         String sql = "select * from patients where ";
         String values = "";
 
@@ -47,28 +57,27 @@ public class DaoPatientImpl<T extends Patient> implements IDao<T> {
 
         sql = sql + values.substring(0, values.length() - 4);
 
-        Statement statement = database.createStatement();
 
         ArrayList<T> patients = new ArrayList<>();
 
         try {
-            ResultSet resultSet = statement.executeQuery(sql);
+            PreparedStatement statement = database.prepareStatement(sql);
+            ResultSet resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
 
-                Date birthdate = new SimpleDateFormat("yyyy-MM-dd").parse(resultSet.getString("birthdate"));
                 patients.add((T) new Patient(
                         resultSet.getString("uniqueId"),
                         resultSet.getString("name"),
                         resultSet.getString("surname"),
-                        birthdate,
+                        resultSet.getDate("birthdate"),
                         Gender.valueOf(resultSet.getString("gender")),
                         resultSet.getString("homeaddress"),
                         Integer.parseInt(resultSet.getString("phonenumber"))
                 ));
             }
 
-        } catch (SQLException | ParseException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         database.disconnectFromDB();
@@ -87,28 +96,34 @@ public class DaoPatientImpl<T extends Patient> implements IDao<T> {
 
     @Override
     public boolean delete(String uniqueId) {
-        String sql = "delete from patients where uniqueid = '%s'";
-        sql = String.format(sql, uniqueId);
+        String sql = "delete from patients where uniqueid = ?";
 
-        return database.executeStatement(sql);
+        try {
+            PreparedStatement statement = database.prepareStatement(sql);
+            statement.setString(1, uniqueId);
+            return database.executePreparedStatement(statement);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     @Override
     public boolean update(T patient) {
-        String[] information = patient.getPersonInformation();
-        String sql = "UPDATE patients set uniqueid = '%s', name = '%s', surname = '%s', birthdate = date('%s'), " +
-                "gender = '%s', homeaddress = '%s', phonenumber = '%s' where uniqueId = '%s'";
+        String sql = "UPDATE patients set uniqueid = ?, name = ?, surname = ?, birthdate = ?, " +
+                "gender = ?, homeaddress = ?, phonenumber = ? where uniqueId = ?";
 
-        for (String value :
-                information) {
-            if (value == null) return false;
+        try {
+            PreparedStatement statement = database.prepareStatement(sql);
+            buildPatientInformationSql(patient, statement);
+            statement.setString(8, patient.getUniqueId());
+            return database.executePreparedStatement(statement);
 
-            sql = sql.replaceFirst("%s", value.replaceAll(" ", "_"));
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
 
-        sql = String.format(sql, patient.getUniqueId());
-
-        return database.executeStatement(sql);
+        return false;
     }
 
 }

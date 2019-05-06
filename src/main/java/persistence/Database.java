@@ -1,6 +1,9 @@
 package persistence;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class Database {
@@ -13,7 +16,6 @@ public class Database {
     public void connectToDB() {
         try {
             connection = DriverManager.getConnection("jdbc:sqlite:sample.db");
-            connection.setAutoCommit(false);
         } catch (SQLException e) {
             System.err.println(e.getMessage());
         }
@@ -41,30 +43,21 @@ public class Database {
         return false;
     }
 
-    public Statement createStatement() {
-        // Connect to database if null
-        if (!(hasConnection())) {
-            connectToDB();
-        }
-        try {
-            return connection.createStatement();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
+    public PreparedStatement prepareStatement(String sql) throws SQLException {
+        return prepareStatement(sql, true);
     }
 
-    public PreparedStatement prepareStatement(String sql) throws SQLException {
+    public PreparedStatement prepareStatement(String sql, boolean autoCommit) throws SQLException {
         // Connect to database if null
         if (!(hasConnection())) {
             connectToDB();
         }
+        connection.setAutoCommit(autoCommit);
         return connection.prepareStatement(sql);
 
     }
 
     public boolean createTable(String name, ArrayList<ArrayList<String>> fields) {
-        Statement statement = createStatement();
         String query = "create table %s (%s";
         String values = "";
 
@@ -78,8 +71,11 @@ public class Database {
         query = String.format(query + ")", name, values);
 
         try {
-            statement.executeUpdate(query);
+            PreparedStatement statement = prepareStatement(query);
+            statement.executeUpdate();
+            disconnectFromDB();
         } catch (SQLException e) {
+            disconnectFromDB();
             return false;
         }
 
@@ -87,27 +83,12 @@ public class Database {
     }
 
     public boolean deleteTable(String name) {
-        Statement statement = createStatement();
         String sql = String.format("drop table %s", name);
         try {
-            statement.executeUpdate(sql);
+            PreparedStatement statement = prepareStatement(sql);
+            statement.executeUpdate();
+            disconnectFromDB();
             return true;
-        } catch (SQLException e) {
-            return false;
-        }
-    }
-
-    public boolean executeStatement(String sql) {
-        try {
-            Statement statement = createStatement();
-            int i = statement.executeUpdate(sql);
-            if (i > 0) {
-                disconnectFromDB();
-                return true;
-            } else {
-                disconnectFromDB();
-                return false;
-            }
         } catch (SQLException e) {
             disconnectFromDB();
             return false;
@@ -163,13 +144,15 @@ public class Database {
                     return false;
                 }
 
-                if (shouldCommit) {
+                if (shouldCommit && !connection.getAutoCommit()) {
                     connection.commit();
                 }
 
                 success = true;
             } catch (SQLException e) {
-                connection.rollback();
+                if (!connection.getAutoCommit()) {
+                    connection.rollback();
+                }
                 success = false;
             } finally {
                 if (shouldCommit) {
