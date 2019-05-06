@@ -16,26 +16,57 @@ function searchStaff() {
 
 function upPatient() {
     var option = $("#selectParamPatient").val();
-    $(".update").hide();
-    $(".update").removeAttr("required","false");
+    $(".update","#updatePatient").hide();
+    $(".update","#updatePatient").removeAttr("required","false");
     switch(option) {
         case "birthday":
-            $("#date").show()
-            $("#date").attr("required","true")
+            $("#date","#updatePatient").show()
+            $("#date","#updatePatient").attr("required","true")
             break
         case "gender":
-            $("#gender").show()
-            $("#gender").attr("required","true")
+            $("#gender","#updatePatient").show()
+            $("#gender","#updatePatient").attr("required","true")
             break;
         case "phoneNumber":
-            $("#num").show()
-            $("#num").attr("required","true")
+            $("#num","#updatePatient").show()
+            $("#num","#updatePatient").attr("required","true")
             break;
         case "name":
         case "surname":
         case "homeAddress":
-            $("#text").show()
-            $("#text").attr("required","true")
+            $("#text","#updatePatient").show()
+            $("#text","#updatePatient").attr("required","true")
+            break
+        default:
+            alert("error");
+    }
+}
+function upStaff() {
+    var option = $("#selectParamStaff").val();
+    $(".update","#updateStaff").hide(); $(".update","#updateStaff").removeAttr("required","false");
+    switch(option) {
+        case "birthday":
+            $("#date","#updateStaff").show()
+            $("#date","#updateStaff").attr("required","true")
+            break
+        case "gender":
+            $("#gender","#updateStaff").show()
+            $("#gender","#updateStaff").attr("required","true")
+            break;
+        case "phoneNumber":
+            $("#num","#updateStaff").show()
+            $("#num","#updateStaff").attr("required","true")
+            break;
+        case "role":
+            $("#role","#updateStaff").show()
+            $("#role","#updateStaff").attr("required","true")
+            break;
+        case "name":
+        case "surname":
+        case "homeAddress":
+        case "email":
+            $("#text","#updateStaff").show()
+            $("#text","#updateStaff").attr("required","true")
             break
         default:
             alert("error");
@@ -48,6 +79,3 @@ $(document).ready(function() {
         $("form",$(this).parent()).toggle();
     });
 });
-
-
-
