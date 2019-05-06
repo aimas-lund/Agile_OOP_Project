@@ -87,6 +87,12 @@ public class DatabaseTest {
 
         // will return false if you try to create a table that already exists
         assertFalse(database.createTable("test", list));
+
+        try {
+            statement.executeUpdate("DROP table IF exists test");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test

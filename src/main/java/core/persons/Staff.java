@@ -2,7 +2,7 @@ package core.persons;
 
 import java.util.Date;
 
-public class Staff extends Person {
+public abstract class Staff extends Person {
     private String email;
     private String initials;
 

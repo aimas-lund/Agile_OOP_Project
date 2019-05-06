@@ -2,10 +2,7 @@ package tests.core.buildings;
 
 import core.buildings.Department;
 import core.buildings.InDepartment;
-import core.persons.Bed;
-import core.persons.Hospital;
-import core.persons.Patient;
-import core.persons.Staff;
+import core.persons.*;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -19,7 +16,7 @@ public class HospitalBedTest {
     private ArrayList<Department> depts = hospital.getDepartments();
     private final Department department = new InDepartment("dep1", "ER", 10);
     private final Patient patient = new Patient();
-    private final Staff staff = new Staff();
+    private final Staff staff = new Clerk();
     private final Department department2 = new InDepartment("dep2", "ER2", 10);
     private Bed bed;
 

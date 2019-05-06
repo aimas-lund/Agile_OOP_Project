@@ -1,8 +1,8 @@
 package persistence.data_access_objects;
 
 
-import core.persons.Gender;
-import core.persons.Staff;
+import core.persons.*;
+import core.utility.Speciality;
 import persistence.Database;
 
 import java.sql.ResultSet;
@@ -22,7 +22,19 @@ public class DaoStaffImpl<T extends Staff> implements IDao<T> {
     @Override
     public boolean save(T staff) {
         String[] information = staff.getPersonInformation();
-        String sql = "insert into staff values('%s', '%s', '%s', date('%s'), '%s', '%s', '%s', '%s', '%s')";
+
+        String sql = "insert into staff values('%s', '%s', '%s', date('%s'), '%s', '%s', '%s', '%s', '%s', ";
+
+        String sqlSuffix = "'" + staff.getClass().getSimpleName() + "'";
+
+        if (staff instanceof Doctor && ((Doctor) staff).getSpeciality() != null) {
+            String speciality = ((Doctor) staff).getSpeciality().toString();
+            sqlSuffix += String.format(", '%s')", speciality);
+        } else {
+            sqlSuffix += ", null)";
+        }
+
+        sql += sqlSuffix;
 
         for (String value :
                 information) {
@@ -56,23 +68,38 @@ public class DaoStaffImpl<T extends Staff> implements IDao<T> {
 
         try {
             ResultSet resultSet = statement.executeQuery(sql);
-
             while (resultSet.next()) {
+                String uniqueId = resultSet.getString("uniqueId");
+                String name = resultSet.getString("name");
+                String surname = resultSet.getString("surname");
                 Date birthdate = new SimpleDateFormat("yyyy-MM-dd").parse(resultSet.getString("birthdate"));
+                Gender gender = Gender.valueOf(resultSet.getString("gender"));
+                String homeaddress = resultSet.getString("homeaddress").replaceAll("_", " ");
+                int phonenumber = Integer.parseInt(resultSet.getString("phonenumber"));
+                String email = resultSet.getString("email");
+                String initials = resultSet.getString("initials");
 
-                staff.add((T) new Staff(
-                        resultSet.getString("uniqueId"),
-                        resultSet.getString("name"),
-                        resultSet.getString("surname"),
-                        birthdate,
-                        Gender.valueOf(resultSet.getString("gender")),
-                        resultSet.getString("homeaddress").replaceAll("_", " "),
-                        Integer.parseInt(resultSet.getString("phonenumber")),
-                        resultSet.getString("email"),
-                        resultSet.getString("initials")
-                ));
+                Staff foundStaff = null;
+
+                switch (resultSet.getString("role")) {
+                    case "Clerk":
+                        foundStaff = new Clerk(uniqueId, name, surname, birthdate, gender, homeaddress, phonenumber, email, initials);
+                        break;
+                    case "Nurse":
+                        foundStaff = new Nurse(uniqueId, name, surname, birthdate, gender, homeaddress, phonenumber, email, initials);
+                        break;
+                    case "ICTOfficer":
+                        foundStaff = new ICTOfficer(uniqueId, name, surname, birthdate, gender, homeaddress, phonenumber, email, initials);
+                        break;
+                    case "Doctor":
+                        Speciality speciality = Speciality.valueOf(resultSet.getString("speciality"));
+                        foundStaff = new Doctor(uniqueId, name, surname, birthdate, gender, homeaddress, phonenumber, email, initials, speciality);
+                        break;
+                }
+
+                staff.add((T) foundStaff);
+
             }
-
         } catch (SQLException | ParseException e) {
             e.printStackTrace();
         }
@@ -99,9 +126,18 @@ public class DaoStaffImpl<T extends Staff> implements IDao<T> {
     }
 
     public boolean update(T staff) {
+        // TODO : update this
         String[] information = staff.getPersonInformation();
         String sql = "UPDATE staff set uniqueid = '%s', name = '%s', surname = '%s', birthdate = date('%s'), " +
-                "gender = '%s', homeaddress = '%s', phonenumber = '%s', email = '%s', initials = '%s'";
+                "gender = '%s', homeaddress = '%s', phonenumber = '%s', email = '%s', initials = '%s', " +
+                "role = '%s', speciality = ";
+
+        if (staff instanceof Doctor) {
+            sql += String.format("'%s'", ((Doctor) staff).getSpeciality());
+        } else {
+            sql += "null";
+        }
+
         String sqlWhere = String.format(" where uniqueId = '%s'", staff.getUniqueId());
 
         for (String value :
@@ -110,6 +146,8 @@ public class DaoStaffImpl<T extends Staff> implements IDao<T> {
 
             sql = sql.replaceFirst("%s", value.replaceAll(" ", "_"));
         }
+
+        sql = sql.replaceFirst("%s", staff.getClass().getSimpleName());
 
         return database.executeStatement(sql + sqlWhere);
     }

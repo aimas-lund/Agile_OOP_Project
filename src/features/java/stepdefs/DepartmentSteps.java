@@ -2,6 +2,7 @@ package stepdefs;
 
 import core.buildings.BedManager;
 import core.buildings.InDepartment;
+import core.persons.Clerk;
 import core.persons.Patient;
 import core.persons.Staff;
 import cucumber.api.java.en.And;
@@ -18,7 +19,7 @@ public class DepartmentSteps {
     private InDepartment emptyDept = new InDepartment("dep2", "empty", 0);
     private Patient patient1 = new Patient("patient1");
     private Patient patient2 = new Patient("patient2");
-    private Staff staff = new Staff("staff1");
+    private Staff staff = new Clerk("staff1");
 
     // A department is made (capacity)
     @Given("a department")
@@ -78,7 +79,7 @@ public class DepartmentSteps {
     public void iShouldAssignThemToAnAvailableBed() throws ExceededCapacityException {
         BedManager bedManager = new BedManager(validDept);
         bedManager.assignToBed(patient1);
-        assertTrue(validDept.patientInBed(patient1));
+        assertTrue(validDept.isPatientInBed(patient1));
     }
 
     // Assign patient to specific bed
@@ -117,7 +118,7 @@ public class DepartmentSteps {
         BedManager bedManager = new BedManager(validDept);
         bedManager.assignToBed(patient1);
         bedManager.removeFromBed(patient1);
-        assertFalse(validDept.patientInBed(patient1));
+        assertFalse(validDept.isPatientInBed(patient1));
     }
 
     // Get name and capacity of department
@@ -167,7 +168,7 @@ public class DepartmentSteps {
     public void thePatientIsInABed() throws UnavailableBedException {
         BedManager bedManager = new BedManager(validDept);
         bedManager.assignToBed(patient2,0);
-        assertTrue(validDept.patientInBed(patient2));
+        assertTrue(validDept.isPatientInBed(patient2));
         assertEquals(validDept.getBedWithPatient(patient2), validDept.getBeds()[0]);
     }
     @Then("I should be able to find which bed the patient is in")
@@ -201,8 +202,8 @@ public class DepartmentSteps {
         BedManager bedManager = new BedManager(validDept);
         bedManager.assignToBed(patient1);
         bedManager.removeFromBed(patient2);
-        assertTrue(validDept.patientInBed(patient1));
-        assertFalse(validDept.patientInBed(patient2));
+        assertTrue(validDept.isPatientInBed(patient1));
+        assertFalse(validDept.isPatientInBed(patient2));
     }
 
 }

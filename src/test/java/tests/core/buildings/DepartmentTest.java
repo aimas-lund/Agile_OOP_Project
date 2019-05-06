@@ -1,8 +1,8 @@
 package tests.core.buildings;
 
 import core.buildings.Department;
-import core.buildings.ERDepartment;
 import core.buildings.OutDepartment;
+import core.persons.Clerk;
 import core.persons.Patient;
 import core.persons.Staff;
 import org.junit.Before;
@@ -19,7 +19,7 @@ public class DepartmentTest {
     @Before
     public void setUp() {
         patient1 = new Patient("pat1");
-        staff = new Staff("staff1");
+        staff = new Clerk("staff1");
         outDepartment = new OutDepartment("outDepartment", "Saint John");
     }
 

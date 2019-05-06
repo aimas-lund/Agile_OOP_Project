@@ -15,7 +15,7 @@ import static org.junit.Assert.*;
 public class ChangeInformationSteps {
     private ICTOfficer ictOfficer = new ICTOfficer();
     private Patient patientWithInformation = new Patient();
-    private Staff staffWithInformation = new Staff();
+    private Staff staffWithInformation = new Clerk();
 
     @Given("an ICT officer")
     public void anICTOfficer() {

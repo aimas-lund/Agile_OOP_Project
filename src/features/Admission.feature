@@ -14,3 +14,11 @@ Feature: Admission
     And a patient
     When the clerk registers the patient to the system
     Then the nurse should assign the patient to the waiting room
+
+  Scenario: A nurse assigns a patient to a bed when received
+    Given an in department
+    And a nurse
+    And a clerk
+    And a patient
+    When the clerk registers the patient to the system
+    Then the nurse should assign the patient to a bed in the in department
