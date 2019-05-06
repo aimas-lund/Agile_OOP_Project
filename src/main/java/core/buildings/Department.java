@@ -19,6 +19,12 @@ public abstract class Department {
         this.name = name;
     }
 
+	Department(String uniqueId, String name, ArrayList<Patient> patients, ArrayList<Staff> staff) {
+		this(uniqueId, name);
+		this.patients = patients;
+		this.staff = staff;
+	}
+
 	public void add(Staff s) {
 		staff.add(s);
 	}

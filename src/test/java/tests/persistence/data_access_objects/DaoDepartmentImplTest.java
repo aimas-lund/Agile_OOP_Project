@@ -29,7 +29,7 @@ public class DaoDepartmentImplTest {
     }
 
     @Test
-    public void saveDelete() throws ExceededCapacityException {
+    public void saveDeleteDepartment() throws ExceededCapacityException {
         inDepartment.add(new Clerk("clerk"));
         inDepartment.add(new Nurse("nurse"));
         inDepartment.add(new ICTOfficer("ICTOfficer"));
@@ -86,6 +86,11 @@ public class DaoDepartmentImplTest {
         Staff staff = new Clerk("someid");
         assertTrue(daoDepartment.save(staff, inDepartment));
         assertTrue(daoDepartment.update(staff, outDepartment));
+    }
+
+    @Test
+    public void findDepartmentIdOfStaff() {
+
     }
 
 }

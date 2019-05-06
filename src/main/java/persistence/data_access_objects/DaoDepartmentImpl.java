@@ -1,25 +1,52 @@
 package persistence.data_access_objects;
 
-import core.buildings.Department;
-import core.buildings.DepartmentBeds;
-import core.buildings.OutDepartment;
+import core.buildings.*;
 import core.persons.Bed;
 import core.persons.Patient;
 import core.persons.Staff;
 import persistence.Database;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 
 public class DaoDepartmentImpl<T extends Department> implements IDao<T> {
-    private static ArrayList<String> uniqueids;
+    private static ArrayList<String> uniqueids = new ArrayList<>();
     private final Database database = new Database();
 
     static {
-        uniqueids = new ArrayList<>();
+        getUniqueids();
+        System.out.println("I am unique id");
+    }
+
+    private static void getUniqueids() {
+        String sqlPatients = "select patientId from patients_in_departments";
+        String sqlStaff = "select staffId from staff_in_departments";
+        Database database = new Database();
+
+        try {
+            PreparedStatement statement = database.prepareStatement(sqlPatients);
+
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                uniqueids.add(resultSet.getString("patientId"));
+            }
+
+            statement = database.prepareStatement(sqlStaff);
+
+            resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                uniqueids.add(resultSet.getString("staffId"));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        database.disconnectFromDB();
     }
 
     @Override
@@ -187,27 +214,225 @@ public class DaoDepartmentImpl<T extends Department> implements IDao<T> {
 
     @Override
     public ArrayList<T> find(HashMap<String, String> params) {
-        return null;
-    }
+        String sql = "select * from departments where ";
 
-    public ArrayList<Patient> findAllPatientsInDepartment(T department) {
-        return null;
-    }
+        String values = "";
 
-    public ArrayList<Staff> findAllStaffInDepartment(T department) {
-        return null;
+        for (Map.Entry<String, String> entry :
+                params.entrySet()) {
+            String value = entry.getValue();
+
+            value = " = " + "'" + value + "'";
+
+            values = values.concat(entry.getKey() + value + " and ");
+        }
+
+        sql = sql + values.substring(0, values.length() - 4);
+
+        ArrayList<Department> departments = new ArrayList<>();
+
+        try {
+            PreparedStatement statement = database.prepareStatement(sql);
+
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                String uniqueId = resultSet.getString("uniqueId");
+                String name = resultSet.getString("name");
+                String type = resultSet.getString("type");
+
+                ArrayList<Patient> patients = findAllPatientsInDepartment(uniqueId);
+                ArrayList<Staff> staff = findAllStaffInDepartment(uniqueId);
+                int totalCapacity;
+                int currentCapacity;
+                HashMap<Patient, Bed> patientsInBeds;
+
+                switch (type) {
+                    case "InDepartment":
+                        totalCapacity = resultSet.getInt("totalCapacity");
+                        currentCapacity = resultSet.getInt("currentCapacity");
+                        patientsInBeds = findPatientsInBeds(uniqueId);
+                        departments.add(new InDepartment(uniqueId, name, totalCapacity, currentCapacity, patientsInBeds,
+                                patients, staff));
+                        break;
+                    case "ERDepartment":
+                        totalCapacity = resultSet.getInt("totalCapacity");
+                        currentCapacity = resultSet.getInt("currentCapacity");
+                        patientsInBeds = findPatientsInBeds(uniqueId);
+                        departments.add(new ERDepartment(uniqueId, name, totalCapacity, currentCapacity, patientsInBeds,
+                                patients, staff));
+                        break;
+                    case "OutDepartment":
+                        Queue<Patient> waitingPatients = findWaitingPatientsInDepartment(uniqueId);
+                        departments.add(new OutDepartment(uniqueId, name,
+                                patients, staff, waitingPatients));
+                        break;
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        database.commit();
+        database.disconnectFromDB();
+
+        return (ArrayList<T>) departments;
     }
 
     public T find(T department) {
-        return null;
+        HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put("uniqueId", department.getUniqueId());
+        return find(hashMap).get(0);
     }
 
-    public Department findDepartmentOfPerson(Staff staff) {
-        return null;
+    public Queue<Patient> findWaitingPatientsInDepartment(String departmentId) {
+        String sql = "select patientId from patients_in_departments p where p.departmentId = ? and p.isWaiting";
+        return new LinkedList<>(getPatientsFromSql(departmentId, sql));
     }
 
-    public Department findDepartmentOfPerson(Patient patient) {
-        return null;
+    public HashMap<Patient, Bed> findPatientsInBeds(String departmentId) {
+        String sql = "select patientId from patients_in_departments p where p.departmentId = ? and p.bedId is not null";
+
+        DaoPatientImpl<Patient> daoPatient = new DaoPatientImpl<>();
+
+        HashMap<Patient, Bed> patients = new HashMap<>();
+
+        try {
+            PreparedStatement statement = database.prepareStatement(sql);
+            statement.setString(1, departmentId);
+
+            ResultSet resultSet = statement.executeQuery();
+
+
+            HashMap<String, String> hashMap = new HashMap<>();
+
+            while (resultSet.next()) {
+                hashMap.put("uniqueid", resultSet.getString("patientId"));
+                patients.put(daoPatient.find(hashMap).get(0), new Bed(resultSet.getInt("bedId")));
+            }
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            database.disconnectFromDB();
+        }
+
+        return patients;
+    }
+
+    private ArrayList<Patient> getPatientsFromSql(String departmentId, String sql) {
+        DaoPatientImpl<Patient> daoPatient = new DaoPatientImpl<>();
+
+        ArrayList<Patient> patients = new ArrayList<>();
+
+        try {
+            PreparedStatement statement = database.prepareStatement(sql);
+            statement.setString(1, departmentId);
+
+            ResultSet resultSet = statement.executeQuery();
+
+
+            HashMap<String, String> hashMap = new HashMap<>();
+
+            while (resultSet.next()) {
+                hashMap.put("uniqueid", resultSet.getString("patientId"));
+                patients.add(daoPatient.find(hashMap).get(0));
+            }
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            database.disconnectFromDB();
+        }
+
+        return patients;
+    }
+
+    public ArrayList<Patient> findAllPatientsInDepartment(String departmentId) {
+        String sql = "select patientId from patients_in_departments p where p.departmentId = ?";
+        return getPatientsFromSql(departmentId, sql);
+
+    }
+
+    public ArrayList<Staff> findAllStaffInDepartment(String departmentId) {
+        String sql = "select staffId from staff_in_departments s where s.departmentId = ?";
+        DaoStaffImpl<Staff> daoStaff = new DaoStaffImpl<>();
+
+        ArrayList<Staff> staff = new ArrayList<>();
+
+        try {
+            PreparedStatement statement = database.prepareStatement(sql);
+            statement.setString(1, departmentId);
+
+            ResultSet resultSet = statement.executeQuery();
+
+
+            HashMap<String, String> hashMap = new HashMap<>();
+
+            while (resultSet.next()) {
+                hashMap.put("uniqueid", resultSet.getString("staffId"));
+                staff.add(daoStaff.find(hashMap).get(0));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            database.disconnectFromDB();
+        }
+
+        return staff;
+    }
+
+    public String findDepartmentIdOfPerson(Staff staff) {
+        String sql = "select uniqueId from departments d inner join staff_in_departments s on s.departmentId = d.uniqueId " +
+                "where s.staffId = ?";
+
+        String departmentId = null;
+
+        try {
+            PreparedStatement statement = database.prepareStatement(sql);
+            statement.setString(1, staff.getUniqueId());
+
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                departmentId = resultSet.getString("uniqueId");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            database.disconnectFromDB();
+        }
+
+        return departmentId;
+    }
+
+    public String findDepartmentIdOfPerson(Patient patient) {
+        String sql = "select uniqueId from departments d inner join patients_in_departments p on p.departmentId = d.uniqueId " +
+                "where p.patientId = ?";
+        String departmentId = null;
+
+        try {
+            PreparedStatement statement = database.prepareStatement(sql);
+            statement.setString(1, patient.getUniqueId());
+
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                departmentId = resultSet.getString("uniqueId");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            database.disconnectFromDB();
+        }
+
+        return departmentId;
     }
 
     @Override
@@ -261,7 +486,11 @@ public class DaoDepartmentImpl<T extends Department> implements IDao<T> {
             PreparedStatement statement = database.prepareStatement(sql);
             statement.setString(1, department.getUniqueId());
             statement.setString(2, patient.getUniqueId());
-            return database.executePreparedStatement(statement);
+
+            if (database.executePreparedStatement(statement)) {
+                uniqueids.remove(patient.getUniqueId());
+                return true;
+            }
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -283,7 +512,10 @@ public class DaoDepartmentImpl<T extends Department> implements IDao<T> {
             statement.setString(1, staff.getUniqueId());
             statement.setString(2, department.getUniqueId());
 
-            return database.executePreparedStatement(statement);
+            if (database.executePreparedStatement(statement)) {
+                uniqueids.remove(staff.getUniqueId());
+                return true;
+            }
 
         } catch (SQLException e) {
             e.printStackTrace();
