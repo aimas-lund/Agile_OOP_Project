@@ -54,12 +54,15 @@ public class ClerkController {
 
 
         HashMap<String, String> hashMap = new HashMap<String, String>();
-        hashMap.put("name",name);
-        hashMap.put("id",id);
-        hashMap.put("department",department);
-
-
-
+        if(name!=null) {
+            hashMap.put("name", name);
+        }
+        else if(id!=null) {
+            hashMap.put("uniqueid",id);
+        }
+        else if(department!= null) {
+            hashMap.put("department", department);
+        }
         return QRK.find(hashMap);
 
     }

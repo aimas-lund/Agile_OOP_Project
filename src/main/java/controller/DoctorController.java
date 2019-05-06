@@ -33,7 +33,7 @@ public class DoctorController {
 
         HashMap<String, String> hashMap = new HashMap<String, String>();
         hashMap.put("name",name);
-        hashMap.put("id",id);
+        hashMap.put("uniqueid",id);
         hashMap.put("department",department);
 
         return daopatient.find(hashMap);
