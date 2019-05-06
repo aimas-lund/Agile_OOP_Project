@@ -1,5 +1,6 @@
 package core.persons;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import exceptions.FormatException;
 
 import java.text.SimpleDateFormat;
@@ -8,6 +9,7 @@ import java.util.Date;
 public abstract class Person {
     // TODO: Consider creating a factory design around person, or staff and patients separately
 
+    @JsonProperty
     private String name;
     private String surname;
     private Date birthdate;
