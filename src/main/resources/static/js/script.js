@@ -65,3 +65,13 @@ function addDepartment() {
         $("#capacity").attr("required","true")
     }
 }
+function roleStaff() {
+    var option = $("#role").val()
+    if (option === "Doctor") {
+        $("#speciality").show()
+        $("#speciality").attr("required","true")
+    } else {
+        $("#speciality").hide()
+        $("#speciality").removeAttr("required","true")
+    }
+}

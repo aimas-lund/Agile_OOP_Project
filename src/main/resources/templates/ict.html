@@ -46,7 +46,7 @@
                         <option value="male">Male</option>
                         <option value="female">Female</option>
                     </select>
-                    <select class="dropdown" form="registerStaff" name="role" required>
+                    <select class="dropdown" form="registerStaff" name="role" id="role" onchange="roleStaff()" required>
                         <option value="" disabled selected hidden>Role</option>
                         <option value="Doctor">Doctor</option>
                         <option value="Nurse">Nurse</option>
@@ -56,6 +56,28 @@
                 </div>
                 <div class="input-container submitButton">
                     <input class="input-field" type="text" placeholder="Register to which department"  name="department" required>
+                    <select class="dropdown hidden" id="speciality" form="registerStaff" name="speciality">
+                        <option value="" disabled selected hidden>Speciality</option>
+                        <option value="ALLERGYANDIMMUNOLOGY">Allergy & immunology</option>
+                        <option value="ANESTHESIOLOGY">Anesthesiology</option>
+                        <option value="DERMATOLOGY">Dermatology</option>
+                        <option value="DIAGNOSTICRADIOLOGY">Diagnostic radiology</option>
+                        <option value="EMERGENCYMEDICINE">Emergency Medicine</option>
+                        <option value="FAMILYMEDICINE">Family Medicine</option>
+                        <option value="INTERNALMEDICINE">Internal Medicine</option>
+                        <option value="MEDICALGENETICS">Medical Genetics</option>
+                        <option value="NEUROLOGY">Neurology</option>
+                        <option value="NUCLEARMEDICINE">Nuclear Medicine</option>
+                        <option value="OBSTETRICSANDGYNECOLOGY">Obstetrics and gynecology</option>
+                        <option value="OPHTHALMOLOGY">Ophthalmology</option>
+                        <option value="PATHOLOGY">Pathology</option>
+                        <option value="PEDIATRICS">Pediatrics</option>
+                        <option value="PHYSICALMEDICINEANDREHABILITATION">Physical medicine & rehabilitation</option>
+                        <option value="PREVENTIVEMEDICINE">Preventive medicine</option>
+                        <option value="RADIATIONONCOLOGY">Radiation oncology</option>
+                        <option value="SURGERY">Surgery</option>
+                        <option value="UROLOGY">Urology</option>
+                    </select>
                     <button type="submit" formmethod="post" class="btn inline">Register</button>
                 </div>
             </form>
@@ -253,7 +275,6 @@
             <form class="dashboard-action" id="movePerson" autocomplete="on" action="/movePerson">
                 <div class="input-container">
                     <input class="input-field" type="text" placeholder="Person ID" name="personId" required>
-                    <input class="input-field" type="text" placeholder="From department ID" name="fromId" required>
                     <input class="input-field" type="text" placeholder="To department ID" name="toId" required>
                     <select class="dropdown" form="movePerson" name="type" required>
                         <option value="" disabled selected hidden>Person type</option>
