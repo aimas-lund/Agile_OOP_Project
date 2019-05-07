@@ -2,7 +2,6 @@ package tests.core.buildings;
 
 import core.buildings.Bed;
 import core.buildings.Department;
-import core.buildings.Hospital;
 import core.buildings.InDepartment;
 import core.persons.Clerk;
 import core.persons.Hospital;
