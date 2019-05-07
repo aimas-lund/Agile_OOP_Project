@@ -26,7 +26,7 @@ public class ChangeInformationSteps {
     @And("a person with information")
     public void aPersonWithInformation() {
         // Set information
-        new PersonInformationFacade(patientWithInformation).setPersonInformation(
+        patientWithInformation = new Patient(
                 "Kaj",
                 "Andreasen",
                 new GregorianCalendar(2000, Calendar.JANUARY, 1).getTime(),

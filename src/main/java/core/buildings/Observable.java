@@ -5,5 +5,5 @@ public interface Observable {
 
     void removeChangeListener(Observer listener);
 
-    void notifyListeners(Object source, Event action, Object oldValue, Object newValue);
+    void notifyListeners(Object source, Event event, Object oldValue, Object newValue);
 }

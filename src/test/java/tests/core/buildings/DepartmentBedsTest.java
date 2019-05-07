@@ -46,6 +46,9 @@ public class DepartmentBedsTest {
         assertFalse(fullDepartment.getBed(1).isOccupied());
         assertTrue(fullDepartment2.getBed(5).isOccupied());
 
+        fullDepartment.remove(patient);
+        fullDepartment2.remove(patient);
+
     }
 
     @Test
@@ -57,6 +60,7 @@ public class DepartmentBedsTest {
             assertEquals(entry.getKey(), patient);
             assertEquals(entry.getValue(), inDepartment.getBed(0));
         }
+        inDepartment.remove(patient);
     }
 
     @Test

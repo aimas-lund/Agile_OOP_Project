@@ -17,11 +17,11 @@ import java.util.Calendar;
 import static org.junit.Assert.*;
 
 public class AdmissionSteps {
-    private Doctor doctor = new Doctor("staff1");
+    private Doctor doctor = new Doctor("doctoruniqueidveryuniqueeeee");
     private OutDepartment outDepartment = new OutDepartment();
     private InDepartment inDepartment = new InDepartment("dep1", "Saint NAME", 1);
     private QueryRoleNurse nurse = new QueryRoleNurse();
-    private Patient patient = new Patient("asdf");
+    private Patient patient = new Patient("asdasdfasff");
     private QueryRoleClerk clerk = new QueryRoleClerk();
 
     @Given("a doctor")
@@ -77,6 +77,7 @@ public class AdmissionSteps {
         nurse.assignPatientToWaitingRoom(patient, outDepartment);
         assertEquals(patient, outDepartment.getNextWaitingPatient());
         assertNull(outDepartment.getNextWaitingPatient());
+        clerk.delete(patient, outDepartment);
     }
 
     @Given("an in department")
@@ -90,6 +91,11 @@ public class AdmissionSteps {
 
         assertTrue(inDepartment.isPatientInBed(patient));
 
-        assertFalse(nurse.assignPatientToBed(new Patient(), inDepartment));
+        Patient emptyPatient = new Patient();
+        assertFalse(nurse.assignPatientToBed(emptyPatient, inDepartment));
+
+        inDepartment.remove(patient);
+        inDepartment.remove(emptyPatient);
+        clerk.delete(patient, inDepartment);
     }
 }
