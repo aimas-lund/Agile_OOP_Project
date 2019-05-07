@@ -8,6 +8,7 @@ import core.persons.Clerk;
 import core.persons.Hospital;
 import core.persons.Patient;
 import core.persons.Staff;
+import cucumber.api.java.After;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -19,18 +20,24 @@ import static junit.framework.TestCase.*;
 
 public class DepartmentsSteps {
 
-    Hospital h = new Hospital ();
+    Hospital hospital = new Hospital();
     Department existingDept = new OutDepartment();
     Department newDept = new OutDepartment();
-    Staff s = new Clerk("staff1");
-    Patient p = new Patient("pat1");
-    Bed b = new Bed (1);
+    Staff staff = new Clerk("staff1");
+    Patient patient = new Patient("pat1");
+    Bed bed = new Bed(1);
+
+    @After
+    public void tearDown() {
+        hospital.remove(newDept);
+        hospital.remove(existingDept);
+    }
 
     @Then("the hospital should be able to assign the patient to a specific department.")
     public void theHospitalShouldBeAbleToAssignThePatientToASpecificDepartment() {
-        h.add(existingDept);
-        h.assign (p, existingDept);
-        assertTrue(existingDept.getPatients().contains(p));
+        hospital.add(existingDept);
+        hospital.assign(patient, existingDept);
+        assertTrue(existingDept.isPatientInDepartment(patient));
     }
 
     @When("there is a need to expand to include a new department")
@@ -40,8 +47,8 @@ public class DepartmentsSteps {
 
     @Then("the hospital should be able to create a new department")
     public void theHospitalShouldBeAbleToCreateANewDepartment() {
-        h.add (newDept);
-        ArrayList<Department> depts = h.getDepartments();
+        hospital.add(newDept);
+        ArrayList<Department> depts = hospital.getDepartments();
         assertTrue (depts.contains (newDept));
     }
 
@@ -52,15 +59,15 @@ public class DepartmentsSteps {
 
     @Then("the hospital should be able to remove the department")
     public void theHospitalShouldBeAbleToRemoveTheDepartment() {
-        h.remove (existingDept);
-        ArrayList<Department> depts = h.getDepartments();
+        hospital.remove(existingDept);
+        ArrayList<Department> depts = hospital.getDepartments();
         assertFalse (depts.contains (existingDept));
         
     }
 
     @Given("an empty bed")
     public void anEmptyBed() {
-        assertFalse (b.isOccupied());
+        assertFalse(bed.isOccupied());
     }
 
     @When("there is need for a bed")
@@ -71,8 +78,8 @@ public class DepartmentsSteps {
 
     @Given("a bed with a patient")
     public void aBedWithAPatient() {
-        b.fill (p);
-        assertNotNull (b.getPatient ());
+        bed.fill(patient);
+        assertNotNull(bed.getPatient());
     }
 
     @When("the patient no longer needs to be assigned the bed")
@@ -82,14 +89,14 @@ public class DepartmentsSteps {
 
     @Then("The bed should be unoccupied by the patient.")
     public void theBedShouldBeUnoccupiedByThePatient() {
-        b.empty ();
-        assertFalse (b.isOccupied ());
+        bed.empty();
+        assertFalse(bed.isOccupied());
     }
 
     @Then("the bed should be assigned a patient.")
     public void theBedShouldBeAssignedAPatient() {
-        b.fill (p);
-        assertTrue (b.isOccupied ());
+        bed.fill(patient);
+        assertTrue(bed.isOccupied());
     }
 
     @Given("a new staff member")
@@ -104,19 +111,19 @@ public class DepartmentsSteps {
 
     @Then("the hospital should be able to assign them to the right department.")
     public void theHospitalShouldBeAbleToAssignThemToTheRightDepartment() {
-        h.assign (s, existingDept);
+        hospital.assign(staff, existingDept);
     }
 
     @Given("an existing department")
     public void anExistingDepartment() {
-        h.add (existingDept);
-        ArrayList<Department> depts = h.getDepartments();
+        hospital.add(existingDept);
+        ArrayList<Department> depts = hospital.getDepartments();
         assertTrue (depts.contains (existingDept));
     }
 
     @Given("a nonexisting department")
     public void aNonexistingDepartment() {
-        ArrayList<Department> depts = h.getDepartments();
+        ArrayList<Department> depts = hospital.getDepartments();
         assertFalse (depts.contains (newDept));
     }
 }

@@ -5,7 +5,7 @@ import core.persons.Staff;
 import persistence.data_access_objects.DaoDepartmentImpl;
 
 public class DepartmentObserver implements Observer {
-    DaoDepartmentImpl<Department> daoDepartment = new DaoDepartmentImpl<>();
+    private DaoDepartmentImpl<Department> daoDepartment = new DaoDepartmentImpl<>();
 
     @Override
     public void objectChanged(Object source, Event event, Object oldValue, Object newValue) {

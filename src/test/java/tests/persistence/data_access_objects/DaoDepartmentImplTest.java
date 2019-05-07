@@ -158,18 +158,14 @@ public class DaoDepartmentImplTest {
 
     @Test
     public void saveAllStaffSomeExists() {
-        inDepartmentTest.add(new Clerk("clerkid1"));
-        assertTrue(daoDepartment.saveAllStaff(inDepartmentTest, true));
-        inDepartmentTest.add(new Clerk("clerkid1"));
-        assertFalse(daoDepartment.saveAllStaff(inDepartmentTest, true));
+        assertTrue(inDepartmentTest.add(new Clerk("clerkid1")));
+        assertFalse(inDepartmentTest.add(new Clerk("clerkid1")));
     }
 
     @Test
     public void saveAllPatientsSomeExists() {
-        inDepartmentTest.add(new Patient("patient1"));
-        assertTrue(daoDepartment.saveAllPatients(inDepartmentTest, true));
-        inDepartmentTest.add(new Patient("patient1"));
-        assertFalse(daoDepartment.saveAllPatients(inDepartmentTest, true));
+        assertTrue(inDepartmentTest.add(new Patient("patient1")));
+        assertFalse(inDepartmentTest.add(new Patient("patient1")));
     }
 
     @Test

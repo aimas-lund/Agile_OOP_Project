@@ -42,6 +42,8 @@ public class DaoDepartmentImpl<T extends Department> implements IDao<T> {
 
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            database.disconnectFromDB();
         }
 
         database.disconnectFromDB();
@@ -49,23 +51,24 @@ public class DaoDepartmentImpl<T extends Department> implements IDao<T> {
 
     @Override
     public boolean save(T department) {
-        if (!saveDepartment(department, false)) {
+        if (!saveDepartment(department)) {
             return false;
-        } else if (!saveAllPatients(department, false)) {
+        } else if (!saveAllPatients(department)) {
             return false;
-        } else if (!saveAllStaff(department, false)) {
+        } else if (!saveAllStaff(department)) {
             return false;
         }
+
         database.commit();
         database.disconnectFromDB();
         return true;
     }
 
-    public boolean saveDepartment(T department, boolean autoCommit) {
+    private boolean saveDepartment(T department) {
         String sql = "insert into departments values(?, ?, ?, ?, ?)";
 
         try {
-            PreparedStatement statement = database.prepareStatement(sql, autoCommit);
+            PreparedStatement statement = database.prepareStatement(sql, false);
             statement.setString(1, department.getUniqueId());
             statement.setString(2, department.getName());
             statement.setString(5, department.getClass().getSimpleName());
@@ -78,20 +81,21 @@ public class DaoDepartmentImpl<T extends Department> implements IDao<T> {
                 statement.setNull(4, Types.INTEGER);
             }
 
-            return database.executePreparedStatement(statement, !autoCommit);
+            return database.executePreparedStatement(statement, false);
 
         } catch (SQLException e) {
-            database.disconnectFromDB();
             return false;
+        } finally {
+            database.disconnectFromDB();
         }
     }
 
-    public boolean saveAllStaff(T department, boolean autoCommit) {
+    private boolean saveAllStaff(T department) {
         String sql = "insert into staff_in_departments values(?, ?)";
         ArrayList<String> tempUniqueIds = new ArrayList<>();
 
         try {
-            PreparedStatement statement = database.prepareStatement(sql, autoCommit);
+            PreparedStatement statement = database.prepareStatement(sql, false);
 
             for (Staff staff :
                     department.getStaff()) {
@@ -112,17 +116,18 @@ public class DaoDepartmentImpl<T extends Department> implements IDao<T> {
             uniqueids.addAll(tempUniqueIds);
             return true;
         } catch (SQLException e) {
-            database.disconnectFromDB();
             return false;
+        } finally {
+            database.disconnectFromDB();
         }
     }
 
-    public boolean saveAllPatients(T department, boolean autoCommit) {
+    private boolean saveAllPatients(T department) {
         String sql = "insert into patients_in_departments values(?, ?, ?, ?)";
         ArrayList<String> tempUniqueIds = new ArrayList<>();
 
         try {
-            PreparedStatement statement = database.prepareStatement(sql, autoCommit);
+            PreparedStatement statement = database.prepareStatement(sql, false);
 
             for (Patient patient :
                     department.getPatients()) {
@@ -143,8 +148,9 @@ public class DaoDepartmentImpl<T extends Department> implements IDao<T> {
             return true;
 
         } catch (SQLException e) {
-            database.disconnectFromDB();
             return false;
+        } finally {
+            database.disconnectFromDB();
         }
     }
 
@@ -178,7 +184,7 @@ public class DaoDepartmentImpl<T extends Department> implements IDao<T> {
 
             buildPatientStatement(department, statement, patient);
 
-            if (!database.executePreparedStatement(statement)) {
+            if (!database.executePreparedStatement(statement, false)) {
                 return false; // Values will always be inserted, proper checks were made
             }
 
@@ -187,6 +193,8 @@ public class DaoDepartmentImpl<T extends Department> implements IDao<T> {
 
         } catch (SQLException e) {
             return false;
+        } finally {
+            database.disconnectFromDB();
         }
     }
 
@@ -211,6 +219,8 @@ public class DaoDepartmentImpl<T extends Department> implements IDao<T> {
             return true;
         } catch (SQLException e) {
             return false;
+        } finally {
+            database.disconnectFromDB();
         }
     }
 
@@ -274,9 +284,9 @@ public class DaoDepartmentImpl<T extends Department> implements IDao<T> {
 
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            database.disconnectFromDB();
         }
-
-        database.disconnectFromDB();
 
         return (ArrayList<T>) departments;
     }
@@ -316,6 +326,8 @@ public class DaoDepartmentImpl<T extends Department> implements IDao<T> {
 
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            database.disconnectFromDB();
         }
 
         return patients;
@@ -343,6 +355,8 @@ public class DaoDepartmentImpl<T extends Department> implements IDao<T> {
 
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            database.disconnectFromDB();
         }
 
         return patients;
@@ -376,6 +390,8 @@ public class DaoDepartmentImpl<T extends Department> implements IDao<T> {
 
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            database.disconnectFromDB();
         }
 
         return staff;
@@ -457,6 +473,8 @@ public class DaoDepartmentImpl<T extends Department> implements IDao<T> {
 
         } catch (SQLException e) {
             return false;
+        } finally {
+            database.disconnectFromDB();
         }
     }
 
@@ -475,6 +493,8 @@ public class DaoDepartmentImpl<T extends Department> implements IDao<T> {
 
         } catch (SQLException e) {
             return false;
+        } finally {
+            database.disconnectFromDB();
         }
     }
 
@@ -493,6 +513,8 @@ public class DaoDepartmentImpl<T extends Department> implements IDao<T> {
 
         } catch (SQLException e) {
             return false;
+        } finally {
+            database.disconnectFromDB();
         }
     }
 
@@ -516,6 +538,8 @@ public class DaoDepartmentImpl<T extends Department> implements IDao<T> {
 
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            database.disconnectFromDB();
         }
 
         return false;
@@ -536,6 +560,9 @@ public class DaoDepartmentImpl<T extends Department> implements IDao<T> {
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
+
+        } finally {
+            database.disconnectFromDB();
         }
     }
 
@@ -563,6 +590,8 @@ public class DaoDepartmentImpl<T extends Department> implements IDao<T> {
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
+        } finally {
+            database.disconnectFromDB();
         }
 
     }

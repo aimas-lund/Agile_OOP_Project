@@ -5,13 +5,12 @@ import core.buildings.Department;
 import core.buildings.ERDepartment;
 import core.persons.Gender;
 import core.persons.Patient;
+import core.utility.PersonToPdf;
 import org.junit.Test;
+
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.Date;
-import core.utility.PersonToPdf;
-
-import static junit.framework.TestCase.assertTrue;
 
 public class PDFTest {
     @Test
@@ -26,6 +25,8 @@ public class PDFTest {
         PersonToPdf PTP = new PersonToPdf();
         PTP.PatientToPdf(department);
 
+        department.remove(patient1);
+        department.remove(patient2);
     }
 
 }

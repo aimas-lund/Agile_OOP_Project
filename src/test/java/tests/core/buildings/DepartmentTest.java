@@ -5,6 +5,7 @@ import core.buildings.OutDepartment;
 import core.persons.Clerk;
 import core.persons.Patient;
 import core.persons.Staff;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -21,6 +22,12 @@ public class DepartmentTest {
         patient1 = new Patient("pat1");
         staff = new Clerk("staff1");
         outDepartment = new OutDepartment("outDepartment", "Saint John");
+    }
+
+    @After
+    public void tearDown() {
+        outDepartment.remove(staff);
+        outDepartment.remove(patient1);
     }
 
     @Test

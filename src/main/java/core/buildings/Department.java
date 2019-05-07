@@ -31,14 +31,22 @@ public abstract class Department implements Observable {
 		this.staff = staff;
 	}
 
-    public void add(Staff staff) {
-        this.staff.add(staff);
-        notifyListeners(this, ADD, null, staff);
+    public boolean add(Staff staff) {
+        if (!this.staff.contains(staff)) {
+            this.staff.add(staff);
+            notifyListeners(this, ADD, null, staff);
+            return true;
+        }
+        return false;
     }
 
-    public void add(Patient patient) {
-        patients.add(patient);
-        notifyListeners(this, ADD, null, patient);
+    public boolean add(Patient patient) {
+        if (!patients.contains(patient)) {
+            patients.add(patient);
+            notifyListeners(this, ADD, null, patient);
+            return true;
+        }
+        return false;
     }
 
     public void remove(Staff staff) {

@@ -148,8 +148,8 @@ public class HospitalBedTest {
     public void movePatientTest() {
         assertTrue(hospital.assign(patient, department));
         assertTrue(hospital.move(patient, department, department2));
-        assertFalse(department.getPatients().contains(patient));
-        assertTrue(department2.getPatients().contains(patient));
+        assertFalse(department.isPatientInDepartment(patient));
+        assertTrue(department2.isPatientInDepartment(patient));
     }
 
     @Test

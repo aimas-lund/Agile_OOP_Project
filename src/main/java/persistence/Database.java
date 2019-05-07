@@ -117,11 +117,13 @@ public class Database {
             }
             return true;
         } catch (SQLException e) {
-            connection.rollback();
+            if (!connection.getAutoCommit()) {
+                connection.rollback();
+            }
             throw new SQLException(e);
         } finally {
             if (connection.getAutoCommit()) {
-                connection.close();
+                disconnectFromDB();
             }
         }
     }
