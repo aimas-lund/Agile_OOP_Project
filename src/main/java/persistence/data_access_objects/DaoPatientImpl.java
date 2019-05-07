@@ -103,6 +103,7 @@ public class DaoPatientImpl<T extends Patient> implements IDao<T> {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
         return false;
     }
 

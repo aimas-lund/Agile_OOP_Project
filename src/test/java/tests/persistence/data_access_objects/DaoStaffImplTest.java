@@ -106,25 +106,11 @@ public class DaoStaffImplTest {
 
     @Test
     public void findMultiples() {
-        Staff staffNew = new Clerk(
-                "testID2",
-                "Aimas",
-                "Odgaard",
-                new Date(1556668800000L), // Date: 01_05_2019
-                Gender.MALE,
-                "DTUStreet 52",
-                45231298,
-                "AIOD@agile_hospital.com",
-                "AIOD");
-
-        daoStaff.save(staffNew);
-
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("gender", Gender.MALE.toString());
 
-        assertEquals(2, daoStaff.find(hashMap).size());
+        assertEquals(4, daoStaff.find(hashMap).size());
 
-        daoStaff.delete(staffNew);
     }
 
     @Test

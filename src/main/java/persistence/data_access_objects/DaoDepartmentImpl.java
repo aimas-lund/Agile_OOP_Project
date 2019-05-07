@@ -176,15 +176,16 @@ public class DaoDepartmentImpl<T extends Department> implements IDao<T> {
 
             buildPatientStatement(department, statement, patient);
 
-            if (database.executePreparedStatement(statement)) {
-                uniqueids.add(patient.getUniqueId());
-                return true;
+            if (!database.executePreparedStatement(statement)) {
+                return false; // Values will always be inserted, proper checks were made
             }
 
+            uniqueids.add(patient.getUniqueId());
+            return true;
+
         } catch (SQLException e) {
-            e.printStackTrace();
+            return false;
         }
-        return false;
     }
 
     public boolean save(Staff staff, T department) {
@@ -192,6 +193,7 @@ public class DaoDepartmentImpl<T extends Department> implements IDao<T> {
 
         try {
             PreparedStatement statement = database.prepareStatement(sql);
+
             if (uniqueids.contains(staff.getUniqueId())) {
                 return false;
             }
@@ -199,14 +201,15 @@ public class DaoDepartmentImpl<T extends Department> implements IDao<T> {
             statement.setString(1, staff.getUniqueId());
             statement.setString(2, department.getUniqueId());
 
-            if (database.executePreparedStatement(statement)) {
-                uniqueids.add(staff.getUniqueId());
-                return true;
+            if (!database.executePreparedStatement(statement)) {
+                return false;
             }
+
+            uniqueids.add(staff.getUniqueId());
+            return true;
         } catch (SQLException e) {
-            e.printStackTrace();
+            return false;
         }
-        return false;
     }
 
     @Override
@@ -271,7 +274,6 @@ public class DaoDepartmentImpl<T extends Department> implements IDao<T> {
             e.printStackTrace();
         }
 
-        database.commit();
         database.disconnectFromDB();
 
         return (ArrayList<T>) departments;
@@ -289,7 +291,7 @@ public class DaoDepartmentImpl<T extends Department> implements IDao<T> {
     }
 
     public HashMap<Patient, Bed> findPatientsInBeds(String departmentId) {
-        String sql = "select patientId from patients_in_departments p where p.departmentId = ? and p.bedId is not null";
+        String sql = "select patientId, bedId from patients_in_departments p where p.departmentId = ? and p.bedId is not null";
 
         DaoPatientImpl<Patient> daoPatient = new DaoPatientImpl<>();
 
@@ -312,8 +314,6 @@ public class DaoDepartmentImpl<T extends Department> implements IDao<T> {
 
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            database.disconnectFromDB();
         }
 
         return patients;
@@ -341,8 +341,6 @@ public class DaoDepartmentImpl<T extends Department> implements IDao<T> {
 
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            database.disconnectFromDB();
         }
 
         return patients;
@@ -376,8 +374,6 @@ public class DaoDepartmentImpl<T extends Department> implements IDao<T> {
 
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            database.disconnectFromDB();
         }
 
         return staff;
@@ -468,13 +464,16 @@ public class DaoDepartmentImpl<T extends Department> implements IDao<T> {
             PreparedStatement statement = database.prepareStatement(sql);
             statement.setString(1, department.getUniqueId());
             statement.setString(2, staff.getUniqueId());
-            return database.executePreparedStatement(statement);
+
+            if (!database.executePreparedStatement(statement)) {
+                return false;
+            }
+            uniqueids.remove(staff.getUniqueId());
+            return true;
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            return false;
         }
-
-        return false;
     }
 
     public boolean delete(Patient patient, T department) {
@@ -484,16 +483,15 @@ public class DaoDepartmentImpl<T extends Department> implements IDao<T> {
             statement.setString(1, department.getUniqueId());
             statement.setString(2, patient.getUniqueId());
 
-            if (database.executePreparedStatement(statement)) {
-                uniqueids.remove(patient.getUniqueId());
-                return true;
+            if (!database.executePreparedStatement(statement)) {
+                return false;
             }
+            uniqueids.remove(patient.getUniqueId());
+            return true;
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            return false;
         }
-
-        return false;
     }
 
     public boolean delete(T department) {
@@ -520,6 +518,7 @@ public class DaoDepartmentImpl<T extends Department> implements IDao<T> {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
         return false;
     }
 
@@ -537,13 +536,14 @@ public class DaoDepartmentImpl<T extends Department> implements IDao<T> {
 
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
-        return false;
     }
 
     @Override
     public boolean update(T department) {
-        String sql = "update departments set name = ?, totalCapacity = ?, currentCapacity = ?";
+        String sql = "update departments set name = ?, totalCapacity = ?, currentCapacity = ? " +
+                " where uniqueId = ?";
 
         try {
             PreparedStatement statement = database.prepareStatement(sql);
@@ -556,6 +556,8 @@ public class DaoDepartmentImpl<T extends Department> implements IDao<T> {
                 statement.setNull(2, Types.INTEGER);
                 statement.setNull(3, Types.INTEGER);
             }
+
+            statement.setString(4, department.getUniqueId());
 
             return database.executePreparedStatement(statement);
 
