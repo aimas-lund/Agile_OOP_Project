@@ -1,11 +1,15 @@
 package core.persons;
 
+import core.buildings.Event;
+import core.buildings.Observable;
+import core.buildings.Observer;
 import exceptions.FormatException;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
-public abstract class Person {
+public abstract class Person implements Observable {
     private String uniqueId;
     private String name;
     private String surname;
@@ -13,12 +17,15 @@ public abstract class Person {
     private Gender gender;
     private String homeAddress;
     private int phoneNumber;
-
-    public Person(String uniqueId) {
-        this.uniqueId = uniqueId;
-    }
+    private ArrayList<Observer> listeners;
 
     Person() {
+        listeners.add(new PersonObserver());
+    }
+
+    public Person(String uniqueId) {
+        this();
+        this.uniqueId = uniqueId;
     }
 
     protected Person(String uniqueId, String name, String surname, Date birthdate, Gender gender, String homeaddress, int phonenumber) {
@@ -27,6 +34,7 @@ public abstract class Person {
     }
 
     protected Person(String name, String surname, Date birthdate, Gender gender, String homeaddress, int phonenumber) {
+        this();
         this.setName(name);
         this.setSurname(surname);
         this.setBirthdate(birthdate);
@@ -40,6 +48,7 @@ public abstract class Person {
     }
 
     Person(String name, String surname) {
+        this();
         this.name = name;
         this.surname = surname;
     }
@@ -135,5 +144,23 @@ public abstract class Person {
             return super.hashCode();
         }
         return uniqueId.hashCode();
+    }
+
+    @Override
+    public void addChangeListener(Observer newListener) {
+        listeners.add(newListener);
+    }
+
+    @Override
+    public void removeChangeListener(Observer listener) {
+        listeners.remove(listener);
+    }
+
+    @Override
+    public void notifyListeners(Object source, Event action, Object oldValue, Object newValue) {
+        for (Observer listener
+                : listeners) {
+            listener.objectChanged(this, action, oldValue, newValue);
+        }
     }
 }
