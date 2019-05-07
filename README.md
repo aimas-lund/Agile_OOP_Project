@@ -22,7 +22,7 @@ The different roles (and their access) is following:
 | nurse    			| nurse    		| /nurse                      	|
 | ict      			| ict      		| /ict (and all of the above) 	|
 
-
+ 
 ## Submitting actions (forms)
 
 When you submit a form a new tab will open with either a relevant message or the submitted data (in case of registering staff/patients or adding a department).
