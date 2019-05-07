@@ -36,7 +36,7 @@
                     <input class="input-field" type="text" placeholder="Name" name="name" required>
                     <input class="input-field" type="text" placeholder="Surname" name="surname" required>
                 </div>
-                <div class="input-container" >
+                <div class="input-container">
                     <input class="input-field" type="text" placeholder="Home address" name="homeAddress" required>
                 </div>
                 <div class="input-container">
@@ -47,9 +47,10 @@
                         <option value="male">Male</option>
                         <option value="female">Female</option>
                     </select>
+                    <button type="submit" formmethod="post" class="btn">Register</button>
                 </div>
                 <div class="input-container submitButton">
-                    <input class="input-field" type="text" placeholder="Register to which department"  name="department" required>
+                    <input class="input-field" type="text" placeholder="Register to which department" name="department" required>
                     <button type="submit" formmethod="post" class="btn">Register</button>
                 </div>
             </form>
@@ -77,13 +78,9 @@
                     <input class="input-field update" id="date" type="date" placeholder="Birthday" name="date">
                     <select class="dropdown update" id="gender" form="updatePatient" name="gen" required>                        <option value="" disabled selected hidden>Gender</option>
                         <option value="" disabled selected hidden>Gender</option>
-
                         <option value="male">Male</option>
                         <option value="female">Female</option>
                     </select>
-                </div>
-                <div class="input-container">
-
                 </div>
                 <div class="submitButton">
                     <button type="submit" formmethod="post" class="btn">Update</button>
@@ -104,11 +101,11 @@
                     </select>
                     <input class="input-field search searchPatient" type="text" placeholder="Name" name="name" id="pname">
                     <input class="input-field search searchPatient" type="tel" placeholder="ID" name="id" id="pid">
-                    <input class="input-field search searchPatient" type="text" placeholder="Department"  name="department" id="pdepartment" >
+                    <input class="input-field search searchPatient" type="text" placeholder="Department" name="department" id="pdepartment" >
 
                 </div>
                 <div class="submitButton">
-                    <button type="submit" formmethod="post" class="btn">Search</button>
+                    <button type="submit" formmethod="get" class="btn">Search</button>
                 </div>
             </form>
         </div>
@@ -117,7 +114,7 @@
             <h3>Delete person<i class="fa fa-caret-down" aria-hidden="true"></i></h3>
             <form class="dashboard-action" id="deletePatient" autocomplete="on" action="/deletePatient">
                 <div class="input-container">
-                    <input class="input-field" type="text" placeholder="ID" name="id" required style="width:25%">
+                    <input class="input-field" type="text" placeholder="ID" name="id" required style="width:50%">
                     <button type="submit" formmethod="post" class="btn">Delete</button>
                 </div>
             </form>
