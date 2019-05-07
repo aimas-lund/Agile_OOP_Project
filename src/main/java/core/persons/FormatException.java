@@ -1,4 +1,4 @@
-package management;
+package core.persons;
 
 public class FormatException extends Exception {
     public FormatException(String message) {

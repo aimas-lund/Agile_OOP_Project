@@ -1,17 +1,15 @@
 package core.buildings;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import core.persons.Patient;
 import core.persons.Staff;
+import io.cucumber.datatable.dependency.com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@JsonIgnoreProperties(value = {"departmentInformation"})
-
-public abstract class Department {
 import static core.buildings.Event.*;
 
+@JsonIgnoreProperties(value = {"departmentInformation"})
 public abstract class Department implements Observable {
 	private String name;
     private String uniqueId;

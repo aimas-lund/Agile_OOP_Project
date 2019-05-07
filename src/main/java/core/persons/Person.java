@@ -11,10 +11,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-public abstract class Person implements Observable{
-
 @JsonIgnoreProperties(value = {"personInformation"})
-public abstract class Person {
+public abstract class Person implements Observable{
     // TODO: Consider creating a factory design around person, or staff and patients separately
 
     private String uniqueId;
