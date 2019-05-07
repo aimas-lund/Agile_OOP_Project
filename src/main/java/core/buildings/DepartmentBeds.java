@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import static core.buildings.Event.UPDATE;
+
 public abstract class DepartmentBeds extends Department {
     private final int totalCapacity;
     private Bed[] beds = new Bed[0];
@@ -15,6 +17,7 @@ public abstract class DepartmentBeds extends Department {
     private int currentCapacity = 0;
 
     DepartmentBeds() {
+        super();
         totalCapacity = 0;
     }
 
@@ -31,7 +34,6 @@ public abstract class DepartmentBeds extends Department {
         super(uniqueId, name, patients, staff);
         this.totalCapacity = totalCapacity;
         this.currentCapacity = totalCapacity;
-
         beds = new Bed[totalCapacity];
 
         for (int i = 0; i < totalCapacity; i++) {
@@ -70,18 +72,22 @@ public abstract class DepartmentBeds extends Department {
 
     void addPatientInBed(Patient patient, Bed bed) {
         patientsInBeds.put(patient, bed);
+        this.notifyListeners(this, UPDATE, null, patient);
     }
 
     void removePatientInBed(Patient patient) {
         patientsInBeds.remove(patient);
+        this.notifyListeners(this, UPDATE, null, patient);
     }
 
     void incrementCurrentCapacity() {
         currentCapacity++;
+        notifyListeners(this, UPDATE, this, this);
     }
 
     void decrementCurrentCapacity() {
         currentCapacity--;
+        notifyListeners(this, UPDATE, this, this);
     }
 
     public boolean hasAvailableBeds() {

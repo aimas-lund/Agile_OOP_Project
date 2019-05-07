@@ -7,10 +7,13 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import static core.buildings.Event.UPDATE;
+
 public class OutDepartment extends Department {
     private Queue<Patient> waitingPatients = new LinkedList<>();
 
     public OutDepartment() {
+        super();
     }
 
     public OutDepartment(String uniqueId, String name) {
@@ -37,6 +40,7 @@ public class OutDepartment extends Department {
             add(patient);
         }
         waitingPatients.add(patient);
+        notifyListeners(this, UPDATE, null, patient);
     }
 
     public boolean isPatientWaiting(Patient patient) {
@@ -44,7 +48,9 @@ public class OutDepartment extends Department {
     }
 
     public Patient getNextWaitingPatient() {
-        return waitingPatients.poll();
+        Patient patient = waitingPatients.poll();
+        notifyListeners(this, UPDATE, null, patient);
+        return patient;
     }
 
     public boolean hasWaitingPatients() {

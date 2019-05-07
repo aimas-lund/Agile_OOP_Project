@@ -119,8 +119,8 @@ public class DaoDepartmentImplTest {
 
         InDepartment department = (InDepartment) daoDepartment.find(hashMap).get(0);
         assertNotNull(department);
-        assertEquals(4, department.getCurrentCapacity());
-        assertEquals(5, department.getTotalCapacity());
+        assertEquals(5, department.getCurrentCapacity());
+        assertEquals(6, department.getTotalCapacity());
         assertFalse(department.getPatients().isEmpty());
         assertFalse(department.getPatientsInBeds().isEmpty());
         assertFalse(department.getStaff().isEmpty());
@@ -159,17 +159,17 @@ public class DaoDepartmentImplTest {
     @Test
     public void saveAllStaffSomeExists() {
         inDepartmentTest.add(new Clerk("clerkid1"));
-        assertTrue(daoDepartment.saveAllStaff(inDepartmentTest));
+        assertTrue(daoDepartment.saveAllStaff(inDepartmentTest, true));
         inDepartmentTest.add(new Clerk("clerkid1"));
-        assertFalse(daoDepartment.saveAllStaff(inDepartmentTest));
+        assertFalse(daoDepartment.saveAllStaff(inDepartmentTest, true));
     }
 
     @Test
     public void saveAllPatientsSomeExists() {
         inDepartmentTest.add(new Patient("patient1"));
-        assertTrue(daoDepartment.saveAllPatients(inDepartmentTest));
+        assertTrue(daoDepartment.saveAllPatients(inDepartmentTest, true));
         inDepartmentTest.add(new Patient("patient1"));
-        assertFalse(daoDepartment.saveAllPatients(inDepartmentTest));
+        assertFalse(daoDepartment.saveAllPatients(inDepartmentTest, true));
     }
 
     @Test
@@ -210,7 +210,6 @@ public class DaoDepartmentImplTest {
         inDepartmentTest.add(new Patient("patienttest3"));
         assertTrue(daoDepartment.save(inDepartmentTest));
         assertTrue(daoDepartment.delete(inDepartmentTest));
-
     }
 
     @Test

@@ -120,7 +120,7 @@ public class Database {
             connection.rollback();
             throw new SQLException(e);
         } finally {
-            if (shouldCommit) {
+            if (connection.getAutoCommit()) {
                 connection.close();
             }
         }
@@ -149,8 +149,8 @@ public class Database {
             }
             throw new SQLException(e);
         } finally {
-            if (shouldCommit) {
-                connection.close();
+            if (connection.getAutoCommit()) {
+                disconnectFromDB();
             }
         }
     }

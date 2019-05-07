@@ -49,11 +49,11 @@ public class DaoDepartmentImpl<T extends Department> implements IDao<T> {
 
     @Override
     public boolean save(T department) {
-        if (!saveDepartment(department)) {
+        if (!saveDepartment(department, false)) {
             return false;
-        } else if (!saveAllPatients(department)) {
+        } else if (!saveAllPatients(department, false)) {
             return false;
-        } else if (!saveAllStaff(department)) {
+        } else if (!saveAllStaff(department, false)) {
             return false;
         }
         database.commit();
@@ -61,11 +61,11 @@ public class DaoDepartmentImpl<T extends Department> implements IDao<T> {
         return true;
     }
 
-    public boolean saveDepartment(T department) {
+    public boolean saveDepartment(T department, boolean autoCommit) {
         String sql = "insert into departments values(?, ?, ?, ?, ?)";
 
         try {
-            PreparedStatement statement = database.prepareStatement(sql, false);
+            PreparedStatement statement = database.prepareStatement(sql, autoCommit);
             statement.setString(1, department.getUniqueId());
             statement.setString(2, department.getName());
             statement.setString(5, department.getClass().getSimpleName());
@@ -78,19 +78,20 @@ public class DaoDepartmentImpl<T extends Department> implements IDao<T> {
                 statement.setNull(4, Types.INTEGER);
             }
 
-            return database.executePreparedStatement(statement, false);
+            return database.executePreparedStatement(statement, !autoCommit);
 
         } catch (SQLException e) {
+            database.disconnectFromDB();
             return false;
         }
     }
 
-    public boolean saveAllStaff(T department) {
+    public boolean saveAllStaff(T department, boolean autoCommit) {
         String sql = "insert into staff_in_departments values(?, ?)";
         ArrayList<String> tempUniqueIds = new ArrayList<>();
 
         try {
-            PreparedStatement statement = database.prepareStatement(sql, false);
+            PreparedStatement statement = database.prepareStatement(sql, autoCommit);
 
             for (Staff staff :
                     department.getStaff()) {
@@ -111,16 +112,17 @@ public class DaoDepartmentImpl<T extends Department> implements IDao<T> {
             uniqueids.addAll(tempUniqueIds);
             return true;
         } catch (SQLException e) {
+            database.disconnectFromDB();
             return false;
         }
     }
 
-    public boolean saveAllPatients(T department) {
+    public boolean saveAllPatients(T department, boolean autoCommit) {
         String sql = "insert into patients_in_departments values(?, ?, ?, ?)";
         ArrayList<String> tempUniqueIds = new ArrayList<>();
 
         try {
-            PreparedStatement statement = database.prepareStatement(sql, false);
+            PreparedStatement statement = database.prepareStatement(sql, autoCommit);
 
             for (Patient patient :
                     department.getPatients()) {
@@ -141,6 +143,7 @@ public class DaoDepartmentImpl<T extends Department> implements IDao<T> {
             return true;
 
         } catch (SQLException e) {
+            database.disconnectFromDB();
             return false;
         }
     }

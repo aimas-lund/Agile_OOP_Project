@@ -8,50 +8,57 @@ public class DepartmentObserver implements Observer {
     DaoDepartmentImpl<Department> daoDepartment = new DaoDepartmentImpl<>();
 
     @Override
-    public void objectChanged(Object source, String action, Object oldValue, Object newValue) {
+    public void objectChanged(Object source, Event event, Object oldValue, Object newValue) {
         if (oldValue instanceof Department || newValue instanceof Department) {
-            objectChanged(source, action, (Department) oldValue, (Department) newValue);
+            objectChanged((Department) source, event);
         } else if (oldValue instanceof Staff || newValue instanceof Staff) {
-            objectChanged(source, action, (Staff) oldValue, (Staff) newValue);
+            objectChanged((Department) source, event, (Staff) oldValue, (Staff) newValue);
         } else if (oldValue instanceof Patient || newValue instanceof Patient) {
-            objectChanged(source, action, oldValue, newValue);
+            objectChanged((Department) source, event, (Patient) oldValue, (Patient) newValue);
         }
     }
 
-    public void objectChanged(Object source, String action, Department oldValue, Department newValue) {
-        switch (action) {
-            case "ADD":
+    public void objectChanged(Department source, Event event) {
+        switch (event) {
+            case ADD:
+                daoDepartment.save(source);
                 break;
-            case "UPDATE":
+            case UPDATE:
+                daoDepartment.update(source);
                 break;
-            case "REMOVE":
+            case DELETE:
+                daoDepartment.delete(source);
                 break;
 
         }
     }
 
-    public void objectChanged(Object source, String action, Staff oldValue, Staff newValue) {
-        switch (action) {
-            case "ADD":
+    public void objectChanged(Department source, Event event, Staff oldValue, Staff newValue) {
+        switch (event) {
+            case ADD:
                 daoDepartment.save(newValue, source);
                 break;
-            case "UPDATE":
+            case UPDATE:
+                daoDepartment.update(newValue, source);
                 break;
-            case "REMOVE":
+            case DELETE:
+                daoDepartment.delete(oldValue, source);
                 break;
 
         }
     }
 
-    public void objectChanged(Object source, String action, Patient oldValue, Patient newValue) {
-        switch (action) {
-            case "ADD":
+    public void objectChanged(Department source, Event event, Patient oldValue, Patient newValue) {
+        switch (event) {
+            case ADD:
+                daoDepartment.save(newValue, source);
                 break;
-            case "UPDATE":
+            case UPDATE:
+                daoDepartment.update(newValue, source);
                 break;
-            case "REMOVE":
+            case DELETE:
+                daoDepartment.delete(oldValue, source);
                 break;
-
         }
     }
 }
