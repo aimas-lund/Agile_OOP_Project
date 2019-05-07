@@ -1,9 +1,12 @@
 package tests.core.buildings;
 
+import core.buildings.Bed;
 import core.buildings.Department;
-import core.buildings.Hospital;
 import core.buildings.InDepartment;
-import core.persons.*;
+import core.persons.Clerk;
+import core.persons.Hospital;
+import core.persons.Patient;
+import core.persons.Staff;
 import org.junit.Before;
 import org.junit.Test;
 

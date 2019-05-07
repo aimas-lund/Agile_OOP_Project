@@ -151,6 +151,7 @@ public class Database {
         } finally {
             if (shouldCommit) {
                 connection.close();
+                disconnectFromDB();
             }
         }
     }
