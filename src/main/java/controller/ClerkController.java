@@ -48,22 +48,19 @@ public class ClerkController {
 
     @GetMapping("/searchPatient")
     public @ResponseBody
-
     ArrayList<Person> findPatient(
-            @RequestParam(value = "name", required=false) String name,
-            @RequestParam(value="id", required =false) String id,
-            @RequestParam(value = "department", required = false) String department) throws PersonNotFoundException {
-
+            @RequestParam(value = "searchParameter", required=false) String choice,
+            @RequestParam(value="text", required = true) String textbox2) throws PersonNotFoundException {
 
         HashMap<String, String> hashMap = new HashMap<String, String>();
-        if(name!=null) {
-            hashMap.put("name", name);
+        if(choice.equals("name")) {
+            hashMap.put("name", textbox2);
         }
-        else if(id!=null) {
-            hashMap.put("uniqueid",id);
+        else if(choice.equals("id")) {
+            hashMap.put("uniqueid",textbox2);
         }
-        else if(department!= null) {
-            hashMap.put("department", department);
+        else if(choice.equals("department")) {
+            hashMap.put("department", textbox2);
         }
         //return id;
         return QRK.find(hashMap);

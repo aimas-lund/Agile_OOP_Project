@@ -15,7 +15,9 @@ import javax.print.Doc;
 class ICTController {
 
     Doctor doctor;
-    // Aggregate root
+
+
+    // Search Patient inherited from Clerk
 
 /*
 
