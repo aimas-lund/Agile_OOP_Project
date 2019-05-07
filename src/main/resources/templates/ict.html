@@ -94,10 +94,7 @@
                         <option value="id">ID</option>
                         <option value="department">Department</option>
                     </select>
-                    <input class="input-field search searchStaff" type="text" placeholder="Name" name="in-name" id="sname">
-                    <input class="input-field search searchStaff" type="tel" placeholder="ID" name="in-id" id="sid">
-                    <input class="input-field search searchStaff" type="text" placeholder="Department" name="in-department" id="sdepartment" >
-
+                    <input class="input-field update" id="textsearchstaff" style="display:block" type="text" placeholder="Text field" name="text">
                 </div>
                 <div class="submitButton">
                     <button type="submit" formmethod="get" class="btn">search</button>
@@ -184,9 +181,7 @@
                         <option value="id">ID</option>
                         <option value="department">Department</option>
                     </select>
-                    <input class="input-field search searchPatient" type="text" placeholder="Name" name="in-name" id="pname">
-                    <input class="input-field search searchPatient" type="tel" placeholder="ID" name="in-id" id="pid">
-                    <input class="input-field search searchPatient" type="text" placeholder="Department"  name="in-department" id="pdepartment" >
+                    <input class="input-field update" id="text2" style="display:block" type="text" placeholder="Text field" name="text">
 
                 </div>
                 <div class="submitButton">
@@ -211,7 +206,7 @@
                         <option value="gender">Gender</option>
                     </select>
                     <input class="input-field update updatePatient" id="textP" style="display:block" type="text" placeholder="Text field" name="in-text">
-                    <input class="input-field update updatePatient" id="numP" pattern="[0-9]{8}" type="tel" placeholder="Phone number" name="in-number">
+                    <input class="input-field update updatePatient" id="numP" type="tel" placeholder="Phone number" name="in-number">
                     <input class="input-field update updatePatient" id="dateP" type="date" placeholder="Birthday" name="in-date">
                     <select class="dropdown update updatePatient" id="genderP" form="updatePatient" name="in-gender">
                         <option value="male">Male</option>
@@ -284,6 +279,16 @@
                 </div>
                 <div class="input-container">
                     <button type="submit" formmethod="post" class="btn">Move</button>
+                </div>
+            </form>
+        </div>
+        <!-- Create PDF -->
+        <div class="dashboard-menu">
+            <h3>Generate PDF<i class="fa fa-caret-down" aria-hidden="true"></i></h3>
+            <form class="dashboard-action" autocomplete="on" action="/generatePdf">
+                <div class="input-container">
+                    <input class="input-field" type="text" placeholder="Department ID" name="id" required>
+                    <button type="submit" formmethod="get" class="btn inline">Generate PDF</button>
                 </div>
             </form>
         </div>

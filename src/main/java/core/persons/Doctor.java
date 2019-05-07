@@ -34,7 +34,6 @@ public class Doctor extends Staff {
 
     void setSpeciality(Speciality speciality) {
         this.speciality = speciality;
-        notifyListeners(this, Event.UPDATE, null, null);
     }
 
     public void callWaitingPatient(OutDepartment outDepartment) {

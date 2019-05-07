@@ -1,26 +1,23 @@
 package core.buildings;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import core.persons.Patient;
 import core.persons.Staff;
 
 import java.util.ArrayList;
 
-@JsonIgnoreProperties(value = {"departmentInformation"})
-
 public abstract class Department {
 	private String name;
 
-	private String uniqueId;
+    private String uniqueId;
 	private ArrayList<Patient> patients = new ArrayList<>();
 	private ArrayList<Staff> staff = new ArrayList<>();
 	Department() {
-	}
+    }
 
 	Department(String uniqueId, String name) {
-		this.uniqueId = uniqueId;
-		this.name = name;
-	}
+        this.uniqueId = uniqueId;
+        this.name = name;
+    }
 
 	Department(String uniqueId, String name, ArrayList<Patient> patients, ArrayList<Staff> staff) {
 		this(uniqueId, name);
@@ -87,6 +84,5 @@ public abstract class Department {
 	void setStaff(ArrayList<Staff> staff) {
 		this.staff = staff;
 	}
-
 
 }

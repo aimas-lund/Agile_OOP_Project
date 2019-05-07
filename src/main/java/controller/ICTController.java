@@ -1,9 +1,12 @@
 package controller;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import com.itextpdf.text.DocumentException;
 import core.buildings.Department;
 import core.persons.*;
 
@@ -14,6 +17,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import persistence.data_access_objects.DaoDepartmentImpl;
 import persistence.query_roles.QueryRoleICT;
+import core.utility.*;
 
 @PreAuthorize("hasRole('ICT')")
 @RestController
@@ -139,6 +143,64 @@ class ICTController {
         }
 
         return "person deleted";
+
+    }
+
+    @PostMapping(value = "/updateStaff")
+    public @ResponseBody
+    String updateStaff(@RequestParam(value="parameter") String param,
+                         @RequestParam(value="text", required = false) String textbox,
+                         @RequestParam(value="id", required = true) String id,
+                         @RequestParam(value="phoneNumber", required = false) String number,
+                         @RequestParam(value="gender", required = false) String gender,
+                         @RequestParam(value="role", required = false) String role,
+                         @RequestParam(value="birthday", required = false) String date) throws ParseException, PersonNotFoundException {
+
+        HashMap<String, String> hashMap = new HashMap<String, String>();
+        hashMap.put("uniqueid",id);
+
+        Staff staff = QRICT.findStaff(hashMap).get(0);
+        PersonInformationFacade SIF = new PersonInformationFacade(staff);
+
+        if (param == "name") {
+            SIF.setPersonName(textbox);
+        }
+        else if (param == "surname")
+            SIF.setPersonSurname(textbox);
+        else if (param == "birthdate") {
+            Date birthDate = new SimpleDateFormat("yyyy-MM-dd").parse(date);
+            SIF.setPersonBirthdate(birthDate);
+        }
+        else if (param == "gender") {
+            Gender genderx = Gender.valueOf((gender.toUpperCase()));
+            SIF.setPersonGender(genderx);
+        }
+        else if (param == "homeAddress")
+            SIF.setPersonHomeAddress(textbox);
+        else if (param == "phoneNumber")
+            SIF.setPersonPhoneNumber(Integer.valueOf(number));
+
+        return "Patient has been updated";
+    }
+
+    @GetMapping(value = "/generatePdf")
+    public @ResponseBody
+    void generatePdf(@RequestParam(value="id") String id) throws IOException, DocumentException {
+
+        HashMap<String, String> hashMap = new HashMap<String, String>();
+        hashMap.put("uniqueId",id);
+
+
+        Department department = daodept.find(hashMap).get(0);
+
+
+        System.out.println(department.getName());
+//        PersonToPdf PTP = new PersonToPdf();
+//        PTP.PatientToPdf(department);
+//
+//
+//        File file = new File(department.getName() + "_patients.pdf");
+//        return file;
 
     }
 
