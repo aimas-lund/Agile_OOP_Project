@@ -2,7 +2,7 @@ package tests.core.persons;
 
 import core.buildings.Department;
 import core.persons.Clerk;
-import core.persons.Gender;
+import core.utility.Gender;
 import core.persons.PersonInformationFacade;
 import core.persons.Staff;
 import org.junit.Before;

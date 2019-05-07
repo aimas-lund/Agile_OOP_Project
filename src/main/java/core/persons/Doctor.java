@@ -1,7 +1,7 @@
 package core.persons;
 
-import core.buildings.Event;
 import core.buildings.OutDepartment;
+import core.utility.Gender;
 import core.utility.Speciality;
 
 import java.util.Date;

@@ -1,20 +1,19 @@
 package core.persons;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import core.utility.Gender;
 import exceptions.FormatException;
 
 import core.buildings.Event;
 import core.buildings.Observable;
 import core.buildings.Observer;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import exceptions.FormatException;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
 @JsonIgnoreProperties(value = {"personInformation"})
-public abstract class Person implements Observable{
+public abstract class Person implements Observable {
     private String uniqueId;
     private String name;
     private String surname;

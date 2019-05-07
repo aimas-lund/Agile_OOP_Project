@@ -1,8 +1,7 @@
 package core.persons;
 
-import core.buildings.Event;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import core.utility.Gender;
 
 import java.util.Date;
 

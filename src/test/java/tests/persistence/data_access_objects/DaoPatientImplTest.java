@@ -1,6 +1,6 @@
 package tests.persistence.data_access_objects;
 
-import core.persons.Gender;
+import core.utility.Gender;
 import core.persons.Patient;
 import core.persons.PersonInformationFacade;
 import org.junit.After;

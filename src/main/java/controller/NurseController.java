@@ -30,13 +30,13 @@ public class NurseController {
         // find department
         HashMap<String, String> hashMap = new HashMap<String, String>();
         hashMap.put("department", department);
-        Department dept = (Department) daoDepartment.find(hashMap).get(0);
+        Department dept = daoDepartment.find(hashMap).get(0);
 
         // find patient
         hashMap = new HashMap<String, String>();
         hashMap.put("uniqueid", id);
 
-        Patient patient = (Patient) daopatient.find(hashMap).get(0);
+        Patient patient = daopatient.find(hashMap).get(0);
 
         if (dept instanceof InDepartment) {
             QRN.assignPatientToBed(patient, (InDepartment) dept);

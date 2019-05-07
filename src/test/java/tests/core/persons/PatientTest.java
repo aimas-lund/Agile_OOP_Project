@@ -1,6 +1,6 @@
 package tests.core.persons;
 
-import core.persons.Gender;
+import core.utility.Gender;
 import core.persons.Patient;
 import core.persons.PersonInformationFacade;
 import org.junit.Test;

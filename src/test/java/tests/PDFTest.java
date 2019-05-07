@@ -3,7 +3,7 @@ package tests;
 import com.itextpdf.text.DocumentException;
 import core.buildings.Department;
 import core.buildings.ERDepartment;
-import core.persons.Gender;
+import core.utility.Gender;
 import core.persons.Patient;
 import org.junit.Test;
 import java.io.IOException;
@@ -11,7 +11,7 @@ import java.net.URISyntaxException;
 import java.util.Date;
 import core.utility.PersonToPdf;
 
-import static core.persons.Gender.FEMALE;
+import static core.utility.Gender.FEMALE;
 import static junit.framework.TestCase.assertTrue;
 
 public class PDFTest {

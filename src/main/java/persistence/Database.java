@@ -15,7 +15,7 @@ public class Database {
 
     public void connectToDB() {
         try {
-            connection = DriverManager.getConnection("jdbc:sqlite:sample.db");
+            connection = DriverManager.getConnection("jdbc:sqlite:database.db");
         } catch (SQLException e) {
             System.err.println(e.getMessage());
         }

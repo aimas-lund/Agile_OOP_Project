@@ -1,5 +1,6 @@
 package core.persons;
 
+import core.utility.Gender;
 import core.utility.Speciality;
 import exceptions.FormatException;
 
