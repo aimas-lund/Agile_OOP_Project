@@ -17,9 +17,9 @@ import persistence.data_access_objects.DaoStaffImpl;
 import persistence.query_roles.QueryRoleClerk;
 import persistence.query_roles.QueryRoleICT;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -61,14 +61,14 @@ public class DatabaseSteps {
     @Then("the user should add the patient to the database")
     public void the_user_should_add_the_patient_to_the_database() {
         Database database = new Database();
-        Statement statement = database.createStatement();
 
-        String sql = "select * from patients where uniqueId = '%s'";
-        sql = String.format(sql, patient.getUniqueId());
+        String sql = "select * from patients where uniqueId = ?";
+
         ResultSet rs;
-
         try {
-            rs = statement.executeQuery(sql);
+            PreparedStatement statement = database.prepareStatement(sql);
+            statement.setString(1, patient.getUniqueId());
+            rs = statement.executeQuery();
 
             assertTrue(rs.next());
             while (rs.next()) {
@@ -93,14 +93,14 @@ public class DatabaseSteps {
     @Then("the user should add the staff to the database")
     public void theUserShouldAddTheStaffToTheDatabase() {
         Database database = new Database();
-        Statement statement = database.createStatement();
 
-        String sql = "select * from staff where uniqueId = '%s'";
-        sql = String.format(sql, staff.getUniqueId());
+        String sql = "select * from staff where uniqueId = ?";
         ResultSet rs;
 
         try {
-            rs = statement.executeQuery(sql);
+            PreparedStatement statement = database.prepareStatement(sql);
+            statement.setString(1, staff.getUniqueId());
+            rs = statement.executeQuery();
 
             assertTrue(rs.next());
             while (rs.next()) {
