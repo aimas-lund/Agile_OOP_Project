@@ -115,7 +115,7 @@ public abstract class Person implements Observable {
 
     void setUniqueId(String uniqueID) {
         this.uniqueId = uniqueID;
-        notifyListeners(this, Event.UPDATE, null, null);
+//        notifyListeners(this, Event.UPDATE, null, null);
     }
 
     public abstract String[] getPersonInformation();

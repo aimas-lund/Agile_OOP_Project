@@ -75,15 +75,10 @@ public class ClerkController {
 
     @PostMapping(value = "/updatePatient")
     public @ResponseBody
-    String updatePatient(@RequestParam(value="id") String id,
-                          @RequestParam(value="name", required = false) String name,
-                          @RequestParam(value="surname", required = false) String surname,
-                          @RequestParam(value="birthday", required = false) String birthdate,
-                          @RequestParam(value = "gender", required = false) String gender,
-                          @RequestParam(value = "homeAddress", required = false) String homeAddress,
-                          @RequestParam(value="phoneNumber", required = false) String phoneNumber,
-                          @RequestParam(value="text", required = false) String textbox,
+    String updatePatient(@RequestParam(value="parameter") String param,
+                         @RequestParam(value="id") String id,
                           @RequestParam(value="number", required = false) String number,
+                         @RequestParam(value="text", required = false) String textbox,
                           @RequestParam(value="date", required = false) String date,
                           @RequestParam(value="gen", required = false) String gen) throws ParseException, PersonNotFoundException {
 
@@ -93,22 +88,22 @@ public class ClerkController {
         Patient patient = (Patient) QRK.find(hashMap).get(0);
         PIF = new PersonInformationFacade(patient);
 
-        if (name!= null) {
+        if (param == "name") {
             PIF.setPersonName(textbox);
         }
-        else if (surname != null)
+        else if (param == "surname")
             PIF.setPersonSurname(textbox);
-        else if (birthdate != null) {
+        else if (param == "birthdate") {
             Date birthDate = new SimpleDateFormat("yyyy-MM-dd").parse(date);
             PIF.setPersonBirthdate(birthDate);
         }
-        else if (gender!=null) {
+        else if (param == "gender") {
             Gender genderx = Gender.valueOf((gen.toUpperCase()));
             PIF.setPersonGender(genderx);
         }
-        else if (homeAddress != null)
+        else if (param == "homeAddress")
             PIF.setPersonHomeAddress(textbox);
-        else if (phoneNumber!= null)
+        else if (param == "phoneNumber")
             PIF.setPersonPhoneNumber(Integer.valueOf(number));
 
         return "Patient has been updated";
