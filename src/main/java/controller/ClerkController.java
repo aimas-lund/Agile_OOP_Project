@@ -104,7 +104,6 @@ public class ClerkController {
             throw new Exception("Cant find patient with ID: " + id);
         }
 
-
         switch (param) {
             case "name":
                 PIF.setPersonName(textbox);
