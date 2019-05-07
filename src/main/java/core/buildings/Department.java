@@ -4,17 +4,21 @@ import core.persons.Patient;
 import core.persons.Staff;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public abstract class Department {
+public abstract class Department implements Observable {
 	private String name;
-
     private String uniqueId;
 	private ArrayList<Patient> patients = new ArrayList<>();
 	private ArrayList<Staff> staff = new ArrayList<>();
+    private List<Observer> listeners = new ArrayList<>();
+
 	Department() {
+        addChangeListener(new DepartmentObserver());
     }
 
 	Department(String uniqueId, String name) {
+        this();
         this.uniqueId = uniqueId;
         this.name = name;
     }
@@ -27,15 +31,18 @@ public abstract class Department {
 
 	public void add(Staff s) {
 		staff.add(s);
-	}
+        notifyListeners(this, "ADD", null, s);
+    }
 
 	public void add(Patient p) {
 		patients.add(p);
+        notifyListeners(this, "ADD", null, p);
 	}
 
 	public void remove(Staff s) {
-		staff.remove(s);
-	}
+        notifyListeners(this, "REMOVE", s, null);
+        staff.remove(s);
+    }
 
     public void remove(Patient p) {
         patients.remove(p);
@@ -85,5 +92,22 @@ public abstract class Department {
         this.staff = staff;
     }
 
+    @Override
+    public void addChangeListener(Observer newListener) {
+        listeners.add(newListener);
+    }
+
+    @Override
+    public void removeChangeListener(Observer listener) {
+        listeners.remove(listener);
+    }
+
+    @Override
+    public void notifyListeners(Object source, String action, Object oldValue, Object newValue) {
+        for (Observer listener :
+                listeners) {
+            listener.objectChanged(source, action, oldValue, newValue);
+        }
+    }
 
 }
