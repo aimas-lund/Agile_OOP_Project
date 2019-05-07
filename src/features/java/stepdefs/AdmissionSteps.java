@@ -3,7 +3,7 @@ package stepdefs;
 import core.buildings.InDepartment;
 import core.buildings.OutDepartment;
 import core.persons.Doctor;
-import core.persons.Gender;
+import core.utility.Gender;
 import core.persons.Patient;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;

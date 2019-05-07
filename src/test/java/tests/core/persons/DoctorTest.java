@@ -2,7 +2,7 @@ package tests.core.persons;
 
 import core.buildings.OutDepartment;
 import core.persons.Doctor;
-import core.persons.Gender;
+import core.utility.Gender;
 import core.persons.Patient;
 import core.persons.PersonInformationFacade;
 import core.utility.Speciality;

@@ -1,10 +1,15 @@
 package core.persons;
 
+import core.utility.Gender;
 import core.utility.Speciality;
 import exceptions.FormatException;
 
 import java.util.Date;
 
+/**
+ * The PersonInformationFacade is a class which can change attributes for any
+ * Person class.
+ */
 public class PersonInformationFacade {
     private final Person person;
 

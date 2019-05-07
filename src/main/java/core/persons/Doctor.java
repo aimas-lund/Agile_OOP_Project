@@ -1,11 +1,19 @@
 package core.persons;
 
-import core.buildings.Event;
 import core.buildings.OutDepartment;
+import core.utility.Gender;
 import core.utility.Speciality;
 
 import java.util.Date;
 
+/**
+ * The Doctor class is an sub-class of Staff, which has an additional attribute,
+ * signified by a numerator "Speciality", which signifies the speciality the doctor
+ * has.
+ *
+ * Moreover, the doctor class can handle waiting patients from the out-department class.
+ * Features include discharging a patient, and polling new ones from the waiting patients queue.
+ */
 public class Doctor extends Staff {
     private Speciality speciality;
     private Patient treatedPatient;

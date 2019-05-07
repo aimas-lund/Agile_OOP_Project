@@ -2,6 +2,7 @@ package tests.persistence.data_access_objects;
 
 import core.buildings.*;
 import core.persons.*;
+import core.utility.Gender;
 import exceptions.ExceededCapacityException;
 import org.junit.After;
 import org.junit.Before;

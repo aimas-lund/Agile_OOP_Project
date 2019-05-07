@@ -1,6 +1,8 @@
 package core.persons;
 
 
+import core.utility.Gender;
+
 import java.util.Date;
 
 public class Nurse extends Staff {

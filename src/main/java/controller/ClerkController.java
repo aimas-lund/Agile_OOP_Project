@@ -5,13 +5,11 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import core.buildings.Department;
-import core.buildings.InDepartment;
 import core.persons.*;
 
-import exceptions.FormatException;
+import core.utility.Gender;
 import org.springframework.security.access.prepost.PreAuthorize;
 import persistence.data_access_objects.DaoDepartmentImpl;
-import persistence.data_access_objects.DaoPatientImpl;
 import persistence.query_roles.QueryRoleClerk;
 import exceptions.PersonNotFoundException;
 import org.springframework.web.bind.annotation.*;

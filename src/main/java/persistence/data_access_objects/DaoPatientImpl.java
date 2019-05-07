@@ -1,6 +1,6 @@
 package persistence.data_access_objects;
 
-import core.persons.Gender;
+import core.utility.Gender;
 import core.persons.Patient;
 import persistence.Database;
 

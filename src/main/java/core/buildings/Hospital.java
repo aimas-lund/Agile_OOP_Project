@@ -1,4 +1,4 @@
-package core.persons;
+package core.buildings;
 
 import core.buildings.Department;
 import core.persons.Patient;

@@ -2,7 +2,7 @@ package tests.persistence.query_roles;
 
 import core.buildings.Department;
 import core.buildings.InDepartment;
-import core.persons.Gender;
+import core.utility.Gender;
 import core.persons.Patient;
 import exceptions.PersonNotFoundException;
 import org.junit.Before;

@@ -1,6 +1,6 @@
 $(document).ready(function() {
     $( ".dashboard-menu > h3" ).click(function() {
-        $("i",this).toggleClass("fa fa-caret-down fa fa-caret-up")
+        $("i",this).toggleClass("fa fa-caret-down fa fa-caret-up");
         $("form",$(this).parent()).toggle();
     });
 });
@@ -18,7 +18,7 @@ function upPatient() {
     } else if (option === "name" || option === "surname" || option === "homeAddress") {
         var id = "#textP"
     }
-    $(id).show()
+    $(id).show();
     $(id).attr("required","true")
 }
 function upStaff() {
@@ -36,27 +36,27 @@ function upStaff() {
     } else if (option === "name" || option === "surname" || option === "homeAddress" || option === "email") {
         var id = "#textS"
     }
-    $(id).show()
+    $(id).show();
     $(id).attr("required","true")
 }
 
 function addDepartment() {
-    var option = $("#departmentType").val()
+    var option = $("#departmentType").val();
     if (option === "out") {
-        $("#capacity").hide()
+        $("#capacity").hide();
         $("#capacity").removeAttr("required","false")
     } else {
-        $("#capacity").show()
+        $("#capacity").show();
         $("#capacity").attr("required","true")
     }
 }
 function roleStaff() {
-    var option = $("#role").val()
+    var option = $("#role").val();
     if (option === "Doctor") {
-        $("#speciality").show()
+        $("#speciality").show();
         $("#speciality").attr("required","true")
     } else {
-        $("#speciality").hide()
+        $("#speciality").hide();
         $("#speciality").removeAttr("required","true")
     }
 }
