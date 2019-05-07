@@ -12,15 +12,17 @@ import org.springframework.web.bind.annotation.RestController;
 import persistence.data_access_objects.DaoDepartmentImpl;
 import persistence.query_roles.QueryRoleICT;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 
 @RestController
 public class HospitalController {
-    LoadHospital loader = new LoadHospital();
+    private LoadHospital loader = new LoadHospital();
     private Hospital hospital;
-    DaoDepartmentImpl<Department> DAO = new DaoDepartmentImpl<>();
-    QueryRoleICT QRI = new QueryRoleICT();
+    private DaoDepartmentImpl<Department> DAO = new DaoDepartmentImpl<>();
+    private QueryRoleICT QRI = new QueryRoleICT();
 
     public Hospital getHospital() {
         this.hospital = loader.getHospital();
@@ -32,7 +34,7 @@ public class HospitalController {
                                @RequestParam(value="name") String name,
                                @RequestParam(value="type") String type,
                                @RequestParam(value="capacity",required=false) String capacity
-                                ) {
+                                ) throws Exception {
         Department dept;
         if ("out".equals(type)) {
             dept = new OutDepartment(id, name);
@@ -43,12 +45,10 @@ public class HospitalController {
             int cap = Integer.valueOf(capacity);
             dept = new ERDepartment(id, name, cap);
         } else {
-            dept = new OutDepartment("id","test");
+            throw new Exception("Department unable to register");
         }
         Hospital hospital = getHospital();
         hospital.add(dept);
-
-        //DAO.save(dept);
 
         return dept;
     }
@@ -57,48 +57,61 @@ public class HospitalController {
         Hospital hospital = getHospital();
         HashMap<String,String> hashMap = new HashMap<>();
         hashMap.put("uniqueid",id);
-        Department dept = DAO.find(hashMap).get(0);
-        hospital.remove(dept);
-
-        //DAO.delete(id);
-
-        return "Deleted department with id: " + id;
+        ArrayList<Department> dept = DAO.find(hashMap);
+        if (dept.size() != 0) {
+            hospital.remove(dept.get(0));
+            return "Deleted department with id: " + id;
+        }
+        return "Cant find department with id: " + id;
     }
 
     @PostMapping("/movePerson")
     public String movePerson( @RequestParam(value="personId") String personId,
                               @RequestParam(value="toId") String toId,
                               @RequestParam(value="type") String type
-                            ) throws PersonNotFoundException {
+                            ) throws Exception {
 
         HashMap<String,String> personMap = new HashMap<>();
         HashMap<String,String> deptMap = new HashMap<>();
 
+        Person person = null;
+
         deptMap.put("uniqueid",toId);
-        Department d2 = DAO.find(deptMap).get(0);
+        ArrayList<Department> d2 = DAO.find(deptMap);
+        if (d2.size() == 0) {
+            throw new Exception("Cant find to department with ID: " + d2);
+        }
         personMap.put("uniqueid",personId);
 
         Hospital hospital = getHospital();
-        Person person = null;
         String deptId;
-        Department d1 = null;
+        ArrayList<Department> d1 = null;
         if (type.equals("patient")) {
-            Patient patient = QRI.findPatient(personMap).get(0);
-            person = patient;
-            deptId = DAO.findDepartmentIdOfPerson(patient);
+            ArrayList<Patient> patient = QRI.findPatient(personMap);
+            if (patient.size() == 0) {
+                throw new Exception("Cant find patient with ID: " + personId);
+            }
+            person = patient.get(0);
+            deptId = DAO.findDepartmentIdOfPerson(((Patient) person));
             deptMap.put("uniqueid",deptId);
-            d1 = DAO.find(deptMap).get(0);
-            hospital.move(patient,d1,d2);
+            d1 = DAO.find(deptMap);
+            hospital.move((Patient) person,d1.get(0),d2.get(0));
+
         } else if (type.equals("staff")) {
-            Staff staff = QRI.findStaff(personMap).get(0);
-            person = staff;
-            deptId = DAO.findDepartmentIdOfPerson(staff);
+            ArrayList<Staff> staff = QRI.findStaff(personMap);
+            if (staff.size() == 0) {
+                throw new Exception("Cant find staff with ID: " + personId);
+            }
+            person = staff.get(0);
+            deptId = DAO.findDepartmentIdOfPerson(((Staff) person));
             deptMap.put("uniqueid",deptId);
-            d1 = DAO.find(deptMap).get(0);
-            hospital.move(staff,d1,d2);
+            d1 = DAO.find(deptMap);
+            hospital.move((Staff) person,d1.get(0),d2.get(0));
+
         }
 
-        return "Moved " + person.getName() + " from " + d1.getName() + " to " + d2.getName();
+
+        return "Moved " + person.getName() + " from " + d1.get(0).getName() + " to " + d2.get(0).getName();
     }
 
 }
