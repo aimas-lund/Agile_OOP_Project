@@ -29,19 +29,15 @@
         <!-- Search for patient -->
         <div class="dashboard-menu">
             <h3>Search for patient<i class="fa fa-caret-down" aria-hidden="true"></i></h3>
-            <form class="dashboard-action" id="searchPatient" autocomplete="on" action="/searchPatient">
+            <form class="dashboard-action" id="searchPatient" autocomplete="on" action="/searchPatient" target="_blank">
                 <div class="input-container">
-                    <select class="dropdown" form="searchPatient" id="searchPatientParam" name="searchParameter"
-                            onchange="searchPatient()" required>
+                    <select class="dropdown" form="searchPatient" name="searchParameter" required>
                         <option value="" disabled selected hidden>Choose a search parameter</option>
                         <option value="name">Name</option>
                         <option value="id">ID</option>
                         <option value="department">Department</option>
                     </select>
-                    <input class="input-field search searchPatient" type="text" placeholder="Name" name="name" id="pname">
-                    <input class="input-field search searchPatient" type="tel" placeholder="ID" name="id" id="pid">
-                    <input class="input-field search searchPatient" type="text" placeholder="Department"  name="department" id="pdepartment" >
-
+                    <input class="input-field" type="text" placeholder="Text field" name="text" required>
                 </div>
                 <div class="submitButton">
                     <button type="submit" formmethod="get" class="btn">Search</button>
@@ -51,7 +47,7 @@
         <!-- Assign patient to waiting room/bed -->
         <div class="dashboard-menu">
             <h3>Assign patient to department<i class="fa fa-caret-down" aria-hidden="true"></i></h3>
-            <form class="dashboard-action" id="assignPatient" autocomplete="on" action="/assignPatient">
+            <form class="dashboard-action" id="assignPatient" autocomplete="on" action="/assignPatient" target="_blank">
                 <div class="input-container">
                     <input class="input-field" type="text" placeholder="ID" name="id">
                     <input class="input-field" type="text" placeholder="Department" name="department">
@@ -62,12 +58,11 @@
             </form>
         </div>
 
-
         <!-- BedManger things -->
         <!-- Action for patient -->
         <div class="dashboard-menu">
             <h3>Action for patient<i class="fa fa-caret-down" aria-hidden="true"></i></h3>
-            <form class="dashboard-action" id="dischargePatient" autocomplete="on" action="/actionPatient">
+            <form class="dashboard-action" id="dischargePatient" autocomplete="on" action="/actionPatient" target="_blank">
                 <div class="input-container">
                     <input class="input-field" type="text" placeholder="ID" name="id" required>
                     <select class="dropdown" form="dischargePatient" name="action" required>

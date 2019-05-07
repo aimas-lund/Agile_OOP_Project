@@ -1,16 +1,20 @@
 package core.persons;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import exceptions.FormatException;
+
 import core.buildings.Event;
 import core.buildings.Observable;
 import core.buildings.Observer;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import exceptions.FormatException;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+@JsonIgnoreProperties(value = {"personInformation"})
 public abstract class Person implements Observable{
+    // TODO: Consider creating a factory design around person, or staff and patients separately
+
     private String uniqueId;
     private String name;
     private String surname;

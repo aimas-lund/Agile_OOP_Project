@@ -31,7 +31,7 @@
         <div class="dashboard-menu">
             <h3 >Register patient <i class="fa fa-caret-down" aria-hidden="true"></i></h3>
 
-            <form class="dashboard-action" id="registerPatient" autocomplete="on" action="/registerPatient" >
+            <form class="dashboard-action" id="registerPatient" autocomplete="on" action="/registerPatient" target="_blank">
                 <div class="input-container">
                     <input class="input-field" type="text" placeholder="Name" name="name" required>
                     <input class="input-field" type="text" placeholder="Surname" name="surname" required>
@@ -40,7 +40,7 @@
                     <input class="input-field" type="text" placeholder="Home address" name="homeAddress" required>
                 </div>
                 <div class="input-container">
-                    <input class="input-field" type="tel" placeholder="Phone number" name="phoneNumber" required>
+                    <input class="input-field" type="tel" pattern="[0-9]{8}" placeholder="Phone number" name="phoneNumber" required>
                     <input class="input-field" type="date" placeholder="Birthday" name="birthday" required>
                     <select class="dropdown" form="registerPatient" name="gender" required>
                         <option value="" disabled selected hidden>Gender</option>
@@ -54,13 +54,11 @@
                 </div>
             </form>
         </div>
-        <!-- assign to dept? -->
-
         <!-- Update patient -->
         <div class="dashboard-menu">
             <h3 >Update patient <i class="fa fa-caret-down" aria-hidden="true"></i></h3>
 
-            <form class="dashboard-action" id="updatePatient" autocomplete="on" action="/updatePatient" >
+            <form class="dashboard-action" id="updatePatient" autocomplete="on" action="/updatePatient" target="_blank">
                 <div class="input-container">
                     <input class="input-field" type="text" placeholder="ID" name="id" required>
                     <select class="dropdown" form="updatePatient" id="selectParamPatient" name="parameter" onchange="upPatient()" required>
@@ -72,11 +70,10 @@
                         <option value="birthday">Birthday</option>
                         <option value="gender">Gender</option>
                     </select>
-                    <input class="input-field update" id="text" style="display:block" type="text" placeholder="Text field" name="text">
-                    <input class="input-field update" id="num" type="text" placeholder="Phone number" name="number" required>
-                    <input class="input-field update" id="date" type="date" placeholder="Birthday" name="date">
-                    <select class="dropdown update" id="gender" form="updatePatient" name="gen" required>                        <option value="" disabled selected hidden>Gender</option>
-                        <option value="" disabled selected hidden>Gender</option>
+                    <input class="input-field update" id="text" style="display:block" type="text" placeholder="Text field" name="in-text">
+                    <input class="input-field update" id="num" type="tel" pattern="[0-9]{8}" placeholder="Phone number" name="in-number">
+                    <input class="input-field update" id="date" type="date" placeholder="Birthday" name="in-date">
+                    <select class="dropdown update" id="gender" form="updatePatient" name="in-gender">
                         <option value="male">Male</option>
                         <option value="female">Female</option>
                     </select>
@@ -89,17 +86,15 @@
         <!-- Search for patient -->
         <div class="dashboard-menu">
             <h3>Search for patient<i class="fa fa-caret-down" aria-hidden="true"></i></h3>
-            <form class="dashboard-action" id="searchPatient" autocomplete="on" action="/searchPatient" >
+            <form class="dashboard-action" id="searchPatient" autocomplete="on" action="/searchPatient" target="_blank">
                 <div class="input-container">
-                    <select class="dropdown" form="searchPatient" id="searchPatientParam" name="searchParameter"
-                            onchange="searchPatient()" required>
+                    <select class="dropdown" form="searchPatient" name="searchParameter" required>
                         <option value="" disabled selected hidden>Choose a search parameter</option>
                         <option value="name">Name</option>
                         <option value="id">ID</option>
                         <option value="department">Department</option>
                     </select>
-                    <input class="input-field update" id="text2" style="display:block" type="text" placeholder="Text field" name="text">
-
+                    <input class="input-field" type="text" placeholder="Text field" name="text" required>
                 </div>
                 <div class="submitButton">
                     <button type="submit" formmethod="get" class="btn">Search</button>
@@ -109,7 +104,7 @@
         <!-- Delete patient -->
         <div class="dashboard-menu">
             <h3>Delete person<i class="fa fa-caret-down" aria-hidden="true"></i></h3>
-            <form class="dashboard-action" id="deletePatient" autocomplete="on" action="/deletePatient">
+            <form class="dashboard-action" id="deletePatient" autocomplete="on" action="/deletePatient" target="_blank">
                 <div class="input-container">
                     <input class="input-field" type="text" placeholder="ID" name="id" required style="width:50%">
                     <button type="submit" formmethod="post" class="btn">Delete</button>

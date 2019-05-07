@@ -2,12 +2,14 @@ package core.buildings;
 
 import core.persons.Patient;
 import core.persons.Staff;
+import io.cucumber.datatable.dependency.com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static core.buildings.Event.*;
 
+@JsonIgnoreProperties(value = {"departmentInformation"})
 public abstract class Department implements Observable {
 	private String name;
     private String uniqueId;
@@ -91,9 +93,9 @@ public abstract class Department implements Observable {
 		return uniqueId;
 	}
 
-    public String getName() {
-        return name;
-    }
+	public String getName() {
+		return name;
+	}
 
     void setName(String name) {
         this.name = name;

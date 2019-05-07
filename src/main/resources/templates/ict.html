@@ -30,14 +30,14 @@
         <!-- Register staff -->
         <div class="dashboard-menu">
             <h3>Register staff <i class="fa fa-caret-down" aria-hidden="true"></i></h3>
-            <form class="dashboard-action" id="registerStaff" autocomplete="on" action="/registerStaff">
+            <form class="dashboard-action" id="registerStaff" autocomplete="on" action="/registerStaff" target="_blank">
                 <div class="input-container">
                     <input class="input-field" type="text" placeholder="Name" name="name" required>
                     <input class="input-field" type="text" placeholder="Surname" name="surname" required>
                 </div>
                 <div class="input-container" >
                     <input class="input-field" type="text" placeholder="Home address" name="homeAddress" required>
-                    <input class="input-field" type="tel" placeholder="Phone number" name="phoneNumber" required>
+                    <input class="input-field" type="tel"  pattern="[0-9]{8}" placeholder="Phone number" name="phoneNumber" required>
                 </div>
                 <div class="input-container">
                     <input class="input-field" type="date" placeholder="Birthday" name="birthday" required>
@@ -46,7 +46,7 @@
                         <option value="male">Male</option>
                         <option value="female">Female</option>
                     </select>
-                    <select class="dropdown" form="registerStaff" name="role" required>
+                    <select class="dropdown" form="registerStaff" name="role" id="role" onchange="roleStaff()" required>
                         <option value="" disabled selected hidden>Role</option>
                         <option value="Doctor">Doctor</option>
                         <option value="Nurse">Nurse</option>
@@ -55,8 +55,29 @@
                     </select>
                 </div>
                 <div class="input-container submitButton">
-                    <input class="input-field" type="text" placeholder="Register to which Speciality"  name="speciality" required>
-                    <input class="input-field" type="text" placeholder="Register to which Department"  name="department" required>
+                    <input class="input-field" type="text" placeholder="Register to which department"  name="department" required>
+                    <select class="dropdown hidden" id="speciality" form="registerStaff" name="speciality">
+                        <option value="" disabled selected hidden>Speciality</option>
+                        <option value="ALLERGYANDIMMUNOLOGY">Allergy & immunology</option>
+                        <option value="ANESTHESIOLOGY">Anesthesiology</option>
+                        <option value="DERMATOLOGY">Dermatology</option>
+                        <option value="DIAGNOSTICRADIOLOGY">Diagnostic radiology</option>
+                        <option value="EMERGENCYMEDICINE">Emergency Medicine</option>
+                        <option value="FAMILYMEDICINE">Family Medicine</option>
+                        <option value="INTERNALMEDICINE">Internal Medicine</option>
+                        <option value="MEDICALGENETICS">Medical Genetics</option>
+                        <option value="NEUROLOGY">Neurology</option>
+                        <option value="NUCLEARMEDICINE">Nuclear Medicine</option>
+                        <option value="OBSTETRICSANDGYNECOLOGY">Obstetrics and gynecology</option>
+                        <option value="OPHTHALMOLOGY">Ophthalmology</option>
+                        <option value="PATHOLOGY">Pathology</option>
+                        <option value="PEDIATRICS">Pediatrics</option>
+                        <option value="PHYSICALMEDICINEANDREHABILITATION">Physical medicine & rehabilitation</option>
+                        <option value="PREVENTIVEMEDICINE">Preventive medicine</option>
+                        <option value="RADIATIONONCOLOGY">Radiation oncology</option>
+                        <option value="SURGERY">Surgery</option>
+                        <option value="UROLOGY">Urology</option>
+                    </select>
                     <button type="submit" formmethod="post" class="btn inline">Register</button>
                 </div>
             </form>
@@ -64,16 +85,15 @@
         <!-- Search for staff -->
         <div class="dashboard-menu">
             <h3>Search for staff<i class="fa fa-caret-down" aria-hidden="true"></i></h3>
-            <form class="dashboard-action" id="searchStaff" autocomplete="on" action="/searchStaff">
+            <form class="dashboard-action" id="searchStaff" autocomplete="on" action="/searchStaff" target="_blank">
                 <div class="input-container">
-                    <select class="dropdown" form="searchStaff" id="searchStaffParam" name="searchParameter" onchange="searchStaff()"
-                            required>
+                    <select class="dropdown" form="searchStaff" name="searchParameter" required>
                         <option value="" disabled selected hidden>Choose a search parameter</option>
                         <option value="name">Name</option>
                         <option value="id">ID</option>
                         <option value="department">Department</option>
                     </select>
-                    <input class="input-field update" id="textsearchstaff" style="display:block" type="text" placeholder="Text field" name="text">
+                    <input class="input-field" type="text" placeholder="Text field" name="text" required>
                 </div>
                 <div class="submitButton">
                     <button type="submit" formmethod="get" class="btn">search</button>
@@ -83,7 +103,7 @@
         <!-- Update staff -->
         <div class="dashboard-menu">
             <h3 >Update staff <i class="fa fa-caret-down" aria-hidden="true"></i></h3>
-            <form class="dashboard-action" id="updateStaff" autocomplete="on" action="/updateStaff">
+            <form class="dashboard-action" id="updateStaff" autocomplete="on" action="/updateStaff" target="_blank">
                 <div class="input-container">
                     <input class="input-field" type="text" placeholder="ID" name="id" required>
                     <select class="dropdown" id="selectParamStaff" form="updateStaff" name="parameter" onchange="upStaff()" required>
@@ -97,10 +117,10 @@
                         <option value="gender">Gender</option>
                         <option value="role">Role</option>
                     </select>
-                    <input class="input-field update updateStaff" id="textS" style="display:block" type="text" placeholder="Text field" name="text">
-                    <input class="input-field update updateStaff" id="numS" type="tel" placeholder="Phone number" name="phoneNumber" required>
-                    <input class="input-field update updateStaff" id="dateS" type="date" placeholder="Birthday" name="birthday">
-                    <select class="dropdown update updateStaff" id="genderS" form="updateStaff" name="gender" required>
+                    <input class="input-field update updateStaff" id="textS" style="display:block" type="text" placeholder="Text field" name="in-text">
+                    <input class="input-field update updateStaff" id="numS"  pattern="[0-9]{8}" type="tel" placeholder="Phone number" name="in-number">
+                    <input class="input-field update updateStaff" id="dateS" type="date" placeholder="Birthday" name="in-date">
+                    <select class="dropdown update updateStaff" id="genderS" form="updateStaff" name="in-gender">
                         <option value="male">Male</option>
                         <option value="female">Female</option>
                     </select>
@@ -125,7 +145,7 @@
         <div class="dashboard-menu">
             <h3 >Register patient <i class="fa fa-caret-down" aria-hidden="true"></i></h3>
 
-            <form class="dashboard-action" id="registerPatient" autocomplete="on" action="/registerPatient" >
+            <form class="dashboard-action" id="registerPatient" autocomplete="on" action="/registerPatient" target="_blank">
                 <div class="input-container">
                     <input class="input-field" type="text" placeholder="Name" name="name" required>
                     <input class="input-field" type="text" placeholder="Surname" name="surname" required>
@@ -134,7 +154,7 @@
                     <input class="input-field" type="text" placeholder="Home address" name="homeAddress" required>
                 </div>
                 <div class="input-container">
-                    <input class="input-field" type="tel" placeholder="Phone number" name="phoneNumber" required>
+                    <input class="input-field" type="tel"  pattern="[0-9]{8}" placeholder="Phone number" name="phoneNumber" required>
                     <input class="input-field" type="date" placeholder="Birthday" name="birthday" required>
                     <select class="dropdown" form="registerPatient" name="gender" required>
                         <option value="" disabled selected hidden>Gender</option>
@@ -151,16 +171,15 @@
         <!-- Search for patient -->
         <div class="dashboard-menu">
             <h3>Search for patient<i class="fa fa-caret-down" aria-hidden="true"></i></h3>
-            <form class="dashboard-action" id="searchPatient" autocomplete="on" action="/searchPatient">
+            <form class="dashboard-action" id="searchPatient" autocomplete="on" action="/searchPatient" target="_blank">
                 <div class="input-container">
-                    <select class="dropdown" form="searchPatient" id="searchPatientParam" name="searchParameter"
-                            onchange="searchPatient()" required>
+                    <select class="dropdown" form="searchPatient" name="searchParameter" required>
                         <option value="" disabled selected hidden>Choose a search parameter</option>
                         <option value="name">Name</option>
                         <option value="id">ID</option>
                         <option value="department">Department</option>
                     </select>
-                    <input class="input-field update" id="text2" style="display:block" type="text" placeholder="Text field" name="text">
+                    <input class="input-field" type="text" placeholder="Text field" name="text" required>
 
                 </div>
                 <div class="submitButton">
@@ -172,7 +191,7 @@
         <div class="dashboard-menu">
             <h3 >Update patient <i class="fa fa-caret-down" aria-hidden="true"></i></h3>
 
-            <form class="dashboard-action" id="updatePatient" autocomplete="on" action="/updatePatient" >
+            <form class="dashboard-action" id="updatePatient" autocomplete="on" action="/updatePatient" target="_blank">
                 <div class="input-container">
                     <input class="input-field" type="text" placeholder="ID" name="id" required>
                     <select class="dropdown" form="updatePatient" id="selectParamPatient" name="parameter" onchange="upPatient()" required>
@@ -184,10 +203,10 @@
                         <option value="birthday">Birthday</option>
                         <option value="gender">Gender</option>
                     </select>
-                    <input class="input-field update updatePatient" id="textP" style="display:block" type="text" placeholder="Text field" name="text">
-                    <input class="input-field update updatePatient" id="numP" type="tel" placeholder="Phone number" name="phoneNumber" required>
-                    <input class="input-field update updatePatient" id="dateP" type="date" placeholder="Birthday" name="birthday">
-                    <select class="dropdown update updatePatient" id="genderP" form="updatePatient" name="gender" required>
+                    <input class="input-field update updatePatient" id="textP" style="display:block" type="text" placeholder="Text field" name="in-text">
+                    <input class="input-field update updatePatient" id="numP" pattern="[0-9]{8}" type="tel" placeholder="Phone number" name="in-number">
+                    <input class="input-field update updatePatient" id="dateP" type="date" placeholder="Birthday" name="in-date">
+                    <select class="dropdown update updatePatient" id="genderP" form="updatePatient" name="in-gender">
                         <option value="male">Male</option>
                         <option value="female">Female</option>
                     </select>
@@ -201,7 +220,7 @@
         <!-- Delete person -->
         <div class="dashboard-menu">
             <h3>Delete person<i class="fa fa-caret-down" aria-hidden="true"></i></h3>
-            <form class="dashboard-action" id="deletePerson" autocomplete="on" action="/deletePerson">
+            <form class="dashboard-action" id="deletePerson" autocomplete="on" action="/deletePerson" target="_blank">
                 <div class="input-container">
                     <input class="input-field" type="text" placeholder="ID" name="id" required>
                     <button type="submit" formmethod="post" class="btn">Delete</button>
@@ -216,7 +235,7 @@
         <!-- Add department -->
         <div class="dashboard-menu">
             <h3>Add department<i class="fa fa-caret-down" aria-hidden="true"></i></h3>
-            <form class="dashboard-action" id="addDepartment" autocomplete="on" action="/addDepartment">
+            <form class="dashboard-action" id="addDepartment" autocomplete="on" action="/addDepartment" target="_blank">
                 <div class="input-container">
                     <input class="input-field" type="text" placeholder="Unique ID" name="id" required>
                     <input class="input-field" type="text" placeholder="Department name" name="name" required>
@@ -236,7 +255,7 @@
         <!-- Remove department -->
         <div class="dashboard-menu">
             <h3>Remove department<i class="fa fa-caret-down" aria-hidden="true"></i></h3>
-            <form class="dashboard-action" id="removeDepartment" autocomplete="on" action="/removeDepartment">
+            <form class="dashboard-action" id="removeDepartment" autocomplete="on" action="/removeDepartment" target="_blank">
                 <div class="input-container">
                     <input class="input-field" type="text" placeholder="Unique ID" name="id" required>
                     <button type="submit" formmethod="post" class="btn inline">Remove</button>
@@ -246,14 +265,28 @@
         <!-- Move person -->
         <div class="dashboard-menu">
             <h3>Move person department<i class="fa fa-caret-down" aria-hidden="true"></i></h3>
-            <form class="dashboard-action" id="movePerson" autocomplete="on" action="/movePerson">
+            <form class="dashboard-action" id="movePerson" autocomplete="on" action="/movePerson" target="_blank">
                 <div class="input-container">
                     <input class="input-field" type="text" placeholder="Person ID" name="personId" required>
-                    <input class="input-field" type="text" placeholder="From department ID" name="fromId" required>
                     <input class="input-field" type="text" placeholder="To department ID" name="toId" required>
+                    <select class="dropdown" form="movePerson" name="type" required>
+                        <option value="" disabled selected hidden>Person type</option>
+                        <option value="patient">Patient</option>
+                        <option value="staff">Staff</option>
+                    </select>
                 </div>
                 <div class="input-container">
-                    <button type="submit" formmethod="post" class="btn">Remove</button>
+                    <button type="submit" formmethod="post" class="btn">Move</button>
+                </div>
+            </form>
+        </div>
+        <!-- Create PDF -->
+        <div class="dashboard-menu">
+            <h3>Generate PDF<i class="fa fa-caret-down" aria-hidden="true"></i></h3>
+            <form class="dashboard-action" autocomplete="on" action="/generatePdf">
+                <div class="input-container">
+                    <input class="input-field" type="text" placeholder="Department ID" name="id" required>
+                    <button type="submit" formmethod="get" class="btn inline">Generate PDF</button>
                 </div>
             </form>
         </div>
