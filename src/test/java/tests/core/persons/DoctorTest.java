@@ -6,6 +6,7 @@ import core.persons.Gender;
 import core.persons.Patient;
 import core.persons.PersonInformationFacade;
 import core.utility.Speciality;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -32,6 +33,13 @@ public class DoctorTest {
         patient1 = new Patient("Foo");
         patient2 = new Patient("Bar");
         doctorFacade = new PersonInformationFacade(doctor);
+    }
+
+    @After
+    public void tearDown() {
+        waitingRoom.remove(patient1);
+        waitingRoom.remove(patient2);
+
     }
 
     @Test

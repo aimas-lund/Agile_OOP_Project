@@ -27,6 +27,8 @@ public class PDFTest {
         PersonToPdf PTP = new PersonToPdf();
         PTP.PatientToPdf(department);
 
+        department.remove(patient1);
+        department.remove(patient2);
     }
 
 }

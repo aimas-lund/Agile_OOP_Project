@@ -44,6 +44,7 @@ public class DatabaseTest {
     public void connectToDB() {
         database.connectToDB();
         assertTrue(database.hasConnection());
+        database.disconnectFromDB();
     }
 
     @Test
