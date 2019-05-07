@@ -1,6 +1,8 @@
-package core.persons;
+package core.buildings;
 
 import core.buildings.Department;
+import core.persons.Patient;
+import core.persons.Staff;
 import core.utility.InformationGenerator;
 
 import java.util.ArrayList;
