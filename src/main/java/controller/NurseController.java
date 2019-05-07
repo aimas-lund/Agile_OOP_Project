@@ -1,7 +1,7 @@
 package controller;
 
 import core.buildings.Department;
-import core.buildings.ERDepartment;
+
 import core.buildings.InDepartment;
 import core.buildings.OutDepartment;
 import core.persons.Patient;
@@ -9,11 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import persistence.data_access_objects.DaoDepartmentImpl;
 import persistence.data_access_objects.DaoPatientImpl;
 import persistence.query_roles.QueryRoleNurse;
-
-import java.util.ArrayList;
 import java.util.HashMap;
 
-import static com.sun.tools.doclint.Entity.or;
 
 @RestController
 public class NurseController {

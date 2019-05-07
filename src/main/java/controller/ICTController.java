@@ -9,12 +9,11 @@ import core.persons.*;
 
 import core.utility.Speciality;
 import exceptions.PersonNotFoundException;
-import org.springframework.http.MediaType;
+
 import org.springframework.web.bind.annotation.*;
 import persistence.data_access_objects.DaoDepartmentImpl;
 import persistence.query_roles.QueryRoleICT;
 
-import javax.print.Doc;
 
 @RestController
 class ICTController {

@@ -4,13 +4,10 @@ import core.buildings.Department;
 import core.buildings.OutDepartment;
 import core.persons.Doctor;
 import core.persons.Patient;
-import core.persons.Person;
-import exceptions.PersonNotFoundException;
 import org.springframework.web.bind.annotation.*;
 import persistence.data_access_objects.DaoDepartmentImpl;
 import persistence.data_access_objects.DaoPatientImpl;
 
-import javax.print.Doc;
 import java.util.ArrayList;
 import java.util.HashMap;
 
