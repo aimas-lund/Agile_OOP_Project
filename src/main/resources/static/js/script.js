@@ -16,61 +16,37 @@ function searchStaff() {
 
 function upPatient() {
     var option = $("#selectParamPatient").val();
-    $(".update","#updatePatient").hide();
-    $(".update","#updatePatient").removeAttr("required","false");
-    switch(option) {
-        case "birthday":
-            $("#date","#updatePatient").show()
-            $("#date","#updatePatient").attr("required","true")
-            break
-        case "gender":
-            $("#gender","#updatePatient").show()
-            $("#gender","#updatePatient").attr("required","true")
-            break;
-        case "phoneNumber":
-            $("#num","#updatePatient").show()
-            $("#num","#updatePatient").attr("required","true")
-            break;
-        case "name":
-        case "surname":
-        case "homeAddress":
-            $("#text","#updatePatient").show()
-            $("#text","#updatePatient").attr("required","true")
-            break
-        default:
-            alert("error");
+    $(".updatePatient").hide();
+    $(".updatePatient").removeAttr("required","false");
+    if (option === "birthday") {
+        var id = "#dateP"
+    } else if (option === "gender") {
+        var id = "#genderP"
+    } else if (option === "phoneNumber") {
+        var id = "#numP"
+    } else if (option === "name" || option === "surname" || option === "homeAddress") {
+        var id = "#textP"
     }
+    $(id).show()
+    $(id).attr("required","true")
 }
 function upStaff() {
     var option = $("#selectParamStaff").val();
-    $(".update","#updateStaff").hide(); $(".update","#updateStaff").removeAttr("required","false");
-    switch(option) {
-        case "birthday":
-            $("#date","#updateStaff").show()
-            $("#date","#updateStaff").attr("required","true")
-            break
-        case "gender":
-            $("#gender","#updateStaff").show()
-            $("#gender","#updateStaff").attr("required","true")
-            break;
-        case "phoneNumber":
-            $("#num","#updateStaff").show()
-            $("#num","#updateStaff").attr("required","true")
-            break;
-        case "role":
-            $("#role","#updateStaff").show()
-            $("#role","#updateStaff").attr("required","true")
-            break;
-        case "name":
-        case "surname":
-        case "homeAddress":
-        case "email":
-            $("#text","#updateStaff").show()
-            $("#text","#updateStaff").attr("required","true")
-            break
-        default:
-            alert("error");
+    $(".updateStaff").hide();
+    $(".updateStaff","#updateStaff").removeAttr("required","false");
+    if (option === "birthday") {
+        var id = "#dateS"
+    } else if (option === "gender") {
+        var id = "#genderS"
+    } else if (option === "phoneNumber") {
+        var id = "#numS"
+    } else if (option === "role") {
+        var id = "#roleS"
+    } else if (option === "name" || option === "surname" || option === "homeAddress" || option === "email") {
+        var id = "#textS"
     }
+    $(id).show()
+    $(id).attr("required","true")
 }
 
 $(document).ready(function() {

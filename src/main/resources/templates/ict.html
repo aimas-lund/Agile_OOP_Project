@@ -26,10 +26,11 @@
 <div class="flex">
     <div class="flex-container content">
         <h2>ICT Officer dashboard</h2>
-        
+
+        <!-- Register staff -->
         <div class="dashboard-menu">
             <h3>Register staff <i class="fa fa-caret-down" aria-hidden="true"></i></h3>
-            <form class="dashboard-action" id="registerStaff" autocomplete="on" action="/registerStaff" >
+            <form class="dashboard-action" id="registerStaff" autocomplete="on" action="/registerStaff">
                 <div class="input-container doubleContainer">
                     <input class="input-field" type="text" placeholder="Name" name="name" required>
                     <input class="input-field" type="text" placeholder="Surname" name="surname" required>
@@ -61,6 +62,70 @@
                 </div>
             </form>
         </div>
+        <!-- Search for staff -->
+        <div class="dashboard-menu">
+            <h3>Search for staff<i class="fa fa-caret-down" aria-hidden="true"></i></h3>
+            <form class="dashboard-action" id="searchStaff" autocomplete="on" action="/searchStaff">
+                <div class="input-container">
+                    <select class="dropdown" form="searchStaff" id="searchStaffParam" name="searchParameter" onchange="searchStaff()"
+                            required>
+                        <option value="" disabled selected hidden>Choose a search parameter</option>
+                        <option value="name">Name</option>
+                        <option value="id">ID</option>
+                        <option value="department">Department</option>
+                    </select>
+                    <input class="input-field search searchStaff" type="text" placeholder="Name" name="name" id="sname">
+                    <input class="input-field search searchStaff" type="tel" placeholder="ID" name="id"Person id="sid">
+                    <input class="input-field search searchStaff" type="text" placeholder="Department" name="department" id="sdepartment" >
+
+                </div>
+                <div class="submitButton">
+                    <button type="submit" formmethod="post" class="btn">search</button>
+                </div>
+            </form>
+        </div>
+        <!-- Update staff -->
+        <div class="dashboard-menu">
+            <h3 >Update staff <i class="fa fa-caret-down" aria-hidden="true"></i></h3>
+            <form class="dashboard-action" id="updateStaff" autocomplete="on" action="/updateStaff" >
+                <div class="input-container">
+                    <input class="input-field" type="text" placeholder="ID" name="id" required>
+                    <select class="dropdown" id="selectParamStaff" form="updateStaff" name="parameter" onchange="upStaff()" required>
+                        <option value="" disabled selected hidden>Choose value to update</option>
+                        <option value="name">Name</option>
+                        <option value="surname">Surname</option>
+                        <option value="homeAddress">Home address</option>
+                        <option value="phoneNumber">Phone number</option>
+                        <option value="email">E-Mail</option>
+                        <option value="birthday">Birthday</option>
+                        <option value="gender">Gender</option>
+                        <option value="role">Role</option>
+                    </select>
+                    <input class="input-field update updateStaff" id="textS" style="display:block" type="text" placeholder="Text field" name="text">
+                    <input class="input-field update updateStaff" id="numS" type="tel" placeholder="Phone number" name="phoneNumber" required>
+                    <input class="input-field update updateStaff" id="dateS" type="date" placeholder="Birthday" name="birthday">
+                    <select class="dropdown update updateStaff" id="genderS" form="updateStaff" name="gender" required>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                    </select>
+                    <select class="dropdown update updateStaff" id="roleS" form="updateStaff" name="role" required>
+                        <option value="Doctor">Doctor</option>
+                        <option value="Nurse">Nurse</option>
+                        <option value="Clerk">Clerk</option>
+                        <option value="ICT Officer">ICT Officer</option>
+                    </select>
+
+                </div>
+                <div class="input-container">
+
+                </div>
+                <div class="submitButton">
+                    <button type="submit" formmethod="post" class="btn">Update</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Register patient -->
         <div class="dashboard-menu">
             <h3 >Register patient <i class="fa fa-caret-down" aria-hidden="true"></i></h3>
 
@@ -80,37 +145,18 @@
                         <option value="male">Male</option>
                         <option value="female">Female</option>
                     </select>
+                    <button type="submit" formmethod="post" class="btn">Register</button>
                 </div>
-                <div class="submitButton">
-                    <input class="input-field" type="text" placeholder="Register to which department" name="department" required>
+                <div class="input-container submitButton">
+                    <input class="input-field" type="text" placeholder="Register to which department"  name="department" required>
                     <button type="submit" formmethod="post" class="btn">Register</button>
                 </div>
             </form>
         </div>
-        <div class="dashboard-menu">
-            <h3>Search for staff<i class="fa fa-caret-down" aria-hidden="true"></i></h3>
-            <form class="dashboard-action" id="searchStaff" autocomplete="on" action="/searchStaff" >
-                <div class="input-container">
-                    <select class="dropdown" form="searchStaff" id="searchStaffParam" name="searchParameter" onchange="searchStaff()"
-                            required>
-                        <option value="" disabled selected hidden>Choose a search parameter</option>
-                        <option value="name">Name</option>
-                        <option value="id">ID</option>
-                        <option value="department">Department</option>
-                    </select>
-                    <input class="input-field search searchStaff" type="text" placeholder="Name" name="name" id="sname">
-                    <input class="input-field search searchStaff" type="tel" placeholder="ID" name="id"Person id="sid">
-                    <input class="input-field search searchStaff" type="text" placeholder="Department" name="department" id="sdepartment" >
-
-                </div>
-                <div class="submitButton">
-                    <button type="submit" formmethod="post" class="btn">search</button>
-                </div>
-            </form>
-        </div>
+        <!-- Search for patient -->
         <div class="dashboard-menu">
             <h3>Search for patient<i class="fa fa-caret-down" aria-hidden="true"></i></h3>
-            <form class="dashboard-action" id="searchPatient" autocomplete="on" action="/searchPatient" >
+            <form class="dashboard-action" id="searchPatient" autocomplete="on" action="/searchPatient">
                 <div class="input-container">
                     <select class="dropdown" form="searchPatient" id="searchPatientParam" name="searchParameter"
                             onchange="searchPatient()" required>
@@ -125,29 +171,57 @@
 
                 </div>
                 <div class="submitButton">
-                    <button type="submit" formmethod="post" class="btn">search</button>
+                    <button type="submit" formmethod="post" class="btn">Search</button>
                 </div>
             </form>
         </div>
+        <!-- Update patient -->
+        <div class="dashboard-menu">
+            <h3 >Update patient <i class="fa fa-caret-down" aria-hidden="true"></i></h3>
+
+            <form class="dashboard-action" id="updatePatient" autocomplete="on" action="/updatePatient" >
+                <div class="input-container">
+                    <input class="input-field" type="text" placeholder="ID" name="id" required>
+                    <select class="dropdown" form="updatePatient" id="selectParamPatient" name="parameter" onchange="upPatient()" required>
+                        <option value="" disabled selected hidden>Choose value to update</option>
+                        <option value="name">Name</option>
+                        <option value="surname">Surname</option>
+                        <option value="homeAddress">Home address</option>
+                        <option value="phoneNumber">Phone number</option>
+                        <option value="birthday">Birthday</option>
+                        <option value="gender">Gender</option>
+                    </select>
+                    <input class="input-field update updatePatient" id="textP" style="display:block" type="text" placeholder="Text field" name="text">
+                    <input class="input-field update updatePatient" id="numP" type="tel" placeholder="Phone number" name="phoneNumber" required>
+                    <input class="input-field update updatePatient" id="dateP" type="date" placeholder="Birthday" name="birthday">
+                    <select class="dropdown update updatePatient" id="genderP" form="registerPatient" name="gender" required>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                    </select>
+                </div>
+                <div class="input-container">
+
+                </div>
+                <div class="submitButton">
+                    <button type="submit" formmethod="post" class="btn">Update</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Delete person -->
         <div class="dashboard-menu">
             <h3>Delete person<i class="fa fa-caret-down" aria-hidden="true"></i></h3>
             <form class="dashboard-action" id="deletePerson" autocomplete="on" action="/deletePerson">
                 <div class="input-container">
-                    <select class="dropdown" form="deletePerson" id="personRole" name="deleteRole" required>
-                        <option value="" disabled selected hidden>Choose role</option>
-                        <option value="staff">Staff</option>
-                        <option value="patient">Patient</option>
-                    </select>
                     <input class="input-field" type="text" placeholder="ID" name="id" required>
-                </div>
-                <div class="submitButton">
-                    <button type="submit" formmethod="post" class="btn">Register</button>
+                    <button type="submit" formmethod="post" class="btn">Delete</button>
                 </div>
             </form>
         </div>
 
     </div>
-    <div class="flex-container searchResults">
+    <div class="flex-container content">
+        <h2>Department management</h2>
 
     </div>
 </div>

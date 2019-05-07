@@ -67,9 +67,9 @@
         <!-- Action for patient -->
         <div class="dashboard-menu">
             <h3>Action for patient<i class="fa fa-caret-down" aria-hidden="true"></i></h3>
-            <form class="dashboard-action" id="dischargePatient" autocomplete="on" action="/dischargePatient">
+            <form class="dashboard-action" id="dischargePatient" autocomplete="on" action="/actionPatient">
                 <div class="input-container">
-                    <input class="input-field id-field" type="text" placeholder="ID" name="id" required>
+                    <input class="input-field" type="text" placeholder="ID" name="id" required>
                     <select class="dropdown" form="dischargePatient" name="action" required>
                         <option value="" selected disabled hidden>Choose an action</option>
                         <option value="assign">Assign</option>
@@ -84,12 +84,6 @@
                 </div>
             </form>
         </div>
-
-
-
-    </div>
-    <div class="flex-container searchResults">
-
     </div>
 </div>
 </body>
