@@ -75,7 +75,7 @@ public abstract class DepartmentBeds extends Department {
     }
 
     /**
-     * Adds patient to hashmap
+     * Adds patient to hashmap of patients as keys and beds as values
      *
      * @param patient with at least unique id
      * @param bed object with an id
@@ -85,6 +85,11 @@ public abstract class DepartmentBeds extends Department {
         this.notifyListeners(this, UPDATE, null, patient);
     }
 
+    /**
+     * Removes patient to hashmap of patients as keys and beds as values
+     *
+     * @param patient with at least unique id
+     */
     void removePatientInBed(Patient patient) {
         patientsInBeds.remove(patient);
         this.notifyListeners(this, UPDATE, null, patient);
@@ -100,10 +105,17 @@ public abstract class DepartmentBeds extends Department {
         notifyListeners(this, UPDATE, this, this);
     }
 
+    /**
+     * @return true if current capacity is greater than 0 false otherwise
+     */
     public boolean hasAvailableBeds() {
         return currentCapacity > 0;
     }
 
+    /**
+     * @param p with at least unique id
+     * @return bed object which p is associated with
+     */
     public Bed getBedWithPatient(Patient p) {
         return patientsInBeds.get(p);
     }
@@ -112,6 +124,10 @@ public abstract class DepartmentBeds extends Department {
         return patientsInBeds;
     }
 
+    /**
+     * @return bed objects in ArrayList that are not occupied
+     * @throws ExceededCapacityException if there is no available beds
+     */
     public ArrayList<Bed> getAvailableBeds() throws ExceededCapacityException {
         ArrayList<Bed> available = new ArrayList<>();
         for (Bed bed : beds) {

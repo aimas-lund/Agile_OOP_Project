@@ -13,6 +13,12 @@ public class Hospital {
     public Hospital() {
     }
 
+    /**
+     * Adds a department to the hospital and updates the database
+     *
+     * @param department with an id
+     * @return true if department has been added and is not already a department of the hospital, false otherwise
+     */
     public boolean add(Department department) {
         if (departments.contains(department)) {
             return false;
@@ -22,6 +28,12 @@ public class Hospital {
         return true;
     }
 
+    /**
+     * Removes a department from the hospital and updates the database
+     *
+     * @param department with an id
+     * @return true if department has been added and is not already a department of the hospital, false otherwise
+     */
     public boolean remove(Department department) {
         if (!departments.contains(department)) {
             return false;
@@ -31,6 +43,13 @@ public class Hospital {
         return true;
     }
 
+    /**
+     * Adds a patient to an existing department in the hospital
+     *
+     * @param patient with at least a unique id
+     * @param department with at least a unique id
+     * @return true if department is in the hospital and the patient was successfully added
+     */
     public boolean assign(Patient patient, Department department) {
         if (departments.contains(department)) {
             department.add(patient);
