@@ -2,7 +2,7 @@ package controller;
 
 
 import core.buildings.*;
-import core.persons.Hospital;
+import core.buildings.Hospital;
 import core.persons.Patient;
 import core.persons.Person;
 import core.persons.Staff;

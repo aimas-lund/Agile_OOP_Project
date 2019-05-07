@@ -5,7 +5,7 @@ import core.buildings.Bed;
 import core.buildings.Department;
 import core.buildings.OutDepartment;
 import core.persons.Clerk;
-import core.persons.Hospital;
+import core.buildings.Hospital;
 import core.persons.Patient;
 import core.persons.Staff;
 import cucumber.api.java.After;

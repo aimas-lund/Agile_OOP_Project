@@ -5,7 +5,7 @@ import core.buildings.Department;
 import core.buildings.InDepartment;
 import core.buildings.OutDepartment;
 import core.persons.Clerk;
-import core.persons.Hospital;
+import core.buildings.Hospital;
 import core.persons.Patient;
 import core.persons.Staff;
 import org.junit.After;
@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import static junit.framework.TestCase.*;
 
 public class HospitalBedTest {
-
     private final Hospital hospital = new Hospital();
     private ArrayList<Department> depts = hospital.getDepartments();
     private Department department;
