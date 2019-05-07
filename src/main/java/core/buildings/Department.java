@@ -85,22 +85,4 @@ public abstract class Department {
 		this.staff = staff;
 	}
 
-    @Override
-    public void addChangeListener(Observer newListener) {
-        listeners.add(newListener);
-    }
-
-    @Override
-    public void removeChangeListener(Observer listener) {
-        listeners.remove(listener);
-    }
-
-    @Override
-    public void notifyListeners(Object source, Event action, Object oldValue, Object newValue) {
-        for (Observer listener :
-                listeners) {
-            listener.objectChanged(source, action, oldValue, newValue);
-        }
-    }
-
 }

@@ -1,9 +1,12 @@
 package controller;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import com.itextpdf.text.DocumentException;
 import core.buildings.Department;
 import core.persons.*;
 
@@ -13,6 +16,7 @@ import exceptions.PersonNotFoundException;
 import org.springframework.web.bind.annotation.*;
 import persistence.data_access_objects.DaoDepartmentImpl;
 import persistence.query_roles.QueryRoleICT;
+import core.utility.*;
 
 
 @RestController
@@ -176,6 +180,27 @@ class ICTController {
             SIF.setPersonPhoneNumber(Integer.valueOf(number));
 
         return "Patient has been updated";
+    }
+
+    @GetMapping(value = "/generatePdf")
+    public @ResponseBody
+    void generatePdf(@RequestParam(value="id") String id) throws IOException, DocumentException {
+
+        HashMap<String, String> hashMap = new HashMap<String, String>();
+        hashMap.put("uniqueId",id);
+
+
+        Department department = daodept.find(hashMap).get(0);
+
+
+        System.out.println(department.getName());
+//        PersonToPdf PTP = new PersonToPdf();
+//        PTP.PatientToPdf(department);
+//
+//
+//        File file = new File(department.getName() + "_patients.pdf");
+//        return file;
+
     }
 
 

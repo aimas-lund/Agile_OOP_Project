@@ -70,6 +70,9 @@ public class DaoDepartmentImplTest {
         String depId = daoDepartment.findDepartmentIdOfPerson(n);
         System.out.println(depId);
 //        assertEquals("id", depId);
+
+
+
     }
 
     @Test
