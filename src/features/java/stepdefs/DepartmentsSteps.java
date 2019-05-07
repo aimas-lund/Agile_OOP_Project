@@ -1,9 +1,13 @@
 package stepdefs;
 
 
+import core.buildings.Bed;
 import core.buildings.Department;
 import core.buildings.OutDepartment;
-import core.persons.*;
+import core.persons.Clerk;
+import core.persons.Hospital;
+import core.persons.Patient;
+import core.persons.Staff;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;

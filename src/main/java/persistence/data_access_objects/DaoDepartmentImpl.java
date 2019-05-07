@@ -1,7 +1,6 @@
 package persistence.data_access_objects;
 
 import core.buildings.*;
-import core.persons.Bed;
 import core.persons.Patient;
 import core.persons.Staff;
 import persistence.Database;
@@ -510,10 +509,7 @@ public class DaoDepartmentImpl<T extends Department> implements IDao<T> {
             statement.setString(1, department.getUniqueId());
             statement.setString(2, staff.getUniqueId());
 
-            if (database.executePreparedStatement(statement)) {
-                uniqueids.remove(staff.getUniqueId());
-                return true;
-            }
+            return (database.executePreparedStatement(statement));
 
         } catch (SQLException e) {
             e.printStackTrace();
