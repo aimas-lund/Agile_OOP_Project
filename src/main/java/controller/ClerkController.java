@@ -9,6 +9,7 @@ import core.buildings.InDepartment;
 import core.persons.*;
 
 import exceptions.FormatException;
+import org.springframework.security.access.prepost.PreAuthorize;
 import persistence.data_access_objects.DaoDepartmentImpl;
 import persistence.data_access_objects.DaoPatientImpl;
 import persistence.query_roles.QueryRoleClerk;
@@ -22,7 +23,7 @@ public class ClerkController {
     DaoDepartmentImpl<Department> daodept = new DaoDepartmentImpl<Department>();
 
 
-
+    @PreAuthorize("hasRole('CLERK') or hasRole('ICT')")
     @PostMapping(value = "/registerPatient")
     public @ResponseBody
         //Patient newPatient(Patient newPatient) {
@@ -33,20 +34,25 @@ public class ClerkController {
                        @RequestParam(value = "homeAddress") String homeAddress,
                        @RequestParam(value="phoneNumber") int phoneNumber,
                         @RequestParam(value="department") String department
-                        ) throws ParseException {
+                        ) throws Exception {
 
         Gender gender = Gender.valueOf((gen.toUpperCase()));
+
 
         Date birthDate=new SimpleDateFormat("yyyy-MM-dd").parse(birthdate);
         Patient newPatient = new Patient(name,surname, birthDate, gender, homeAddress, phoneNumber);
 
         HashMap<String, String> hashMap = new HashMap<String, String>();
+
         hashMap.put("name", department);
-        Department d = daodept.find(hashMap).get(0);
 
-
-        QRK.registerPerson(newPatient, d);
-        d.add(newPatient);
+        try {
+            Department d = daodept.find(hashMap).get(0);
+            QRK.registerPerson(newPatient, d);
+            d.add(newPatient);
+        } catch(Exception e) {
+            throw new Exception("Could not create patient, Department '"+department+"' could not be found");
+        }
 
         return newPatient;
 
@@ -56,7 +62,7 @@ public class ClerkController {
     public @ResponseBody
     ArrayList<Person> findPatient(
             @RequestParam(value = "searchParameter", required=false) String choice,
-            @RequestParam(value="text", required = true) String textbox2) throws PersonNotFoundException {
+            @RequestParam(value="text", required = true) String textbox2) throws Exception {
 
         HashMap<String, String> hashMap = new HashMap<String, String>();
         if(choice.equals("name")) {
@@ -68,47 +74,63 @@ public class ClerkController {
         else if(choice.equals("department")) {
             hashMap.put("department", textbox2);
         }
-        //return id;
-        return QRK.find(hashMap);
+        try {
+            return QRK.find(hashMap);
+
+        } catch(Exception e) {
+
+            throw new Exception ("Cannot find patient matching Parameter");
+        }
 
     }
-
+    @PreAuthorize("hasRole('CLERK') or hasRole('ICT')")
     @PostMapping(value = "/updatePatient")
     public @ResponseBody
     String updatePatient(@RequestParam(value="parameter") String param,
                          @RequestParam(value="id") String id,
-                          @RequestParam(value="number", required = false) String number,
-                         @RequestParam(value="text", required = false) String textbox,
-                          @RequestParam(value="date", required = false) String date,
-                          @RequestParam(value="gen", required = false) String gen) throws ParseException, PersonNotFoundException {
+                          @RequestParam(value="in-number", required = false) String number,
+                         @RequestParam(value="in-text", required = false) String textbox,
+                          @RequestParam(value="in-date", required = false) String date,
+                          @RequestParam(value="in-gender", required = false) String gen) throws Exception {
 
-        HashMap<String, String> hashMap = new HashMap<String, String>();
-        hashMap.put("uniqueid",id);
 
-        Patient patient = (Patient) QRK.find(hashMap).get(0);
-        PIF = new PersonInformationFacade(patient);
 
-        if (param == "name") {
-            PIF.setPersonName(textbox);
+        try {
+            HashMap<String, String> hashMap = new HashMap<>();
+            hashMap.put("uniqueid",id);
+            Patient patient = (Patient) QRK.find(hashMap).get(0);
+            PIF = new PersonInformationFacade(patient);
+        } catch(Exception e) {
+            throw new Exception("Cant find patient with ID: " + id);
         }
-        else if (param == "surname")
-            PIF.setPersonSurname(textbox);
-        else if (param == "birthdate") {
-            Date birthDate = new SimpleDateFormat("yyyy-MM-dd").parse(date);
-            PIF.setPersonBirthdate(birthDate);
+
+        switch (param) {
+            case "name":
+                PIF.setPersonName(textbox);
+                break;
+            case "surname":
+                PIF.setPersonSurname(textbox);
+                break;
+            case "birthdate":
+                Date birthDate = new SimpleDateFormat("yyyy-MM-dd").parse(date);
+                PIF.setPersonBirthdate(birthDate);
+                break;
+            case "gender":
+                Gender genderx = Gender.valueOf((gen.toUpperCase()));
+                PIF.setPersonGender(genderx);
+                break;
+            case "homeAddress":
+                PIF.setPersonHomeAddress(textbox);
+                break;
+            case "phoneNumber":
+                PIF.setPersonPhoneNumber(Integer.valueOf(number));
+                break;
         }
-        else if (param == "gender") {
-            Gender genderx = Gender.valueOf((gen.toUpperCase()));
-            PIF.setPersonGender(genderx);
-        }
-        else if (param == "homeAddress")
-            PIF.setPersonHomeAddress(textbox);
-        else if (param == "phoneNumber")
-            PIF.setPersonPhoneNumber(Integer.valueOf(number));
 
         return "Patient has been updated";
     }
 
+    @PreAuthorize("hasRole('CLERK') or hasRole('ICT')")
     @PostMapping(value ="/deletePatient")
     public @ResponseBody
     String deletePerson(@RequestParam(value="id") String id) throws ParseException, PersonNotFoundException {
