@@ -1,5 +1,5 @@
 package core.buildings;
 
 public interface Observer {
-    void objectChanged(Object source, Event action, Object oldValue, Object newValue);
+    void objectChanged(Object source, Event event, Object oldValue, Object newValue);
 }

@@ -9,51 +9,85 @@ import persistence.data_access_objects.DaoDepartmentImpl;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import static core.buildings.Event.ADD;
+import static core.buildings.Event.DELETE;
+
 public class Hospital {
     private ArrayList<Department> departments = new ArrayList<>();
 
     public Hospital() {
     }
 
-    public void add(Department d) {
-        departments.add(d);
-
-    }
-
-    public void remove(Department d) {
-        departments.remove(d);
-    }
-
-    public void assign(Patient p, Department d) {
-        if (departments.contains(d)) {
-            d.add(p);
+    public boolean add(Department department) {
+        if (departments.contains(department)) {
+            return false;
         }
+        departments.add(department);
+        department.notifyListeners(department, ADD, department, department);
+        return true;
     }
 
-    public void assign(Staff s, Department d) {
-        if (departments.contains(d)) {
-            d.add(s);
+    public boolean remove(Department department) {
+        if (!departments.contains(department)) {
+            return false;
         }
+        departments.remove(department);
+        department.notifyListeners(department, DELETE, department, department);
+        return true;
     }
 
-    public void move(Patient p, Department d1, Department d2) {
-        if (d1.getPatients().contains(p) && !(d2.getPatients().contains(p))) {
-            d1.remove(p);
-            d2.add(p);
+    public boolean assign(Patient patient, Department department) {
+        if (departments.contains(department)) {
+            department.add(patient);
+            return true;
         }
+        return false;
     }
 
-    public void move(Staff s, Department d1, Department d2) {
-        if (d1.getStaff().contains(s) && !(d2.getStaff().contains(s))) {
-            d2.add(s);
-            d1.remove(s);
+    public boolean assign(Staff staff, Department department) {
+        if (departments.contains(department)) {
+            department.add(staff);
+            return true;
         }
+        return false;
+    }
+
+    public boolean remove(Patient patient, Department department) {
+        if (departments.contains(department)) {
+            department.remove(patient);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean remove(Staff staff, Department department) {
+        if (departments.contains(department)) {
+            department.remove(staff);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean move(Patient patient, Department departmentFrom, Department departmentTo) {
+        if (departmentFrom.getPatients().contains(patient) && !(departmentTo.getPatients().contains(patient))) {
+            departmentFrom.remove(patient);
+            departmentTo.add(patient);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean move(Staff staff, Department departmentFrom, Department departmentTo) {
+        if (departmentFrom.getStaff().contains(staff) && !(departmentTo.getStaff().contains(staff))) {
+            departmentTo.add(staff);
+            departmentFrom.remove(staff);
+            return true;
+        }
+        return false;
     }
 
     public ArrayList<Department> getDepartments() {
         return departments;
     }
-
-
 
 }
