@@ -115,7 +115,7 @@ public class HospitalController {
 
         }
 
-        return "Moved " + person.getName() + " from " + d1.get(0).getName() + " to " + d2.get(0).getName();
+        return "Moved successfully";
     }
 
     @PostMapping("/assignPerson")

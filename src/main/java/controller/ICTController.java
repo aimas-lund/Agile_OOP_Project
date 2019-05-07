@@ -151,12 +151,12 @@ class ICTController {
     @PostMapping(value = "/updateStaff")
     public @ResponseBody
     String updateStaff(@RequestParam(value="parameter") String param,
-                         @RequestParam(value="text", required = false) String textbox,
+                         @RequestParam(value="in-text", required = false) String textbox,
                          @RequestParam(value="id", required = true) String id,
-                         @RequestParam(value="phoneNumber", required = false) String number,
-                         @RequestParam(value="gender", required = false) String gender,
+                         @RequestParam(value="in-phoneNumber", required = false) String number,
+                         @RequestParam(value="in-gender", required = false) String gender,
                          @RequestParam(value="role", required = false) String role,
-                         @RequestParam(value="birthday", required = false) String date) throws ParseException, PersonNotFoundException {
+                         @RequestParam(value="in-date", required = false) String date) throws ParseException, PersonNotFoundException {
 
         HashMap<String, String> hashMap = new HashMap<String, String>();
         hashMap.put("uniqueid",id);
@@ -164,23 +164,28 @@ class ICTController {
         Staff staff = QRICT.findStaff(hashMap).get(0);
         PersonInformationFacade SIF = new PersonInformationFacade(staff);
 
-        if (param == "name") {
-            SIF.setPersonName(textbox);
+        switch (param) {
+            case "name":
+                SIF.setPersonName(textbox);
+                break;
+            case "surname":
+                SIF.setPersonSurname(textbox);
+                break;
+            case "birthdate":
+                Date birthDate = new SimpleDateFormat("yyyy-MM-dd").parse(date);
+                SIF.setPersonBirthdate(birthDate);
+                break;
+            case "gender":
+                Gender genderx = Gender.valueOf((gender.toUpperCase()));
+                SIF.setPersonGender(genderx);
+                break;
+            case "homeAddress":
+                SIF.setPersonHomeAddress(textbox);
+                break;
+            case "phoneNumber":
+                SIF.setPersonPhoneNumber(Integer.valueOf(number));
+                break;
         }
-        else if (param == "surname")
-            SIF.setPersonSurname(textbox);
-        else if (param == "birthdate") {
-            Date birthDate = new SimpleDateFormat("yyyy-MM-dd").parse(date);
-            SIF.setPersonBirthdate(birthDate);
-        }
-        else if (param == "gender") {
-            Gender genderx = Gender.valueOf((gender.toUpperCase()));
-            SIF.setPersonGender(genderx);
-        }
-        else if (param == "homeAddress")
-            SIF.setPersonHomeAddress(textbox);
-        else if (param == "phoneNumber")
-            SIF.setPersonPhoneNumber(Integer.valueOf(number));
 
         return "Patient has been updated";
     }
