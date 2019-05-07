@@ -48,8 +48,8 @@ public class ClerkController {
 
     @PostMapping("/searchPatient")
     public @ResponseBody
-    String findPatient(
-    //ArrayList<Person> findPatient(
+
+    ArrayList<Person> findPatient(
             @RequestParam(value = "name", required=false) String name,
             @RequestParam(value="id", required =false) String id,
             @RequestParam(value = "department", required = false) String department) throws PersonNotFoundException {
@@ -65,8 +65,8 @@ public class ClerkController {
         else if(department!= null) {
             hashMap.put("department", department);
         }
-        return id;
-        //return QRK.find(hashMap);
+        //return id;
+        return QRK.find(hashMap);
 
     }
 
@@ -89,7 +89,6 @@ public class ClerkController {
 
         Patient patient = (Patient) QRK.find(hashMap).get(0);
         PIF = new PersonInformationFacade(patient);
-        //PIF.setPersonName("dfgsfsdfs");
 
         if (name!= null) {
             PIF.setPersonName(textbox);
