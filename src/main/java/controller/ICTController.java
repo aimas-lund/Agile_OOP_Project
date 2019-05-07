@@ -6,8 +6,10 @@ import java.util.*;
 import core.persons.*;
 
 import core.utility.Speciality;
+import exceptions.PersonNotFoundException;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import persistence.query_roles.QueryRoleICT;
 
 import javax.print.Doc;
 
@@ -15,6 +17,10 @@ import javax.print.Doc;
 class ICTController {
 
     Doctor doctor;
+    Nurse nurse;
+    ICTOfficer ict;
+    Clerk clerk;
+    QueryRoleICT QRICT = new QueryRoleICT();
 
 
     // Search Patient inherited from Clerk
@@ -37,22 +43,53 @@ class ICTController {
                    @RequestParam(value = "homeAddress") String homeAddress,
                    @RequestParam(value="phoneNumber") int phoneNumber,
                    @RequestParam(value="role") String role,
-                   @RequestParam(value="speciality",required = false) String speciality) throws ParseException {
+                   @RequestParam(value="department", required = false) String department) throws ParseException {
 
         Gender gender = Gender.valueOf((gen.toUpperCase()));
 
         Date birthDate=new SimpleDateFormat("yyyy-MM-dd").parse(birthdate);
-
+        Speciality spec = Speciality.valueOf(department.toUpperCase());
 
         if (role.equals("Doctor")) {
-            Speciality spec = Speciality.valueOf(speciality.toUpperCase());
             doctor = new Doctor(spec,name,surname,birthDate,gender,homeAddress,phoneNumber);
+            return doctor;
+        }
+        else if (role.equals("Nurse")) {
+            nurse = new Nurse(name,surname,birthDate,gender,homeAddress,phoneNumber);
+            return nurse;
+        }
+        else if (role.equals("Clerk")) {
+            clerk = new Clerk(name,surname,birthDate,gender,homeAddress,phoneNumber);
+            return clerk;
+        }
+        else {
+            ict = new ICTOfficer(name,surname,birthDate,gender,homeAddress,phoneNumber);
+            return ict;
         }
 
-        return doctor;
     }
 
 
+    @GetMapping("/searchStaff")
+    public @ResponseBody
+    ArrayList<Staff> findStaff(
+            @RequestParam(value = "searchParameter", required=false) String choice,
+            @RequestParam(value="text", required = true) String textbox) throws PersonNotFoundException {
+
+        HashMap<String, String> hashMap = new HashMap<String, String>();
+        if(choice.equals("name")) {
+            hashMap.put("name", textbox);
+        }
+        else if(choice.equals("id")) {
+            hashMap.put("uniqueid",textbox);
+        }
+        else if(choice.equals("department")) {
+            hashMap.put("speciality", textbox);
+        }
+        //return id;
+        return QRICT.findStaff(hashMap);
+
+    }
 //    @PostMapping(value = "/registerPatient")
 //    public @ResponseBody
 //        //Patient newPatient(Patient newPatient) {
