@@ -280,6 +280,24 @@
                 </div>
             </form>
         </div>
+        <!-- Assign person -->
+        <div class="dashboard-menu">
+            <h3>Move person department<i class="fa fa-caret-down" aria-hidden="true"></i></h3>
+            <form class="dashboard-action" id="assignPerson" autocomplete="on" action="/assignPerson" target="_blank">
+                <div class="input-container">
+                    <input class="input-field" type="text" placeholder="Person ID" name="personId" required>
+                    <input class="input-field" type="text" placeholder="To department ID" name="toId" required>
+                    <select class="dropdown" form="movePerson" name="type" required>
+                        <option value="" disabled selected hidden>Person type</option>
+                        <option value="patient">Patient</option>
+                        <option value="staff">Staff</option>
+                    </select>
+                </div>
+                <div class="input-container">
+                    <button type="submit" formmethod="post" class="btn">Move</button>
+                </div>
+            </form>
+        </div>
         <!-- Create PDF -->
         <div class="dashboard-menu">
             <h3>Generate PDF<i class="fa fa-caret-down" aria-hidden="true"></i></h3>
