@@ -2,7 +2,6 @@ package controller;
 
 
 import core.buildings.*;
-import core.buildings.Hospital;
 import core.persons.Patient;
 import core.persons.Person;
 import core.persons.Staff;
@@ -116,7 +115,7 @@ public class HospitalController {
 
         }
 
-        return "Moved " + person.getName() + " from " + d1.get(0).getName() + " to " + d2.get(0).getName();
+        return "Moved successfully";
     }
 
     @PostMapping("/assignPerson")
