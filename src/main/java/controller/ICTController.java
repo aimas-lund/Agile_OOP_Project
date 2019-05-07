@@ -22,6 +22,8 @@ import core.utility.*;
 @RestController
 class ICTController {
 
+    Speciality spec = null;
+
     Doctor doctor;
     Nurse nurse;
     ICTOfficer ict;
@@ -56,7 +58,9 @@ class ICTController {
         Gender gender = Gender.valueOf((gen.toUpperCase()));
 
         Date birthDate = new SimpleDateFormat("yyyy-MM-dd").parse(birthdate);
-        Speciality spec = Speciality.valueOf(speciality.toUpperCase());
+        if (speciality != null) {
+            spec = Speciality.valueOf(speciality.toUpperCase());
+        }
         HashMap<String, String> hashMap = new HashMap<String, String>();
         hashMap.put("name", department);
         Department d = daodept.find(hashMap).get(0);
