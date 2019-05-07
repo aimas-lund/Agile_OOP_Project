@@ -31,16 +31,18 @@ public abstract class Department implements Observable {
 
 	public void add(Staff s) {
 		staff.add(s);
-	}
+        notifyListeners(this, "ADD", null, s);
+    }
 
 	public void add(Patient p) {
 		patients.add(p);
-        notifyListeners(this, this);
+        notifyListeners(this, "ADD", null, p);
 	}
 
 	public void remove(Staff s) {
-		staff.remove(s);
-	}
+        notifyListeners(this, "REMOVE", s, null);
+        staff.remove(s);
+    }
 
     public void remove(Patient p) {
         patients.remove(p);
@@ -101,10 +103,10 @@ public abstract class Department implements Observable {
     }
 
     @Override
-    public void notifyListeners(Object oldValue, Object newValue) {
+    public void notifyListeners(Object source, String action, Object oldValue, Object newValue) {
         for (Observer listener :
                 listeners) {
-            listener.objectChanged(oldValue, newValue);
+            listener.objectChanged(source, action, oldValue, newValue);
         }
     }
 
