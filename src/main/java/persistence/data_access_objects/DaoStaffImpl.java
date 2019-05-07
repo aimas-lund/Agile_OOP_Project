@@ -145,6 +145,7 @@ public class DaoStaffImpl<T extends Staff> implements IDao<T> {
         statement.setString(5, staff.getGender().toString());
         statement.setString(6, staff.getHomeAddress()); //.replaceAll(" ", "_")
         statement.setInt(7, staff.getPhoneNumber());
+
         statement.setString(8, staff.getEmail());
         statement.setString(9, staff.getInitials());
         statement.setString(10, staff.getClass().getSimpleName());
