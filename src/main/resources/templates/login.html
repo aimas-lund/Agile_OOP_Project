@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Homepage</title>
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <link rel="stylesheet" type="text/css" href="css/dashboard.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/script.js"></script>
+</head>
+<body>
+<header>
+    <div class="elements">
+                <span class="logo">
+                    Team Syntactic Sugar: <br/>Fake Hospital
+                </span>
+        <span th:inline="text" class="user" style="display:flex;">
+                    Howdy [[${#httpServletRequest.remoteUser}]]! 
+                    <form th:action="@{/logout}" method="post" class="sign-out">
+                        <input type="submit" value="Sign Out"/>
+                    </form>
+                    
+                </span>
+    </div>
+</header>
+<div class="content">
+    <div th:if="${param.error}">
+        Invalid username and password.
+    </div>
+    <div th:if="${param.logout}">
+        You have been logged out.
+    </div>
+    <form th:action="@{/login}" method="post">
+        <div><label> User Name : <input type="text" name="username"/> </label></div>
+        <div><label> Password: <input type="password" name="password"/> </label></div>
+        <div><input type="submit" value="Sign In"/></div>
+    </form>
+</div>
+</body>
+</html>

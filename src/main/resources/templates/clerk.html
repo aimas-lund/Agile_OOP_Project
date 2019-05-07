@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Homepage</title>
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <link rel="stylesheet" type="text/css" href="css/dashboard.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/script.js"></script>
+</head>
+<body>
+<header>
+    <div class="elements">
+                <span class="logo">
+                    Team Syntactic Sugar: <br/>Fake Hospital
+                </span>
+        <span th:inline="text" class="user" style="display:flex;">
+                    Howdy [[${#httpServletRequest.remoteUser}]]!
+                    <form th:action="@{/logout}" method="post" class="sign-out">
+                        <input type="submit" value="Sign Out"/>
+                    </form>
+
+                </span>
+    </div>
+</header>
+<div class="flex">
+    <div class="flex-container content">
+        <h2>Clerk dashboard</h2>
+
+        <!-- Register patient -->
+        <div class="dashboard-menu">
+            <h3 >Register patient <i class="fa fa-caret-down" aria-hidden="true"></i></h3>
+
+            <form class="dashboard-action" id="registerPatient" autocomplete="on" action="/registerPatient" >
+                <div class="input-container">
+                    <input class="input-field" type="text" placeholder="Name" name="name" required>
+                    <input class="input-field" type="text" placeholder="Surname" name="surname" required>
+                </div>
+                <div class="input-container">
+                    <input class="input-field" type="text" placeholder="Home address" name="homeAddress" required>
+                </div>
+                <div class="input-container">
+                    <input class="input-field" type="tel" placeholder="Phone number" name="phoneNumber" required>
+                    <input class="input-field" type="date" placeholder="Birthday" name="birthday" required>
+                    <select class="dropdown" form="registerPatient" name="gender" required>
+                        <option value="" disabled selected hidden>Gender</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                    </select>
+                </div>
+                <div class="input-container submitButton">
+                    <input class="input-field" type="text" placeholder="Register to which department" name="department" required>
+                    <button type="submit" formmethod="post" class="btn">Register</button>
+                </div>
+            </form>
+        </div>
+        <!-- assign to dept? -->
+
+        <!-- Update patient -->
+        <div class="dashboard-menu">
+            <h3 >Update patient <i class="fa fa-caret-down" aria-hidden="true"></i></h3>
+
+            <form class="dashboard-action" id="updatePatient" autocomplete="on" action="/updatePatient" >
+                <div class="input-container">
+                    <input class="input-field" type="text" placeholder="ID" name="id" required>
+                    <select class="dropdown" form="updatePatient" id="selectParamPatient" name="parameter" onchange="upPatient()" required>
+                        <option value="" disabled selected hidden>Choose value to update</option>
+                        <option value="name">Name</option>
+                        <option value="surname">Surname</option>
+                        <option value="homeAddress">Home address</option>
+                        <option value="phoneNumber">Phone number</option>
+                        <option value="birthday">Birthday</option>
+                        <option value="gender">Gender</option>
+                    </select>
+                    <input class="input-field update" id="text" style="display:block" type="text" placeholder="Text field" name="text">
+                    <input class="input-field update" id="num" type="text" placeholder="Phone number" name="number" required>
+                    <input class="input-field update" id="date" type="date" placeholder="Birthday" name="date">
+                    <select class="dropdown update" id="gender" form="updatePatient" name="gen" required>                        <option value="" disabled selected hidden>Gender</option>
+                        <option value="" disabled selected hidden>Gender</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                    </select>
+                </div>
+                <div class="submitButton">
+                    <button type="submit" formmethod="post" class="btn">Update</button>
+                </div>
+            </form>
+        </div>
+        <!-- Search for patient -->
+        <div class="dashboard-menu">
+            <h3>Search for patient<i class="fa fa-caret-down" aria-hidden="true"></i></h3>
+            <form class="dashboard-action" id="searchPatient" autocomplete="on" action="/searchPatient" >
+                <div class="input-container">
+                    <select class="dropdown" form="searchPatient" id="searchPatientParam" name="searchParameter"
+                            onchange="searchPatient()" required>
+                        <option value="" disabled selected hidden>Choose a search parameter</option>
+                        <option value="name">Name</option>
+                        <option value="id">ID</option>
+                        <option value="department">Department</option>
+                    </select>
+                    <input class="input-field update" id="text2" style="display:block" type="text" placeholder="Text field" name="text">
+
+                </div>
+                <div class="submitButton">
+                    <button type="submit" formmethod="get" class="btn">Search</button>
+                </div>
+            </form>
+        </div>
+        <!-- Delete patient -->
+        <div class="dashboard-menu">
+            <h3>Delete person<i class="fa fa-caret-down" aria-hidden="true"></i></h3>
+            <form class="dashboard-action" id="deletePatient" autocomplete="on" action="/deletePatient">
+                <div class="input-container">
+                    <input class="input-field" type="text" placeholder="ID" name="id" required style="width:50%">
+                    <button type="submit" formmethod="post" class="btn">Delete</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

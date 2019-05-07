@@ -1,7 +1,12 @@
 package core.persons;
 
+import core.buildings.Event;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.Date;
 
+@JsonIgnoreProperties(value = {"personInformation"})
 public class Patient extends Person {
     private boolean alive = true;
 
@@ -33,6 +38,7 @@ public class Patient extends Person {
 
     void setAlive(boolean alive) {
         this.alive = alive;
+        notifyListeners(this, Event.UPDATE, null, null);
     }
 
     public boolean isAlive() {

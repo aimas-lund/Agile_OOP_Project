@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Homepage</title>
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <link rel="stylesheet" type="text/css" href="css/dashboard.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/script.js"></script>
+</head>
+<body>
+<header>
+    <div class="elements">
+                <span class="logo">
+                    Team Syntactic Sugar: <br/>Fake Hospital
+                </span>
+        <span th:inline="text" class="user" style="display:flex;">
+                    Howdy [[${#httpServletRequest.remoteUser}]]! 
+                    <form th:action="@{/logout}" method="post" class="sign-out">
+                        <input type="submit" value="Sign Out"/>
+                    </form>
+                    
+                </span>
+    </div>
+</header>
+<div class="content">
+    <h2>
+
+    </h2>
+    <div id="dashboards">
+        <a href="doctor" class="dashboard-link">
+            <div class="dashboard-item">
+                <p class="dashboard-text">
+                    Doctor
+                </p>
+            </div>
+        </a>
+        <a href="nurse" class="dashboard-link">
+            <div class="dashboard-item">
+                <p class="dashboard-text">
+                    Nurse
+                </p>
+            </div>
+        </a>
+        <a href="clerk" class="dashboard-link">
+            <div class="dashboard-item">
+                <p class="dashboard-text">
+                    Clerk
+                </p>
+            </div>
+        </a>
+        <a href="ict" class="dashboard-link">
+            <div class="dashboard-item">
+                <p class="dashboard-text">
+                    ICT Officer
+                </p>
+            </div>
+        </a>
+    </div>
+</div>
+</body>
+
+</html>
