@@ -6,28 +6,18 @@ import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.text.pdf.PdfPCell;
-import com.itextpdf.text.pdf.PdfPTable;
 import core.buildings.Department;
 import core.persons.Patient;
-
-
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
 import java.util.stream.Stream;
 
 
 public class PersonToPdf {
-    public void PersonToPdf() {
 
-    }
-    public void PatientToPdf(Department department) throws IOException, DocumentException, URISyntaxException {
+    public void PatientToPdf(Department department) throws IOException, DocumentException {
         Document document = new Document();
-        PdfWriter.getInstance(document, new FileOutputStream("iTextTable.pdf"));
+        PdfWriter.getInstance(document, new FileOutputStream(department.getName() + "_Patients.pdf"));
 
         document.open();
 
@@ -38,8 +28,6 @@ public class PersonToPdf {
 
             addRows(table,p);
 
-
-
         }
         document.add(table);
 
@@ -47,7 +35,7 @@ public class PersonToPdf {
     }
 
     private void addTableHeader(PdfPTable table) {
-        Stream.of("Unique ID", "Name", "Surname","Gender","Adress","PhoneNumber","Birthdate")
+        Stream.of("Unique ID", "Name", "Surname","Gender","Birthdate","Address","PhoneNumber")
                 .forEach(columnTitle -> {
                     PdfPCell header = new PdfPCell();
                     header.setBackgroundColor(BaseColor.LIGHT_GRAY);
@@ -63,9 +51,10 @@ public class PersonToPdf {
         table.addCell(patient.getName());
         table.addCell(patient.getSurname());
         table.addCell((patient.getGender()).toString());
+        table.addCell(dateToString(patient.getBirthdate()));
         table.addCell(patient.getHomeAddress());
         table.addCell(String.format("%d",patient.getPhoneNumber()));
-        table.addCell(dateToString(patient.getBirthdate()));
+
 
 
     }

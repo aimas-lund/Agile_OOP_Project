@@ -19,7 +19,7 @@ public class PDFTest {
         Patient patient1 = new Patient("iq", "OLINE", "STÆRKE", new Date(01 / 02 / 2018), Gender.FEMALE, "Lærkevej 12", 21565656);
         Patient patient2 = new Patient("iq2", "NATASHA", "STÆRKE", new Date(01 / 02 / 2018), Gender.FEMALE, "Lærkevej 12", 21565656);
 
-        Department department = new ERDepartment();
+        Department department = new ERDepartment("IQ2","ER2");
         department.add(patient1);
         department.add(patient2);
 
