@@ -2,6 +2,7 @@ package core.buildings;
 
 import core.persons.Bed;
 import core.persons.Patient;
+import core.persons.Staff;
 import exceptions.ExceededCapacityException;
 
 import java.util.ArrayList;
@@ -24,7 +25,11 @@ public abstract class DepartmentBeds extends Department {
     }
 
     DepartmentBeds(String uniqueId, String name, int totalCapacity) {
-        super(uniqueId, name);
+        this(uniqueId, name, totalCapacity, new ArrayList<>(), new ArrayList<>());
+    }
+
+    DepartmentBeds(String uniqueId, String name, int totalCapacity, ArrayList<Patient> patients, ArrayList<Staff> staff) {
+        super(uniqueId, name, patients, staff);
         this.totalCapacity = totalCapacity;
         this.currentCapacity = totalCapacity;
 
@@ -37,16 +42,22 @@ public abstract class DepartmentBeds extends Department {
 
     DepartmentBeds(String uniqueId, String name, int totalCapacity, int currentCapacity,
                           HashMap<Patient, Bed> patientsInBeds) {
-        this(uniqueId, name, totalCapacity);
+        this(uniqueId, name, totalCapacity, currentCapacity, patientsInBeds, new ArrayList<>(), new ArrayList<>());
+    }
+
+    DepartmentBeds(String uniqueId, String name, int totalCapacity, int currentCapacity,
+                   HashMap<Patient, Bed> patientsInBeds, ArrayList<Patient> patients, ArrayList<Staff> staff) {
+        this(uniqueId, name, totalCapacity, patients, staff);
         this.currentCapacity = currentCapacity;
         this.patientsInBeds = patientsInBeds;
 
         for (Map.Entry<Patient, Bed> entry : patientsInBeds.entrySet()) {
-            Bed bed = entry.getValue();
             Patient patient = entry.getKey();
+            Bed bed = entry.getValue();
             bed.fill(patient);
             add(patient);
             beds[bed.getId()] = bed;
+
         }
     }
 

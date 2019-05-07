@@ -5,11 +5,10 @@ import core.persons.*;
 import core.utility.Speciality;
 import persistence.Database;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -21,27 +20,17 @@ public class DaoStaffImpl<T extends Staff> implements IDao<T> {
 
     @Override
     public boolean save(T staff) {
-        String[] information = staff.getPersonInformation();
+        String sql = "insert into staff values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        String sql = "insert into staff values('%s', '%s', '%s', date('%s'), '%s', '%s', '%s', '%s', '%s', ";
+        try {
+            PreparedStatement statement = database.prepareStatement(sql);
+            buildStaffInformationSql(staff, statement);
 
-        String sqlSuffix = "'" + staff.getClass().getSimpleName() + "'";
+            return database.executePreparedStatement(statement);
 
-        if (staff instanceof Doctor && ((Doctor) staff).getSpeciality() != null) {
-            String speciality = ((Doctor) staff).getSpeciality().toString();
-            sqlSuffix += String.format(", '%s')", speciality);
-        } else {
-            sqlSuffix += ", null)";
+        } catch (SQLException | NullPointerException e) {
+            return false;
         }
-
-        sql += sqlSuffix;
-
-        for (String value :
-                information) {
-            sql = sql.replaceFirst("%s", value.replaceAll(" ", "_"));
-        }
-
-        return database.executeStatement(sql);
     }
 
     @Override
@@ -62,19 +51,20 @@ public class DaoStaffImpl<T extends Staff> implements IDao<T> {
 
         sql = sql + values.substring(0, values.length() - 4);
 
-        Statement statement = database.createStatement();
 
         ArrayList<T> staff = new ArrayList<>();
 
         try {
-            ResultSet resultSet = statement.executeQuery(sql);
+            PreparedStatement statement = database.prepareStatement(sql);
+            ResultSet resultSet = statement.executeQuery();
+
             while (resultSet.next()) {
                 String uniqueId = resultSet.getString("uniqueId");
                 String name = resultSet.getString("name");
                 String surname = resultSet.getString("surname");
-                Date birthdate = new SimpleDateFormat("yyyy-MM-dd").parse(resultSet.getString("birthdate"));
+                Date birthdate = resultSet.getDate("birthdate");
                 Gender gender = Gender.valueOf(resultSet.getString("gender"));
-                String homeaddress = resultSet.getString("homeaddress").replaceAll("_", " ");
+                String homeaddress = resultSet.getString("homeaddress"); //.replaceAll("_", " ")
                 int phonenumber = Integer.parseInt(resultSet.getString("phonenumber"));
                 String email = resultSet.getString("email");
                 String initials = resultSet.getString("initials");
@@ -100,7 +90,7 @@ public class DaoStaffImpl<T extends Staff> implements IDao<T> {
                 staff.add((T) foundStaff);
 
             }
-        } catch (SQLException | ParseException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         database.disconnectFromDB();
@@ -119,37 +109,50 @@ public class DaoStaffImpl<T extends Staff> implements IDao<T> {
 
     @Override
     public boolean delete(String uniqueId) {
-        String sql = "delete from staff where uniqueid = '%s'";
-        sql = String.format(sql, uniqueId);
+        String sql = "delete from staff where uniqueid = ?";
 
-        return database.executeStatement(sql);
+        try {
+            PreparedStatement statement = database.prepareStatement(sql);
+            statement.setString(1, uniqueId);
+            return database.executePreparedStatement(statement);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     public boolean update(T staff) {
-        // TODO : update this
-        String[] information = staff.getPersonInformation();
-        String sql = "UPDATE staff set uniqueid = '%s', name = '%s', surname = '%s', birthdate = date('%s'), " +
-                "gender = '%s', homeaddress = '%s', phonenumber = '%s', email = '%s', initials = '%s', " +
-                "role = '%s', speciality = ";
+        String sql = "UPDATE staff set uniqueid = ?, name = ?, surname = ?, birthdate = ?, " +
+                "gender = ?, homeaddress = ?, phonenumber = ?, email = ?, initials = ?, " +
+                "role = ?, speciality = ? where uniqueid = ?";
 
-        if (staff instanceof Doctor) {
-            sql += String.format("'%s'", ((Doctor) staff).getSpeciality());
+        try {
+            PreparedStatement statement = database.prepareStatement(sql);
+            buildStaffInformationSql(staff, statement);
+            statement.setString(12, staff.getUniqueId());
+            return database.executePreparedStatement(statement);
+
+        } catch (SQLException | NullPointerException e) {
+            return false;
+        }
+    }
+
+    private void buildStaffInformationSql(T staff, PreparedStatement statement) throws SQLException, NullPointerException {
+        statement.setString(1, staff.getUniqueId());
+        statement.setString(2, staff.getName());
+        statement.setString(3, staff.getSurname());
+        statement.setDate(4, new java.sql.Date(staff.getBirthdate().getTime()));
+        statement.setString(5, staff.getGender().toString());
+        statement.setString(6, staff.getHomeAddress()); //.replaceAll(" ", "_")
+        statement.setInt(7, staff.getPhoneNumber());
+        statement.setString(8, staff.getEmail());
+        statement.setString(9, staff.getInitials());
+        statement.setString(10, staff.getClass().getSimpleName());
+        if (staff instanceof Doctor && ((Doctor) staff).getSpeciality() != null) {
+            statement.setString(11, ((Doctor) staff).getSpeciality().toString());
         } else {
-            sql += "null";
+            statement.setNull(11, Types.VARCHAR);
         }
-
-        String sqlWhere = String.format(" where uniqueId = '%s'", staff.getUniqueId());
-
-        for (String value :
-                information) {
-            if (value == null) return false;
-
-            sql = sql.replaceFirst("%s", value.replaceAll(" ", "_"));
-        }
-
-        sql = sql.replaceFirst("%s", staff.getClass().getSimpleName());
-
-        return database.executeStatement(sql + sqlWhere);
     }
 
 }

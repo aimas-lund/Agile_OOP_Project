@@ -2,8 +2,8 @@ package persistence;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 
 public class Database {
@@ -43,21 +43,21 @@ public class Database {
         return false;
     }
 
-    public Statement createStatement() {
+    public PreparedStatement prepareStatement(String sql) throws SQLException {
+        return prepareStatement(sql, true);
+    }
+
+    public PreparedStatement prepareStatement(String sql, boolean autoCommit) throws SQLException {
         // Connect to database if null
         if (!(hasConnection())) {
             connectToDB();
         }
-        try {
-            return connection.createStatement();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
+        connection.setAutoCommit(autoCommit);
+        return connection.prepareStatement(sql);
+
     }
 
     public boolean createTable(String name, ArrayList<ArrayList<String>> fields) {
-        Statement statement = createStatement();
         String query = "create table %s (%s";
         String values = "";
 
@@ -71,8 +71,11 @@ public class Database {
         query = String.format(query + ")", name, values);
 
         try {
-            statement.executeUpdate(query);
+            PreparedStatement statement = prepareStatement(query);
+            statement.executeUpdate();
+            disconnectFromDB();
         } catch (SQLException e) {
+            disconnectFromDB();
             return false;
         }
 
@@ -80,32 +83,84 @@ public class Database {
     }
 
     public boolean deleteTable(String name) {
-        Statement statement = createStatement();
         String sql = String.format("drop table %s", name);
         try {
-            statement.executeUpdate(sql);
+            PreparedStatement statement = prepareStatement(sql);
+            statement.executeUpdate();
+            disconnectFromDB();
             return true;
         } catch (SQLException e) {
+            disconnectFromDB();
             return false;
         }
     }
 
-    public boolean executeStatement(String sql) {
-        connectToDB();
+    public boolean executePreparedStatementBatch(PreparedStatement statement) throws SQLException {
+        return executePreparedStatementBatch(statement, true);
+    }
 
+    public boolean executePreparedStatementBatch(PreparedStatement statement, boolean shouldCommit) throws SQLException {
         try {
-            Statement statement = createStatement();
-            int i = statement.executeUpdate(sql);
-            if (i > 0) {
-                disconnectFromDB();
-                return true;
-            } else {
-                disconnectFromDB();
+            int[] updateCount = statement.executeBatch();
+
+            if (updateCount.length == 0) {
                 return false;
             }
+            for (int update :
+                    updateCount) {
+                if (update < 1) {
+                    return false;
+                }
+            }
+            if (shouldCommit) {
+                connection.commit();
+            }
+            return true;
         } catch (SQLException e) {
-            disconnectFromDB();
-            return false;
+            connection.rollback();
+            throw new SQLException(e);
+        } finally {
+            if (shouldCommit) {
+                connection.close();
+            }
+        }
+    }
+
+    public boolean executePreparedStatement(PreparedStatement statement) throws SQLException {
+        return executePreparedStatement(statement, true);
+    }
+
+    public boolean executePreparedStatement(PreparedStatement statement, boolean shouldCommit) throws SQLException {
+        try {
+            int update = statement.executeUpdate();
+
+            if (update <= 0) {
+                return false;
+            }
+
+            if (shouldCommit && !connection.getAutoCommit()) {
+                connection.commit();
+            }
+
+            return true;
+        } catch (SQLException e) {
+            if (!connection.getAutoCommit()) {
+                connection.rollback();
+            }
+            throw new SQLException(e);
+        } finally {
+            if (shouldCommit) {
+                connection.close();
+            }
+        }
+    }
+
+
+    public void commit() {
+        try {
+            connection.commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 }

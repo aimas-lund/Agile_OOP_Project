@@ -5,12 +5,11 @@ import org.junit.Before;
 import org.junit.Test;
 import persistence.Database;
 
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import static junit.framework.TestCase.assertNotNull;
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertFalse;
 
@@ -40,11 +39,6 @@ public class DatabaseTest {
         assertTrue(database.hasConnection());
     }
 
-    @Test
-    public void createStatement() {
-        Statement statement = database.createStatement();
-        assertNotNull(statement);
-    }
 
     @Test
     public void connectToDB() {
@@ -54,11 +48,14 @@ public class DatabaseTest {
 
     @Test
     public void createTable() {
-        Statement statement = database.createStatement();
+        PreparedStatement statement;
+        String sql;
 
         // Delete table if currently exists
         try {
-            statement.executeUpdate("drop table if exists test");
+            sql = "drop table if exists test";
+            statement = database.prepareStatement(sql);
+            statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -73,14 +70,18 @@ public class DatabaseTest {
         // insert into table
 
         try {
-            statement.executeUpdate("insert into test values (1, 'test 1')");
+            sql = "insert into test values (1, 'test 1')";
+            statement = database.prepareStatement(sql);
+            statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
         // query from table
         try {
-            statement.executeQuery("SELECT * from test");
+            sql = "SELECT * from test";
+            statement = database.prepareStatement(sql);
+            statement.executeQuery();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -89,7 +90,9 @@ public class DatabaseTest {
         assertFalse(database.createTable("test", list));
 
         try {
-            statement.executeUpdate("DROP table IF exists test");
+            sql = "DROP table IF exists test";
+            statement = database.prepareStatement(sql);
+            statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -97,10 +100,13 @@ public class DatabaseTest {
 
     @Test
     public void deleteTable() {
-        Statement statement = database.createStatement();
+        String sql;
+        PreparedStatement statement;
         // Delete table if currently exists
         try {
-            statement.executeUpdate("drop table if exists test");
+            sql = "drop table if exists test";
+            statement = database.prepareStatement(sql);
+            statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -110,7 +116,9 @@ public class DatabaseTest {
 
         // create a table
         try {
-            statement.executeUpdate("create table test (id integer, name string)");
+            sql = "create table test (id integer, name string)";
+            statement = database.prepareStatement(sql);
+            statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }

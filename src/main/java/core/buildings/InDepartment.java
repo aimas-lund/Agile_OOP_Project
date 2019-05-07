@@ -2,9 +2,9 @@ package core.buildings;
 
 import core.persons.Bed;
 import core.persons.Patient;
-import exceptions.ExceededCapacityException;
-import exceptions.UnavailableBedException;
+import core.persons.Staff;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class InDepartment extends DepartmentBeds {
@@ -22,6 +22,10 @@ public class InDepartment extends DepartmentBeds {
 
     public InDepartment(String uniqueId, String name, int totalCapacity, int currentCapacity, HashMap<Patient, Bed> patientsInBeds) {
         super(uniqueId, name, totalCapacity, currentCapacity, patientsInBeds);
+    }
+
+    public InDepartment(String uniqueId, String name, int totalCapacity, int currentCapacity, HashMap<Patient, Bed> patientsInBeds, ArrayList<Patient> patients, ArrayList<Staff> staff) {
+        super(uniqueId, name, totalCapacity, currentCapacity, patientsInBeds, patients, staff);
     }
 
 }
