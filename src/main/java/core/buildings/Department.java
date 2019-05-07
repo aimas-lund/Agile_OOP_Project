@@ -1,27 +1,26 @@
 package core.buildings;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import core.persons.Patient;
 import core.persons.Staff;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public abstract class Department implements Observable {
+@JsonIgnoreProperties(value = {"departmentInformation"})
+
+public abstract class Department {
 	private String name;
-    private String uniqueId;
+
+	private String uniqueId;
 	private ArrayList<Patient> patients = new ArrayList<>();
 	private ArrayList<Staff> staff = new ArrayList<>();
-    private List<Observer> listeners = new ArrayList<>();
-
 	Department() {
-        addChangeListener(new DepartmentObserver());
-    }
+	}
 
 	Department(String uniqueId, String name) {
-        this();
-        this.uniqueId = uniqueId;
-        this.name = name;
-    }
+		this.uniqueId = uniqueId;
+		this.name = name;
+	}
 
 	Department(String uniqueId, String name, ArrayList<Patient> patients, ArrayList<Staff> staff) {
 		this(uniqueId, name);
@@ -31,21 +30,18 @@ public abstract class Department implements Observable {
 
 	public void add(Staff s) {
 		staff.add(s);
-//        notifyListeners(this, Event.ADD, null, s);
-    }
+	}
 
 	public void add(Patient p) {
 		patients.add(p);
-//        notifyListeners(this, Event.ADD, null, p);
 	}
 
 	public void remove(Staff s) {
-//        notifyListeners(this, Event.DELETE, s, null);
-        staff.remove(s);
-    }
+		staff.remove(s);
+	}
 
-    public void remove(Patient p) {
-        patients.remove(p);
+	public void remove(Patient p) {
+		patients.remove(p);
 	}
 
 	public boolean isPatientInDepartment(Patient patient) {
@@ -56,11 +52,11 @@ public abstract class Department implements Observable {
 		return this.staff.contains(staff);
 	}
 
-    public ArrayList<Patient> getPatients() {
+	public ArrayList<Patient> getPatients() {
 		return patients;
 	}
 
-    public ArrayList<Staff> getStaff() {
+	public ArrayList<Staff> getStaff() {
 		return staff;
 	}
 
@@ -72,42 +68,25 @@ public abstract class Department implements Observable {
 		return uniqueId;
 	}
 
-    public String getName() {
-        return name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    void setName(String name) {
-        this.name = name;
-    }
+	void setName(String name) {
+		this.name = name;
+	}
 
-    void setUniqueId(String uniqueId) {
-        this.uniqueId = uniqueId;
-    }
+	void setUniqueId(String uniqueId) {
+		this.uniqueId = uniqueId;
+	}
 
-    void setPatients(ArrayList<Patient> patients) {
-        this.patients = patients;
-    }
+	void setPatients(ArrayList<Patient> patients) {
+		this.patients = patients;
+	}
 
-    void setStaff(ArrayList<Staff> staff) {
-        this.staff = staff;
-    }
+	void setStaff(ArrayList<Staff> staff) {
+		this.staff = staff;
+	}
 
-    @Override
-    public void addChangeListener(Observer newListener) {
-        listeners.add(newListener);
-    }
-
-    @Override
-    public void removeChangeListener(Observer listener) {
-        listeners.remove(listener);
-    }
-
-    @Override
-    public void notifyListeners(Object source, Event action, Object oldValue, Object newValue) {
-        for (Observer listener :
-                listeners) {
-            listener.objectChanged(source, action, oldValue, newValue);
-        }
-    }
 
 }
