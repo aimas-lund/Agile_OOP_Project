@@ -3,6 +3,7 @@ package core.persons;
 import core.buildings.Event;
 import core.buildings.Observable;
 import core.buildings.Observer;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import exceptions.FormatException;
 
 import java.text.SimpleDateFormat;
@@ -10,13 +11,16 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public abstract class Person implements Observable {
-    private String uniqueId;
+    // TODO: Consider creating a factory design around person, or staff and patients separately
+
+    @JsonProperty
     private String name;
     private String surname;
     private Date birthdate;
     private Gender gender;
     private String homeAddress;
     private int phoneNumber;
+    private String uniqueId;
     private ArrayList<Observer> listeners = new ArrayList<>();
 
     Person() {
@@ -24,7 +28,6 @@ public abstract class Person implements Observable {
     }
 
     public Person(String uniqueId) {
-        this();
         this.uniqueId = uniqueId;
     }
 
@@ -44,7 +47,6 @@ public abstract class Person implements Observable {
     }
 
     Person(String name, String surname) {
-        this();
         this.name = name;
         this.surname = surname;
     }
