@@ -5,13 +5,14 @@ import core.buildings.Department;
 import core.buildings.InDepartment;
 import core.buildings.OutDepartment;
 import core.persons.Patient;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import persistence.data_access_objects.DaoDepartmentImpl;
 import persistence.data_access_objects.DaoPatientImpl;
 import persistence.query_roles.QueryRoleNurse;
 import java.util.HashMap;
 
-
+@PreAuthorize("hasRole('NURSE') or hasRole('ICT')")
 @RestController
 public class NurseController {
 
