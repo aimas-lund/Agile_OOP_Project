@@ -23,28 +23,20 @@ public class PersonObserver implements Observer {
 
     public void objectChanged(Staff source, Event action, Object oldValue, Object newValue) {
         switch (action) {
-            case ADD:
-                daoStaff.save(source);
-                break;
             case UPDATE:
                 daoStaff.update(source);
                 break;
-            case DELETE:
-                daoStaff.delete(source);
+            default:
                 break;
         }
     }
 
     public void objectChanged(Patient source, Event action, Object oldValue, Object newValue) {
         switch (action) {
-            case ADD:
-                daoPatient.save(source);
-                break;
             case UPDATE:
                 daoPatient.update(source);
                 break;
-            case DELETE:
-                daoPatient.delete(source);
+            default:
                 break;
         }
     }
