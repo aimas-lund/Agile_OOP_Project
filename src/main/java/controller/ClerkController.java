@@ -17,8 +17,9 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class ClerkController {
     QueryRoleClerk QRK = new QueryRoleClerk();
-    DaoDepartmentImpl dept = new DaoDepartmentImpl();
     PersonInformationFacade PIF;
+    InDepartment mockDept = new InDepartment();
+
 
     @PostMapping(value = "/registerPatient")
     public @ResponseBody
@@ -37,7 +38,6 @@ public class ClerkController {
         Date birthDate=new SimpleDateFormat("yyyy-MM-dd").parse(birthdate);
         Patient newPatient = new Patient(name,surname, birthDate, gender, homeAddress, phoneNumber);
 
-        InDepartment mockDept = new InDepartment();
 
 
         QRK.registerPerson(newPatient, mockDept);
@@ -46,9 +46,10 @@ public class ClerkController {
 
     }
 
-    @PostMapping("/findPatient")
+    @PostMapping("/searchPatient")
     public @ResponseBody
-    ArrayList<Person> findPatient(
+    String findPatient(
+    //ArrayList<Person> findPatient(
             @RequestParam(value = "name", required=false) String name,
             @RequestParam(value="id", required =false) String id,
             @RequestParam(value = "department", required = false) String department) throws PersonNotFoundException {
@@ -64,7 +65,8 @@ public class ClerkController {
         else if(department!= null) {
             hashMap.put("department", department);
         }
-        return QRK.find(hashMap);
+        return id;
+        //return QRK.find(hashMap);
 
     }
 
@@ -87,7 +89,7 @@ public class ClerkController {
 
         Patient patient = (Patient) QRK.find(hashMap).get(0);
         PIF = new PersonInformationFacade(patient);
-        PIF.setPersonName("dfgsfsdfs");
+        //PIF.setPersonName("dfgsfsdfs");
 
         if (name!= null) {
             PIF.setPersonName(textbox);
@@ -108,6 +110,23 @@ public class ClerkController {
             PIF.setPersonPhoneNumber(Integer.valueOf(number));
 
         return "Patient has been updated";
+    }
+
+    @PostMapping(value ="/deletePatient")
+    public @ResponseBody
+    String deletePerson(@RequestParam(value="id") String id) throws ParseException, PersonNotFoundException {
+
+
+        HashMap<String, String> hashMap = new HashMap<String, String>();
+        hashMap.put("uniqueid",id);
+
+        Patient patient = (Patient) QRK.find(hashMap).get(0);
+
+
+        QRK.delete(patient, mockDept);
+
+        return "patient deleted";
+
     }
 
 }
