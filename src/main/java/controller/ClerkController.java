@@ -10,6 +10,7 @@ import core.persons.*;
 
 import exceptions.FormatException;
 import persistence.data_access_objects.DaoDepartmentImpl;
+import persistence.data_access_objects.DaoPatientImpl;
 import persistence.query_roles.QueryRoleClerk;
 import exceptions.PersonNotFoundException;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +19,8 @@ import org.springframework.web.bind.annotation.*;
 public class ClerkController {
     QueryRoleClerk QRK = new QueryRoleClerk();
     PersonInformationFacade PIF;
-    InDepartment mockDept = new InDepartment();
+    DaoDepartmentImpl<Department> daodept = new DaoDepartmentImpl<Department>();
+
 
 
     @PostMapping(value = "/registerPatient")
@@ -38,9 +40,13 @@ public class ClerkController {
         Date birthDate=new SimpleDateFormat("yyyy-MM-dd").parse(birthdate);
         Patient newPatient = new Patient(name,surname, birthDate, gender, homeAddress, phoneNumber);
 
+        HashMap<String, String> hashMap = new HashMap<String, String>();
+        hashMap.put("name", department);
+        Department d = daodept.find(hashMap).get(0);
 
 
-        QRK.registerPerson(newPatient, mockDept);
+        QRK.registerPerson(newPatient, d);
+        d.add(newPatient);
 
         return newPatient;
 
@@ -69,15 +75,10 @@ public class ClerkController {
 
     @PostMapping(value = "/updatePatient")
     public @ResponseBody
-    String updatePatient(@RequestParam(value="id") String id,
-                          @RequestParam(value="name", required = false) String name,
-                          @RequestParam(value="surname", required = false) String surname,
-                          @RequestParam(value="birthday", required = false) String birthdate,
-                          @RequestParam(value = "gender", required = false) String gender,
-                          @RequestParam(value = "homeAddress", required = false) String homeAddress,
-                          @RequestParam(value="phoneNumber", required = false) String phoneNumber,
-                          @RequestParam(value="text", required = false) String textbox,
+    String updatePatient(@RequestParam(value="parameter") String param,
+                         @RequestParam(value="id") String id,
                           @RequestParam(value="number", required = false) String number,
+                         @RequestParam(value="text", required = false) String textbox,
                           @RequestParam(value="date", required = false) String date,
                           @RequestParam(value="gen", required = false) String gen) throws ParseException, PersonNotFoundException {
 
@@ -87,22 +88,22 @@ public class ClerkController {
         Patient patient = (Patient) QRK.find(hashMap).get(0);
         PIF = new PersonInformationFacade(patient);
 
-        if (name!= null) {
+        if (param == "name") {
             PIF.setPersonName(textbox);
         }
-        else if (surname != null)
+        else if (param == "surname")
             PIF.setPersonSurname(textbox);
-        else if (birthdate != null) {
+        else if (param == "birthdate") {
             Date birthDate = new SimpleDateFormat("yyyy-MM-dd").parse(date);
             PIF.setPersonBirthdate(birthDate);
         }
-        else if (gender!=null) {
+        else if (param == "gender") {
             Gender genderx = Gender.valueOf((gen.toUpperCase()));
             PIF.setPersonGender(genderx);
         }
-        else if (homeAddress != null)
+        else if (param == "homeAddress")
             PIF.setPersonHomeAddress(textbox);
-        else if (phoneNumber!= null)
+        else if (param == "phoneNumber")
             PIF.setPersonPhoneNumber(Integer.valueOf(number));
 
         return "Patient has been updated";
@@ -113,16 +114,19 @@ public class ClerkController {
     String deletePerson(@RequestParam(value="id") String id) throws ParseException, PersonNotFoundException {
 
 
-        HashMap<String, String> hashMap = new HashMap<String, String>();
-        hashMap.put("uniqueid",id);
+        HashMap<String, String> hashMapPatient = new HashMap<String, String>();
+        hashMapPatient.put("uniqueId",id);
 
-        Patient patient = (Patient) QRK.find(hashMap).get(0);
+        Patient patient = (Patient) QRK.find(hashMapPatient).get(0);
+        String departmentID = daodept.findDepartmentIdOfPerson(patient);
 
+        HashMap<String, String> hashMapDepartment = new HashMap<String, String>();
+        hashMapDepartment = new HashMap<String, String>();
+        hashMapDepartment.put("uniqueId", departmentID);
+        Department d = daodept.find(hashMapDepartment).get(0);
 
-        QRK.delete(patient, mockDept);
+        QRK.delete(patient, d);
 
         return "patient deleted";
-
     }
-
 }

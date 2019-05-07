@@ -1,8 +1,8 @@
 package core.buildings;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import core.persons.Patient;
 import core.persons.Staff;
-import io.cucumber.datatable.dependency.com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,11 +77,11 @@ public abstract class Department implements Observable {
 		return this.staff.contains(staff);
 	}
 
-    public ArrayList<Patient> getPatients() {
+	public ArrayList<Patient> getPatients() {
 		return patients;
 	}
 
-    public ArrayList<Staff> getStaff() {
+	public ArrayList<Staff> getStaff() {
 		return staff;
 	}
 

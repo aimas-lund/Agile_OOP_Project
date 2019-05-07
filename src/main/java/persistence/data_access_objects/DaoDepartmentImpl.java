@@ -324,6 +324,7 @@ public class DaoDepartmentImpl<T extends Department> implements IDao<T> {
 
             ResultSet resultSet = statement.executeQuery();
 
+            System.out.println(statement.toString());
             if (resultSet.next()) {
                 departmentId = resultSet.getString("uniqueId");
             }
