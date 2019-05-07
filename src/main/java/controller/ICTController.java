@@ -102,8 +102,7 @@ class ICTController {
             hashMap.put("name", textbox);
         } else if (choice.equals("id")) {
             hashMap.put("uniqueid", textbox);
-        } else if (choice.equals("department")) {
-            hashMap.put("speciality", textbox);
+
         }
         //return id;
         return QRICT.findStaff(hashMap);

@@ -71,9 +71,6 @@ public class ClerkController {
         else if(choice.equals("id")) {
             hashMap.put("uniqueid",textbox2);
         }
-        else if(choice.equals("department")) {
-            hashMap.put("department", textbox2);
-        }
         try {
             return QRK.find(hashMap);
 
