@@ -114,6 +114,14 @@ public abstract class Person {
     }
 
     public boolean equals(Person person) {
+        if (person.uniqueId == null) {
+            return false;
+        }
+
+        if (this.uniqueId == null) {
+            return false;
+        }
+
         return uniqueId.equals(person.uniqueId);
     }
 

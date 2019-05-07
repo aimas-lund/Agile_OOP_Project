@@ -175,15 +175,13 @@ public class DaoDepartmentImplTest {
 
     @Test
     public void saveAllStaffFails() {
-        inDepartmentTest.add(new Clerk());
-        assertFalse(daoDepartment.save(inDepartmentTest));
+        assertFalse(inDepartmentTest.add(new Clerk()));
 
     }
 
     @Test
     public void saveAllPatientsFails() {
-        inDepartmentTest.add(new Patient());
-        assertFalse(daoDepartment.save(inDepartmentTest));
+        assertFalse(inDepartmentTest.add(new Patient()));
 
     }
 

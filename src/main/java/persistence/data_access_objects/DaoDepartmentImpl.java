@@ -51,24 +51,9 @@ public class DaoDepartmentImpl<T extends Department> implements IDao<T> {
 
     @Override
     public boolean save(T department) {
-        if (!saveDepartment(department)) {
-            return false;
-        } else if (!saveAllPatients(department)) {
-            return false;
-        } else if (!saveAllStaff(department)) {
-            return false;
-        }
-
-        database.commit();
-        database.disconnectFromDB();
-        return true;
-    }
-
-    private boolean saveDepartment(T department) {
         String sql = "insert into departments values(?, ?, ?, ?, ?)";
-
         try {
-            PreparedStatement statement = database.prepareStatement(sql, false);
+            PreparedStatement statement = database.prepareStatement(sql);
             statement.setString(1, department.getUniqueId());
             statement.setString(2, department.getName());
             statement.setString(5, department.getClass().getSimpleName());
@@ -81,71 +66,7 @@ public class DaoDepartmentImpl<T extends Department> implements IDao<T> {
                 statement.setNull(4, Types.INTEGER);
             }
 
-            return database.executePreparedStatement(statement, false);
-
-        } catch (SQLException e) {
-            return false;
-        } finally {
-            database.disconnectFromDB();
-        }
-    }
-
-    private boolean saveAllStaff(T department) {
-        String sql = "insert into staff_in_departments values(?, ?)";
-        ArrayList<String> tempUniqueIds = new ArrayList<>();
-
-        try {
-            PreparedStatement statement = database.prepareStatement(sql, false);
-
-            for (Staff staff :
-                    department.getStaff()) {
-
-                if (uniqueids.contains(staff.getUniqueId())) {
-                    continue;
-                }
-                statement.setString(1, staff.getUniqueId());
-                statement.setString(2, department.getUniqueId());
-                statement.addBatch();
-                tempUniqueIds.add(staff.getUniqueId());
-            }
-
-            if (!database.executePreparedStatementBatch(statement, false)) {
-                return false;
-            }
-
-            uniqueids.addAll(tempUniqueIds);
-            return true;
-        } catch (SQLException e) {
-            return false;
-        } finally {
-            database.disconnectFromDB();
-        }
-    }
-
-    private boolean saveAllPatients(T department) {
-        String sql = "insert into patients_in_departments values(?, ?, ?, ?)";
-        ArrayList<String> tempUniqueIds = new ArrayList<>();
-
-        try {
-            PreparedStatement statement = database.prepareStatement(sql, false);
-
-            for (Patient patient :
-                    department.getPatients()) {
-                if (uniqueids.contains(patient.getUniqueId())) {
-                    continue;
-                }
-
-                buildPatientStatement(department, statement, patient);
-
-                statement.addBatch();
-                tempUniqueIds.add(patient.getUniqueId());
-            }
-
-            if (!database.executePreparedStatementBatch(statement, false)) {
-                return false;
-            }
-            uniqueids.addAll(tempUniqueIds);
-            return true;
+            return database.executePreparedStatement(statement);
 
         } catch (SQLException e) {
             return false;
@@ -297,12 +218,12 @@ public class DaoDepartmentImpl<T extends Department> implements IDao<T> {
         return find(hashMap).get(0);
     }
 
-    public Queue<Patient> findWaitingPatientsInDepartment(String departmentId) {
+    private Queue<Patient> findWaitingPatientsInDepartment(String departmentId) {
         String sql = "select patientId from patients_in_departments p where p.departmentId = ? and p.isWaiting";
         return new LinkedList<>(getPatientsFromSql(departmentId, sql));
     }
 
-    public HashMap<Patient, Bed> findPatientsInBeds(String departmentId) {
+    private HashMap<Patient, Bed> findPatientsInBeds(String departmentId) {
         String sql = "select patientId, bedId from patients_in_departments p where p.departmentId = ? and p.bedId is not null";
 
         DaoPatientImpl<Patient> daoPatient = new DaoPatientImpl<>();
@@ -326,8 +247,6 @@ public class DaoDepartmentImpl<T extends Department> implements IDao<T> {
 
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            database.disconnectFromDB();
         }
 
         return patients;
@@ -355,20 +274,18 @@ public class DaoDepartmentImpl<T extends Department> implements IDao<T> {
 
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            database.disconnectFromDB();
         }
 
         return patients;
     }
 
-    public ArrayList<Patient> findAllPatientsInDepartment(String departmentId) {
+    private ArrayList<Patient> findAllPatientsInDepartment(String departmentId) {
         String sql = "select patientId from patients_in_departments p where p.departmentId = ?";
         return getPatientsFromSql(departmentId, sql);
 
     }
 
-    public ArrayList<Staff> findAllStaffInDepartment(String departmentId) {
+    private ArrayList<Staff> findAllStaffInDepartment(String departmentId) {
         String sql = "select staffId from staff_in_departments s where s.departmentId = ?";
         DaoStaffImpl<Staff> daoStaff = new DaoStaffImpl<>();
 
@@ -390,8 +307,6 @@ public class DaoDepartmentImpl<T extends Department> implements IDao<T> {
 
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            database.disconnectFromDB();
         }
 
         return staff;

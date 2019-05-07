@@ -32,6 +32,10 @@ public abstract class Department implements Observable {
 	}
 
     public boolean add(Staff staff) {
+        if (staff.getUniqueId() == null) {
+            return false;
+        }
+
         if (!this.staff.contains(staff)) {
             this.staff.add(staff);
             notifyListeners(this, ADD, null, staff);
@@ -41,6 +45,10 @@ public abstract class Department implements Observable {
     }
 
     public boolean add(Patient patient) {
+        if (patient.getUniqueId() == null) {
+            return false;
+        }
+
         if (!patients.contains(patient)) {
             patients.add(patient);
             notifyListeners(this, ADD, null, patient);

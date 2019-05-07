@@ -20,7 +20,7 @@ public class DepartmentTest {
     @Before
     public void setUp() {
         patient1 = new Patient("pat1");
-        staff = new Clerk("staff1");
+        staff = new Clerk("pattesutter");
         outDepartment = new OutDepartment("outDepartment", "Saint John");
     }
 
