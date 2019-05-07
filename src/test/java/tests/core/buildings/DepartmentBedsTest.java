@@ -1,10 +1,6 @@
 package tests.core.buildings;
 
-import core.buildings.BedManager;
-import core.buildings.DepartmentBeds;
-import core.buildings.ERDepartment;
-import core.buildings.InDepartment;
-import core.persons.Bed;
+import core.buildings.*;
 import core.persons.Patient;
 import exceptions.ExceededCapacityException;
 import org.junit.After;

@@ -1,5 +1,7 @@
 package core.persons;
 
+import core.buildings.Event;
+
 import java.util.Date;
 
 public class Patient extends Person {
@@ -33,6 +35,7 @@ public class Patient extends Person {
 
     void setAlive(boolean alive) {
         this.alive = alive;
+        notifyListeners(this, Event.UPDATE, null, null);
     }
 
     public boolean isAlive() {

@@ -1,6 +1,5 @@
 package core.buildings;
 
-import core.persons.Bed;
 import core.persons.Patient;
 import exceptions.ExceededCapacityException;
 import exceptions.UnavailableBedException;

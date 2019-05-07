@@ -1,8 +1,8 @@
 package tests.core.buildings;
 
+import core.buildings.Bed;
 import core.buildings.BedManager;
 import core.buildings.InDepartment;
-import core.persons.Bed;
 import core.persons.Clerk;
 import core.persons.Patient;
 import core.persons.Staff;

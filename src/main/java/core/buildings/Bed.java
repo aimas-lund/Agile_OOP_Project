@@ -1,4 +1,6 @@
-package core.persons;
+package core.buildings;
+
+import core.persons.Patient;
 
 public class Bed {
     private Boolean occupied;

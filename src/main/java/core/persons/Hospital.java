@@ -1,7 +1,6 @@
 package core.persons;
 
 import core.buildings.Department;
-import core.utility.InformationGenerator;
 
 import java.util.ArrayList;
 
@@ -34,8 +33,8 @@ public class Hospital {
 
     public void move(Patient p, Department d1, Department d2) {
         if (d1.getPatients().contains(p) && !(d2.getPatients().contains(p))) {
-            d2.add(p);
             d1.remove(p);
+            d2.add(p);
         }
     }
 
