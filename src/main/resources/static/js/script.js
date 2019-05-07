@@ -1,3 +1,9 @@
+$(document).ready(function() {
+    $( ".dashboard-menu > h3" ).click(function() {
+        $("i",this).toggleClass("fa fa-caret-down fa fa-caret-up")
+        $("form",$(this).parent()).toggle();
+    });
+});
 function searchPatient() {
     var option = $("#searchPatientParam").val();
     $(".searchPatient").hide();
@@ -33,7 +39,7 @@ function upPatient() {
 function upStaff() {
     var option = $("#selectParamStaff").val();
     $(".updateStaff").hide();
-    $(".updateStaff","#updateStaff").removeAttr("required","false");
+    $(".updateStaff").removeAttr("required","false");
     if (option === "birthday") {
         var id = "#dateS"
     } else if (option === "gender") {
@@ -49,9 +55,13 @@ function upStaff() {
     $(id).attr("required","true")
 }
 
-$(document).ready(function() {
-    $( ".dashboard-menu > h3" ).click(function() {
-        $("i",this).toggleClass("fa fa-caret-down fa fa-caret-up")
-        $("form",$(this).parent()).toggle();
-    });
-});
+function addDepartment() {
+    var option = $("#departmentType").val()
+    if (option === "out") {
+        $("#capacity").hide()
+        $("#capacity").removeAttr("required","false")
+    } else {
+        $("#capacity").show()
+        $("#capacity").attr("required","true")
+    }
+}

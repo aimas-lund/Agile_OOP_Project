@@ -1,4 +1,4 @@
-.search, .update {
+.search, .update, .hidden {
     display:none;
 }
 #searchStaffParam, #searchPatientParam {
