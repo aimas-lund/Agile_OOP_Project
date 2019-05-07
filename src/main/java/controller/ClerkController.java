@@ -10,6 +10,7 @@ import core.persons.*;
 
 import exceptions.FormatException;
 import persistence.data_access_objects.DaoDepartmentImpl;
+import persistence.data_access_objects.DaoPatientImpl;
 import persistence.query_roles.QueryRoleClerk;
 import exceptions.PersonNotFoundException;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +19,8 @@ import org.springframework.web.bind.annotation.*;
 public class ClerkController {
     QueryRoleClerk QRK = new QueryRoleClerk();
     PersonInformationFacade PIF;
-    InDepartment mockDept = new InDepartment();
+    DaoDepartmentImpl<Department> daodept = new DaoDepartmentImpl<Department>();
+
 
 
     @PostMapping(value = "/registerPatient")
@@ -38,9 +40,13 @@ public class ClerkController {
         Date birthDate=new SimpleDateFormat("yyyy-MM-dd").parse(birthdate);
         Patient newPatient = new Patient(name,surname, birthDate, gender, homeAddress, phoneNumber);
 
+        HashMap<String, String> hashMap = new HashMap<String, String>();
+        hashMap.put("name", department);
+        Department d = daodept.find(hashMap).get(0);
 
 
-        QRK.registerPerson(newPatient, mockDept);
+        QRK.registerPerson(newPatient, d);
+        d.add(newPatient);
 
         return newPatient;
 
@@ -113,16 +119,19 @@ public class ClerkController {
     String deletePerson(@RequestParam(value="id") String id) throws ParseException, PersonNotFoundException {
 
 
-        HashMap<String, String> hashMap = new HashMap<String, String>();
-        hashMap.put("uniqueid",id);
+        HashMap<String, String> hashMapPatient = new HashMap<String, String>();
+        hashMapPatient.put("uniqueId",id);
 
-        Patient patient = (Patient) QRK.find(hashMap).get(0);
+        Patient patient = (Patient) QRK.find(hashMapPatient).get(0);
+        String departmentID = daodept.findDepartmentIdOfPerson(patient);
 
+        HashMap<String, String> hashMapDepartment = new HashMap<String, String>();
+        hashMapDepartment = new HashMap<String, String>();
+        hashMapDepartment.put("uniqueId", departmentID);
+        Department d = daodept.find(hashMapDepartment).get(0);
 
-        QRK.delete(patient, mockDept);
+        QRK.delete(patient, d);
 
         return "patient deleted";
-
     }
-
 }

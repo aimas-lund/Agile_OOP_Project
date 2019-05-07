@@ -38,7 +38,7 @@ public class Patient extends Person {
 
     void setAlive(boolean alive) {
         this.alive = alive;
-        notifyListeners(this, Event.UPDATE, null, null);
+//        notifyListeners(this, Event.UPDATE, null, null);
     }
 
     public boolean isAlive() {

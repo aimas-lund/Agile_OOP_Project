@@ -31,16 +31,16 @@ public abstract class Department implements Observable {
 
 	public void add(Staff s) {
 		staff.add(s);
-        notifyListeners(this, Event.ADD, null, s);
+//        notifyListeners(this, Event.ADD, null, s);
     }
 
 	public void add(Patient p) {
 		patients.add(p);
-        notifyListeners(this, Event.ADD, null, p);
+//        notifyListeners(this, Event.ADD, null, p);
 	}
 
 	public void remove(Staff s) {
-        notifyListeners(this, Event.DELETE, s, null);
+//        notifyListeners(this, Event.DELETE, s, null);
         staff.remove(s);
     }
 

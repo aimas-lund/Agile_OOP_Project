@@ -37,46 +37,43 @@ class ICTController {
 
 */
 
-    @PostMapping(value ="/registerStaff")
+    @PostMapping(value = "/registerStaff")
     public @ResponseBody
-    Staff newStaff(@RequestParam(value="name") String name,
-                   @RequestParam(value="surname") String surname,
-                   @RequestParam(value="birthday") String birthdate,
+    Staff newStaff(@RequestParam(value = "name") String name,
+                   @RequestParam(value = "surname") String surname,
+                   @RequestParam(value = "birthday") String birthdate,
                    @RequestParam(value = "gender") String gen,
                    @RequestParam(value = "homeAddress") String homeAddress,
-                   @RequestParam(value="phoneNumber") int phoneNumber,
-                   @RequestParam(value="role") String role,
-                   @RequestParam(value="speciality", required = false) String speciality,
-                   @RequestParam(value="department") String department) throws ParseException {
+                   @RequestParam(value = "phoneNumber") int phoneNumber,
+                   @RequestParam(value = "role") String role,
+                   @RequestParam(value = "speciality", required = false) String speciality,
+                   @RequestParam(value = "department") String department) throws ParseException {
 
         Gender gender = Gender.valueOf((gen.toUpperCase()));
 
-        Date birthDate=new SimpleDateFormat("yyyy-MM-dd").parse(birthdate);
+        Date birthDate = new SimpleDateFormat("yyyy-MM-dd").parse(birthdate);
         Speciality spec = Speciality.valueOf(speciality.toUpperCase());
         HashMap<String, String> hashMap = new HashMap<String, String>();
         hashMap.put("name", department);
         Department d = daodept.find(hashMap).get(0);
 
         if (role.equals("Doctor")) {
-            doctor = new Doctor(spec,name,surname,birthDate,gender,homeAddress,phoneNumber);
+            doctor = new Doctor(spec, name, surname, birthDate, gender, homeAddress, phoneNumber);
             QRICT.registerPerson(doctor, d);
             d.add(doctor);
             return doctor;
-        }
-        else if (role.equals("Nurse")) {
-            nurse = new Nurse(name,surname,birthDate,gender,homeAddress,phoneNumber);
+        } else if (role.equals("Nurse")) {
+            nurse = new Nurse(name, surname, birthDate, gender, homeAddress, phoneNumber);
             QRICT.registerPerson(nurse, d);
             d.add(nurse);
             return nurse;
-        }
-        else if (role.equals("Clerk")) {
-            clerk = new Clerk(name,surname,birthDate,gender,homeAddress,phoneNumber);
+        } else if (role.equals("Clerk")) {
+            clerk = new Clerk(name, surname, birthDate, gender, homeAddress, phoneNumber);
             QRICT.registerPerson(clerk, d);
             d.add(clerk);
             return clerk;
-        }
-        else {
-            ict = new ICTOfficer(name,surname,birthDate,gender,homeAddress,phoneNumber);
+        } else {
+            ict = new ICTOfficer(name, surname, birthDate, gender, homeAddress, phoneNumber);
             QRICT.registerPerson(ict, d);
             d.add(ict);
             return ict;
@@ -88,23 +85,64 @@ class ICTController {
     @GetMapping("/searchStaff")
     public @ResponseBody
     ArrayList<Staff> findStaff(
-            @RequestParam(value = "searchParameter", required=false) String choice,
-            @RequestParam(value="text", required = true) String textbox) throws PersonNotFoundException {
+            @RequestParam(value = "searchParameter", required = false) String choice,
+            @RequestParam(value = "text", required = true) String textbox) throws PersonNotFoundException {
 
         HashMap<String, String> hashMap = new HashMap<String, String>();
-        if(choice.equals("name")) {
+        if (choice.equals("name")) {
             hashMap.put("name", textbox);
-        }
-        else if(choice.equals("id")) {
-            hashMap.put("uniqueid",textbox);
-        }
-        else if(choice.equals("department")) {
+        } else if (choice.equals("id")) {
+            hashMap.put("uniqueid", textbox);
+        } else if (choice.equals("department")) {
             hashMap.put("speciality", textbox);
         }
         //return id;
         return QRICT.findStaff(hashMap);
 
     }
+
+
+    @PostMapping(value = "/deletePerson")
+    public @ResponseBody
+    String deletePerson(@RequestParam(value = "id") String id) throws ParseException, PersonNotFoundException {
+
+
+        HashMap<String, String> hashMapPerson = new HashMap<String, String>();
+        hashMapPerson.put("uniqueId", id);
+
+        HashMap<String, String> hashMapDepartment = new HashMap<String, String>();
+        hashMapDepartment = new HashMap<String, String>();
+
+
+        if (QRICT.findStaff(hashMapPerson).get(0) != null) {
+            Staff staff = (Staff) QRICT.findStaff(hashMapPerson).get(0);
+            String departmentID = daodept.findDepartmentIdOfPerson(staff);
+            hashMapDepartment.put("uniqueId", "id");
+            Department d = daodept.find(hashMapDepartment).get(0);
+            QRICT.delete(staff, d);
+
+
+
+        }
+
+        else if (QRICT.findPatient(hashMapPerson).get(0) != null) {
+
+            Patient patient = (Patient) QRICT.findPatient(hashMapPerson).get(0);
+            String departmentID = daodept.findDepartmentIdOfPerson(patient);
+            hashMapDepartment.put("uniqueId", departmentID);
+            Department d = daodept.find(hashMapDepartment).get(0);
+
+            QRICT.delete(patient, d);
+
+
+        }
+
+        return "person deleted";
+
+    }
+
+
+}
 //    @PostMapping(value = "/registerPatient")
 //    public @ResponseBody
 //        //Patient newPatient(Patient newPatient) {
@@ -145,5 +183,5 @@ class ICTController {
 //        repository.deleteById(id);
 //    }
 
-}
+
 
