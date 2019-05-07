@@ -189,7 +189,7 @@ class ICTController {
 
     @GetMapping(value = "/generatePdf")
     public @ResponseBody
-    File generatePdf(@RequestParam(value="id") String id) throws IOException, DocumentException {
+    String generatePdf(@RequestParam(value="id") String id) throws IOException, DocumentException {
 
         HashMap<String, String> hashMap = new HashMap<String, String>();
         hashMap.put("uniqueId",id);
@@ -201,9 +201,9 @@ class ICTController {
         PersonToPdf PTP = new PersonToPdf();
         PTP.PatientToPdf(department);
 
+        return ("Pdf has been generated in path, called 'patients.pdf'");
 
-        File file = new File("patients.pdf");
-        return file;
+
 
 
     }
