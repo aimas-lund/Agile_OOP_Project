@@ -115,9 +115,9 @@ class ICTController {
 
 
         if (QRICT.findStaff(hashMapPerson).get(0) != null) {
-            Staff staff = (Staff) QRICT.findStaff(hashMapPerson).get(0);
+            Staff staff = QRICT.findStaff(hashMapPerson).get(0);
             String departmentID = daodept.findDepartmentIdOfPerson(staff);
-            hashMapDepartment.put("uniqueId", "id");
+            hashMapDepartment.put("uniqueid", departmentID);
             Department d = daodept.find(hashMapDepartment).get(0);
             QRICT.delete(staff, d);
 
@@ -127,9 +127,9 @@ class ICTController {
 
         else if (QRICT.findPatient(hashMapPerson).get(0) != null) {
 
-            Patient patient = (Patient) QRICT.findPatient(hashMapPerson).get(0);
+            Patient patient = QRICT.findPatient(hashMapPerson).get(0);
             String departmentID = daodept.findDepartmentIdOfPerson(patient);
-            hashMapDepartment.put("uniqueId", departmentID);
+            hashMapDepartment.put("uniqueid", departmentID);
             Department d = daodept.find(hashMapDepartment).get(0);
 
             QRICT.delete(patient, d);
