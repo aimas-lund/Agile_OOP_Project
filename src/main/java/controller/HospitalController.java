@@ -6,14 +6,12 @@ import core.persons.Hospital;
 import core.persons.Patient;
 import core.persons.Person;
 import core.persons.Staff;
-import exceptions.PersonNotFoundException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import persistence.data_access_objects.DaoDepartmentImpl;
 import persistence.query_roles.QueryRoleICT;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 
