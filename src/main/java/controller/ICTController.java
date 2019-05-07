@@ -3,12 +3,15 @@ package controller;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+
+import core.buildings.Department;
 import core.persons.*;
 
 import core.utility.Speciality;
 import exceptions.PersonNotFoundException;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import persistence.data_access_objects.DaoDepartmentImpl;
 import persistence.query_roles.QueryRoleICT;
 
 import javax.print.Doc;
@@ -21,6 +24,7 @@ class ICTController {
     ICTOfficer ict;
     Clerk clerk;
     QueryRoleICT QRICT = new QueryRoleICT();
+    DaoDepartmentImpl<Department> daodept = new DaoDepartmentImpl<Department>();
 
 
     // Search Patient inherited from Clerk
@@ -43,27 +47,39 @@ class ICTController {
                    @RequestParam(value = "homeAddress") String homeAddress,
                    @RequestParam(value="phoneNumber") int phoneNumber,
                    @RequestParam(value="role") String role,
-                   @RequestParam(value="department", required = false) String department) throws ParseException {
+                   @RequestParam(value="speciality", required = false) String speciality,
+                   @RequestParam(value="department") String department) throws ParseException {
 
         Gender gender = Gender.valueOf((gen.toUpperCase()));
 
         Date birthDate=new SimpleDateFormat("yyyy-MM-dd").parse(birthdate);
-        Speciality spec = Speciality.valueOf(department.toUpperCase());
+        Speciality spec = Speciality.valueOf(speciality.toUpperCase());
+        HashMap<String, String> hashMap = new HashMap<String, String>();
+        hashMap.put("name", department);
+        Department d = daodept.find(hashMap).get(0);
 
         if (role.equals("Doctor")) {
             doctor = new Doctor(spec,name,surname,birthDate,gender,homeAddress,phoneNumber);
+            QRICT.registerPerson(doctor, d);
+            d.add(doctor);
             return doctor;
         }
         else if (role.equals("Nurse")) {
             nurse = new Nurse(name,surname,birthDate,gender,homeAddress,phoneNumber);
+            QRICT.registerPerson(nurse, d);
+            d.add(nurse);
             return nurse;
         }
         else if (role.equals("Clerk")) {
             clerk = new Clerk(name,surname,birthDate,gender,homeAddress,phoneNumber);
+            QRICT.registerPerson(clerk, d);
+            d.add(clerk);
             return clerk;
         }
         else {
             ict = new ICTOfficer(name,surname,birthDate,gender,homeAddress,phoneNumber);
+            QRICT.registerPerson(ict, d);
+            d.add(ict);
             return ict;
         }
 
