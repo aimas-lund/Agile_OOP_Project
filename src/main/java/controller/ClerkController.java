@@ -88,40 +88,45 @@ public class ClerkController {
     public @ResponseBody
     String updatePatient(@RequestParam(value="parameter") String param,
                          @RequestParam(value="id") String id,
-                          @RequestParam(value="number", required = false) String number,
-                         @RequestParam(value="text", required = false) String textbox,
-                          @RequestParam(value="date", required = false) String date,
-                          @RequestParam(value="gen", required = false) String gen) throws Exception {
+                          @RequestParam(value="in-number", required = false) String number,
+                         @RequestParam(value="in-text", required = false) String textbox,
+                          @RequestParam(value="in-date", required = false) String date,
+                          @RequestParam(value="in-gender", required = false) String gen) throws Exception {
 
 
 
         try {
-            HashMap<String, String> hashMap = new HashMap<String, String>();
+            HashMap<String, String> hashMap = new HashMap<>();
             hashMap.put("uniqueid",id);
             Patient patient = (Patient) QRK.find(hashMap).get(0);
             PIF = new PersonInformationFacade(patient);
         } catch(Exception e) {
-            throw new Exception("Cant find patient with ID: "+ id);
+            throw new Exception("Cant find patient with ID: " + id);
         }
 
 
-        if (param == "name") {
-            PIF.setPersonName(textbox);
+        switch (param) {
+            case "name":
+                PIF.setPersonName(textbox);
+                break;
+            case "surname":
+                PIF.setPersonSurname(textbox);
+                break;
+            case "birthdate":
+                Date birthDate = new SimpleDateFormat("yyyy-MM-dd").parse(date);
+                PIF.setPersonBirthdate(birthDate);
+                break;
+            case "gender":
+                Gender genderx = Gender.valueOf((gen.toUpperCase()));
+                PIF.setPersonGender(genderx);
+                break;
+            case "homeAddress":
+                PIF.setPersonHomeAddress(textbox);
+                break;
+            case "phoneNumber":
+                PIF.setPersonPhoneNumber(Integer.valueOf(number));
+                break;
         }
-        else if (param == "surname")
-            PIF.setPersonSurname(textbox);
-        else if (param == "birthdate") {
-            Date birthDate = new SimpleDateFormat("yyyy-MM-dd").parse(date);
-            PIF.setPersonBirthdate(birthDate);
-        }
-        else if (param == "gender") {
-            Gender genderx = Gender.valueOf((gen.toUpperCase()));
-            PIF.setPersonGender(genderx);
-        }
-        else if (param == "homeAddress")
-            PIF.setPersonHomeAddress(textbox);
-        else if (param == "phoneNumber")
-            PIF.setPersonPhoneNumber(Integer.valueOf(number));
 
         return "Patient has been updated";
     }
