@@ -70,7 +70,6 @@ public class HospitalController {
 
     @PostMapping("/movePerson")
     public String movePerson( @RequestParam(value="personId") String personId,
-                              @RequestParam(value="fromId") String fromId,
                               @RequestParam(value="toId") String toId,
                               @RequestParam(value="type") String type
                             ) throws PersonNotFoundException {
@@ -78,30 +77,31 @@ public class HospitalController {
         HashMap<String,String> personMap = new HashMap<>();
         HashMap<String,String> deptMap = new HashMap<>();
 
-        deptMap.put("uniqueid",fromId);
-        Department d1 = DAO.find(deptMap).get(0);
         deptMap.put("uniqueid",toId);
         Department d2 = DAO.find(deptMap).get(0);
         personMap.put("uniqueid",personId);
 
         Hospital hospital = getHospital();
         Person person = null;
+        String deptId;
+        Department d1 = null;
         if (type.equals("patient")) {
             Patient patient = QRI.findPatient(personMap).get(0);
             person = patient;
+            deptId = DAO.findDepartmentIdOfPerson(patient);
+            deptMap.put("uniqueid",deptId);
+            d1 = DAO.find(deptMap).get(0);
             hospital.move(patient,d1,d2);
         } else if (type.equals("staff")) {
             Staff staff = QRI.findStaff(personMap).get(0);
             person = staff;
+            deptId = DAO.findDepartmentIdOfPerson(staff);
+            deptMap.put("uniqueid",deptId);
+            d1 = DAO.find(deptMap).get(0);
             hospital.move(staff,d1,d2);
         }
 
         return "Moved " + person.getName() + " from " + d1.getName() + " to " + d2.getName();
-    }
-    @GetMapping("/test")
-    public String test() {
-        Hospital hospital = getHospital();
-        return hospital.getDepartments().get(0).getName();
     }
 
 }

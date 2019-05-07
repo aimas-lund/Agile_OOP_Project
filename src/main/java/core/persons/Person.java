@@ -1,10 +1,12 @@
 package core.persons;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import exceptions.FormatException;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+@JsonIgnoreProperties(value = {"personInformation"})
 public abstract class Person {
     // TODO: Consider creating a factory design around person, or staff and patients separately
 
