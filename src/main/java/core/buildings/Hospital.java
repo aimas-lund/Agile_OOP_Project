@@ -4,8 +4,10 @@ import core.buildings.Department;
 import core.persons.Patient;
 import core.persons.Staff;
 import core.utility.InformationGenerator;
+import persistence.data_access_objects.DaoDepartmentImpl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Hospital {
     private ArrayList<Department> departments = new ArrayList<>();
@@ -51,5 +53,7 @@ public class Hospital {
     public ArrayList<Department> getDepartments() {
         return departments;
     }
+
+
 
 }

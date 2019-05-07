@@ -30,7 +30,7 @@
                 <!-- Search for patient -->
                 <div class="dashboard-menu">
                     <h3>Search for patient<i class="fa fa-caret-down" aria-hidden="true"></i></h3>
-                    <form class="dashboard-action" id="searchPatient" autocomplete="on" action="/searchPatient" >
+                    <form class="dashboard-action" id="searchPatient" autocomplete="on" action="/searchPatient" target="_blank">
                         <div class="input-container">
                             <select class="dropdown" form="searchPatient" id="searchPatientParam" name="searchParameter"
                                     onchange="searchPatient()" required>
@@ -52,7 +52,7 @@
                 <!-- Get next waiting patient (Call from outDepartment) -->
                 <div class="dashboard-menu">
                     <h3>Get next waiting patient<i class="fa fa-caret-down" aria-hidden="true"></i></h3>
-                    <form class="dashboard-action" id="nextPatient" autocomplete="on" action="/nextPatient" >
+                    <form class="dashboard-action" id="nextPatient" autocomplete="on" action="/nextPatient" target="_blank">
                         <div class="input-container">
                             <input class="input-field" type="text" placeholder="Department" name="department" style="width:50%">
                             <button type="submit" formmethod="get" class="btn">Submit</button>
