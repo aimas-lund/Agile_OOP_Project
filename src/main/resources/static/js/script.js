@@ -4,21 +4,6 @@ $(document).ready(function() {
         $("form",$(this).parent()).toggle();
     });
 });
-function searchPatient() {
-    var option = $("#searchPatientParam").val();
-    $(".searchPatient").hide();
-    $(".searchPatient").removeAttr("required","false");
-    $("#p" + option).show();
-    $("#p" + option).attr("required", "true");
-}
-
-function searchStaff() {
-    var option = $("#searchStaffParam").val();
-    $(".searchStaff").hide();
-    $(".searchStaff").removeAttr("required","false");
-    $("#s" + option).show();
-    $("#s" + option).attr("required", "true");
-}
 
 function upPatient() {
     var option = $("#selectParamPatient").val();

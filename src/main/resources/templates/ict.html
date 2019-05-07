@@ -87,14 +87,13 @@
             <h3>Search for staff<i class="fa fa-caret-down" aria-hidden="true"></i></h3>
             <form class="dashboard-action" id="searchStaff" autocomplete="on" action="/searchStaff" target="_blank">
                 <div class="input-container">
-                    <select class="dropdown" form="searchStaff" id="searchStaffParam" name="searchParameter" onchange="searchStaff()"
-                            required>
+                    <select class="dropdown" form="searchStaff" name="searchParameter" required>
                         <option value="" disabled selected hidden>Choose a search parameter</option>
                         <option value="name">Name</option>
                         <option value="id">ID</option>
                         <option value="department">Department</option>
                     </select>
-                    <input class="input-field update" id="textsearchstaff" style="display:block" type="text" placeholder="Text field" name="text">
+                    <input class="input-field" type="text" placeholder="Text field" name="text" required>
                 </div>
                 <div class="submitButton">
                     <button type="submit" formmethod="get" class="btn">search</button>
@@ -174,14 +173,13 @@
             <h3>Search for patient<i class="fa fa-caret-down" aria-hidden="true"></i></h3>
             <form class="dashboard-action" id="searchPatient" autocomplete="on" action="/searchPatient" target="_blank">
                 <div class="input-container">
-                    <select class="dropdown" form="searchPatient" id="searchPatientParam" name="searchParameter"
-                            onchange="searchPatient()" required>
+                    <select class="dropdown" form="searchPatient" name="searchParameter" required>
                         <option value="" disabled selected hidden>Choose a search parameter</option>
                         <option value="name">Name</option>
                         <option value="id">ID</option>
                         <option value="department">Department</option>
                     </select>
-                    <input class="input-field update" id="text2" style="display:block" type="text" placeholder="Text field" name="text">
+                    <input class="input-field" type="text" placeholder="Text field" name="text" required>
 
                 </div>
                 <div class="submitButton">
@@ -206,7 +204,7 @@
                         <option value="gender">Gender</option>
                     </select>
                     <input class="input-field update updatePatient" id="textP" style="display:block" type="text" placeholder="Text field" name="in-text">
-                    <input class="input-field update updatePatient" id="numP" type="tel" placeholder="Phone number" name="in-number">
+                    <input class="input-field update updatePatient" id="numP" pattern="[0-9]{8}" type="tel" placeholder="Phone number" name="in-number">
                     <input class="input-field update updatePatient" id="dateP" type="date" placeholder="Birthday" name="in-date">
                     <select class="dropdown update updatePatient" id="genderP" form="updatePatient" name="in-gender">
                         <option value="male">Male</option>

@@ -1,8 +1,13 @@
 package core.persons;
 
 import core.buildings.Department;
+import core.persons.Patient;
+import core.persons.Staff;
+import core.utility.InformationGenerator;
+import persistence.data_access_objects.DaoDepartmentImpl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import static core.buildings.Event.ADD;
 import static core.buildings.Event.DELETE;

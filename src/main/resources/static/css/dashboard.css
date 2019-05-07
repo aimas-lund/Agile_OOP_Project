@@ -1,8 +1,5 @@
-.search, .update, .hidden {
+.update, .hidden {
     display:none;
-}
-#searchStaffParam, #searchPatientParam {
-    width:50%;
 }
 /* DASHBOARDS */
 .dashboard-menu > h3 > i {
