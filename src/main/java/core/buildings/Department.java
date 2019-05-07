@@ -33,6 +33,12 @@ public abstract class Department implements Observable {
 		this.staff = staff;
 	}
 
+    /**
+     * Adds a staff with uniqueid to department and updates it in the database
+     *
+     * @param staff with at least uniqueid
+     * @return
+     */
     public boolean add(Staff staff) {
         if (staff.getUniqueId() == null) {
             return false;
@@ -46,6 +52,13 @@ public abstract class Department implements Observable {
         return false;
     }
 
+    /**
+     * Adds a patient with uniqueid to department and updates it in the database corresponding to department type
+     * and whether or not the patient is waiting or is in a bed
+     *
+     * @param patient with at least unique id
+     * @return
+     */
     public boolean add(Patient patient) {
         if (patient.getUniqueId() == null) {
             return false;
@@ -59,20 +72,38 @@ public abstract class Department implements Observable {
         return false;
     }
 
+    /**
+     * Removes a staff member from the department and database
+     *
+     * @param staff with at least unique id
+     */
     public void remove(Staff staff) {
         notifyListeners(this, DELETE, staff, null);
         this.staff.remove(staff);
     }
 
+    /**
+     * Removes a patient from the department and database
+     *
+     * @param patient with at least unique id
+     */
     public void remove(Patient patient) {
         notifyListeners(this, DELETE, patient, null);
         patients.remove(patient);
 	}
 
+    /**
+     * @param patient with at least unique id
+     * @return true if patient is in department false otherwise
+     */
 	public boolean isPatientInDepartment(Patient patient) {
 		return patients.contains(patient);
 	}
 
+    /**
+     * @param staff with at least unique id
+     * @return true if staff is in department false otherwise
+     */
 	public boolean isStaffInDepartment(Staff staff) {
 		return this.staff.contains(staff);
 	}
@@ -97,16 +128,31 @@ public abstract class Department implements Observable {
 		return name;
 	}
 
+    /**
+     * Sets name of department and updates in database
+     *
+     * @param name of person
+     */
     void setName(String name) {
         this.name = name;
         notifyListeners(this, UPDATE, null, null);
     }
 
+    /**
+     * Sets uniqueId of department
+     *
+     * @param uniqueId of person
+     */
     void setUniqueId(String uniqueId) {
         this.uniqueId = uniqueId;
         notifyListeners(this, UPDATE, null, this);
     }
 
+    /**
+     * Adds many patients to department and adds all to database
+     *
+     * @param patients patients with at least unique id
+     */
     void setPatients(ArrayList<Patient> patients) {
         this.patients = patients;
         for (Patient patient :
@@ -115,6 +161,11 @@ public abstract class Department implements Observable {
         }
     }
 
+    /**
+     * Adds many staff members to department and adds all to database
+     *
+     * @param staff staff members with at least unique id
+     */
     void setStaff(ArrayList<Staff> staff) {
         this.staff = staff;
         for (Staff aStaff :
