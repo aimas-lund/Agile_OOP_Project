@@ -11,6 +11,7 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import exceptions.PersonNotFoundException;
+import org.junit.After;
 import persistence.query_roles.QueryRoleClerk;
 import persistence.query_roles.QueryRoleICT;
 
@@ -24,7 +25,7 @@ import static org.junit.Assert.*;
 public class RegistrationSteps {
     private Patient registeredPatient;
     private Patient unregisteredPatient;
-    private Department department = new OutDepartment();
+    private Department department = new OutDepartment("nowIhaveAnID", "nameWithName");
     private QueryRoleClerk clerk = new QueryRoleClerk();
     private QueryRoleICT ictOfficer = new QueryRoleICT();
     private Staff registeredStaff = new Clerk("regStaff");
@@ -49,6 +50,15 @@ public class RegistrationSteps {
                 Gender.MALE,
                 "Groove street 23",
                 13371337);
+    }
+
+    @After
+    public void tearDown() {
+        ictOfficer.delete(registeredStaff, department);
+        ictOfficer.delete(unregisteredStaff, department);
+        ictOfficer.delete(doctor, department);
+        clerk.delete(registeredPatient, department);
+        clerk.delete(unregisteredPatient, department);
     }
 
     @Given("a new patient")

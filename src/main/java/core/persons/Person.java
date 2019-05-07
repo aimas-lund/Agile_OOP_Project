@@ -10,17 +10,14 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-public abstract class Person implements Observable {
-    // TODO: Consider creating a factory design around person, or staff and patients separately
-
-    @JsonProperty
+public abstract class Person implements Observable{
+    private String uniqueId;
     private String name;
     private String surname;
     private Date birthdate;
     private Gender gender;
     private String homeAddress;
     private int phoneNumber;
-    private String uniqueId;
     private ArrayList<Observer> listeners = new ArrayList<>();
 
     Person() {
@@ -127,6 +124,14 @@ public abstract class Person implements Observable {
     }
 
     public boolean equals(Person person) {
+        if (person.uniqueId == null) {
+            return false;
+        }
+
+        if (this.uniqueId == null) {
+            return false;
+        }
+
         return uniqueId.equals(person.uniqueId);
     }
 

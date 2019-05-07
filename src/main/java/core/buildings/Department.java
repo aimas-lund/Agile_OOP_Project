@@ -6,6 +6,8 @@ import core.persons.Staff;
 import java.util.ArrayList;
 import java.util.List;
 
+import static core.buildings.Event.*;
+
 public abstract class Department implements Observable {
 	private String name;
     private String uniqueId;
@@ -29,23 +31,40 @@ public abstract class Department implements Observable {
 		this.staff = staff;
 	}
 
-	public void add(Staff s) {
-		staff.add(s);
-        notifyListeners(this, Event.ADD, null, s);
+    public boolean add(Staff staff) {
+        if (staff.getUniqueId() == null) {
+            return false;
+        }
+
+        if (!this.staff.contains(staff)) {
+            this.staff.add(staff);
+            notifyListeners(this, ADD, null, staff);
+            return true;
+        }
+        return false;
     }
 
-	public void add(Patient p) {
-		patients.add(p);
-        notifyListeners(this, Event.ADD, null, p);
-	}
+    public boolean add(Patient patient) {
+        if (patient.getUniqueId() == null) {
+            return false;
+        }
 
-	public void remove(Staff s) {
-        notifyListeners(this, Event.DELETE, s, null);
-        staff.remove(s);
+        if (!patients.contains(patient)) {
+            patients.add(patient);
+            notifyListeners(this, ADD, null, patient);
+            return true;
+        }
+        return false;
     }
 
-    public void remove(Patient p) {
-        patients.remove(p);
+    public void remove(Staff staff) {
+        notifyListeners(this, DELETE, staff, null);
+        this.staff.remove(staff);
+    }
+
+    public void remove(Patient patient) {
+        notifyListeners(this, DELETE, patient, null);
+        patients.remove(patient);
 	}
 
 	public boolean isPatientInDepartment(Patient patient) {
@@ -78,18 +97,28 @@ public abstract class Department implements Observable {
 
     void setName(String name) {
         this.name = name;
+        notifyListeners(this, UPDATE, null, null);
     }
 
     void setUniqueId(String uniqueId) {
         this.uniqueId = uniqueId;
+        notifyListeners(this, UPDATE, null, this);
     }
 
     void setPatients(ArrayList<Patient> patients) {
         this.patients = patients;
+        for (Patient patient :
+                patients) {
+            notifyListeners(this, ADD, null, patient);
+        }
     }
 
     void setStaff(ArrayList<Staff> staff) {
         this.staff = staff;
+        for (Staff aStaff :
+                staff) {
+            notifyListeners(this, ADD, null, aStaff);
+        }
     }
 
     @Override
@@ -103,10 +132,10 @@ public abstract class Department implements Observable {
     }
 
     @Override
-    public void notifyListeners(Object source, Event action, Object oldValue, Object newValue) {
+    public void notifyListeners(Object source, Event event, Object oldValue, Object newValue) {
         for (Observer listener :
                 listeners) {
-            listener.objectChanged(source, action, oldValue, newValue);
+            listener.objectChanged(source, event, oldValue, newValue);
         }
     }
 

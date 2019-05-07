@@ -5,6 +5,7 @@ import core.buildings.InDepartment;
 import core.persons.Clerk;
 import core.persons.Patient;
 import core.persons.Staff;
+import cucumber.api.java.After;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -15,11 +16,18 @@ import exceptions.UnavailableBedException;
 import static org.junit.Assert.*;
 
 public class DepartmentSteps {
-    private InDepartment validDept = new InDepartment("dep1", "ER", 80);
-    private InDepartment emptyDept = new InDepartment("dep2", "empty", 0);
-    private Patient patient1 = new Patient("patient1");
-    private Patient patient2 = new Patient("patient2");
-    private Staff staff = new Clerk("staff1");
+    private InDepartment validDept = new InDepartment("depzz1", "ER", 80);
+    private InDepartment emptyDept = new InDepartment("depzz2", "empty", 0);
+    private Patient patient1 = new Patient("patientasdfsadf1");
+    private Patient patient2 = new Patient("patientasdfsadfdsafd2");
+    private Staff staff = new Clerk("superbisexualboiye");
+
+    @After
+    public void tearDown() {
+        validDept.remove(patient1);
+        validDept.remove(patient2);
+        validDept.remove(staff);
+    }
 
     // A department is made (capacity)
     @Given("a department")
@@ -39,15 +47,18 @@ public class DepartmentSteps {
     public void iEmployAStaff() {
         validDept.add(staff);
     }
+
     @Then("I should add them to my system, such that I can easily look them up")
     public void iShouldAddThemToMySystemSuchThatICanEasilyLookThemUp() {
-        assertTrue(validDept.getStaff().contains(staff));
+        assertTrue(validDept.isStaffInDepartment(staff));
+        validDept.remove(staff);
     }
 
     // Add patient
     @When("receiving a patient")
     public void receivingAPatient() {
     }
+
     @Then("I should be able to add them to my system, such that I can easily look them up")
     public void iShouldBeAbleToAddThemToMySystemSuchThatICanEasilyLookThemUp() {
         validDept.add(patient1);
@@ -68,6 +79,7 @@ public class DepartmentSteps {
     @When("a patient's treatment is over")
     public void aPatientSTreatmentIsOver() {
     }
+
     @Then("I should be able to discharge them")
     public void iShouldBeAbleToDischargeThem() {
         validDept.remove(patient1);
