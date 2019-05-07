@@ -30,7 +30,7 @@
         <!-- Register staff -->
         <div class="dashboard-menu">
             <h3>Register staff <i class="fa fa-caret-down" aria-hidden="true"></i></h3>
-            <form class="dashboard-action" id="registerStaff" autocomplete="on" action="/registerStaff">
+            <form class="dashboard-action" id="registerStaff" autocomplete="on" action="/registerStaff" target="_blank">
                 <div class="input-container">
                     <input class="input-field" type="text" placeholder="Name" name="name" required>
                     <input class="input-field" type="text" placeholder="Surname" name="surname" required>
@@ -85,7 +85,7 @@
         <!-- Search for staff -->
         <div class="dashboard-menu">
             <h3>Search for staff<i class="fa fa-caret-down" aria-hidden="true"></i></h3>
-            <form class="dashboard-action" id="searchStaff" autocomplete="on" action="/searchStaff">
+            <form class="dashboard-action" id="searchStaff" autocomplete="on" action="/searchStaff" target="_blank">
                 <div class="input-container">
                     <select class="dropdown" form="searchStaff" id="searchStaffParam" name="searchParameter" onchange="searchStaff()"
                             required>
@@ -107,7 +107,7 @@
         <!-- Update staff -->
         <div class="dashboard-menu">
             <h3 >Update staff <i class="fa fa-caret-down" aria-hidden="true"></i></h3>
-            <form class="dashboard-action" id="updateStaff" autocomplete="on" action="/updateStaff">
+            <form class="dashboard-action" id="updateStaff" autocomplete="on" action="/updateStaff" target="_blank">
                 <div class="input-container">
                     <input class="input-field" type="text" placeholder="ID" name="id" required>
                     <select class="dropdown" id="selectParamStaff" form="updateStaff" name="parameter" onchange="upStaff()" required>
@@ -149,7 +149,7 @@
         <div class="dashboard-menu">
             <h3 >Register patient <i class="fa fa-caret-down" aria-hidden="true"></i></h3>
 
-            <form class="dashboard-action" id="registerPatient" autocomplete="on" action="/registerPatient" >
+            <form class="dashboard-action" id="registerPatient" autocomplete="on" action="/registerPatient" target="_blank">
                 <div class="input-container">
                     <input class="input-field" type="text" placeholder="Name" name="name" required>
                     <input class="input-field" type="text" placeholder="Surname" name="surname" required>
@@ -175,7 +175,7 @@
         <!-- Search for patient -->
         <div class="dashboard-menu">
             <h3>Search for patient<i class="fa fa-caret-down" aria-hidden="true"></i></h3>
-            <form class="dashboard-action" id="searchPatient" autocomplete="on" action="/searchPatient">
+            <form class="dashboard-action" id="searchPatient" autocomplete="on" action="/searchPatient" target="_blank">
                 <div class="input-container">
                     <select class="dropdown" form="searchPatient" id="searchPatientParam" name="searchParameter"
                             onchange="searchPatient()" required>
@@ -198,7 +198,7 @@
         <div class="dashboard-menu">
             <h3 >Update patient <i class="fa fa-caret-down" aria-hidden="true"></i></h3>
 
-            <form class="dashboard-action" id="updatePatient" autocomplete="on" action="/updatePatient" >
+            <form class="dashboard-action" id="updatePatient" autocomplete="on" action="/updatePatient" target="_blank">
                 <div class="input-container">
                     <input class="input-field" type="text" placeholder="ID" name="id" required>
                     <select class="dropdown" form="updatePatient" id="selectParamPatient" name="parameter" onchange="upPatient()" required>
@@ -227,7 +227,7 @@
         <!-- Delete person -->
         <div class="dashboard-menu">
             <h3>Delete person<i class="fa fa-caret-down" aria-hidden="true"></i></h3>
-            <form class="dashboard-action" id="deletePerson" autocomplete="on" action="/deletePerson">
+            <form class="dashboard-action" id="deletePerson" autocomplete="on" action="/deletePerson" target="_blank">
                 <div class="input-container">
                     <input class="input-field" type="text" placeholder="ID" name="id" required>
                     <button type="submit" formmethod="post" class="btn">Delete</button>
@@ -242,7 +242,7 @@
         <!-- Add department -->
         <div class="dashboard-menu">
             <h3>Add department<i class="fa fa-caret-down" aria-hidden="true"></i></h3>
-            <form class="dashboard-action" id="addDepartment" autocomplete="on" action="/addDepartment">
+            <form class="dashboard-action" id="addDepartment" autocomplete="on" action="/addDepartment" target="_blank">
                 <div class="input-container">
                     <input class="input-field" type="text" placeholder="Unique ID" name="id" required>
                     <input class="input-field" type="text" placeholder="Department name" name="name" required>
@@ -262,7 +262,7 @@
         <!-- Remove department -->
         <div class="dashboard-menu">
             <h3>Remove department<i class="fa fa-caret-down" aria-hidden="true"></i></h3>
-            <form class="dashboard-action" id="removeDepartment" autocomplete="on" action="/removeDepartment">
+            <form class="dashboard-action" id="removeDepartment" autocomplete="on" action="/removeDepartment" target="_blank">
                 <div class="input-container">
                     <input class="input-field" type="text" placeholder="Unique ID" name="id" required>
                     <button type="submit" formmethod="post" class="btn inline">Remove</button>
@@ -272,7 +272,7 @@
         <!-- Move person -->
         <div class="dashboard-menu">
             <h3>Move person department<i class="fa fa-caret-down" aria-hidden="true"></i></h3>
-            <form class="dashboard-action" id="movePerson" autocomplete="on" action="/movePerson">
+            <form class="dashboard-action" id="movePerson" autocomplete="on" action="/movePerson" target="_blank">
                 <div class="input-container">
                     <input class="input-field" type="text" placeholder="Person ID" name="personId" required>
                     <input class="input-field" type="text" placeholder="To department ID" name="toId" required>

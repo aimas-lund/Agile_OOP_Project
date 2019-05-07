@@ -31,7 +31,7 @@
         <div class="dashboard-menu">
             <h3 >Register patient <i class="fa fa-caret-down" aria-hidden="true"></i></h3>
 
-            <form class="dashboard-action" id="registerPatient" autocomplete="on" action="/registerPatient" >
+            <form class="dashboard-action" id="registerPatient" autocomplete="on" action="/registerPatient" target="_blank">
                 <div class="input-container">
                     <input class="input-field" type="text" placeholder="Name" name="name" required>
                     <input class="input-field" type="text" placeholder="Surname" name="surname" required>
@@ -58,7 +58,7 @@
         <div class="dashboard-menu">
             <h3 >Update patient <i class="fa fa-caret-down" aria-hidden="true"></i></h3>
 
-            <form class="dashboard-action" id="updatePatient" autocomplete="on" action="/updatePatient" >
+            <form class="dashboard-action" id="updatePatient" autocomplete="on" action="/updatePatient" target="_blank">
                 <div class="input-container">
                     <input class="input-field" type="text" placeholder="ID" name="id" required>
                     <select class="dropdown" form="updatePatient" id="selectParamPatient" name="parameter" onchange="upPatient()" required>
@@ -86,7 +86,7 @@
         <!-- Search for patient -->
         <div class="dashboard-menu">
             <h3>Search for patient<i class="fa fa-caret-down" aria-hidden="true"></i></h3>
-            <form class="dashboard-action" id="searchPatient" autocomplete="on" action="/searchPatient" >
+            <form class="dashboard-action" id="searchPatient" autocomplete="on" action="/searchPatient" target="_blank">
                 <div class="input-container">
                     <select class="dropdown" form="searchPatient" id="searchPatientParam" name="searchParameter"
                             onchange="searchPatient()" required>
@@ -108,7 +108,7 @@
         <!-- Delete patient -->
         <div class="dashboard-menu">
             <h3>Delete person<i class="fa fa-caret-down" aria-hidden="true"></i></h3>
-            <form class="dashboard-action" id="deletePatient" autocomplete="on" action="/deletePatient">
+            <form class="dashboard-action" id="deletePatient" autocomplete="on" action="/deletePatient" target="_blank">
                 <div class="input-container">
                     <input class="input-field" type="text" placeholder="ID" name="id" required style="width:50%">
                     <button type="submit" formmethod="post" class="btn">Delete</button>
