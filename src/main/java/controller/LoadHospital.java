@@ -1,7 +1,7 @@
 package controller;
 
 import core.buildings.Department;
-import core.buildings.Hospital;
+import core.persons.Hospital;
 import persistence.data_access_objects.DaoDepartmentImpl;
 
 import java.util.ArrayList;
