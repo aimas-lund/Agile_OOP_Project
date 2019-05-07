@@ -17,7 +17,7 @@ public class PersonToPdf {
 
     public void PatientToPdf(Department department) throws IOException, DocumentException {
         Document document = new Document();
-        PdfWriter.getInstance(document, new FileOutputStream(department.getName() + "_Patients.pdf"));
+        PdfWriter.getInstance(document, new FileOutputStream("patients.pdf"));
 
         document.open();
 

@@ -23,6 +23,8 @@ import core.utility.*;
 @RestController
 class ICTController {
 
+    Speciality spec = null;
+
     Doctor doctor;
     Nurse nurse;
     ICTOfficer ict;
@@ -57,7 +59,9 @@ class ICTController {
         Gender gender = Gender.valueOf((gen.toUpperCase()));
 
         Date birthDate = new SimpleDateFormat("yyyy-MM-dd").parse(birthdate);
-        Speciality spec = Speciality.valueOf(speciality.toUpperCase());
+        if (speciality != null) {
+            spec = Speciality.valueOf(speciality.toUpperCase());
+        }
         HashMap<String, String> hashMap = new HashMap<String, String>();
         hashMap.put("name", department);
         Department d = daodept.find(hashMap).get(0);
@@ -185,7 +189,7 @@ class ICTController {
 
     @GetMapping(value = "/generatePdf")
     public @ResponseBody
-    void generatePdf(@RequestParam(value="id") String id) throws IOException, DocumentException {
+    File generatePdf(@RequestParam(value="id") String id) throws IOException, DocumentException {
 
         HashMap<String, String> hashMap = new HashMap<String, String>();
         hashMap.put("uniqueId",id);
@@ -194,13 +198,13 @@ class ICTController {
         Department department = daodept.find(hashMap).get(0);
 
 
-        System.out.println(department.getName());
-//        PersonToPdf PTP = new PersonToPdf();
-//        PTP.PatientToPdf(department);
-//
-//
-//        File file = new File(department.getName() + "_patients.pdf");
-//        return file;
+        PersonToPdf PTP = new PersonToPdf();
+        PTP.PatientToPdf(department);
+
+
+        File file = new File("patients.pdf");
+        return file;
+
 
     }
 
