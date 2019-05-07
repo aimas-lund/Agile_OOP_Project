@@ -46,7 +46,7 @@ public class ClerkController {
 
     }
 
-    @PostMapping("/searchPatient")
+    @GetMapping("/searchPatient")
     public @ResponseBody
 
     ArrayList<Person> findPatient(
