@@ -37,7 +37,7 @@
                 </div>
                 <div class="input-container" >
                     <input class="input-field" type="text" placeholder="Home address" name="homeAddress" required>
-                    <input class="input-field" type="tel" placeholder="Phone number" name="phoneNumber" required>
+                    <input class="input-field" type="tel"  pattern="[0-9]{8}" placeholder="Phone number" name="phoneNumber" required>
                 </div>
                 <div class="input-container">
                     <input class="input-field" type="date" placeholder="Birthday" name="birthday" required>
@@ -122,7 +122,7 @@
                         <option value="role">Role</option>
                     </select>
                     <input class="input-field update updateStaff" id="textS" style="display:block" type="text" placeholder="Text field" name="in-text">
-                    <input class="input-field update updateStaff" id="numS" type="tel" placeholder="Phone number" name="in-number">
+                    <input class="input-field update updateStaff" id="numS"  pattern="[0-9]{8}" type="tel" placeholder="Phone number" name="in-number">
                     <input class="input-field update updateStaff" id="dateS" type="date" placeholder="Birthday" name="in-date">
                     <select class="dropdown update updateStaff" id="genderS" form="updateStaff" name="in-gender">
                         <option value="male">Male</option>
@@ -158,7 +158,7 @@
                     <input class="input-field" type="text" placeholder="Home address" name="homeAddress" required>
                 </div>
                 <div class="input-container">
-                    <input class="input-field" type="tel" placeholder="Phone number" name="phoneNumber" required>
+                    <input class="input-field" type="tel"  pattern="[0-9]{8}" placeholder="Phone number" name="phoneNumber" required>
                     <input class="input-field" type="date" placeholder="Birthday" name="birthday" required>
                     <select class="dropdown" form="registerPatient" name="gender" required>
                         <option value="" disabled selected hidden>Gender</option>
@@ -211,7 +211,7 @@
                         <option value="gender">Gender</option>
                     </select>
                     <input class="input-field update updatePatient" id="textP" style="display:block" type="text" placeholder="Text field" name="in-text">
-                    <input class="input-field update updatePatient" id="numP" type="tel" placeholder="Phone number" name="in-number">
+                    <input class="input-field update updatePatient" id="numP" pattern="[0-9]{8}" type="tel" placeholder="Phone number" name="in-number">
                     <input class="input-field update updatePatient" id="dateP" type="date" placeholder="Birthday" name="in-date">
                     <select class="dropdown update updatePatient" id="genderP" form="updatePatient" name="in-gender">
                         <option value="male">Male</option>
