@@ -2,12 +2,12 @@ package tests.core.persons;
 
 import core.persons.Gender;
 import core.persons.Patient;
+import core.persons.PersonInformationFacade;
 import org.junit.Test;
 
 import java.util.Date;
 
-import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertTrue;
+import static junit.framework.TestCase.*;
 
 public class PatientTest {
     private Patient patient = new Patient();
@@ -23,6 +23,12 @@ public class PatientTest {
     @Test
     public void isAlive() {
         assertTrue(patient.isAlive());
+    }
+
+    @Test
+    public void setAlive() {
+        new PersonInformationFacade(patient).setPatientAlive(false);
+        assertFalse(patient.isAlive());
     }
 
     @Test

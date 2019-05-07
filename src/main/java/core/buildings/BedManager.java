@@ -51,7 +51,7 @@ public class BedManager {
     }
 
     public void removeFromBed(Patient p) {
-        if (department.patientInBed(p)) {
+        if (department.isPatientInBed(p)) {
             Bed bed = department.getBedWithPatient(p);
             bed.empty();
             department.removePatientInBed(p);
@@ -60,7 +60,7 @@ public class BedManager {
     }
 
     public void changeBed(Patient p) throws ExceededCapacityException {
-        if (department.patientInBed(p) && department.hasAvailableBeds()) {
+        if (department.isPatientInBed(p) && department.hasAvailableBeds()) {
             Bed bed = department.getAvailableBeds().get(0);
             removeFromBed(p);
             try {
@@ -74,7 +74,7 @@ public class BedManager {
     }
 
     public void changeBed(Patient p, int id) throws UnavailableBedException {
-        if (department.patientInBed(p)) {
+        if (department.isPatientInBed(p)) {
             removeFromBed(p);
             assignToBed(p, id);
         } else {

@@ -132,4 +132,12 @@ public abstract class Person {
         }
         return super.equals(obj);
     }
+
+    @Override
+    public int hashCode() {
+        if (uniqueId == null) {
+            return super.hashCode();
+        }
+        return uniqueId.hashCode();
+    }
 }

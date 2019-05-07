@@ -2,10 +2,7 @@ package tests.core.buildings;
 
 import core.buildings.Department;
 import core.buildings.InDepartment;
-import core.persons.Bed;
-import core.persons.Hospital;
-import core.persons.Patient;
-import core.persons.Staff;
+import core.persons.*;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -18,8 +15,8 @@ public class HospitalBedTest {
     private final Hospital hospital = new Hospital();
     private ArrayList<Department> depts = hospital.getDepartments();
     private final Department department = new InDepartment("dep1", "ER", 10);
-    private final Patient patient = new Patient();
-    private final Staff staff = new Staff();
+    private final Patient patient = new Patient("password123");
+    private final Staff staff = new Clerk("password321");
     private final Department department2 = new InDepartment("dep2", "ER2", 10);
     private Bed bed;
 
@@ -109,6 +106,56 @@ public class HospitalBedTest {
         hospital.add(department);
         hospital.remove(department);
         assertTrue(depts.isEmpty());
+    }
+
+    @Test
+    public void moveStaffTest() {
+        hospital.add(department);
+        hospital.add(department2);
+        department.add(staff);
+        hospital.move(staff, department, department2);
+        assertFalse(department.getStaff().contains(staff));
+        assertTrue(department2.getStaff().contains(staff));
+    }
+
+    @Test
+    public void movePatientTest() {
+        hospital.add(department);
+        hospital.add(department2);
+        department.add(patient);
+        hospital.move(patient, department, department2);
+        assertFalse(department.getPatients().contains(patient));
+        assertTrue(department2.getPatients().contains(patient));
+    }
+
+    @Test
+    public void movePatientWhereItAlreadyExistsTest() {
+        hospital.add(department);
+        hospital.add(department2);
+        department.add(patient);
+        department2.add(patient);
+        hospital.move(patient, department, department2);
+        assertTrue(department.getPatients().contains(patient));
+        assertTrue(department2.getPatients().contains(patient));
+    }
+
+    @Test
+    public void moveStaffWhereItAlreadyExistsTest() {
+        hospital.add(department);
+        hospital.add(department2);
+        department.add(staff);
+        department2.add(staff);
+        hospital.move(staff, department, department2);
+        assertTrue(department.getStaff().contains(staff));
+        assertTrue(department2.getStaff().contains(staff));
+    }
+
+    @Test
+    public void getDepartmentsTest() {
+        hospital.add(department);
+        hospital.add(department2);
+        assertTrue(hospital.getDepartments().contains(department));
+        assertTrue(hospital.getDepartments().contains(department2));
     }
 }
 

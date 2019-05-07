@@ -2,6 +2,7 @@ package stepdefs;
 
 import core.buildings.Department;
 import core.buildings.InDepartment;
+import core.persons.Clerk;
 import core.persons.Hospital;
 import core.persons.Patient;
 import core.persons.Staff;
@@ -15,7 +16,7 @@ import static org.junit.Assert.assertTrue;
 public class PatientStaffDistributionSteps {
 
     private Hospital hospital = new Hospital();
-    private Staff staff = new Staff("staff1");
+    private Staff staff = new Clerk("staff1");
     private Patient patient = new Patient("pat1");
     private Department department1 = new InDepartment("dep1", "ER", 10);
     private Department department2 = new InDepartment("dep2", "New", 5);

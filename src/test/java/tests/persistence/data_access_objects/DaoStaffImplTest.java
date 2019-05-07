@@ -1,8 +1,6 @@
 package tests.persistence.data_access_objects;
 
-import core.persons.Gender;
-import core.persons.PersonInformationFacade;
-import core.persons.Staff;
+import core.persons.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,7 +17,7 @@ public class DaoStaffImplTest {
 
     @Before
     public void setUp() {
-        staff = new Staff(
+        staff = new Clerk(
                 "testID",
                 "Oline",
                 "Fischersen",
@@ -35,7 +33,23 @@ public class DaoStaffImplTest {
 
     @After
     public void tearDown() {
-        assertTrue(daoStaff.delete(staff));
+        daoStaff.delete(staff);
+    }
+
+    @Test
+    public void updateFails() {
+        Staff clerk = new Clerk(
+                "testIDasdasdasd",
+                "Oline",
+                "Fischersen",
+                new Date(1556668800000L), // Date: 01_05_2019
+                Gender.MALE,
+                "DTUStreet 56",
+                45231298,
+                "OLFI@agile_hospital.com",
+                "OLFI");
+
+        assertFalse(daoStaff.update(clerk));
     }
 
     @Test
@@ -92,12 +106,21 @@ public class DaoStaffImplTest {
 
     @Test
     public void findMultiples() {
-        Staff staffNew = new Staff(
+        HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put("gender", Gender.MALE.toString());
+
+        assertEquals(4, daoStaff.find(hashMap).size());
+
+    }
+
+    @Test
+    public void findNurse() {
+        Staff staffNew = new Nurse(
                 "testID2",
-                "Aimas",
-                "Odgaard",
+                "Stereotype",
+                "Dabb",
                 new Date(1556668800000L), // Date: 01_05_2019
-                Gender.MALE,
+                Gender.FEMALE,
                 "DTUStreet 52",
                 45231298,
                 "AIOD@agile_hospital.com",
@@ -105,10 +128,27 @@ public class DaoStaffImplTest {
 
         daoStaff.save(staffNew);
 
-        HashMap<String, String> hashMap = new HashMap<>();
-        hashMap.put("gender", Gender.MALE.toString());
+        assertTrue(daoStaff.find(staffNew) instanceof Nurse);
 
-        assertEquals(2, daoStaff.find(hashMap).size());
+        daoStaff.delete(staffNew);
+    }
+
+    @Test
+    public void findICTOfficer() {
+        Staff staffNew = new ICTOfficer(
+                "testID2",
+                "Stereotype",
+                "Dabb",
+                new Date(1556668800000L), // Date: 01_05_2019
+                Gender.FEMALE,
+                "DTUStreet 52",
+                45231298,
+                "AIOD@agile_hospital.com",
+                "AIOD");
+
+        daoStaff.save(staffNew);
+
+        assertTrue(daoStaff.find(staffNew) instanceof ICTOfficer);
 
         daoStaff.delete(staffNew);
     }

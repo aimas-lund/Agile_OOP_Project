@@ -1,6 +1,7 @@
 package tests.core.persons;
 
 import core.buildings.Department;
+import core.persons.Clerk;
 import core.persons.Gender;
 import core.persons.PersonInformationFacade;
 import core.persons.Staff;
@@ -18,7 +19,7 @@ public class StaffTest {
 
     @Before
     public void setup() {
-        staff = new Staff(
+        staff = new Clerk(
                 "Beth",
                 "McMuffin",
                 new Date(631152000000L),

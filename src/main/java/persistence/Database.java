@@ -2,8 +2,8 @@ package persistence;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 
 public class Database {
@@ -43,21 +43,21 @@ public class Database {
         return false;
     }
 
-    public Statement createStatement() {
+    public PreparedStatement prepareStatement(String sql) throws SQLException {
+        return prepareStatement(sql, true);
+    }
+
+    public PreparedStatement prepareStatement(String sql, boolean autoCommit) throws SQLException {
         // Connect to database if null
         if (!(hasConnection())) {
             connectToDB();
         }
-        try {
-            return connection.createStatement();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
+        connection.setAutoCommit(autoCommit);
+        return connection.prepareStatement(sql);
+
     }
 
     public boolean createTable(String name, ArrayList<ArrayList<String>> fields) {
-        Statement statement = createStatement();
         String query = "create table %s (%s";
         String values = "";
 
@@ -71,8 +71,11 @@ public class Database {
         query = String.format(query + ")", name, values);
 
         try {
-            statement.executeUpdate(query);
+            PreparedStatement statement = prepareStatement(query);
+            statement.executeUpdate();
+            disconnectFromDB();
         } catch (SQLException e) {
+            disconnectFromDB();
             return false;
         }
 
@@ -80,60 +83,84 @@ public class Database {
     }
 
     public boolean deleteTable(String name) {
-        Statement statement = createStatement();
         String sql = String.format("drop table %s", name);
         try {
-            statement.executeUpdate(sql);
+            PreparedStatement statement = prepareStatement(sql);
+            statement.executeUpdate();
+            disconnectFromDB();
             return true;
         } catch (SQLException e) {
+            disconnectFromDB();
             return false;
         }
     }
 
-    public boolean executeStatement(String sql) {
-        connectToDB();
+    public boolean executePreparedStatementBatch(PreparedStatement statement) throws SQLException {
+        return executePreparedStatementBatch(statement, true);
+    }
 
+    public boolean executePreparedStatementBatch(PreparedStatement statement, boolean shouldCommit) throws SQLException {
         try {
-            Statement statement = createStatement();
-            statement.executeUpdate(sql);
-            disconnectFromDB();
+            int[] updateCount = statement.executeBatch();
+
+            if (updateCount.length == 0) {
+                return false;
+            }
+            for (int update :
+                    updateCount) {
+                if (update < 1) {
+                    return false;
+                }
+            }
+            if (shouldCommit) {
+                connection.commit();
+            }
             return true;
         } catch (SQLException e) {
-            disconnectFromDB();
-            return false;
+            connection.rollback();
+            throw new SQLException(e);
+        } finally {
+            if (shouldCommit) {
+                connection.close();
+            }
         }
     }
-//
-//    public static void main(String[] args) {
-//        Connection connection = null;
-//        try {
-//            // create a database connection
-//            connection = DriverManager.getConnection("jdbc:sqlite:sample.db");
-//            Statement statement = connection.createStatement();
-//            statement.setQueryTimeout(30);  // set timeout to 30 sec.
-//
-//            statement.executeUpdate("drop table if exists person");
-//            statement.executeUpdate("create table person (id integer, name string)");
-//            statement.executeUpdate("insert into person values(1, 'dsgfdg')");
-//            statement.executeUpdate("insert into person values(2, 'yui')");
-//            ResultSet rs = statement.executeQuery("select * from person");
-//            while (rs.next()) {
-//                // read the result set
-//                System.out.println("name = " + rs.getString("name"));
-//                System.out.println("id = " + rs.getInt("id"));
-//            }
-//        } catch (SQLException e) {
-//            // if the error message is "out of memory",
-//            // it probably means no database file is found
-//            System.err.println(e.getMessage());
-//        } finally {
-//            try {
-//                if (connection != null)
-//                    connection.close();
-//            } catch (SQLException e) {
-//                // connection close failed.
-//                System.err.println(e.getMessage());
-//            }
-//        }
-//    }
+
+    public boolean executePreparedStatement(PreparedStatement statement) throws SQLException {
+        return executePreparedStatement(statement, true);
+    }
+
+    public boolean executePreparedStatement(PreparedStatement statement, boolean shouldCommit) throws SQLException {
+        try {
+            int update = statement.executeUpdate();
+
+            if (update <= 0) {
+                return false;
+            }
+
+            if (shouldCommit && !connection.getAutoCommit()) {
+                connection.commit();
+            }
+
+            return true;
+        } catch (SQLException e) {
+            if (!connection.getAutoCommit()) {
+                connection.rollback();
+            }
+            throw new SQLException(e);
+        } finally {
+            if (shouldCommit) {
+                connection.close();
+            }
+        }
+    }
+
+
+    public void commit() {
+        try {
+            connection.commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

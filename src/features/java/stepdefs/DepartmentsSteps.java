@@ -3,10 +3,7 @@ package stepdefs;
 
 import core.buildings.Department;
 import core.buildings.OutDepartment;
-import core.persons.Bed;
-import core.persons.Hospital;
-import core.persons.Patient;
-import core.persons.Staff;
+import core.persons.*;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -21,7 +18,7 @@ public class DepartmentsSteps {
     Hospital h = new Hospital ();
     Department existingDept = new OutDepartment();
     Department newDept = new OutDepartment();
-    Staff s = new Staff("staff1");
+    Staff s = new Clerk("staff1");
     Patient p = new Patient("pat1");
     Bed b = new Bed (1);
 
@@ -93,7 +90,7 @@ public class DepartmentsSteps {
 
     @Given("a new staff member")
     public void aNewStaffMember() {
-        Staff s = new Staff ();
+        Staff s = new Clerk();
     }
 
     @When("a new staff gets a job at the hospital")
