@@ -1,6 +1,7 @@
 package tests.core.buildings;
 
 import core.buildings.Department;
+import core.buildings.Hospital;
 import core.buildings.InDepartment;
 import core.persons.*;
 import org.junit.Before;
