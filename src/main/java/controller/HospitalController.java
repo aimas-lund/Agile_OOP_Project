@@ -6,6 +6,7 @@ import core.persons.Hospital;
 import core.persons.Patient;
 import core.persons.Person;
 import core.persons.Staff;
+import exceptions.PersonNotFoundException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -94,6 +95,9 @@ public class HospitalController {
             deptId = DAO.findDepartmentIdOfPerson(((Patient) person));
             deptMap.put("uniqueid",deptId);
             d1 = DAO.find(deptMap);
+            if (d1.size() == 0) {
+                throw new Exception("Cant find from department with ID: " + d2);
+            }
             hospital.move((Patient) person,d1.get(0),d2.get(0));
 
         } else if (type.equals("staff")) {
@@ -105,12 +109,40 @@ public class HospitalController {
             deptId = DAO.findDepartmentIdOfPerson(((Staff) person));
             deptMap.put("uniqueid",deptId);
             d1 = DAO.find(deptMap);
+            if (d1.size() == 0) {
+                throw new Exception("Cant find from department with ID: " + d2);
+            }
             hospital.move((Staff) person,d1.get(0),d2.get(0));
 
         }
 
-
         return "Moved " + person.getName() + " from " + d1.get(0).getName() + " to " + d2.get(0).getName();
+    }
+
+    @PostMapping("/assignPerson")
+    public String assignPerson(@RequestParam(value="personId") String personId,
+                               @RequestParam(value="toId") String deptId,
+                               @RequestParam(value="type") String type) throws Exception {
+        HashMap<String,String> personMap = new HashMap<>();
+        HashMap<String,String> deptMap = new HashMap<>();
+
+        deptMap.put("uniqueid",deptId);
+        ArrayList<Department> depts = DAO.find(deptMap);
+        if (depts.isEmpty()) {
+            throw new Exception("Cant find department with ID: " + deptId);
+        }
+        Department dept = depts.get(0);
+
+        personMap.put("uniqueid",personId);
+        if (type.equals("patient")) {
+            Patient patient = QRI.findPatient(personMap).get(0);
+            dept.add(patient);
+        } else if (type.equals("staff")) {
+            Staff staff = QRI.findStaff(personMap).get(0);
+            dept.add(staff);
+        }
+        return "Successfully added " + type + " with ID (" + personId + ") to department " + dept.getName();
+
     }
 
 }
