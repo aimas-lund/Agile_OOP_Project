@@ -44,7 +44,7 @@ public class Hospital {
     }
 
     /**
-     * Adds a patient to an existing department in the hospital
+     * Adds a patient to an existing department in the hospital and updates in the database
      *
      * @param patient with at least a unique id
      * @param department with at least a unique id
@@ -58,6 +58,13 @@ public class Hospital {
         return false;
     }
 
+    /**
+     * Adds a staff to an existing department in the hospital and updates in the database
+     *
+     * @param staff with at least a unique id
+     * @param department with at least a unique id
+     * @return true if department is in the hospital and the staff was successfully added
+     */
     public boolean assign(Staff staff, Department department) {
         if (departments.contains(department)) {
             department.add(staff);
@@ -66,6 +73,13 @@ public class Hospital {
         return false;
     }
 
+    /**
+     * Removes a patient to an existing department in the hospital and updates in the database
+     *
+     * @param patient with at least a unique id
+     * @param department with at least a unique id
+     * @return true if department is in the hospital and the patient was successfully added
+     */
     public boolean remove(Patient patient, Department department) {
         if (departments.contains(department)) {
             department.remove(patient);
@@ -74,6 +88,13 @@ public class Hospital {
         return false;
     }
 
+    /**
+     * Removes a staff to an existing department in the hospital and updates in the database
+     *
+     * @param staff with at least a unique id
+     * @param department with at least a unique id
+     * @return true if department is in the hospital and the staff was successfully added
+     */
     public boolean remove(Staff staff, Department department) {
         if (departments.contains(department)) {
             department.remove(staff);
@@ -82,6 +103,14 @@ public class Hospital {
         return false;
     }
 
+    /**
+     * Moves a patient from a department to another by first removing him and the adding
+     *
+     * @param patient with at least a unique id
+     * @param departmentFrom with at least a unique id
+     * @param departmentTo with at least a unique id
+     * @return true if successfully moved and patient is in the from department and not in the new department
+     */
     public boolean move(Patient patient, Department departmentFrom, Department departmentTo) {
         if (departmentFrom.getPatients().contains(patient) && !(departmentTo.getPatients().contains(patient))) {
             departmentFrom.remove(patient);
@@ -91,6 +120,14 @@ public class Hospital {
         return false;
     }
 
+    /**
+     * Moves a staff member from a department to another by first removing him and the adding
+     *
+     * @param staff with at least a unique id
+     * @param departmentFrom with at least a unique id
+     * @param departmentTo with at least a unique id
+     * @return true if successfully moved and patient is in the from department and not in the new department
+     */
     public boolean move(Staff staff, Department departmentFrom, Department departmentTo) {
         if (departmentFrom.getStaff().contains(staff) && !(departmentTo.getStaff().contains(staff))) {
             departmentTo.add(staff);
