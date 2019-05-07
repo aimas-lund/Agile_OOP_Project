@@ -8,6 +8,8 @@ public class Nurse extends Staff {
         super(uniqueId, name, surname, birthdate, gender, homeaddress, phonenumber, email, initials);
     }
 
+
+
     public Nurse(String name, String surname, Date birthdate, Gender gender, String homeaddress, int phonenumber) {
         super(name, surname, birthdate, gender, homeaddress, phonenumber);
     }

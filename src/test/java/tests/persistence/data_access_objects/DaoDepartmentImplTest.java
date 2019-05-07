@@ -7,7 +7,10 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import persistence.data_access_objects.DaoDepartmentImpl;
+import persistence.data_access_objects.DaoStaffImpl;
+import persistence.query_roles.QueryRoleICT;
 
+import java.util.Date;
 import java.util.HashMap;
 
 import static junit.framework.TestCase.*;
@@ -60,8 +63,13 @@ public class DaoDepartmentImplTest {
 
     @Test
     public void findDepartmentIdOfPersonStaff() {
-        String depId = daoDepartment.findDepartmentIdOfPerson(new Clerk("staff1"));
-        assertEquals("id", depId);
+        Nurse n = new Nurse("Oline", "Stark", new Date(1337), Gender.FEMALE, "Hey", 12345678);
+        DaoStaffImpl<Staff> staff = new DaoStaffImpl<>();
+        QueryRoleICT QRICT = new QueryRoleICT();
+        QRICT.registerPerson(n,inDepartmentTest);
+        String depId = daoDepartment.findDepartmentIdOfPerson(n);
+        System.out.println(depId);
+//        assertEquals("id", depId);
     }
 
     @Test
