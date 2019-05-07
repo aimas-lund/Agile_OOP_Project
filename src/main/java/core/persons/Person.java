@@ -17,7 +17,7 @@ public abstract class Person implements Observable {
     private Gender gender;
     private String homeAddress;
     private int phoneNumber;
-    private ArrayList<Observer> listeners;
+    private ArrayList<Observer> listeners = new ArrayList<>();
 
     Person() {
         listeners.add(new PersonObserver());
@@ -30,21 +30,17 @@ public abstract class Person implements Observable {
 
     protected Person(String uniqueId, String name, String surname, Date birthdate, Gender gender, String homeaddress, int phonenumber) {
         this(name, surname, birthdate, gender, homeaddress, phonenumber);
-        this.setUniqueId(uniqueId);
+        this.uniqueId = uniqueId;
     }
 
     protected Person(String name, String surname, Date birthdate, Gender gender, String homeaddress, int phonenumber) {
         this();
-        this.setName(name);
-        this.setSurname(surname);
-        this.setBirthdate(birthdate);
-        this.setGender(gender);
-        this.setHomeAddress(homeaddress);
-        try {
-            this.setPhoneNumber(phonenumber);
-        } catch (FormatException e) {
-            e.printStackTrace();
-        }
+        this.name = name;
+        this.surname = surname;
+        this.birthdate = birthdate;
+        this.gender = gender;
+        this.homeAddress = homeaddress;
+        this.phoneNumber = phonenumber;
     }
 
     Person(String name, String surname) {
@@ -59,6 +55,7 @@ public abstract class Person implements Observable {
 
     void setName(String name) {
         this.name = name;
+        notifyListeners(this, Event.UPDATE, null, null);
     }
 
     public String getSurname() {
@@ -67,6 +64,7 @@ public abstract class Person implements Observable {
 
     void setSurname(String surname) {
         this.surname = surname;
+        notifyListeners(this, Event.UPDATE, null, null);
     }
 
     public Date getBirthdate() {
@@ -75,6 +73,7 @@ public abstract class Person implements Observable {
 
     void setBirthdate(Date birthdate) {
         this.birthdate = birthdate;
+        notifyListeners(this, Event.UPDATE, null, null);
     }
 
     public Gender getGender() {
@@ -83,6 +82,7 @@ public abstract class Person implements Observable {
 
     void setGender(Gender gender) {
         this.gender = gender;
+        notifyListeners(this, Event.UPDATE, null, null);
     }
 
     public String getHomeAddress() {
@@ -91,6 +91,7 @@ public abstract class Person implements Observable {
 
     void setHomeAddress(String homeAddress) {
         this.homeAddress = homeAddress;
+        notifyListeners(this, Event.UPDATE, null, null);
     }
 
     public int getPhoneNumber() {
@@ -112,6 +113,7 @@ public abstract class Person implements Observable {
 
     void setUniqueId(String uniqueID) {
         this.uniqueId = uniqueID;
+        notifyListeners(this, Event.UPDATE, null, null);
     }
 
     public abstract String[] getPersonInformation();
@@ -149,6 +151,7 @@ public abstract class Person implements Observable {
     @Override
     public void addChangeListener(Observer newListener) {
         listeners.add(newListener);
+
     }
 
     @Override

@@ -27,8 +27,8 @@ public class PatientTest {
 
     @Test
     public void setAlive() {
-        new PersonInformationFacade(patient).setPatientAlive(false);
-        assertFalse(patient.isAlive());
+        new PersonInformationFacade(patientWithInformation).setPatientAlive(false);
+        assertFalse(patientWithInformation.isAlive());
     }
 
     @Test

@@ -14,37 +14,37 @@ public class PersonObserver implements Observer {
 
     @Override
     public void objectChanged(Object source, Event action, Object oldValue, Object newValue) {
-        if (oldValue instanceof Staff || newValue instanceof Staff) {
-            objectChanged(source, action, (Staff) oldValue, (Staff) newValue);
-        } else if (oldValue instanceof Patient || newValue instanceof Patient) {
-            objectChanged(source, action, (Patient) oldValue, (Patient) newValue);
+        if (source instanceof Staff) {
+            objectChanged((Staff) source, action, oldValue, newValue);
+        } else if (source instanceof Patient) {
+            objectChanged((Patient) source, action, oldValue, newValue);
         }
     }
 
-    public void objectChanged(Object source, Event action, Staff oldValue, Staff newValue) {
+    public void objectChanged(Staff source, Event action, Object oldValue, Object newValue) {
         switch (action) {
             case ADD:
-                daoStaff.save(newValue);
+                daoStaff.save(source);
                 break;
             case UPDATE:
-                daoStaff.update(newValue);
+                daoStaff.update(source);
                 break;
             case DELETE:
-                daoStaff.delete(oldValue);
+                daoStaff.delete(source);
                 break;
         }
     }
 
-    public void objectChanged(Object source, Event action, Patient oldValue, Patient newValue) {
+    public void objectChanged(Patient source, Event action, Object oldValue, Object newValue) {
         switch (action) {
             case ADD:
-                daoPatient.save(newValue);
+                daoPatient.save(source);
                 break;
             case UPDATE:
-                daoPatient.update(newValue);
+                daoPatient.update(source);
                 break;
             case DELETE:
-                daoPatient.delete(oldValue);
+                daoPatient.delete(source);
                 break;
         }
     }
