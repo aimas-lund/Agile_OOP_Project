@@ -62,6 +62,10 @@ public abstract class DepartmentBeds extends Department {
         }
     }
 
+    /**
+     * @param bedId id of the bed to check for, a number greater than 0 and less than total capacity
+     * @return true if bed is occupied, false otherwise
+     */
     Boolean isOccupied(int bedId) {
         if (bedId >= totalCapacity) {
             return true;
@@ -70,6 +74,12 @@ public abstract class DepartmentBeds extends Department {
         return beds[bedId].isOccupied();
     }
 
+    /**
+     * Adds patient to hashmap
+     *
+     * @param patient with at least unique id
+     * @param bed object with an id
+     */
     void addPatientInBed(Patient patient, Bed bed) {
         patientsInBeds.put(patient, bed);
         this.notifyListeners(this, UPDATE, null, patient);
