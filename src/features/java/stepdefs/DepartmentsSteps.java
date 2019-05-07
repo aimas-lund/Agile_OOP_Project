@@ -21,8 +21,8 @@ import static junit.framework.TestCase.*;
 public class DepartmentsSteps {
 
     Hospital hospital = new Hospital();
-    Department existingDept = new OutDepartment();
-    Department newDept = new OutDepartment();
+    Department existingDept = new OutDepartment("adambeillinstavetforkert", "adam");
+    Department newDept = new OutDepartment("adambellinogsåstavetforkert", "adamnt");
     Staff staff = new Clerk("staff1");
     Patient patient = new Patient("pat1");
     Bed bed = new Bed(1);

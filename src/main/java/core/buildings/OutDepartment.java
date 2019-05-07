@@ -34,7 +34,6 @@ public class OutDepartment extends Department {
         this.waitingPatients = waitingPatients;
     }
 
-
     public void addWaitingPatient(Patient patient) {
         if (!isPatientInDepartment(patient)) {
             add(patient);
