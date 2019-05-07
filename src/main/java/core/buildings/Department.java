@@ -42,14 +42,12 @@ public abstract class Department implements Observable {
             return true;
         }
         return false;
-    notifyListeners(this, Event.ADD, null, s);
     }
 
     public boolean add(Patient patient) {
         if (patient.getUniqueId() == null) {
             return false;
-        notifyListeners(this, Event.ADD, null, p);
-	}
+        }
 
         if (!patients.contains(patient)) {
             patients.add(patient);
